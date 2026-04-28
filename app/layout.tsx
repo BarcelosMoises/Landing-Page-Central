@@ -83,8 +83,8 @@ const organizationJsonLd = {
   url: "https://www.centraldesolucoes.eng.br",
   logo: "https://www.centraldesolucoes.eng.br/logo.png",
   image: "https://www.centraldesolucoes.eng.br/og-image.jpg",
-  telephone: "",
-  email: "",
+  telephone: "(22) 98112-1315",
+  email: "centralsolu@outlook.com",
   address: {
     "@type": "PostalAddress",
     addressCountry: "BR",
@@ -120,7 +120,7 @@ const organizationJsonLd = {
     "CLCB",
     "ART",
   ],
-  sameAs: [],
+  sameAs: ["https://www.instagram.com/centraldesolucoes"],
 };
 
 export default function RootLayout({
