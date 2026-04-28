@@ -81,8 +81,9 @@ function EstadoCard({ sigla, nome, siglaCB, orgaoAmbiental }: EstadoCardProps) {
 
       {/* Link CTA */}
       {slug && (
+        // TODO: atualizar para /avcb-corpo-de-bombeiros?estado=${slug} após Fase 6
         <Link
-          href={`/avcb-corpo-de-bombeiros?estado=${slug}`}
+          href="/#servicos"
           aria-label={`Ver serviços de regularização de engenharia civil no ${nome}`}
           className="mt-auto inline-flex items-center gap-1 text-sm font-semibold text-[#800000] hover:text-[#4f0101] transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#800000] focus-visible:rounded"
         >
@@ -132,8 +133,9 @@ function CardBrasil() {
         </div>
 
         {/* CTA */}
+        // TODO: atualizar para /spda-para-raios após Fase 6
         <Link
-          href="/spda-para-raios"
+          href="/#servicos"
           aria-label="Ver serviços de SPDA e sistemas de proteção em todo o Brasil"
           className="flex-shrink-0 inline-flex items-center gap-2 bg-white text-[#800000] hover:bg-neutral-100 font-semibold text-sm px-5 py-3 rounded-lg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#800000] self-start sm:self-center"
         >
