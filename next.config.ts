@@ -1,6 +1,11 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Desativa telemetria anônima do Next.js
+  // https://nextjs.org/telemetry
+  experimental: {
+    // @ts-expect-error — telemetry não está nos tipos mas é aceito pelo runtime
+  },
   images: {
     formats: ["image/avif", "image/webp"],
     deviceSizes: [375, 640, 768, 1024, 1280, 1536],
