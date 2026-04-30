@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-// ─── Tipos ──────────────────────────────────────────────────────────────────
+// ─── Tipos ────────────────────────────────────────────────────────────────────
 
 export interface LogoItem {
   src: string;
@@ -16,10 +16,11 @@ export interface OrgaoReguladorBadge {
 }
 
 export interface TrustBarProps {
-  logos?: LogoItem[];
+  // ReadonlyArray aceita tanto LogoItem[] quanto readonly LogoItem[]
+  logos?: ReadonlyArray<LogoItem>;
 }
 
-// ─── Dados padrão ───────────────────────────────────────────────────────────
+// ─── Dados padrão ──────────────────────────────────────────────────────────────
 
 export const DEFAULT_LOGOS: readonly LogoItem[] = [
   {
@@ -99,7 +100,7 @@ const ORGAOS_REGULADORES: readonly OrgaoReguladorBadge[] = [
   },
 ] as const;
 
-// ─── Componente ───────────────────────────────────────────────────────────
+// ─── Componente ───────────────────────────────────────────────────────────────────
 
 export function TrustBar({ logos = DEFAULT_LOGOS }: TrustBarProps) {
   return (
