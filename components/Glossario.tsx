@@ -14,7 +14,7 @@ interface FaqItem {
   readonly resposta: string;
 }
 
-// ─── Dados das siglas (fonte: docs/SEO.md — Glossário de Siglas) ───────────────
+// ─── Dados das siglas (fonte: docs/SEO.md — Glossário de Siglas) ────────────────────
 
 const SIGLAS: readonly SiglaItem[] = [
   {
@@ -121,7 +121,7 @@ const FAQ_ITEMS: readonly FaqItem[] = [
   {
     pergunta: "O que é SPDA e quando é obrigatório?",
     resposta:
-      "O SPDA (Sistema de Proteção contra Descargas Atmosféricas), popularmente chamado de para-raios, é um conjunto de dispositivos que captura e dissipa com segurança a energia de descargas elétricas atmosféricas. É regulamentado pela ABNT NBR 5419 e obrigatório em estruturas como usinas fotovoltaicas, torres de telecomunicações, subestações elétricas, galpões industriais e qualquer edificação sujeita a risco elevado de raios. O laudo técnico de SPDA com ART é exigência do Corpo de Bombeiros para emissão do AVCB em diversas ocupções.",
+      "O SPDA (Sistema de Proteção contra Descargas Atmosféricas), popularmente chamado de para-raios, é um conjunto de dispositivos que captura e dissipa com segurança a energia de descargas elétricas atmosféricas. É regulamentado pela ABNT NBR 5419 e obrigatório em estruturas como usinas fotovoltaicas, torres de telecomunicações, subestações elétricas, galpões industriais e qualquer edificação sujeita a risco elevado de raios. O laudo técnico de SPDA com ART é exigência do Corpo de Bombeiros para emissão do AVCB em diversas ocupações.",
   },
   {
     pergunta: "O que é ART e por que ela é exigida nos laudos?",
@@ -136,7 +136,7 @@ const FAQ_ITEMS: readonly FaqItem[] = [
   {
     pergunta: "O que é licenciamento ambiental e quais empresas precisam?",
     resposta:
-      "O licenciamento ambiental é o procedimento pelo qual os órgãos ambientais estaduais (INEA no RJ, CETESB em SP, SUPRAM/SEMAD em MG e IEMA no ES) avaliam, controlam e autorizam o funcionamento de atividades que causam impacto ao meio ambiente. Empresas dos setores de indústria, agroindústria, mineração, postos de combustível, telec omunicações e energia precisam obter as licenças LP (Licença Prévia), LI (Licença de Instalação) e LO (Licença de Operação), conforme a Resolução CONAMA 237/1997. Operar sem a licença ambiental adequada sujeita a empresa a multas, interdicõões e responsabilidade civil e penal dos sócios.",
+      "O licenciamento ambiental é o procedimento pelo qual os órgãos ambientais estaduais (INEA no RJ, CETESB em SP, SUPRAM/SEMAD em MG e IEMA no ES) avaliam, controlam e autorizam o funcionamento de atividades que causam impacto ao meio ambiente. Empresas dos setores de indústria, agroindústria, mineração, postos de combustível, telecomunicações e energia precisam obter as licenças LP (Licença Prévia), LI (Licença de Instalação) e LO (Licença de Operação), conforme a Resolução CONAMA 237/1997. Operar sem a licença ambiental adequada sujeita a empresa a multas, interdições e responsabilidade civil e penal dos sócios.",
   },
   {
     pergunta: "O que é PGRS e quando uma empresa precisa elaborar?",
@@ -146,11 +146,11 @@ const FAQ_ITEMS: readonly FaqItem[] = [
   {
     pergunta: "Quanto tempo leva para obter o AVCB?",
     resposta:
-      "O prazo para obtenção do AVCB varia de acordo com o estado, a complexidade da edificação e o volume de processos em tramitação no Corpo de Bombeiros. Em média, o processo leva de 60 a 180 dias no Rio de Janeiro (CBMERJ) e em São Paulo (CBPMESP), podendo ser mais rápido em Minas Gerais e Espírito Santo. O prazo depende de fatores como: adequações necessárias no imóvel, aprovacao do projeto de incêndio, disponibilidade de vistoria e completude da documentação. Uma consultoria especializada como a Central de Soluções pode reduzir o prazo ao garantir que o processo seja protocolado sem pendencias.",
+      "O prazo para obtenção do AVCB varia de acordo com o estado, a complexidade da edificação e o volume de processos em tramitação no Corpo de Bombeiros. Em média, o processo leva de 60 a 180 dias no Rio de Janeiro (CBMERJ) e em São Paulo (CBPMESP), podendo ser mais rápido em Minas Gerais e Espírito Santo. O prazo depende de fatores como: adequações necessárias no imóvel, aprovação do projeto de incêndio, disponibilidade de vistoria e completude da documentação. Uma consultoria especializada como a Central de Soluções pode reduzir o prazo ao garantir que o processo seja protocolado sem pendências.",
   },
 ] as const;
 
-// ─── JSON-LD FAQPage ─────────────────────────────────────────────────────────────
+// ─── JSON-LD FAQPage ────────────────────────────────────────────────────────────────────
 
 const faqJsonLd = {
   "@context": "https://schema.org",
@@ -165,7 +165,7 @@ const faqJsonLd = {
   })),
 };
 
-// ─── Sub-componente: card de sigla ───────────────────────────────────────────────
+// ─── Sub-componente: card de sigla ────────────────────────────────────────────────────
 
 function SiglaCard({ sigla, significado, descricao, normaOrgao }: SiglaItem) {
   return (
@@ -204,7 +204,7 @@ function SiglaCard({ sigla, significado, descricao, normaOrgao }: SiglaItem) {
   );
 }
 
-// ─── Sub-componente: item de FAQ visível ─────────────────────────────────────────
+// ─── Sub-componente: item de FAQ visível ──────────────────────────────────────────────────
 
 function FaqAccordionItem({ pergunta, resposta }: FaqItem) {
   return (
