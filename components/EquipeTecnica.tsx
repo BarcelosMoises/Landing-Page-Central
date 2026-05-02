@@ -2,7 +2,7 @@ import Image from "next/image";
 import { JsonLd } from "@/components/JsonLd";
 import { equipe } from "@/data/servicos";
 
-// ─── JSON-LD Person ─────────────────────────────────────────────────────────────
+// ─── JSON-LD Person ──────────────────────────────────────────────────────────────────
 
 const PESSOA_EXTRA: Record<
   string,
@@ -18,7 +18,7 @@ const PESSOA_EXTRA: Record<
       "Projetos Arquitetônicos",
       "SPDA",
     ],
-    image: "https://centraldesolucoes.com.br/images/durval.jpg",
+    image: "https://www.centraldesolucoes.eng.br/images/durval.jpg",
   },
   theyllor: {
     jobTitle: "Engenheiro Civil e Técnico em Mecânica",
@@ -29,7 +29,7 @@ const PESSOA_EXTRA: Record<
       "Licenciamento Ambiental",
       "Laudos Técnicos",
     ],
-    image: "https://centraldesolucoes.com.br/images/theyllor.jpg",
+    image: "https://www.centraldesolucoes.eng.br/images/theyllor.jpg",
   },
 };
 
@@ -43,7 +43,7 @@ const pessoasJsonLd = equipe.map((membro) => {
     worksFor: {
       "@type": "Organization",
       name: "Central de Soluções Engenharia",
-      url: "https://centraldesolucoes.com.br",
+      url: "https://www.centraldesolucoes.eng.br",
     },
     knowsAbout: extra?.knowsAbout ?? membro.especialidades,
     ...(extra?.image ? { image: extra.image } : {}),
