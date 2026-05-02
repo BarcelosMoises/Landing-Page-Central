@@ -1,15 +1,15 @@
 # CLAUDE.md — Central de Soluções Landing Page
 > Instruções específicas para o Claude Code (claude.ai/code ou CLI).
 > Complementa o AGENTS.md com diretrizes de geração de código para o Claude.
-> Última atualização: Abril 2026
+> Última atualização: Maio 2026
 
 ---
 
 ## Contexto Rápido
 
 Projeto: Landing page B2B para empresa de engenharia civil (regularização, AVCB, SPDA, licenciamento ambiental).
-Stack: Next.js 14 App Router + Tailwind CSS + TypeScript.
-Docs: `docs/AGENTS.md` (regras globais) | `docs/SEO.md` (keywords) | `docs/SERVICOS.md` (conteúdo) | `docs/DESIGN.md` (visual).
+Stack: Next.js 15 App Router + Tailwind CSS + TypeScript.
+Docs: `AGENTS.md` (regras globais) | `docs/SEO.md` (keywords) | `docs/SERVICOS.md` (conteúdo) | `docs/DESIGN.md` (visual).
 
 ---
 

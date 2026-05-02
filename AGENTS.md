@@ -1,7 +1,7 @@
 # AGENTS.md — Central de Soluções Landing Page
 > Arquivo de contexto global. Lido automaticamente por Claude Code, Gemini CLI e demais agentes.
 > Atualizar este arquivo sempre que houver mudança de stack, escopo ou decisão arquitetural.
-> Última atualização: Abril 2026
+> Última atualização: Maio 2026
 
 ---
 
@@ -21,7 +21,7 @@
 
 | Camada | Tecnologia | Observações |
 |---|---|---|
-| Framework | Next.js 14 (App Router) | Usar apenas App Router — sem Pages Router |
+| Framework | Next.js 15 (App Router) | Usar apenas App Router — sem Pages Router |
 | Estilização | Tailwind CSS v3 | Sem CSS Modules nem styled-components |
 | Dados estruturados | JSON-LD nativo | Nunca usar next-seo — incompatível com App Router |
 | Formulários | React Hook Form + Zod | Validação de schema obrigatória |
@@ -121,7 +121,7 @@ app/
 
 | ❌ Proibido | ✅ Usar em vez disso |
 |---|---|
-| `next-seo` | Metadata API nativa do Next.js 14 |
+| `next-seo` | Metadata API nativa do Next.js 15 |
 | `<Head>` do Pages Router | `export const metadata` no App Router |
 | Vídeo autoplay sem fallback | `next/image` com `priority` + vídeo condicional |
 | Conteúdo técnico em modal | Accordion (`<details>`) ou seção colapsável no DOM |
