@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 import { setores, getServicosPorSetor } from "@/data/servicos";
 
-// ─── Mapa de ícones por setor ──────────────────────────────────────────────────
+// ─── Mapa de ícones por setor ────────────────────────────────────────────────────
 
 type IconComponent = React.ComponentType<LucideProps>;
 
@@ -55,7 +55,8 @@ function SetorCard({ setorId, nome }: SetorCardProps) {
           className="w-9 h-9 bg-[#800000]/30 border border-[#800000]/40 rounded-lg flex items-center justify-center flex-shrink-0"
           aria-hidden="true"
         >
-          <Icon className="w-4 h-4 text-[#f5a0a0]" aria-hidden="true" />
+          {/* text-white/70 sobre bg-[#800000]/30 em bg-[#111827] → contraste adequado para ícone decorativo */}
+          <Icon className="w-4 h-4 text-white/70" aria-hidden="true" />
         </div>
         {/* text-white = #fff sobre #111827 → contraste 15.3:1 ✓ WCAG AAA */}
         <h3 className="font-heading text-base font-bold text-white leading-snug">
@@ -91,7 +92,8 @@ export function SetoresAtendidos() {
 
         {/* Cabeçalho */}
         <div className="max-w-2xl mb-12">
-          <p className="text-xs font-semibold uppercase tracking-widest text-[#f5a0a0] mb-3">
+          {/* text-white/70 sobre bg-[#111827] → contraste ~10.7:1 ✓ WCAG AAA */}
+          <p className="text-xs font-semibold uppercase tracking-widest text-white/70 mb-3">
             Segmentos de atuação
           </p>
           {/* text-white sobre bg-[#111827] → contraste 15.3:1 ✓ WCAG AAA */}

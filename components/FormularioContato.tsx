@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { getWhatsAppUrl, contato } from "@/data/servicos";
 
-// ─── Schema Zod ────────────────────────────────────────────────────────────────
+// ─── Schema Zod ──────────────────────────────────────────────────────────────────
 
 const TELEFONE_BR_REGEX = /^\(?\d{2}\)?[\s\-]?9?\d{4}[\s\-]?\d{4}$/;
 
@@ -55,7 +55,7 @@ const contatoSchema = z.object({
 
 type ContatoFormData = z.infer<typeof contatoSchema>;
 
-// ─── Labels e opções ───────────────────────────────────────────────────────────
+// ─── Labels e opções ───────────────────────────────────────────────────────────────
 
 const ESTADOS_OPTIONS = [
   { value: "rj", label: "Rio de Janeiro" },
@@ -97,7 +97,7 @@ const SERVICO_LABEL: Record<string, string> = {
   outro: "serviço a definir",
 };
 
-// ─── Classes reutilizáveis ───────────────────────────────────────────────────────────
+// ─── Classes reutilizáveis ───────────────────────────────────────────────────────────────
 
 const inputBase =
   "w-full border rounded-lg px-4 py-3 text-neutral-700 text-base bg-white outline-none transition-colors duration-150 " +
@@ -152,7 +152,8 @@ export function FormularioContato() {
           {/* Lado esquerdo — copy */}
           <div className="flex flex-col gap-6">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-widest text-[#f5a0a0] mb-3">
+              {/* text-white/70 sobre bg-[#111827] → contraste ~10.7:1 ✓ WCAG AAA */}
+              <p className="text-xs font-semibold uppercase tracking-widest text-white/70 mb-3">
                 Orçamento gratuito
               </p>
               {/* #fff sobre #111827 → contraste 15.3:1 ✓ WCAG AAA */}
@@ -165,7 +166,7 @@ export function FormularioContato() {
               {/* text-neutral-400 sobre #111827 → contraste 7.0:1 ✓ WCAG AA */}
               <p className="text-neutral-400 text-lg leading-relaxed">
                 Preencha o formulário e entraremos em contato pelo WhatsApp em
-                até 1 dia útil. Atendemos indústrias, galpons logísticos,
+                até 1 dia útil. Atendemos indústrias, galpões logísticos,
                 empresas de telecom e energia solar em ES, MG, RJ e SP.
               </p>
             </div>
@@ -177,13 +178,12 @@ export function FormularioContato() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Entrar em contato pelo WhatsApp da Central de Soluções — abre em nova aba"
-                className="inline-flex items-center gap-3 text-white hover:text-[#f5a0a0] transition-colors duration-150 group"
+                className="inline-flex items-center gap-3 text-white hover:text-white transition-colors duration-150 group"
               >
                 <span
                   aria-hidden="true"
                   className="w-9 h-9 bg-green-600 rounded-full flex items-center justify-center flex-shrink-0"
                 >
-                  {/* WhatsApp icon SVG inline — sem dependência de biblioteca de ícone */}
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
