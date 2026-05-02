@@ -126,14 +126,14 @@ function CardBrasil() {
           {/* text-white/80 sobre #800000 → contraste ~4.7:1 ✓ WCAG AA */}
           <p className="text-white/80 text-sm leading-relaxed max-w-xl">
             Projeto, laudo e instalação de SPDA (para-raios), aterramento
-            elétrico e teste de continuidade conforme NBR 5419 e NR-10.
+            elétrico e teste de continuidade conforme NBR 5419 e NR-10.
             Atendemos usinas fotovoltaicas, torres de telecom e subestações
             em qualquer estado brasileiro.
           </p>
         </div>
 
         {/* CTA */}
-        // TODO: atualizar para /spda-para-raios após Fase 6
+        {/* TODO: atualizar para /spda-para-raios após Fase 6 */}
         <Link
           href="/#servicos"
           aria-label="Ver serviços de SPDA e sistemas de proteção em todo o Brasil"
