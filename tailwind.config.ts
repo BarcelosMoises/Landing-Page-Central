@@ -43,6 +43,36 @@ const config: Config = {
       minHeight: {
         hero: "90vh",
       },
+      // --- Animações de entrada ---
+      keyframes: {
+        fadeInUp: {
+          "0%": { opacity: "0", transform: "translateY(20px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        fadeIn: {
+          "0%": { opacity: "0" },
+          "100%": { opacity: "1" },
+        },
+        marquee: {
+          "0%": { transform: "translateX(0%)" },
+          "100%": { transform: "translateX(-50%)" },
+        },
+        pulseSoft: {
+          "0%, 100%": { boxShadow: "0 0 0 0 rgba(128,0,0,0.4)" },
+          "50%": { boxShadow: "0 0 0 8px rgba(128,0,0,0)" },
+        },
+      },
+      animation: {
+        "fade-in-up": "fadeInUp 0.5s ease-out both",
+        "fade-in": "fadeIn 0.4s ease-out both",
+        marquee: "marquee 30s linear infinite",
+        "pulse-soft": "pulseSoft 2s ease-in-out infinite",
+      },
+      transitionDuration: {
+        "200": "200ms",
+        "300": "300ms",
+        "500": "500ms",
+      },
     },
   },
   plugins: [],
