@@ -74,17 +74,20 @@ export const metadata: Metadata = {
   },
 };
 
+// ProfessionalService: subtipo de LocalBusiness — mais semântico para
+// empresas de engenharia/consultoria. Melhora E-E-A-T e rich results.
 const organizationJsonLd = {
   "@context": "https://schema.org",
-  "@type": "LocalBusiness",
+  "@type": ["ProfessionalService", "LocalBusiness"],
   name: "Central de Soluções",
   description:
     "Empresa especializada em regularização de engenharia civil: AVCB, SPDA, laudos técnicos, licenciamento ambiental e vigilância sanitária.",
   url: "https://www.centraldesolucoes.eng.br",
   logo: "https://www.centraldesolucoes.eng.br/logo.png",
   image: "https://www.centraldesolucoes.eng.br/og-image.jpg",
-  telephone: "(22) 98112-1315",
+  telephone: "+552298112-1315",
   email: "centralsolu@outlook.com",
+  priceRange: "$$",
   address: {
     "@type": "PostalAddress",
     addressCountry: "BR",
@@ -109,6 +112,18 @@ const organizationJsonLd = {
       jobTitle: "Engenheiro Civil, Técnico em Mecânica",
     },
   ],
+  hasOfferCatalog: {
+    "@type": "OfferCatalog",
+    name: "Serviços de Regularização de Engenharia Civil",
+    itemListElement: [
+      { "@type": "Offer", itemOffered: { "@type": "Service", name: "AVCB — Auto de Vistoria do Corpo de Bombeiros" } },
+      { "@type": "Offer", itemOffered: { "@type": "Service", name: "SPDA — Sistema de Proteção contra Descargas Atmosféricas" } },
+      { "@type": "Offer", itemOffered: { "@type": "Service", name: "Laudos Técnicos de Engenharia" } },
+      { "@type": "Offer", itemOffered: { "@type": "Service", name: "Licenciamento Ambiental" } },
+      { "@type": "Offer", itemOffered: { "@type": "Service", name: "Vigilância Sanitária — Alvará Sanitário" } },
+      { "@type": "Offer", itemOffered: { "@type": "Service", name: "Projetos de Combate a Incêndio e Pânico" } },
+    ],
+  },
   knowsAbout: [
     "AVCB",
     "SPDA",
@@ -119,8 +134,12 @@ const organizationJsonLd = {
     "Regularização junto ao Corpo de Bombeiros",
     "CLCB",
     "ART",
+    "NBR 5419",
+    "NR-10",
   ],
-  sameAs: ["https://www.instagram.com/centraldesolucoes"],
+  sameAs: [
+    "https://www.instagram.com/centraldesolucoes",
+  ],
 };
 
 export default function RootLayout({
