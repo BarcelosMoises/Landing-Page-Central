@@ -1,6 +1,7 @@
 import Image from "next/image";
+import { getClientesDestaque } from "@/data/servicos";
 
-// ─── Tipos ────────────────────────────────────────────────────────────────────
+// ─── Tipos ──────────────────────────────────────────────────────────────────
 
 export interface LogoItem {
   src: string;
@@ -15,57 +16,19 @@ export interface OrgaoReguladorBadge {
   title: string;
 }
 
-export interface TrustBarProps {
-  // ReadonlyArray aceita tanto LogoItem[] quanto readonly LogoItem[]
-  logos?: ReadonlyArray<LogoItem>;
-}
+// ─── Dimensões de exibição dos logos por id de cliente ───────────────────────────
 
-// ─── Dados padrão ──────────────────────────────────────────────────────────────
+const LOGO_DIMENSIONS: Record<string, { width: number; height: number }> = {
+  claro:         { width: 96,  height: 32 },
+  embratel:      { width: 112, height: 32 },
+  ambev:         { width: 88,  height: 32 },
+  "mercado-livre": { width: 128, height: 32 },
+  brasol:        { width: 96,  height: 32 },
+};
 
-export const DEFAULT_LOGOS: readonly LogoItem[] = [
-  {
-    src: "/images/clientes/claro.svg",
-    alt: "Logo da Claro — operadora de telecomunicações, cliente da Central de Soluções",
-    width: 96,
-    height: 32,
-  },
-  {
-    src: "/images/clientes/embratel.svg",
-    alt: "Logo da Embratel — empresa de telecomunicações, cliente da Central de Soluções",
-    width: 112,
-    height: 32,
-  },
-  {
-    src: "/images/clientes/brasil-center.svg",
-    alt: "Logo da Brasil Center — empresa de telecomunicações, cliente da Central de Soluções",
-    width: 120,
-    height: 32,
-  },
-  {
-    src: "/images/clientes/ambev.svg",
-    alt: "Logo da Ambev — indústria de alimentos e bebidas, cliente da Central de Soluções",
-    width: 88,
-    height: 32,
-  },
-  {
-    src: "/images/clientes/mercado-livre.svg",
-    alt: "Logo do Mercado Livre — empresa de logística e e-commerce, cliente da Central de Soluções",
-    width: 128,
-    height: 32,
-  },
-  {
-    src: "/images/clientes/brasol.svg",
-    alt: "Logo da Brasol — empresa de energia solar, cliente da Central de Soluções",
-    width: 96,
-    height: 32,
-  },
-  {
-    src: "/images/clientes/rzk-energia.svg",
-    alt: "Logo da RZK Energia — empresa de energia, cliente da Central de Soluções",
-    width: 96,
-    height: 32,
-  },
-] as const;
+const DEFAULT_DIMENSIONS = { width: 96, height: 32 };
+
+// ─── Órgãos reguladores ────────────────────────────────────────────────────────
 
 const ORGAOS_REGULADORES: readonly OrgaoReguladorBadge[] = [
   {
@@ -76,7 +39,7 @@ const ORGAOS_REGULADORES: readonly OrgaoReguladorBadge[] = [
   {
     label: "CBPMESP \u00b7 SP",
     href: "https://www.corpodebombeiros.sp.gov.br",
-    title: "Corpo de Bombeiros da Polícia Militar do Estado de São Paulo",
+    title: "Corpo de Bombeiros da Pol\u00edcia Militar do Estado de S\u00e3o Paulo",
   },
   {
     label: "CBMMG \u00b7 MG",
@@ -86,7 +49,7 @@ const ORGAOS_REGULADORES: readonly OrgaoReguladorBadge[] = [
   {
     label: "CBMES \u00b7 ES",
     href: "https://www.cbmes.es.gov.br",
-    title: "Corpo de Bombeiros Militar do Espírito Santo",
+    title: "Corpo de Bombeiros Militar do Esp\u00edrito Santo",
   },
   {
     label: "INEA \u00b7 RJ",
@@ -96,27 +59,39 @@ const ORGAOS_REGULADORES: readonly OrgaoReguladorBadge[] = [
   {
     label: "ANVISA",
     href: "https://www.gov.br/anvisa",
-    title: "Agência Nacional de Vigilância Sanitária",
+    title: "Ag\u00eancia Nacional de Vigil\u00e2ncia Sanit\u00e1ria",
   },
 ] as const;
 
-// ─── Componente ───────────────────────────────────────────────────────────────────
+// ─── Componente ─────────────────────────────────────────────────────────────────────
 
-export function TrustBar({ logos = DEFAULT_LOGOS }: TrustBarProps) {
+export function TrustBar() {
+  const clientesDestaque = getClientesDestaque();
+
+  const logos: LogoItem[] = clientesDestaque.map((cliente) => {
+    const dims = LOGO_DIMENSIONS[cliente.id] ?? DEFAULT_DIMENSIONS;
+    return {
+      src: cliente.logoPath,
+      alt: `Logo de ${cliente.nome} \u2014 ${cliente.segmento}, cliente da Central de Solu\u00e7\u00f5es`,
+      width: dims.width,
+      height: dims.height,
+    };
+  });
+
   return (
     <section
-      aria-label="Empresas e órgãos reguladores parceiros da Central de Soluções"
+      aria-label="Empresas e \u00f3rg\u00e3os reguladores parceiros da Central de Solu\u00e7\u00f5es"
       className="bg-neutral-50 border-y border-neutral-100 py-10"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        {/* Faixa 1 — Logos de clientes */}
+        {/* Faixa 1 \u2014 Logos de clientes */}
         <div className="mb-8">
           <p
             className="text-xs font-semibold uppercase tracking-widest text-neutral-400 text-center mb-6"
-            aria-label="Empresas que confiam na Central de Soluções"
+            aria-label="Empresas que confiam na Central de Solu\u00e7\u00f5es"
           >
-            Empresas que confiam na Central de Soluções
+            Empresas que confiam na Central de Solu\u00e7\u00f5es
           </p>
 
           <ul
@@ -144,15 +119,15 @@ export function TrustBar({ logos = DEFAULT_LOGOS }: TrustBarProps) {
         {/* Divisor */}
         <div aria-hidden="true" className="border-t border-neutral-100 mb-8" />
 
-        {/* Faixa 2 — Órgãos reguladores */}
+        {/* Faixa 2 \u2014 \u00d3rg\u00e3os reguladores */}
         <div>
           <p className="text-xs font-semibold uppercase tracking-widest text-neutral-400 text-center mb-4">
-            Órgãos reguladores com os quais atuamos
+            \u00d3rg\u00e3os reguladores com os quais atuamos
           </p>
 
           <ul
             className="flex flex-wrap justify-center items-center gap-2 md:gap-3"
-            aria-label="Órgãos reguladores parceiros"
+            aria-label="\u00d3rg\u00e3os reguladores parceiros"
           >
             {ORGAOS_REGULADORES.map((orgao) => (
               <li key={orgao.label} className="list-none">
@@ -161,7 +136,7 @@ export function TrustBar({ logos = DEFAULT_LOGOS }: TrustBarProps) {
                   target="_blank"
                   rel="noopener noreferrer"
                   title={orgao.title}
-                  aria-label={`${orgao.title} — abre em nova aba`}
+                  aria-label={`${orgao.title} \u2014 abre em nova aba`}
                   className="inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wide bg-[#800000]/10 text-[#800000] hover:bg-[#800000]/20 px-2.5 py-1 rounded-full transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#800000] focus-visible:ring-offset-1"
                 >
                   {orgao.label}
