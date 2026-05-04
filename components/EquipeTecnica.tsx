@@ -2,13 +2,12 @@ import Image from "next/image";
 import { JsonLd } from "@/components/JsonLd";
 import { equipe, type MembroEquipe } from "@/data/equipe";
 
-// ─── JSON-LD Person ──────────────────────────────────────────────────────────────────
+// ─── JSON-LD Person ───────────────────────────────────────────────────────────
 //
-// Dados complementares para JSON-LD (knowsAbout) que vão além dos títulos
-// profissionais — mapeados pelo slug para manter o data/equipe.ts limpo.
+// Dados complementares para JSON-LD (knowsAbout) mapeados pelo slug.
 
 const CONHECIMENTOS_JSONLD: Record<string, string[]> = {
-  "durval-ribeiro-de-queiroz": [
+  durval: [
     "AVCB",
     "CLCB",
     "Sistemas de Combate a Incêndio",
@@ -16,7 +15,7 @@ const CONHECIMENTOS_JSONLD: Record<string, string[]> = {
     "Projetos Arquitetônicos",
     "SPDA",
   ],
-  "theyllor-estulano-do-espirito-santo": [
+  theyllor: [
     "Engenharia Civil",
     "SPDA",
     "Aterramento Elétrico",
@@ -29,29 +28,27 @@ const pessoasJsonLd = equipe.map((membro) => ({
   "@context": "https://schema.org",
   "@type": "Person",
   name: membro.nome,
-  jobTitle: membro.especialidades[0], // título principal
+  jobTitle: membro.tituloPrincipal,
   worksFor: {
     "@type": "Organization",
     name: "Central de Soluções Engenharia",
     url: "https://www.centraldesolucoes.eng.br",
   },
-  knowsAbout: CONHECIMENTOS_JSONLD[membro.slug] ?? [...membro.especialidades],
+  knowsAbout: CONHECIMENTOS_JSONLD[membro.slug] ?? [...membro.especializacoes],
   ...(membro.linkedin ? { sameAs: membro.linkedin } : {}),
 }));
 
-// ─── Sub-componente: card de profissional ────────────────────────────────────────
+// ─── Sub-componente: card de profissional ─────────────────────────────────
 
 function MembroCard({
   nome,
   foto,
   fotoAlt,
-  especialidades,
+  tituloPrincipal,
+  especializacoes,
   registro,
 }: MembroEquipe) {
   const primeiroNome = nome.split(" ")[0];
-  // Primeiro item é o título principal; os demais são especialidades secundárias
-  const tituloPrincipal = especialidades[0];
-  const especialidadesSecundarias = especialidades.slice(1);
 
   return (
     <article
@@ -62,25 +59,32 @@ function MembroCard({
     >
       {/* Foto */}
       <div className="relative w-24 h-24 flex-shrink-0">
-        <Image
-          src={foto}
-          alt={fotoAlt}
-          fill
-          sizes="96px"
-          className="object-cover rounded-full"
-        />
+        {foto ? (
+          <Image
+            src={foto}
+            alt={fotoAlt ?? `Foto de ${nome}`}
+            fill
+            sizes="96px"
+            className="object-cover rounded-full"
+          />
+        ) : (
+          <div
+            className="w-24 h-24 rounded-full bg-neutral-200 flex items-center justify-center text-neutral-400 text-2xl font-bold"
+            aria-hidden="true"
+          >
+            {primeiroNome[0]}
+          </div>
+        )}
       </div>
 
       {/* Nome e título principal */}
       <div className="flex flex-col gap-1">
-        {/* text-neutral-900 sobre #fff → contraste 18.1:1 ✓ AAA */}
         <h3
           className="font-heading text-xl font-bold text-neutral-900 leading-snug"
           itemProp="name"
         >
           {nome}
         </h3>
-        {/* text-neutral-600 sobre #fff → contraste 5.9:1 ✓ AA */}
         <p
           className="text-neutral-600 text-sm font-medium"
           itemProp="jobTitle"
@@ -89,18 +93,18 @@ function MembroCard({
         </p>
         {registro && (
           <p className="text-neutral-400 text-xs" itemProp="identifier">
-            CREA {registro}
+            {registro}
           </p>
         )}
       </div>
 
-      {/* Badges de especialidades secundárias */}
-      {especialidadesSecundarias.length > 0 && (
+      {/* Badges de especializações */}
+      {especializacoes.length > 0 && (
         <div
           className="flex flex-wrap justify-center gap-2"
-          aria-label={`Especialidades adicionais de ${primeiroNome}`}
+          aria-label={`Especializações de ${primeiroNome}`}
         >
-          {especialidadesSecundarias.map((esp) => (
+          {especializacoes.map((esp) => (
             <span
               key={esp}
               itemProp="knowsAbout"
@@ -134,7 +138,7 @@ function MembroCard({
   );
 }
 
-// ─── Componente principal ─────────────────────────────────────────────────────────
+// ─── Componente principal ───────────────────────────────────────────────
 
 export function EquipeTecnica() {
   return (
@@ -155,14 +159,12 @@ export function EquipeTecnica() {
             <p className="text-xs font-semibold uppercase tracking-widest text-[#800000] mb-3">
               Responsabilidade técnica real
             </p>
-            {/* text-neutral-900 sobre bg-neutral-50 → contraste 18.1:1 ✓ AAA */}
             <h2
               id="equipe-heading"
               className="font-heading text-2xl md:text-4xl font-bold text-neutral-900 leading-tight mb-4"
             >
               Engenheiros Reais Assinando Cada ART
             </h2>
-            {/* text-neutral-700 sobre bg-neutral-50 → contraste 9.4:1 ✓ AAA */}
             <p className="text-neutral-700 text-lg leading-relaxed">
               Diferente de empresas que terceirizam a responsabilidade técnica,
               na Central de Soluções cada laudo, projeto e relatório é assinado
