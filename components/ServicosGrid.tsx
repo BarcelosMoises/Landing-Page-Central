@@ -16,8 +16,9 @@ import {
   type LucideProps,
 } from "lucide-react";
 import { servicos, type Servico } from "@/data/servicos";
+import { CrosshairDecor } from "@/components/CrosshairDecor";
 
-// ─── Mapa de ícones ────────────────────────────────────────────────────────────
+// ─── Mapa de ícones ────────────────────────────────────────────────────────────────────
 
 type IconComponent = React.ComponentType<LucideProps>;
 
@@ -34,7 +35,7 @@ const ICON_MAP: Record<string, IconComponent> = {
   Ruler,
 };
 
-// ─── Variantes de animação ────────────────────────────────────────────────────
+// ─── Variantes de animação ────────────────────────────────────────────────────────────
 // Respeita prefers-reduced-motion via motion/react automaticamente
 
 const containerVariants = {
@@ -56,7 +57,7 @@ const itemVariants = {
   },
 };
 
-// ─── Sub-componente: card individual ─────────────────────────────────────────────
+// ─── Sub-componente: card individual ──────────────────────────────────────────────────────
 
 interface ServicoCardProps {
   servico: Servico;
@@ -76,9 +77,10 @@ function ServicoCard({ servico }: ServicoCardProps) {
       aria-label={`Serviço: ${servico.nomeAbreviado}`}
       className="bg-white border border-neutral-200/60 rounded-xl p-6 hover:shadow-md transition-shadow duration-200 flex flex-col gap-4"
     >
-      {/* Ícone — sem círculo colorido de fundo (anti-pattern removido) */}
+      {/* Ícone — cor via CSS variable, fallback #800000 para homepage */}
       <Icon
-        className="w-8 h-8 text-[#800000]"
+        style={{ color: "var(--color-service-accent, #800000)" }}
+        className="w-8 h-8"
         aria-hidden="true"
       />
 
@@ -92,13 +94,25 @@ function ServicoCard({ servico }: ServicoCardProps) {
         </p>
       </div>
 
-      {/* Badge de cobertura — apenas vinho, sem verde fora do design system */}
+      {/* Badge de cobertura — cor via CSS variable */}
       <div className="flex flex-wrap gap-1.5 mt-auto" aria-label="Estados de atendimento">
-        <span className="inline-flex items-center text-xs font-semibold uppercase tracking-wide bg-[#800000]/10 text-[#800000] px-2.5 py-1 rounded-full">
+        <span
+          style={{
+            backgroundColor: "color-mix(in srgb, var(--color-service-accent, #800000) 10%, transparent)",
+            color: "var(--color-service-accent, #800000)",
+          }}
+          className="inline-flex items-center text-xs font-semibold uppercase tracking-wide px-2.5 py-1 rounded-full"
+        >
           {estadosLabel}
         </span>
         {servico.coberturaNacional && (
-          <span className="inline-flex items-center text-xs font-semibold uppercase tracking-wide bg-[#800000]/5 text-[#800000]/80 px-2.5 py-1 rounded-full">
+          <span
+            style={{
+              backgroundColor: "color-mix(in srgb, var(--color-service-accent, #800000) 5%, transparent)",
+              color: "color-mix(in srgb, var(--color-service-accent, #800000) 80%, transparent)",
+            }}
+            className="inline-flex items-center text-xs font-semibold uppercase tracking-wide px-2.5 py-1 rounded-full"
+          >
             Cobertura nacional
           </span>
         )}
@@ -118,7 +132,7 @@ export function ServicosGrid() {
       ref={secaoRef}
       id="servicos"
       aria-labelledby="servicos-heading"
-      className="bg-white py-16 md:py-24"
+      className="relative bg-white py-16 md:py-24"
     >
       <div className="container-site">
 
@@ -129,7 +143,11 @@ export function ServicosGrid() {
           animate={emVista ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
         >
-          <p className="text-xs font-semibold uppercase tracking-widest text-[#800000] mb-3">
+          {/* Label da seção — cor via CSS variable */}
+          <p
+            style={{ color: "var(--color-service-accent, #800000)" }}
+            className="text-xs font-semibold uppercase tracking-widest mb-3"
+          >
             O que fazemos
           </p>
           <h2
@@ -161,6 +179,9 @@ export function ServicosGrid() {
         </motion.ul>
 
       </div>
+
+      {/* Crosshair — assinatura visual do cliente (variant dark = fundo branco) */}
+      <CrosshairDecor variant="dark" size="lg" />
     </section>
   );
 }
