@@ -193,6 +193,16 @@ export const servicos: readonly Servico[] = [
       "PGRSS — Plano de Gerenciamento de Resíduos de Serviços de Saúde",
       "Acompanhamento até emissão do Alvará Sanitário",
     ],
+    setoresPrioritarios: [
+      "Clínicas médicas e odontológicas",
+      "Laboratórios de análises",
+      "Farmácias e drogarias",
+      "Restaurantes e lanchonetes",
+      "Supermercados e mercados",
+      "Indústrias alimentícias",
+      "Salões de beleza",
+      "Creches e escolas",
+    ],
     normaBase: [
       "RDC ANVISA",
       "Legislação estadual e municipal",
