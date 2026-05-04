@@ -6,6 +6,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { NavPrimaria } from "@/components/NavPrimaria";
+import { CrosshairDecor } from "@/components/CrosshairDecor";
 import {
   servicos,
   equipe,
@@ -41,7 +42,7 @@ export const metadata: Metadata = {
   },
 };
 
-// ─── JSON-LD ──────────────────────────────────────────────────────────────────
+// ─── JSON-LD ────────────────────────────────────────────────────────────────────
 
 const serviceJsonLd = {
   "@context": "https://schema.org",
@@ -123,7 +124,7 @@ const faqJsonLd = {
   ],
 };
 
-// ─── Dados locais ─────────────────────────────────────────────────────────────
+// ─── Dados locais ─────────────────────────────────────────────────────────────────
 
 const avcb = servicos.find((s) => s.id === "avcb")!;
 const clientesDestaque = clientes.filter((c) => c.destaque);
@@ -134,7 +135,7 @@ const whatsappUrl = getWhatsAppUrl(
   "Olá! Tenho interesse no serviço de AVCB / CLCB. Pode me passar mais informações?"
 );
 
-// ─── Componentes internos ─────────────────────────────────────────────────────
+// ─── Componentes internos ────────────────────────────────────────────────────────────────
 
 function BadgeEstado({ sigla, nome }: { sigla: string; nome: string }) {
   return (
@@ -170,7 +171,7 @@ function IconeChevron() {
   );
 }
 
-// ─── Page ─────────────────────────────────────────────────────────────────────
+// ─── Page ────────────────────────────────────────────────────────────────────────────────
 
 export default function PageAVCB() {
   return (
@@ -197,6 +198,8 @@ export default function PageAVCB() {
             }}
             aria-hidden="true"
           />
+          <CrosshairDecor corner="top-right" size="lg" variant="light" />
+          <CrosshairDecor corner="bottom-left" size="sm" variant="light" />
 
           <div className="container-site relative z-10 pt-24 pb-20 md:pt-32 md:pb-28">
             {/* Breadcrumb */}
@@ -279,7 +282,7 @@ export default function PageAVCB() {
           </div>
         </section>
 
-        {/* ── TRUST BAR ─────────────────────────────────────────────────── */}
+        {/* ── TRUST BAR ───────────────────────────────────────────────────── */}
         <section
           aria-label="Clientes atendidos"
           className="bg-neutral-900 border-y border-white/8 py-6"
@@ -304,7 +307,7 @@ export default function PageAVCB() {
           </div>
         </section>
 
-        {/* ── O QUE ESTÁ INCLUÍDO ────────────────────────────────────────── */}
+        {/* ── O QUE ESTÁ INCLUÍDO ────────────────────────────────────────────── */}
         <section
           aria-labelledby="incluido-titulo"
           className="bg-white py-20 md:py-28"
@@ -365,11 +368,12 @@ export default function PageAVCB() {
           </div>
         </section>
 
-        {/* ── EQUIPE TÉCNICA (E-E-A-T) ──────────────────────────────────── */}
+        {/* ── EQUIPE TÉCNICA (E-E-A-T) ──────────────────────────────────────────── */}
         <section
           aria-labelledby="equipe-titulo"
-          className="bg-neutral-950 py-20 md:py-28 border-t border-white/8"
+          className="relative bg-neutral-950 py-20 md:py-28 border-t border-white/8"
         >
+          <CrosshairDecor corner="bottom-right" size="md" variant="light" />
           <div className="container-site">
             <p className="text-xs font-semibold text-[#800000] uppercase tracking-wider mb-3 font-mono">Responsabilidade técnica real</p>
             <h2
@@ -402,7 +406,7 @@ export default function PageAVCB() {
           </div>
         </section>
 
-        {/* ── FAQ ───────────────────────────────────────────────────────── */}
+        {/* ── FAQ ─────────────────────────────────────────────────────────── */}
         <section
           aria-labelledby="faq-titulo"
           className="bg-white py-20 md:py-28 border-t border-neutral-100"
@@ -430,11 +434,13 @@ export default function PageAVCB() {
           </div>
         </section>
 
-        {/* ── CTA FINAL ─────────────────────────────────────────────────── */}
+        {/* ── CTA FINAL ──────────────────────────────────────────────────────── */}
         <section
           aria-labelledby="cta-titulo"
-          className="bg-neutral-950 py-20 md:py-28 border-t border-white/8"
+          className="relative bg-neutral-950 py-20 md:py-28 border-t border-white/8"
         >
+          <CrosshairDecor corner="top-left" size="sm" variant="light" />
+          <CrosshairDecor corner="bottom-right" size="lg" variant="light" />
           <div className="container-site text-center max-w-2xl">
             <h2
               id="cta-titulo"
