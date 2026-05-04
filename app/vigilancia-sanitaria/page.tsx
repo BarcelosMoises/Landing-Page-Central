@@ -6,14 +6,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { NavPrimaria } from "@/components/NavPrimaria";
+import { CrosshairDecor } from "@/components/CrosshairDecor";
 import {
   servicos,
+  equipe,
   clientes,
   contato,
   estadosAtuacao,
   getWhatsAppUrl,
 } from "@/data/servicos";
-import { equipe } from "@/data/equipe";
 
 // ─── Metadata ────────────────────────────────────────────────────────────────
 
@@ -49,7 +50,7 @@ export const metadata: Metadata = {
   },
 };
 
-// ─── JSON-LD ──────────────────────────────────────────────────────────────────
+// ─── JSON-LD ────────────────────────────────────────────────────────────────────
 
 const serviceJsonLd = {
   "@context": "https://schema.org",
@@ -124,7 +125,7 @@ const faqJsonLd = {
       name: "Qual a diferença entre VISA Municipal e ANVISA?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "A ANVISA (Agência Nacional de Vigilância Sanitária) é o órgão federal que regula medicamentos, alimentos industrializados, cosméticos e equipamentos médicos em nível nacional. A VISA Municipal é o órgão local responsável pela fiscalização de estabelecimentos comerciais, de serviços e de saúde no âmbito do município. Na maioria dos casos, o Alvará Sanitário é emitido pela VISA Municipal, com a ANVISA atuando em registros federais específicos.",
+        text: "A ANVISA (Âgencia Nacional de Vigilância Sanitária) é o órgão federal que regula medicamentos, alimentos industrializados, cosméticos e equipamentos médicos em nível nacional. A VISA Municipal é o órgão local responsável pela fiscalização de estabelecimentos comerciais, de serviços e de saúde no âmbito do município. Na maioria dos casos, o Alvará Sanitário é emitido pela VISA Municipal, com a ANVISA atuando em registros federais específicos.",
       },
     },
     {
@@ -146,7 +147,7 @@ const faqJsonLd = {
   ],
 };
 
-// ─── Dados locais ─────────────────────────────────────────────────────────────
+// ─── Dados locais ─────────────────────────────────────────────────────────────────
 
 const vigilancia = servicos.find((s) => s.id === "vigilancia-sanitaria")!;
 const clientesDestaque = clientes.filter((c) => c.destaque);
@@ -157,7 +158,7 @@ const whatsappUrl = getWhatsAppUrl(
   "Olá! Tenho interesse no serviço de Alvará Sanitário / Vigilância Sanitária. Pode me passar mais informações?"
 );
 
-// ─── Componentes internos ─────────────────────────────────────────────────────
+// ─── Componentes internos ────────────────────────────────────────────────────────────────
 
 function BadgeEstado({ sigla, nome }: { sigla: string; nome: string }) {
   return (
@@ -231,7 +232,7 @@ function IconeChevron() {
   );
 }
 
-// ─── Page ─────────────────────────────────────────────────────────────────────
+// ─── Page ────────────────────────────────────────────────────────────────────────────────
 
 export default function PageVigilanciaSanitaria() {
   return (
@@ -263,6 +264,8 @@ export default function PageVigilanciaSanitaria() {
             }}
             aria-hidden="true"
           />
+          <CrosshairDecor corner="top-right" size="lg" variant="light" />
+          <CrosshairDecor corner="bottom-left" size="sm" variant="light" />
 
           <div className="container-site relative z-10 pt-24 pb-20 md:pt-32 md:pb-28">
             {/* Breadcrumb */}
@@ -315,7 +318,6 @@ export default function PageVigilanciaSanitaria() {
                   ))}
                 </div>
 
-                {/* CTAs — hover via Tailwind, sem event handlers JS */}
                 <div className="flex flex-col sm:flex-row gap-3">
                   <a
                     href={whatsappUrl}
@@ -370,7 +372,7 @@ export default function PageVigilanciaSanitaria() {
           </div>
         </section>
 
-        {/* ── TRUST BAR ─────────────────────────────────────────────────── */}
+        {/* ── TRUST BAR ───────────────────────────────────────────────────── */}
         <section aria-label="Clientes atendidos" className="bg-neutral-900 border-y border-white/8 py-6">
           <div className="container-site">
             <p className="text-xs text-neutral-500 text-center uppercase tracking-widest mb-5 font-mono">
@@ -386,7 +388,7 @@ export default function PageVigilanciaSanitaria() {
           </div>
         </section>
 
-        {/* ── ESCOPO ────────────────────────────────────────────────────── */}
+        {/* ── ESCOPO ──────────────────────────────────────────────────────── */}
         <section aria-labelledby="incluido-titulo" className="bg-white py-20 md:py-28">
           <div className="container-site">
             <div className="grid md:grid-cols-[1fr_1fr] gap-16 items-start">
@@ -418,16 +420,7 @@ export default function PageVigilanciaSanitaria() {
                   Setores prioritários
                 </p>
                 <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-8" aria-label="Setores atendidos">
-                  {[
-                    "Clínicas médicas e odontológicas",
-                    "Laboratórios de análises",
-                    "Farmácias e drogarias",
-                    "Restaurantes e lanchonetes",
-                    "Supermercados e mercados",
-                    "Indústrias alimentícias",
-                    "Salões de beleza",
-                    "Creches e escolas",
-                  ].map((setor) => (
+                  {vigilancia.setoresPrioritarios?.map((setor) => (
                     <li
                       key={setor}
                       className="flex items-center gap-3 px-4 py-3 rounded-lg bg-neutral-50 border border-neutral-200 text-sm text-neutral-700"
@@ -455,8 +448,9 @@ export default function PageVigilanciaSanitaria() {
           </div>
         </section>
 
-        {/* ── EQUIPE E-E-A-T ────────────────────────────────────────────── */}
-        <section aria-labelledby="equipe-titulo" className="bg-neutral-950 py-20 md:py-28 border-t border-white/8">
+        {/* ── EQUIPE E-E-A-T ───────────────────────────────────────────────────── */}
+        <section aria-labelledby="equipe-titulo" className="relative bg-neutral-950 py-20 md:py-28 border-t border-white/8">
+          <CrosshairDecor corner="bottom-right" size="md" variant="light" />
           <div className="container-site">
             <p className="text-xs font-semibold uppercase tracking-wider mb-3 font-mono" style={{ color: "#0d7377" }}>
               Responsabilidade técnica real
@@ -470,17 +464,17 @@ export default function PageVigilanciaSanitaria() {
             <ul className="grid sm:grid-cols-2 gap-6" aria-label="Equipe técnica responsável">
               {equipe.map((membro) => (
                 <li
-                  key={membro.slug}
+                  key={membro.id}
                   className="flex flex-col gap-3 p-6 rounded-xl bg-neutral-900 border border-white/10"
                 >
                   <div>
                     <p className="font-heading font-semibold text-white text-lg">{membro.nome}</p>
                     <p className="text-sm mt-0.5" style={{ color: "#7dd4d7" }}>
-                      {membro.tituloPrincipal}
+                      {membro.formacao}
                     </p>
                   </div>
-                  <ul className="flex flex-col gap-1" aria-label={`Especializações de ${membro.nome}`}>
-                    {membro.especializacoes.map((esp) => (
+                  <ul className="flex flex-col gap-1" aria-label={`Especialidades de ${membro.nome}`}>
+                    {membro.especialidades.map((esp) => (
                       <li key={esp} className="text-sm text-neutral-400">{esp}</li>
                     ))}
                   </ul>
@@ -490,7 +484,7 @@ export default function PageVigilanciaSanitaria() {
           </div>
         </section>
 
-        {/* ── FAQ ───────────────────────────────────────────────────────── */}
+        {/* ── FAQ ─────────────────────────────────────────────────────────── */}
         <section aria-labelledby="faq-titulo" className="bg-white py-20 md:py-28 border-t border-neutral-100">
           <div className="container-site max-w-3xl">
             <p className="text-xs font-semibold uppercase tracking-wider mb-3 font-mono" style={{ color: "#0d7377" }}>
@@ -517,8 +511,10 @@ export default function PageVigilanciaSanitaria() {
           </div>
         </section>
 
-        {/* ── CTA FINAL ─────────────────────────────────────────────────── */}
-        <section aria-labelledby="cta-titulo" className="bg-neutral-950 py-20 md:py-28 border-t border-white/8">
+        {/* ── CTA FINAL ──────────────────────────────────────────────────────── */}
+        <section aria-labelledby="cta-titulo" className="relative bg-neutral-950 py-20 md:py-28 border-t border-white/8">
+          <CrosshairDecor corner="top-left" size="sm" variant="light" />
+          <CrosshairDecor corner="bottom-right" size="lg" variant="light" />
           <div className="container-site text-center max-w-2xl">
             <h2
               id="cta-titulo"
