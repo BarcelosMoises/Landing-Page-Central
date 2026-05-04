@@ -1,67 +1,57 @@
 import Image from "next/image";
 import { JsonLd } from "@/components/JsonLd";
-import { equipe } from "@/data/servicos";
+import { equipe, type MembroEquipe } from "@/data/equipe";
 
 // ─── JSON-LD Person ──────────────────────────────────────────────────────────────────
+//
+// Dados complementares para JSON-LD (knowsAbout) que vão além dos títulos
+// profissionais — mapeados pelo slug para manter o data/equipe.ts limpo.
 
-const PESSOA_EXTRA: Record<
-  string,
-  { jobTitle: string; knowsAbout: string[]; image: string }
-> = {
-  durval: {
-    jobTitle: "Arquiteto e Urbanista, Engenheiro de Segurança do Trabalho e Engenheiro de Segurança Contra Incêndio e Pânico",
-    knowsAbout: [
-      "AVCB",
-      "CLCB",
-      "Sistemas de Combate a Incêndio",
-      "Engenharia de Segurança do Trabalho",
-      "Projetos Arquitetônicos",
-      "SPDA",
-    ],
-    image: "https://www.centraldesolucoes.eng.br/images/durval.jpg",
-  },
-  theyllor: {
-    jobTitle: "Engenheiro Civil e Técnico em Mecânica",
-    knowsAbout: [
-      "Engenharia Civil",
-      "SPDA",
-      "Aterramento Elétrico",
-      "Licenciamento Ambiental",
-      "Laudos Técnicos",
-    ],
-    image: "https://www.centraldesolucoes.eng.br/images/theyllor.jpg",
-  },
+const CONHECIMENTOS_JSONLD: Record<string, string[]> = {
+  "durval-ribeiro-de-queiroz": [
+    "AVCB",
+    "CLCB",
+    "Sistemas de Combate a Incêndio",
+    "Engenharia de Segurança do Trabalho",
+    "Projetos Arquitetônicos",
+    "SPDA",
+  ],
+  "theyllor-estulano-do-espirito-santo": [
+    "Engenharia Civil",
+    "SPDA",
+    "Aterramento Elétrico",
+    "Licenciamento Ambiental",
+    "Laudos Técnicos",
+  ],
 };
 
-const pessoasJsonLd = equipe.map((membro) => {
-  const extra = PESSOA_EXTRA[membro.id];
-  return {
-    "@context": "https://schema.org",
-    "@type": "Person",
-    name: membro.nome,
-    jobTitle: extra?.jobTitle ?? membro.formacao,
-    worksFor: {
-      "@type": "Organization",
-      name: "Central de Soluções Engenharia",
-      url: "https://www.centraldesolucoes.eng.br",
-    },
-    knowsAbout: extra?.knowsAbout ?? membro.especialidades,
-    ...(extra?.image ? { image: extra.image } : {}),
-  };
-});
+const pessoasJsonLd = equipe.map((membro) => ({
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: membro.nome,
+  jobTitle: membro.especialidades[0], // título principal
+  worksFor: {
+    "@type": "Organization",
+    name: "Central de Soluções Engenharia",
+    url: "https://www.centraldesolucoes.eng.br",
+  },
+  knowsAbout: CONHECIMENTOS_JSONLD[membro.slug] ?? [...membro.especialidades],
+  ...(membro.linkedin ? { sameAs: membro.linkedin } : {}),
+}));
 
 // ─── Sub-componente: card de profissional ────────────────────────────────────────
 
-interface MembroCardProps {
-  id: string;
-  nome: string;
-  formacao: string;
-  especialidades: readonly string[];
-}
-
-function MembroCard({ id, nome, formacao, especialidades }: MembroCardProps) {
-  const fotoSrc = `/images/${id}.jpg`;
+function MembroCard({
+  nome,
+  foto,
+  fotoAlt,
+  especialidades,
+  registro,
+}: MembroEquipe) {
   const primeiroNome = nome.split(" ")[0];
+  // Primeiro item é o título principal; os demais são especialidades secundárias
+  const tituloPrincipal = especialidades[0];
+  const especialidadesSecundarias = especialidades.slice(1);
 
   return (
     <article
@@ -73,15 +63,15 @@ function MembroCard({ id, nome, formacao, especialidades }: MembroCardProps) {
       {/* Foto */}
       <div className="relative w-24 h-24 flex-shrink-0">
         <Image
-          src={fotoSrc}
-          alt={`Foto de ${nome} — engenheiro da Central de Soluções`}
+          src={foto}
+          alt={fotoAlt}
           fill
           sizes="96px"
           className="object-cover rounded-full"
         />
       </div>
 
-      {/* Nome e formação */}
+      {/* Nome e título principal */}
       <div className="flex flex-col gap-1">
         {/* text-neutral-900 sobre #fff → contraste 18.1:1 ✓ AAA */}
         <h3
@@ -95,25 +85,32 @@ function MembroCard({ id, nome, formacao, especialidades }: MembroCardProps) {
           className="text-neutral-600 text-sm font-medium"
           itemProp="jobTitle"
         >
-          {formacao}
+          {tituloPrincipal}
         </p>
+        {registro && (
+          <p className="text-neutral-400 text-xs" itemProp="identifier">
+            CREA {registro}
+          </p>
+        )}
       </div>
 
-      {/* Badges de especialidade */}
-      <div
-        className="flex flex-wrap justify-center gap-2"
-        aria-label={`Especialidades de ${primeiroNome}`}
-      >
-        {especialidades.map((esp) => (
-          <span
-            key={esp}
-            itemProp="knowsAbout"
-            className="text-xs font-semibold bg-[#800000]/10 text-[#800000] rounded-full px-3 py-1"
-          >
-            {esp}
-          </span>
-        ))}
-      </div>
+      {/* Badges de especialidades secundárias */}
+      {especialidadesSecundarias.length > 0 && (
+        <div
+          className="flex flex-wrap justify-center gap-2"
+          aria-label={`Especialidades adicionais de ${primeiroNome}`}
+        >
+          {especialidadesSecundarias.map((esp) => (
+            <span
+              key={esp}
+              itemProp="knowsAbout"
+              className="text-xs font-semibold bg-[#800000]/10 text-[#800000] rounded-full px-3 py-1"
+            >
+              {esp}
+            </span>
+          ))}
+        </div>
+      )}
 
       {/* Indicador de ART */}
       <div className="flex items-center gap-2 text-xs text-green-700 bg-green-50 border border-green-100 rounded-full px-3 py-1.5">
@@ -180,13 +177,8 @@ export function EquipeTecnica() {
             aria-label="Equipe técnica da Central de Soluções"
           >
             {equipe.map((membro) => (
-              <li key={membro.id} className="list-none">
-                <MembroCard
-                  id={membro.id}
-                  nome={membro.nome}
-                  formacao={membro.formacao}
-                  especialidades={membro.especialidades}
-                />
+              <li key={membro.slug} className="list-none">
+                <MembroCard {...membro} />
               </li>
             ))}
           </ul>
