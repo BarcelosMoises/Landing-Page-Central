@@ -48,15 +48,13 @@ function ServicoCard({ servico }: ServicoCardProps) {
   return (
     <article
       aria-label={`Serviço: ${servico.nomeAbreviado}`}
-      className="bg-white border border-neutral-100 border-l-4 border-l-[#800000] rounded-xl p-6 hover:shadow-lg transition-shadow duration-200 flex flex-col gap-4"
+      className="bg-white border border-neutral-200/60 rounded-xl p-6 hover:shadow-md transition-shadow duration-200 flex flex-col gap-4"
     >
-      {/* Ícone */}
-      <div
-        className="w-10 h-10 bg-[#800000]/10 rounded-lg flex items-center justify-center flex-shrink-0"
+      {/* Ícone — sem círculo colorido de fundo (anti-pattern) */}
+      <Icon
+        className="w-8 h-8 text-[#800000]"
         aria-hidden="true"
-      >
-        <Icon className="w-5 h-5 text-[#800000]" aria-hidden="true" />
-      </div>
+      />
 
       {/* Textos */}
       <div className="flex flex-col gap-2 flex-1">
@@ -68,13 +66,13 @@ function ServicoCard({ servico }: ServicoCardProps) {
         </p>
       </div>
 
-      {/* Badge de cobertura por estado */}
+      {/* Badge de cobertura por estado — apenas vinho, sem verde fora do design system */}
       <div className="flex flex-wrap gap-1.5 mt-auto" aria-label="Estados de atendimento">
         <span className="inline-flex items-center text-xs font-semibold uppercase tracking-wide bg-[#800000]/10 text-[#800000] px-2.5 py-1 rounded-full">
           {estadosLabel}
         </span>
         {servico.coberturaNacional && (
-          <span className="inline-flex items-center text-xs font-semibold uppercase tracking-wide bg-green-50 text-green-700 px-2.5 py-1 rounded-full">
+          <span className="inline-flex items-center text-xs font-semibold uppercase tracking-wide bg-[#800000]/5 text-[#800000]/80 px-2.5 py-1 rounded-full">
             Cobertura nacional
           </span>
         )}
@@ -92,7 +90,7 @@ export function ServicosGrid() {
       aria-labelledby="servicos-heading"
       className="bg-white py-16 md:py-24"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="container-site">
 
         {/* Cabeçalho da seção */}
         <div className="max-w-2xl mb-12">
