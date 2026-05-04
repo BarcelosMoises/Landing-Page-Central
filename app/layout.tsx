@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Montserrat } from "next/font/google";
+import { Footer } from "@/components/Footer";
 import "./globals.css";
 
 const montserrat = Montserrat({
@@ -74,8 +75,6 @@ export const metadata: Metadata = {
   },
 };
 
-// ProfessionalService: subtipo de LocalBusiness — mais semântico para
-// empresas de engenharia/consultoria. Melhora E-E-A-T e rich results.
 const organizationJsonLd = {
   "@context": "https://schema.org",
   "@type": ["ProfessionalService", "LocalBusiness"],
@@ -125,21 +124,11 @@ const organizationJsonLd = {
     ],
   },
   knowsAbout: [
-    "AVCB",
-    "SPDA",
-    "Laudos Técnicos",
-    "Licenciamento Ambiental",
-    "Vigilância Sanitária",
-    "Projetos de Combate a Incêndio",
-    "Regularização junto ao Corpo de Bombeiros",
-    "CLCB",
-    "ART",
-    "NBR 5419",
-    "NR-10",
+    "AVCB", "SPDA", "Laudos Técnicos", "Licenciamento Ambiental",
+    "Vigilância Sanitária", "Projetos de Combate a Incêndio",
+    "Regularização junto ao Corpo de Bombeiros", "CLCB", "ART", "NBR 5419", "NR-10",
   ],
-  sameAs: [
-    "https://www.instagram.com/centraldesolucoes",
-  ],
+  sameAs: ["https://www.instagram.com/centraldesolucoes"],
 };
 
 export default function RootLayout({
@@ -162,6 +151,7 @@ export default function RootLayout({
       </head>
       <body className="font-body bg-white text-neutral-700 antialiased">
         {children}
+        <Footer />
       </body>
     </html>
   );
