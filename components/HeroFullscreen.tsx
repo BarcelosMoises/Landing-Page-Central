@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { getWhatsAppUrl } from "@/data/servicos";
 
-// ─── Tipos ────────────────────────────────────────────────────────────────────
+// ─── Tipos ────────────────────────────────────────────────────────────────────────────
 
 export interface ItemServico {
   nome: string;
@@ -33,7 +33,7 @@ export interface HeroFullscreenProps {
   isPrimeiro?: boolean;
 }
 
-// ─── Componente ───────────────────────────────────────────────────────────────
+// ─── Componente ─────────────────────────────────────────────────────────────────────
 
 export function HeroFullscreen({
   id,
@@ -89,8 +89,8 @@ export function HeroFullscreen({
         className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/40 to-transparent"
       />
 
-      {/* Conteúdo */}
-      <div className="relative z-10 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 pb-16 md:pb-24 pt-24">
+      {/* Conteúdo — usa .container-site para padding e max-width consistentes com o projeto */}
+      <div className="relative z-10 container-site w-full pb-16 md:pb-24 pt-24">
         <div className="max-w-2xl">
 
           {/* H2 da categoria */}
