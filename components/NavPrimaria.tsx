@@ -2,15 +2,16 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { getWhatsAppUrl } from "@/data/servicos";
 
 // ─── Dados estáticos da nav ───────────────────────────────────────────────────
 
 const NAV_ITENS = [
-  { id: "legalizacao",    label: "Legalização" },
-  { id: "projetos",       label: "Projetos" },
-  { id: "laudos",         label: "Laudos Técnicos" },
-  { id: "sistemas",       label: "Sistemas" },
+  { id: "legalizacao", label: "Legalização",    href: "/#legalizacao" },
+  { id: "projetos",    label: "Projetos",        href: "/#projetos" },
+  { id: "laudos",      label: "Laudos Técnicos", href: "/#laudos" },
+  { id: "sistemas",    label: "Sistemas",        href: "/#sistemas" },
 ] as const;
 
 const CTA_WHATSAPP = getWhatsAppUrl(
@@ -20,14 +21,18 @@ const CTA_WHATSAPP = getWhatsAppUrl(
 // ─── Componente ───────────────────────────────────────────────────────────────
 
 export function NavPrimaria() {
-  const [ativa, setAtiva] = useState<string>(NAV_ITENS[0].id);
-  const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname();
+  const isHomepage = pathname === "/";
+
+  const [ativa, setAtiva]         = useState<string>(NAV_ITENS[0].id);
+  const [scrolled, setScrolled]   = useState(false);
   const [menuAberto, setMenuAberto] = useState(false);
   const observersRef = useRef<IntersectionObserver[]>([]);
 
-  // Scroll spy via Intersection Observer
+  // Scroll spy — só na homepage (IDs das seções não existem nas subpáginas)
   useEffect(() => {
-    // Limpa observers anteriores
+    if (!isHomepage) return;
+
     observersRef.current.forEach((o) => o.disconnect());
     observersRef.current = [];
 
@@ -44,9 +49,8 @@ export function NavPrimaria() {
           if (entry.isIntersecting) setAtiva(id);
         },
         {
-          // 40% de visibilidade para ativar (exceto se reduced-motion)
           threshold: prefersReduced ? 0.1 : 0.4,
-          rootMargin: "-80px 0px 0px 0px", // compensa a altura da nav
+          rootMargin: "-80px 0px 0px 0px",
         }
       );
       obs.observe(el);
@@ -54,7 +58,7 @@ export function NavPrimaria() {
     });
 
     return () => observersRef.current.forEach((o) => o.disconnect());
-  }, []);
+  }, [isHomepage]);
 
   // Fundo da nav ao scrollar
   useEffect(() => {
@@ -72,6 +76,7 @@ export function NavPrimaria() {
     return () => window.removeEventListener("resize", handler);
   }, []);
 
+  // Scroll suave para seção — só usado na homepage
   function scrollParaSecao(id: string) {
     setMenuAberto(false);
     const el = document.getElementById(id);
@@ -83,6 +88,75 @@ export function NavPrimaria() {
       behavior: prefersReduced ? "instant" : "smooth",
       block: "start",
     });
+  }
+
+  // ── Renderização de item de nav ─────────────────────────────────────────────
+  // Na homepage: botão com scroll suave
+  // Nas subpáginas: Link para /#secao (navegação real)
+  function NavItem({ id, label, href }: { id: string; label: string; href: string }) {
+    const isAtiva = isHomepage && ativa === id;
+    const baseClasses = [
+      "relative px-4 py-2 text-sm font-medium rounded-md transition-colors duration-200",
+      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#800000]",
+      isAtiva
+        ? "text-white after:absolute after:bottom-0 after:left-3 after:right-3 after:h-0.5 after:bg-[#800000] after:rounded-full"
+        : "text-neutral-300 hover:text-white",
+    ].join(" ");
+
+    if (isHomepage) {
+      return (
+        <button
+          onClick={() => scrollParaSecao(id)}
+          aria-current={isAtiva ? "true" : undefined}
+          className={baseClasses}
+        >
+          {label}
+        </button>
+      );
+    }
+
+    return (
+      <Link
+        href={href}
+        className={baseClasses}
+      >
+        {label}
+      </Link>
+    );
+  }
+
+  // ── Renderização de item de nav mobile ──────────────────────────────────────
+  function NavItemMobile({ id, label, href }: { id: string; label: string; href: string }) {
+    const isAtiva = isHomepage && ativa === id;
+    const baseClasses = [
+      "w-full text-left px-4 py-3 rounded-lg text-sm font-medium transition-colors duration-200",
+      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#800000]",
+      isAtiva
+        ? "bg-[#800000]/20 text-white"
+        : "text-neutral-300 hover:bg-white/10 hover:text-white",
+    ].join(" ");
+
+    if (isHomepage) {
+      return (
+        <button
+          onClick={() => scrollParaSecao(id)}
+          aria-current={isAtiva ? "true" : undefined}
+          className={baseClasses}
+        >
+          {label}
+        </button>
+      );
+    }
+
+    return (
+      <Link
+        href={href}
+        onClick={() => setMenuAberto(false)}
+        className={baseClasses}
+      >
+        {label}
+      </Link>
+    );
   }
 
   return (
@@ -112,21 +186,8 @@ export function NavPrimaria() {
           aria-label="Menu principal"
           className="hidden md:flex items-center gap-1"
         >
-          {NAV_ITENS.map(({ id, label }) => (
-            <button
-              key={id}
-              onClick={() => scrollParaSecao(id)}
-              aria-current={ativa === id ? "true" : undefined}
-              className={[
-                "relative px-4 py-2 text-sm font-medium rounded-md transition-colors duration-200",
-                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#800000]",
-                ativa === id
-                  ? "text-white after:absolute after:bottom-0 after:left-3 after:right-3 after:h-0.5 after:bg-[#800000] after:rounded-full"
-                  : "text-neutral-300 hover:text-white",
-              ].join(" ")}
-            >
-              {label}
-            </button>
+          {NAV_ITENS.map((item) => (
+            <NavItem key={item.id} {...item} />
           ))}
         </nav>
 
@@ -149,7 +210,6 @@ export function NavPrimaria() {
           aria-label={menuAberto ? "Fechar menu" : "Abrir menu"}
           className="md:hidden p-2 rounded-md text-white hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#800000]"
         >
-          {/* Ícone hambúrguer / X inline — sem dependência extra */}
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="22" height="22"
@@ -181,21 +241,8 @@ export function NavPrimaria() {
           aria-label="Menu mobile"
           className="md:hidden bg-neutral-900/98 backdrop-blur-sm border-t border-white/10 px-4 py-4 flex flex-col gap-1"
         >
-          {NAV_ITENS.map(({ id, label }) => (
-            <button
-              key={id}
-              onClick={() => scrollParaSecao(id)}
-              aria-current={ativa === id ? "true" : undefined}
-              className={[
-                "w-full text-left px-4 py-3 rounded-lg text-sm font-medium transition-colors duration-200",
-                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#800000]",
-                ativa === id
-                  ? "bg-[#800000]/20 text-white"
-                  : "text-neutral-300 hover:bg-white/10 hover:text-white",
-              ].join(" ")}
-            >
-              {label}
-            </button>
+          {NAV_ITENS.map((item) => (
+            <NavItemMobile key={item.id} {...item} />
           ))}
           <a
             href={CTA_WHATSAPP}
