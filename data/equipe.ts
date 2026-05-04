@@ -1,67 +1,83 @@
-/**
- * equipe.ts
- * ---------
- * Dados tipados da equipe técnica da Central de Soluções.
- * Fonte: portfólio do cliente (PDFs de Janeiro/2026).
- *
- * IMPORTANTE: estes são os nomes e especialidades EXATOS conforme
- * divulgados pelo cliente no material de marketing. Não alterar sem
- * confirmação do cliente.
- */
+// data/equipe.ts
+// Fonte única de verdade dos membros da equipe técnica da Central de Soluções.
+// Dados extraídos do portfólio físico do cliente (PDFs de apresentação, Maio 2026).
+// NÃO editar nomes ou especialidades sem confirmar com o cliente.
+// ─────────────────────────────────────────────────────────────────────────────
+
+// ─── Tipo principal ───────────────────────────────────────────────────────────
 
 export interface MembroEquipe {
+  /** Identificador único — usado como key em listas e como seletor de foto */
+  readonly slug: string;
   /** Nome completo conforme portfólio do cliente */
-  nome: string;
-  /** Slug para uso em URLs e atributos HTML */
-  slug: string;
-  /** Lista de especialidades/títulos profissionais — ordem importa (principal primeiro) */
-  especialidades: readonly string[];
-  /** Caminho da foto em /public — extrair dos PDFs antes do deploy */
-  foto: string;
-  /** Alt text acessível e otimizado para SEO */
-  fotoAlt: string;
-  /** Número de registro profissional (CREA/CAU) — preencher quando disponível */
-  registro?: string;
-  /** LinkedIn do profissional — preencher quando disponível */
-  linkedin?: string;
+  readonly nome: string;
+  /**
+   * Título profissional principal — aparece logo abaixo do nome.
+   * Ex: "Arquiteto e Urbanista"
+   */
+  readonly tituloPrincipal: string;
+  /**
+   * Especializações adicionais — exibidas como badges ou lista secundária.
+   * Nunca incluir o tituloPrincipal aqui (evita duplicação visual).
+   */
+  readonly especializacoes: readonly string[];
+  /**
+   * Número de registro no CREA ou CAU.
+   * Preencher quando disponível — campo de autoridade E-E-A-T.
+   * Formato: "CREA-RJ 123456/D" ou "CAU A123456-0"
+   */
+  readonly registro?: string;
+  /**
+   * Caminho relativo à pasta /public para a foto de perfil.
+   * Usar next/image com width=320 height=320 e object-fit cover.
+   * Padrão enquanto a foto real não for comitada: undefined (mostrar placeholder)
+   */
+  readonly foto?: string;
+  /**
+   * Alt text da foto — já escrito para acessibilidade e SEO.
+   * Descreve quem é a pessoa e o contexto, não apenas o nome.
+   */
+  readonly fotoAlt?: string;
+  /** URL completa do perfil LinkedIn — usada no JSON-LD como sameAs */
+  readonly linkedin?: string;
 }
+
+// ─── Dados da equipe ─────────────────────────────────────────────────────────
+// Ordem: sócios fundadores primeiro, depois demais membros.
 
 export const equipe: readonly MembroEquipe[] = [
   {
+    slug: "durval",
     nome: "Durval Ribeiro de Queiroz",
-    slug: "durval-ribeiro-de-queiroz",
-    especialidades: [
-      "Arquiteto e Urbanista",
-      "Engenheiro de Segurança do Trabalho",
-      "Engenheiro de Segurança Contra Incêndio e Pânico",
+    tituloPrincipal: "Arquiteto e Urbanista",
+    especializacoes: [
+      "Engenharia de Segurança do Trabalho",
+      "Engenharia de Segurança Contra Incêndio e Pânico",
     ],
-    foto: "/images/equipe/durval.jpg",
+    // registro: "CAU A000000-0", // preencher quando disponível
+    foto: "/images/equipe/durval-ribeiro.jpg",
     fotoAlt:
-      "Durval Ribeiro de Queiroz — Arquiteto, Engenheiro de Segurança Contra Incêndio e Pânico",
-    registro: undefined, // TODO: preencher com número CREA/CAU quando disponível
-    linkedin: undefined, // TODO: preencher com URL do LinkedIn quando disponível
+      "Durval Ribeiro de Queiroz, Arquiteto e Urbanista especializado em Segurança Contra Incêndio, sócio da Central de Soluções",
+    // linkedin: "https://www.linkedin.com/in/durval-ribeiro", // preencher quando disponível
   },
   {
-    nome: "Theyllor Estulano do Espirito Santo",
-    slug: "theyllor-estulano-do-espirito-santo",
-    especialidades: [
-      "Engenheiro Civil",
+    slug: "theyllor",
+    nome: "Theyllor Estulano do Espírito Santo",
+    tituloPrincipal: "Engenheiro Civil",
+    especializacoes: [
       "Técnico em Mecânica",
     ],
-    foto: "/images/equipe/theyllor.jpg",
+    // registro: "CREA-RJ 000000/D", // preencher quando disponível
+    foto: "/images/equipe/theyllor-estulano.jpg",
     fotoAlt:
-      "Theyllor Estulano do Espirito Santo — Engenheiro Civil, Técnico em Mecânica",
-    registro: undefined, // TODO: preencher com número CREA quando disponível
-    linkedin: undefined, // TODO: preencher com URL do LinkedIn quando disponível
+      "Theyllor Estulano do Espírito Santo, Engenheiro Civil e Técnico em Mecânica, sócio da Central de Soluções",
+    // linkedin: "https://www.linkedin.com/in/theyllor-estulano", // preencher quando disponível
   },
 ] as const;
 
-/**
- * Retorna um membro da equipe pelo slug.
- * Útil para páginas dinâmicas de perfil.
- */
-export function getMembroBySlug(
-  slug: string
-): MembroEquipe | undefined {
+// ─── Helper ───────────────────────────────────────────────────────────────────
+
+/** Retorna um membro da equipe pelo slug */
+export function getMembroPorSlug(slug: string): MembroEquipe | undefined {
   return equipe.find((m) => m.slug === slug);
 }

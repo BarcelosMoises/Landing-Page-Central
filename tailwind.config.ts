@@ -24,6 +24,27 @@ const config: Config = {
         ink: "#0a0a0a",
         success: "#16a34a",
         warning: "#ca8a04",
+
+        // ── Tokens por serviço ──────────────────────────────────────────────
+        // Usados como text-service-avcb, bg-service-sanitaria, etc.
+        // Para accent dinâmico (subpáginas), prefira var(--color-service-accent)
+        // via style= inline — CSS variables não são capturadas pelo Tailwind JIT.
+        "service-avcb": {
+          DEFAULT: "#800000",
+          hover: "#4f0101",
+        },
+        "service-sanitaria": {
+          DEFAULT: "#0d7377",
+          hover: "#095e62",
+        },
+        "service-ambiental": {
+          DEFAULT: "#2d6a2d",
+          hover: "#1e4d1e",
+        },
+        "service-laudos": {
+          DEFAULT: "#92610a",
+          hover: "#6e4908",
+        },
       },
       fontFamily: {
         heading: ["var(--font-heading)", "sans-serif"],
