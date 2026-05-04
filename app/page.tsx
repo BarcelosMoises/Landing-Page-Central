@@ -5,6 +5,7 @@ import { NavPrimaria } from "@/components/NavPrimaria";
 import { HeroFullscreen } from "@/components/HeroFullscreen";
 import { MetricasEmpresa } from "@/components/MetricasEmpresa";
 import { TrustBar } from "@/components/TrustBar";
+import { ServicosGrid } from "@/components/ServicosGrid";
 import { SetoresAtendidos } from "@/components/SetoresAtendidos";
 import { MapaAtuacao } from "@/components/MapaAtuacao";
 import { EquipeTecnica } from "@/components/EquipeTecnica";
@@ -44,7 +45,7 @@ export const metadata: Metadata = {
   },
 };
 
-// ─── JSON-LD WebSite ──────────────────────────────────────────────────────────
+// ─── JSON-LD WebSite ───────────────────────────────────────────────────────────────
 // LocalBusiness já está no layout.tsx — não duplicar aqui.
 
 const websiteJsonLd = {
@@ -64,9 +65,7 @@ const websiteJsonLd = {
   },
 };
 
-// ─── Dados das seções fullscreen ──────────────────────────────────────────────
-// Os textos vêm diretamente de data/servicos.ts via props —
-// aqui apenas mapeamos as 4 categorias do nav para os componentes visuais.
+// ─── Dados das seções fullscreen ───────────────────────────────────────────────────────
 
 const SECOES = [
   {
@@ -135,7 +134,7 @@ const SECOES = [
   },
 ] as const;
 
-// ─── Page ─────────────────────────────────────────────────────────────────────
+// ─── Page ───────────────────────────────────────────────────────────────────────────────
 
 export default function HomePage() {
   return (
@@ -148,8 +147,6 @@ export default function HomePage() {
       <main
         id="conteudo-principal"
         aria-label="Página inicial da Central de Soluções"
-        // scroll-snap-type apenas se prefers-reduced-motion: no-preference
-        // A classe motion-safe do Tailwind aplica o utilitário somente quando não há preferência de redução
         className="motion-safe:snap-y motion-safe:snap-mandatory"
       >
         {/* ── Seções fullscreen por categoria ── */}
@@ -170,6 +167,7 @@ export default function HomePage() {
         <div className="motion-safe:snap-none">
           <MetricasEmpresa />
           <TrustBar />
+          <ServicosGrid />
           <SetoresAtendidos />
           <MapaAtuacao />
           <EquipeTecnica />
