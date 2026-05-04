@@ -1,50 +1,43 @@
+// app/avcb-corpo-de-bombeiros/page.tsx
+// Página de serviço: AVCB / CLCB — Corpo de Bombeiros
+// Server Component puro — sem "use client".
+// Accent: #800000 (vinho) — cor primária da marca.
+
 import type { Metadata } from "next";
 import Link from "next/link";
-import { JsonLd } from "@/components/JsonLd";
 import { NavPrimaria } from "@/components/NavPrimaria";
 import {
+  servicos,
+  equipe,
+  clientes,
+  contato,
   estadosAtuacao,
   getWhatsAppUrl,
-  type Servico,
 } from "@/data/servicos";
 
 // ─── Metadata ────────────────────────────────────────────────────────────────
-// keyword_title (SEO.md §1): "AVCB [estado] — Regularização"
-// keyword_heading (SEO.md §1): "AVCB [estado]: Regularização Junto ao Corpo de Bombeiros"
 
 export const metadata: Metadata = {
-  title:
-    "AVCB e CLCB — Regularização Corpo de Bombeiros RJ, SP, MG, ES",
+  title: "AVCB e CLCB — Regularização junto ao Corpo de Bombeiros",
   description:
-    "Obtenha o AVCB ou CLCB com empresa especializada. Atendemos CBMERJ (RJ), CBPMESP (SP), CBMMG (MG) e CBMES (ES). Engenheiros habilitados que assinam a ART. Galpões, indústrias, telecom e usinas solares.",
+    "Serviço especializado em obtenção do AVCB (Auto de Vistoria do Corpo de Bombeiros) e CLCB nos estados RJ, SP, MG e ES. Engenheiros com ART. Atendemos galpões, indústrias, comércio e telecom.",
   keywords: [
-    "avcb corpo de bombeiros",
-    "avcb rj para galpão industrial",
-    "avcb sp urgente para indústria",
-    "avcb mg renovação laudo",
-    "avcb espírito santo regularização",
-    "certificado de aprovação cbmerj renovação",
-    "clcb regularização",
-    "regularização corpo de bombeiros rj sp mg es",
+    "AVCB corpo de bombeiros",
+    "CLCB certificado licença",
+    "regularização corpo de bombeiros RJ SP MG ES",
+    "auto de vistoria corpo de bombeiros",
+    "avcb galpão industrial",
+    "engenharia segurança incêndio",
   ],
-  alternates: { canonical: "/avcb-corpo-de-bombeiros" },
+  alternates: {
+    canonical: "https://www.centraldesolucoes.eng.br/avcb-corpo-de-bombeiros",
+  },
   openGraph: {
-    type: "website",
-    locale: "pt_BR",
-    url: "/avcb-corpo-de-bombeiros",
-    siteName: "Central de Soluções",
-    title:
-      "AVCB e CLCB — Regularização Corpo de Bombeiros RJ, SP, MG, ES | Central de Soluções",
+    title: "AVCB e CLCB — Central de Soluções",
     description:
-      "Obtenha o AVCB ou CLCB com empresa especializada. Atendemos CBMERJ, CBPMESP, CBMMG e CBMES com engenheiros que assinam a ART.",
-    images: [
-      {
-        url: "/og-image.jpg",
-        width: 1200,
-        height: 630,
-        alt: "Central de Soluções — AVCB e Regularização Corpo de Bombeiros",
-      },
-    ],
+      "Regularização junto ao Corpo de Bombeiros em RJ, SP, MG e ES. AVCB e CLCB para galpões, indústrias e comércio.",
+    url: "https://www.centraldesolucoes.eng.br/avcb-corpo-de-bombeiros",
+    images: [{ url: "/og-avcb.jpg", width: 1200, height: 630, alt: "AVCB — Central de Soluções" }],
   },
 };
 
@@ -53,15 +46,16 @@ export const metadata: Metadata = {
 const serviceJsonLd = {
   "@context": "https://schema.org",
   "@type": "Service",
-  name: "Regularização AVCB / CLCB — Corpo de Bombeiros",
+  name: "AVCB — Auto de Vistoria do Corpo de Bombeiros",
+  alternateName: "CLCB — Certificado de Licença do Corpo de Bombeiros",
   description:
-    "Regularização junto ao Corpo de Bombeiros estadual para obtenção do Auto de Vistoria (AVCB) ou Certificado de Licença (CLCB), com acompanhamento completo até a emissão do certificado.",
+    "Regularização junto ao Corpo de Bombeiros estadual para obtenção do AVCB ou CLCB, com acompanhamento completo até a emissão do certificado. Atendemos RJ, SP, MG e ES.",
+  url: "https://www.centraldesolucoes.eng.br/avcb-corpo-de-bombeiros",
   provider: {
     "@type": "ProfessionalService",
     name: "Central de Soluções",
     url: "https://www.centraldesolucoes.eng.br",
-    telephone: "+5522981121315",
-    email: "centralsolu@outlook.com",
+    telephone: "+552298112-1315",
   },
   areaServed: [
     { "@type": "State", name: "Rio de Janeiro" },
@@ -69,8 +63,17 @@ const serviceJsonLd = {
     { "@type": "State", name: "Minas Gerais" },
     { "@type": "State", name: "Espírito Santo" },
   ],
-  serviceType: "Regularização junto ao Corpo de Bombeiros",
-  url: "https://www.centraldesolucoes.eng.br/avcb-corpo-de-bombeiros",
+  serviceType: "Regularização de Segurança Contra Incêndio e Pânico",
+  hasOfferCatalog: {
+    "@type": "OfferCatalog",
+    name: "Etapas do serviço AVCB",
+    itemListElement: [
+      { "@type": "Offer", itemOffered: { "@type": "Service", name: "Levantamento das exigências do CB estadual" } },
+      { "@type": "Offer", itemOffered: { "@type": "Service", name: "Elaboração do Laudo de Exigências" } },
+      { "@type": "Offer", itemOffered: { "@type": "Service", name: "Execução das adequações necessárias" } },
+      { "@type": "Offer", itemOffered: { "@type": "Service", name: "Acompanhamento da vistoria até emissão do AVCB" } },
+    ],
+  },
 };
 
 const faqJsonLd = {
@@ -82,7 +85,7 @@ const faqJsonLd = {
       name: "O que é o AVCB?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "O AVCB (Auto de Vistoria do Corpo de Bombeiros) é o documento que comprova que uma edificação atende às normas de segurança contra incêndio e pânico exigidas pelo Corpo de Bombeiros estadual. É obrigatório para a maioria das atividades comerciais e industriais.",
+        text: "O AVCB (Auto de Vistoria do Corpo de Bombeiros) é o documento emitido pelo Corpo de Bombeiros estadual que certifica que um imóvel atende às normas de segurança contra incêndio e pânico. É obrigatório para a maioria dos imóveis comerciais, industriais e de serviços.",
       },
     },
     {
@@ -90,433 +93,336 @@ const faqJsonLd = {
       name: "Qual a diferença entre AVCB e CLCB?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "O AVCB (Auto de Vistoria) é emitido para edificações de maior porte e risco, após vistoria presencial do Corpo de Bombeiros. O CLCB (Certificado de Licença do Corpo de Bombeiros) é destinado a edificações de menor porte, com processo documental simplificado. O tipo exigido depende da área, ocupação e estado.",
+        text: "O AVCB (Auto de Vistoria) é emitido após vistoria presencial do Corpo de Bombeiros, geralmente para imóveis maiores ou de maior risco. O CLCB (Certificado de Licença) é uma modalidade simplificada para imóveis de baixo risco ou menor área, geralmente emitido sem vistoria presencial, mediante análise documental.",
       },
     },
     {
       "@type": "Question",
-      name: "Quais estados a Central de Soluções atende para AVCB?",
+      name: "Quais imóveis precisam de AVCB?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "A Central de Soluções realiza o processo de AVCB e CLCB junto ao CBMERJ (Rio de Janeiro), CBPMESP (São Paulo), CBMMG (Minas Gerais) e CBMES (Espírito Santo).",
+        text: "Galpões logísticos, indústrias, comércio em geral, depósitos, escolas, igrejas, torres de telecomunicações e usinas fotovoltaicas são os principais casos. A obrigatoriedade e o tipo de certificado (AVCB ou CLCB) depende da área, da ocupação e do estado — cada Corpo de Bombeiros estadual tem suas próprias Instruções Técnicas (ITs).",
       },
     },
     {
       "@type": "Question",
-      name: "Quais setores mais precisam de AVCB?",
+      name: "Qual o prazo para obter o AVCB?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Galpões logísticos, indústrias, comércio, depósitos, torres de telecomunicações, usinas fotovoltaicas, escolas e igrejas são os setores que mais demandam regularização junto ao Corpo de Bombeiros.",
+        text: "O prazo varia conforme o estado e a complexidade das adequações necessárias. Em média, o processo leva de 60 a 180 dias entre o início das adequações e a emissão do certificado. Imóveis que já estão adequados às normas têm prazo menor. A Central de Soluções realiza um diagnóstico inicial gratuito para estimar o prazo no seu caso específico.",
       },
     },
     {
       "@type": "Question",
-      name: "O que acontece se a empresa não tiver o AVCB?",
+      name: "A Central de Soluções atende em quais estados?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "A ausência do AVCB pode acarretar multa, interdição do estabelecimento pelo Corpo de Bombeiros ou órgãos municipais, além de impedir a renovação do Alvará de Funcionamento e dificultar a contratação de seguros.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "Qual a base normativa do AVCB?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "O processo segue a legislação específica de cada Corpo de Bombeiros estadual (CBMERJ, CBPMESP, CBMMG, CBMES) e as Instruções Técnicas (ITs) emitidas pelo CB de cada estado.",
+        text: "Atendemos Rio de Janeiro (CBMERJ), São Paulo (CBPMESP), Minas Gerais (CBMMG) e Espírito Santo (CBMES). Cada estado tem suas próprias Instruções Técnicas e nossos engenheiros são especializados nos processos de cada Corpo de Bombeiros.",
       },
     },
   ],
 };
 
-// ─── Conteúdo da página (sem hardcode — derivado de servicos.ts) ──────────────
+// ─── Dados locais ─────────────────────────────────────────────────────────────
 
-const ETAPAS = [
-  {
-    numero: "01",
-    titulo: "Levantamento das exigências",
-    descricao:
-      "Analisamos as Instruções Técnicas do CB estadual e identificamos todas as adequações necessárias para a sua edificação.",
-  },
-  {
-    numero: "02",
-    titulo: "Laudo de Exigências com ART",
-    descricao:
-      "Emitimos o laudo técnico com diagnóstico das inconformidades e plano de adequações, com ART assinada pelo responsável técnico.",
-  },
-  {
-    numero: "03",
-    titulo: "Execução das adequações",
-    descricao:
-      "Realizamos ou coordenamos todas as adequações: sistemas de combate a incêndio, sinalização, projetos e documentos exigidos pelo CB.",
-  },
-  {
-    numero: "04",
-    titulo: "Vistoria e emissão do AVCB",
-    descricao:
-      "Acompanhamos a vistoria do Corpo de Bombeiros e gerenciamos o processo até a emissão do Certificado de Aprovação (AVCB ou CLCB).",
-  },
-] as const;
+const avcb = servicos.find((s) => s.id === "avcb")!;
+const clientesDestaque = clientes.filter((c) => c.destaque);
+const estadosAVCB = estadosAtuacao.filter((e) =>
+  avcb.estados.includes(e.sigla)
+);
+const whatsappUrl = getWhatsAppUrl(
+  "Olá! Tenho interesse no serviço de AVCB / CLCB. Pode me passar mais informações?"
+);
 
-// Dados de servicos.ts — itens do serviço id:"avcb"
-const ITENS_SERVICO: Servico["itens"] = [
-  "Levantamento das exigências do CB estadual",
-  "Elaboração do Laudo de Exigências",
-  "Execução das adequações necessárias",
-  "Acompanhamento da vistoria até emissão do Certificado de Aprovação / AVCB",
-];
+// ─── Componentes internos ─────────────────────────────────────────────────────
 
-const SETORES_PRIORITARIOS: Servico["setoresPrioritarios"] = [
-  "Galpões logísticos",
-  "Indústrias",
-  "Comércio",
-  "Depósitos",
-  "Torres de telecomunicações",
-  "Usinas fotovoltaicas",
-  "Escolas",
-  "Igrejas",
-];
+function BadgeEstado({ sigla, nome }: { sigla: string; nome: string }) {
+  return (
+    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-neutral-800 border border-white/10 text-xs font-semibold text-neutral-200 font-mono tracking-wide">
+      <span className="w-1.5 h-1.5 rounded-full bg-[#800000]" aria-hidden="true" />
+      {sigla} · {nome}
+    </span>
+  );
+}
 
-// Órgãos reguladores — SEO.md §6
-const ORGAOS = [
-  { sigla: "CBMERJ", url: "https://www.cbmerj.rj.gov.br", estado: "RJ" },
-  { sigla: "CBPMESP", url: "https://www.corpodebombeiros.sp.gov.br", estado: "SP" },
-  { sigla: "CBMMG", url: "https://www.bombeiros.mg.gov.br", estado: "MG" },
-  { sigla: "CBMES", url: "https://www.cbmes.es.gov.br", estado: "ES" },
-] as const;
+function IconeShield() {
+  return (
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+      <path d="m9 12 2 2 4-4" />
+    </svg>
+  );
+}
 
-const FAQS = [
-  {
-    pergunta: "O que é o AVCB?",
-    resposta:
-      "O AVCB (Auto de Vistoria do Corpo de Bombeiros) é o documento que comprova que uma edificação atende às normas de segurança contra incêndio e pânico exigidas pelo Corpo de Bombeiros estadual. É obrigatório para a maioria das atividades comerciais e industriais.",
-  },
-  {
-    pergunta: "Qual a diferença entre AVCB e CLCB?",
-    resposta:
-      "O AVCB (Auto de Vistoria) é emitido para edificações de maior porte e risco, após vistoria presencial do Corpo de Bombeiros. O CLCB (Certificado de Licença) é destinado a edificações de menor porte, com processo documental simplificado. O tipo exigido depende da área, ocupação e estado.",
-  },
-  {
-    pergunta: "Quais estados a Central de Soluções atende para AVCB?",
-    resposta:
-      "Atendemos junto ao CBMERJ (Rio de Janeiro), CBPMESP (São Paulo), CBMMG (Minas Gerais) e CBMES (Espírito Santo). Todos os processos com engenheiro habilitado e ART.",
-  },
-  {
-    pergunta: "Quais setores mais precisam de AVCB?",
-    resposta:
-      "Galpões logísticos, indústrias, comércio, depósitos, torres de telecomunicações, usinas fotovoltaicas, escolas e igrejas são os setores que mais demandam regularização junto ao Corpo de Bombeiros.",
-  },
-  {
-    pergunta: "O que acontece se a empresa não tiver o AVCB?",
-    resposta:
-      "A ausência do AVCB pode acarretar multa, interdição do estabelecimento pelo Corpo de Bombeiros ou órgãos municipais, além de impedir a renovação do Alvará de Funcionamento e dificultar a contratação de seguros.",
-  },
-  {
-    pergunta: "Qual a base normativa do AVCB?",
-    resposta:
-      "O processo segue a legislação específica de cada Corpo de Bombeiros estadual e as Instruções Técnicas (ITs) de cada estado: CBMERJ, CBPMESP, CBMMG e CBMES.",
-  },
-] as const;
+function IconeCheck() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="shrink-0 text-[#800000] mt-0.5">
+      <path d="M20 6 9 17l-5-5" />
+    </svg>
+  );
+}
+
+function IconeChevron() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="shrink-0 text-neutral-400">
+      <path d="m9 18 6-6-6-6" />
+    </svg>
+  );
+}
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
-export default function AVCBPage() {
-  const whatsappUrl = getWhatsAppUrl(
-    "Olá! Preciso de ajuda com AVCB / CLCB para minha empresa. Gostaria de um orçamento."
-  );
-
+export default function PageAVCB() {
   return (
     <>
-      <JsonLd data={serviceJsonLd} />
-      <JsonLd data={faqJsonLd} />
+      {/* JSON-LD */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
 
       <NavPrimaria />
 
-      <main id="conteudo-principal" aria-label="Serviço: AVCB e CLCB — Regularização Corpo de Bombeiros">
+      <main data-service="avcb">
 
-        {/* ── Hero ─────────────────────────────────────────────────────────── */}
+        {/* ── HERO ──────────────────────────────────────────────────────── */}
         <section
-          aria-labelledby="avcb-h1"
-          className="bg-neutral-900 pt-32 pb-20"
+          aria-labelledby="hero-titulo"
+          className="relative bg-neutral-950 overflow-hidden"
         >
-          <div className="container-site">
+          {/* Gradiente cinemático */}
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background:
+                "radial-gradient(ellipse 70% 60% at 60% 40%, rgba(128,0,0,0.22) 0%, transparent 70%)",
+            }}
+            aria-hidden="true"
+          />
 
+          <div className="container-site relative z-10 pt-24 pb-20 md:pt-32 md:pb-28">
             {/* Breadcrumb */}
-            <nav aria-label="Navegação estrutural" className="mb-8">
-              <ol className="flex items-center gap-2 text-sm text-neutral-400">
-                <li>
-                  <Link
-                    href="/"
-                    className="hover:text-white transition-colors duration-150"
-                  >
-                    Início
-                  </Link>
-                </li>
-                <li aria-hidden="true" className="text-neutral-600">/</li>
-                <li className="text-white" aria-current="page">
-                  AVCB / CLCB
-                </li>
+            <nav aria-label="Localização na página" className="mb-8">
+              <ol className="flex items-center gap-2 text-xs text-neutral-500 font-mono">
+                <li><Link href="/" className="hover:text-neutral-300 transition-colors">Início</Link></li>
+                <li aria-hidden="true">/</li>
+                <li aria-current="page" className="text-neutral-300">AVCB / CLCB</li>
               </ol>
             </nav>
 
-            {/* Badges de órgãos reguladores */}
-            <div className="flex flex-wrap gap-2 mb-6" role="list" aria-label="Órgãos reguladores atendidos">
-              {estadosAtuacao.map((e) => (
-                <span
-                  key={e.sigla}
-                  role="listitem"
-                  className="inline-flex items-center text-xs font-semibold uppercase tracking-wide bg-[#800000]/20 text-red-300 px-2.5 py-1 rounded-full border border-[#800000]/30"
-                >
-                  {e.siglaCB} · {e.sigla}
-                </span>
-              ))}
+            {/* Badge de categoria */}
+            <div className="mb-5">
+              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#800000]/40 bg-[#800000]/10 text-xs font-semibold text-[#ef9999] uppercase tracking-wider">
+                <IconeShield />
+                Legalização · Corpo de Bombeiros
+              </span>
             </div>
 
-            <div className="max-w-3xl">
-              <h1
-                id="avcb-h1"
-                className="font-heading text-3xl md:text-5xl font-extrabold text-white leading-tight mb-6"
-              >
-                AVCB e CLCB —{" "}
-                <span className="text-[#a30000]">
-                  Regularização junto ao Corpo de Bombeiros
-                </span>
-              </h1>
+            <div className="grid lg:grid-cols-[1fr_auto] gap-12 items-start">
+              <div className="max-w-2xl">
+                <h1
+                  id="hero-titulo"
+                  className="font-heading font-extrabold text-white text-4xl md:text-5xl lg:text-6xl leading-tight tracking-tight mb-6"
+                >
+                  AVCB e CLCB —{" "}
+                  <span className="text-[#ef9999]">regularização completa</span>{" "}
+                  junto ao Corpo de Bombeiros
+                </h1>
+                <p className="text-neutral-300 text-lg leading-relaxed mb-8 max-w-xl">
+                  {avcb.descricao}
+                </p>
 
-              <p className="text-neutral-300 text-lg leading-relaxed mb-4">
-                Regularização completa junto ao Corpo de Bombeiros estadual
-                para obtenção do Auto de Vistoria (AVCB) ou Certificado de
-                Licença (CLCB). Atendemos RJ, SP, MG e ES com engenheiros
-                habilitados que assinam as ARTs diretamente, sem intermediários.
-              </p>
+                {/* Estados */}
+                <div className="flex flex-wrap gap-2 mb-10" aria-label="Estados atendidos">
+                  {estadosAVCB.map((e) => (
+                    <BadgeEstado key={e.sigla} sigla={e.sigla} nome={e.nome} />
+                  ))}
+                </div>
 
-              {/* Itens do serviço — derivados de servicos.ts */}
-              <ul className="mb-10 space-y-2" aria-label="O que está incluído">
-                {ITENS_SERVICO.map((item) => (
-                  <li
-                    key={item}
-                    className="flex items-start gap-2 text-neutral-300 text-base"
+                {/* CTAs */}
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <a
+                    href={whatsappUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-lg bg-[#800000] hover:bg-[#4f0101] text-white font-semibold text-sm transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#800000] focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950"
                   >
-                    <span aria-hidden="true" className="mt-1 text-[#a30000]">✓</span>
-                    {item}
-                  </li>
-                ))}
-              </ul>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                    </svg>
+                    Solicitar orçamento
+                  </a>
+                  <Link
+                    href="/#servicos"
+                    className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-lg border border-white/15 text-neutral-200 hover:border-white/30 hover:text-white font-semibold text-sm transition-colors duration-150"
+                  >
+                    Ver outros serviços
+                  </Link>
+                </div>
+              </div>
 
-              <div className="flex flex-col sm:flex-row gap-4">
-                <a
-                  href={whatsappUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Solicitar orçamento de AVCB via WhatsApp"
-                  className="inline-flex items-center justify-center gap-2 bg-[#800000] hover:bg-[#4f0101] active:bg-[#3a0000] text-white font-semibold px-6 py-3.5 rounded-lg transition-colors duration-200"
+              {/* Card lateral — órgãos */}
+              <aside
+                aria-label="Órgãos estaduais atendidos"
+                className="hidden lg:flex flex-col gap-3 min-w-[220px]"
+              >
+                <p className="text-xs font-semibold text-neutral-500 uppercase tracking-wider mb-1">Corpos de Bombeiros</p>
+                {estadosAVCB.map((e) => (
+                  <div
+                    key={e.sigla}
+                    className="flex items-center justify-between gap-4 px-4 py-3 rounded-lg bg-neutral-900 border border-white/8"
+                  >
+                    <span className="text-sm font-semibold text-white font-mono">{e.siglaCB}</span>
+                    <span className="text-xs text-neutral-400">{e.nome}</span>
+                  </div>
+                ))}
+              </aside>
+            </div>
+          </div>
+        </section>
+
+        {/* ── TRUST BAR ─────────────────────────────────────────────────── */}
+        <section
+          aria-label="Clientes atendidos"
+          className="bg-neutral-900 border-y border-white/8 py-6"
+        >
+          <div className="container-site">
+            <p className="text-xs text-neutral-500 text-center uppercase tracking-widest mb-5 font-mono">
+              Empresas que confiam na Central de Soluções
+            </p>
+            <ul
+              className="flex flex-wrap items-center justify-center gap-x-10 gap-y-3"
+              aria-label="Lista de clientes"
+            >
+              {clientesDestaque.map((c) => (
+                <li
+                  key={c.id}
+                  className="text-sm font-semibold text-neutral-400 hover:text-neutral-200 transition-colors duration-150 tracking-wide"
                 >
-                  Solicitar Orçamento
-                  <span aria-hidden="true">→</span>
-                </a>
-                <Link
-                  href="/#legalizacao"
-                  className="inline-flex items-center justify-center gap-2 border border-white/20 hover:border-white/40 text-white font-semibold px-6 py-3.5 rounded-lg transition-colors duration-200"
+                  {c.nome}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+
+        {/* ── O QUE ESTÁ INCLUÍDO ────────────────────────────────────────── */}
+        <section
+          aria-labelledby="incluido-titulo"
+          className="bg-white py-20 md:py-28"
+        >
+          <div className="container-site">
+            <div className="grid md:grid-cols-[1fr_1fr] gap-16 items-start">
+              <div>
+                <p className="text-xs font-semibold text-[#800000] uppercase tracking-wider mb-3 font-mono">Escopo do serviço</p>
+                <h2
+                  id="incluido-titulo"
+                  className="font-heading font-bold text-neutral-900 text-3xl md:text-4xl leading-tight mb-6"
                 >
-                  Ver todos os serviços
-                </Link>
+                  O que está incluído no serviço de AVCB
+                </h2>
+                <p className="text-neutral-600 text-base leading-relaxed mb-8">
+                  A Central de Soluções assume o processo de ponta a ponta: do diagnóstico inicial até a entrega do certificado. Nenhuma etapa fica a cargo do cliente.
+                </p>
+                <ul className="flex flex-col gap-4" aria-label="Etapas incluídas">
+                  {avcb.itens.map((item) => (
+                    <li key={item} className="flex items-start gap-3">
+                      <IconeCheck />
+                      <span className="text-neutral-700 text-base">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Setores */}
+              <div>
+                <p className="text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-3 font-mono">Setores prioritários</p>
+                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2" aria-label="Setores atendidos">
+                  {avcb.setoresPrioritarios?.map((setor) => (
+                    <li
+                      key={setor}
+                      className="flex items-center gap-3 px-4 py-3 rounded-lg bg-neutral-50 border border-neutral-200 text-sm text-neutral-700"
+                    >
+                      <IconeChevron />
+                      {setor}
+                    </li>
+                  ))}
+                </ul>
+
+                {/* Normas */}
+                {avcb.normaBase && (
+                  <div className="mt-8 p-5 rounded-xl bg-neutral-900 border border-white/10">
+                    <p className="text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-3 font-mono">Base normativa</p>
+                    <ul className="flex flex-col gap-2">
+                      {avcb.normaBase.map((norma) => (
+                        <li key={norma} className="text-sm text-neutral-200 font-mono">
+                          {norma}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
             </div>
           </div>
         </section>
 
-        {/* ── Etapas do processo ───────────────────────────────────────────── */}
+        {/* ── EQUIPE TÉCNICA (E-E-A-T) ──────────────────────────────────── */}
         <section
-          aria-labelledby="etapas-h2"
-          className="bg-white py-16 md:py-24"
+          aria-labelledby="equipe-titulo"
+          className="bg-neutral-950 py-20 md:py-28 border-t border-white/8"
         >
           <div className="container-site">
-            <div className="max-w-2xl mb-12">
-              <p className="text-xs font-semibold uppercase tracking-widest text-[#800000] mb-3">
-                Como funciona
-              </p>
-              <h2
-                id="etapas-h2"
-                className="font-heading text-2xl md:text-4xl font-bold text-neutral-900 leading-tight mb-4"
-              >
-                Processo de Regularização AVCB
-              </h2>
-              <p className="text-neutral-700 text-lg leading-relaxed">
-                Cuidamos de todo o processo — do levantamento das exigências
-                até a emissão do certificado — sem burocracia para o seu time.
-              </p>
-            </div>
-
-            <ol
-              aria-label="Etapas para obtenção do AVCB"
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"
+            <p className="text-xs font-semibold text-[#800000] uppercase tracking-wider mb-3 font-mono">Responsabilidade técnica real</p>
+            <h2
+              id="equipe-titulo"
+              className="font-heading font-bold text-white text-3xl md:text-4xl leading-tight mb-12"
             >
-              {ETAPAS.map((etapa) => (
-                <li key={etapa.numero} className="flex flex-col gap-3">
-                  <span
-                    aria-hidden="true"
-                    className="font-heading text-5xl font-extrabold text-[#800000]/15 leading-none select-none"
-                  >
-                    {etapa.numero}
-                  </span>
-                  <h3 className="font-heading text-lg font-bold text-neutral-900">
-                    {etapa.titulo}
-                  </h3>
-                  <p className="text-neutral-700 text-base leading-relaxed">
-                    {etapa.descricao}
-                  </p>
-                </li>
-              ))}
-            </ol>
-          </div>
-        </section>
-
-        {/* ── Cobertura por estado ─────────────────────────────────────────── */}
-        <section
-          aria-labelledby="estados-h2"
-          className="bg-neutral-50 py-16 md:py-24"
-        >
-          <div className="container-site">
-            <div className="max-w-2xl mb-12">
-              <p className="text-xs font-semibold uppercase tracking-widest text-[#800000] mb-3">
-                Cobertura geográfica
-              </p>
-              <h2
-                id="estados-h2"
-                className="font-heading text-2xl md:text-4xl font-bold text-neutral-900 leading-tight mb-4"
-              >
-                AVCB em RJ, SP, MG e ES
-              </h2>
-              <p className="text-neutral-700 text-lg leading-relaxed">
-                Cada estado tem legislação e Instruções Técnicas próprias.
-                Nossa equipe conhece as particularidades de cada Corpo de
-                Bombeiros estadual e acompanha o processo presencialmente.
-              </p>
-            </div>
-
+              Engenheiros que assinam as ARTs
+            </h2>
             <ul
-              aria-label="Estados atendidos para AVCB"
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"
+              className="grid sm:grid-cols-2 gap-6"
+              aria-label="Equipe técnica responsável"
             >
-              {estadosAtuacao.map((estado) => (
+              {equipe.map((membro) => (
                 <li
-                  key={estado.sigla}
-                  className="bg-white border border-neutral-200/70 rounded-xl p-6 flex flex-col gap-3"
+                  key={membro.id}
+                  className="flex flex-col gap-3 p-6 rounded-xl bg-neutral-900 border border-white/10"
                 >
-                  <div className="flex items-center gap-3">
-                    <span
-                      className="font-heading text-2xl font-extrabold text-[#800000]"
-                      aria-hidden="true"
-                    >
-                      {estado.sigla}
-                    </span>
-                    <h3 className="font-heading text-base font-bold text-neutral-900">
-                      {estado.nome}
-                    </h3>
+                  <div>
+                    <p className="font-heading font-semibold text-white text-lg">{membro.nome}</p>
+                    <p className="text-sm text-[#ef9999] mt-0.5">{membro.formacao}</p>
                   </div>
-                  <p className="text-sm text-neutral-600">
-                    CB:{" "}
-                    <span className="font-semibold text-neutral-900">
-                      {estado.siglaCB}
-                    </span>
-                  </p>
-                  <p className="text-sm text-neutral-600">
-                    Amb.:{" "}
-                    <span className="font-semibold text-neutral-900">
-                      {estado.orgaoAmbiental}
-                    </span>
-                  </p>
-                  <span className="mt-auto inline-flex items-center text-xs font-semibold uppercase tracking-wide bg-[#800000]/10 text-[#800000] px-2.5 py-1 rounded-full w-fit">
-                    Cobertura completa
-                  </span>
-                </li>
-              ))}
-            </ul>
-
-            {/* Links para órgãos reguladores — E-E-A-T (SEO.md §6) */}
-            <div className="mt-8 pt-8 border-t border-neutral-200">
-              <p className="text-sm text-neutral-500 mb-3">
-                Órgãos reguladores oficiais:
-              </p>
-              <ul className="flex flex-wrap gap-3" aria-label="Links para Corpos de Bombeiros estaduais">
-                {ORGAOS.map((orgao) => (
-                  <li key={orgao.sigla}>
-                    <a
-                      href={orgao.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={`Site oficial do ${orgao.sigla} — ${orgao.estado}`}
-                      className="inline-flex items-center gap-1 text-sm font-semibold text-[#800000] hover:text-[#4f0101] underline underline-offset-2 transition-colors duration-150"
-                    >
-                      {orgao.sigla}
-                      <span aria-hidden="true" className="text-xs">↗</span>
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </section>
-
-        {/* ── Setores prioritários ─────────────────────────────────────────── */}
-        <section
-          aria-labelledby="setores-h2"
-          className="bg-neutral-900 py-16 md:py-20"
-        >
-          <div className="container-site">
-            <div className="max-w-2xl mb-10">
-              <p className="text-xs font-semibold uppercase tracking-widest text-white/60 mb-3">
-                Quem precisa de AVCB
-              </p>
-              <h2
-                id="setores-h2"
-                className="font-heading text-2xl md:text-4xl font-bold text-white leading-tight"
-              >
-                Setores que mais demandam regularização
-              </h2>
-            </div>
-
-            <ul
-              aria-label="Setores prioritários para AVCB"
-              className="flex flex-wrap gap-3"
-            >
-              {SETORES_PRIORITARIOS?.map((setor) => (
-                <li
-                  key={setor}
-                  className="inline-flex items-center text-sm font-semibold bg-white/5 border border-white/10 text-neutral-200 px-4 py-2 rounded-full"
-                >
-                  {setor}
+                  <ul className="flex flex-col gap-1" aria-label={`Especialidades de ${membro.nome}`}>
+                    {membro.especialidades.map((esp) => (
+                      <li key={esp} className="text-sm text-neutral-400">{esp}</li>
+                    ))}
+                  </ul>
                 </li>
               ))}
             </ul>
           </div>
         </section>
 
-        {/* ── FAQ ──────────────────────────────────────────────────────────── */}
+        {/* ── FAQ ───────────────────────────────────────────────────────── */}
         <section
-          aria-labelledby="faq-h2"
-          className="bg-white py-16 md:py-24"
+          aria-labelledby="faq-titulo"
+          className="bg-white py-20 md:py-28 border-t border-neutral-100"
         >
           <div className="container-site max-w-3xl">
-            <div className="mb-12">
-              <p className="text-xs font-semibold uppercase tracking-widest text-[#800000] mb-3">
-                Dúvidas frequentes
-              </p>
-              <h2
-                id="faq-h2"
-                className="font-heading text-2xl md:text-4xl font-bold text-neutral-900 leading-tight"
-              >
-                Perguntas sobre AVCB e CLCB
-              </h2>
-            </div>
-
-            <dl className="flex flex-col divide-y divide-neutral-100">
-              {FAQS.map((faq) => (
-                <div key={faq.pergunta} className="py-6">
-                  <dt className="font-heading text-lg font-bold text-neutral-900 mb-3">
-                    {faq.pergunta}
+            <p className="text-xs font-semibold text-[#800000] uppercase tracking-wider mb-3 font-mono">Perguntas frequentes</p>
+            <h2
+              id="faq-titulo"
+              className="font-heading font-bold text-neutral-900 text-3xl md:text-4xl leading-tight mb-10"
+            >
+              Tudo sobre AVCB e CLCB
+            </h2>
+            <dl className="flex flex-col divide-y divide-neutral-200">
+              {faqJsonLd.mainEntity.map((faq, i) => (
+                <div key={i} className="py-6">
+                  <dt className="font-heading font-semibold text-neutral-900 text-base md:text-lg mb-3">
+                    {faq.name}
                   </dt>
-                  <dd className="text-neutral-700 text-base leading-relaxed">
-                    {faq.resposta}
+                  <dd className="text-neutral-600 text-base leading-relaxed">
+                    {faq.acceptedAnswer.text}
                   </dd>
                 </div>
               ))}
@@ -524,32 +430,37 @@ export default function AVCBPage() {
           </div>
         </section>
 
-        {/* ── CTA final ────────────────────────────────────────────────────── */}
+        {/* ── CTA FINAL ─────────────────────────────────────────────────── */}
         <section
-          aria-labelledby="cta-h2"
-          className="bg-[#4f0101] py-16 md:py-20"
+          aria-labelledby="cta-titulo"
+          className="bg-neutral-950 py-20 md:py-28 border-t border-white/8"
         >
-          <div className="container-site text-center">
+          <div className="container-site text-center max-w-2xl">
             <h2
-              id="cta-h2"
-              className="font-heading text-2xl md:text-4xl font-extrabold text-white leading-tight mb-4"
+              id="cta-titulo"
+              className="font-heading font-extrabold text-white text-3xl md:text-4xl leading-tight mb-4"
             >
-              Precisa regularizar sua empresa junto ao Corpo de Bombeiros?
+              Precisa do AVCB ou CLCB?
             </h2>
-            <p className="text-white/80 text-lg leading-relaxed mb-10 max-w-2xl mx-auto">
-              Entre em contato agora e receba um diagnóstico gratuito sobre o
-              que sua edificação precisa para obter o AVCB ou CLCB.
+            <p className="text-neutral-400 text-lg mb-10">
+              Fale com nossos engenheiros e receba um diagnóstico gratuito sobre as exigências do Corpo de Bombeiros para o seu imóvel.
             </p>
-            <a
-              href={whatsappUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Falar com engenheiro sobre AVCB via WhatsApp"
-              className="inline-flex items-center gap-2 bg-white hover:bg-neutral-100 active:bg-neutral-200 text-[#800000] font-semibold px-8 py-4 rounded-lg transition-colors duration-200 text-lg"
-            >
-              Falar com um engenheiro
-              <span aria-hidden="true">→</span>
-            </a>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <a
+                href={whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-lg bg-[#800000] hover:bg-[#4f0101] text-white font-semibold text-base transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#800000] focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950"
+              >
+                Solicitar diagnóstico gratuito
+              </a>
+              <a
+                href={`mailto:${contato.email}`}
+                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-lg border border-white/15 text-neutral-200 hover:border-white/30 hover:text-white font-semibold text-base transition-colors duration-150"
+              >
+                {contato.email}
+              </a>
+            </div>
           </div>
         </section>
 
