@@ -8,12 +8,12 @@ import Link from "next/link";
 import { NavPrimaria } from "@/components/NavPrimaria";
 import {
   servicos,
-  equipe,
   clientes,
   contato,
   estadosAtuacao,
   getWhatsAppUrl,
 } from "@/data/servicos";
+import { equipe } from "@/data/equipe";
 
 // ─── Metadata ────────────────────────────────────────────────────────────────
 
@@ -77,38 +77,23 @@ const serviceJsonLd = {
     itemListElement: [
       {
         "@type": "Offer",
-        itemOffered: {
-          "@type": "Service",
-          name: "Projeto Arquitetônico adequado às normas da VISA",
-        },
+        itemOffered: { "@type": "Service", name: "Projeto Arquitetônico adequado às normas da VISA" },
       },
       {
         "@type": "Offer",
-        itemOffered: {
-          "@type": "Service",
-          name: "Projeto de Acessibilidade conforme NBR 9050",
-        },
+        itemOffered: { "@type": "Service", name: "Projeto de Acessibilidade conforme NBR 9050" },
       },
       {
         "@type": "Offer",
-        itemOffered: {
-          "@type": "Service",
-          name: "PGRS — Plano de Gerenciamento de Resíduos Sólidos",
-        },
+        itemOffered: { "@type": "Service", name: "PGRS — Plano de Gerenciamento de Resíduos Sólidos" },
       },
       {
         "@type": "Offer",
-        itemOffered: {
-          "@type": "Service",
-          name: "PGRSS — Plano de Gerenciamento de Resíduos de Serviços de Saúde",
-        },
+        itemOffered: { "@type": "Service", name: "PGRSS — Plano de Gerenciamento de Resíduos de Serviços de Saúde" },
       },
       {
         "@type": "Offer",
-        itemOffered: {
-          "@type": "Service",
-          name: "Acompanhamento até emissão do Alvará Sanitário",
-        },
+        itemOffered: { "@type": "Service", name: "Acompanhamento até emissão do Alvará Sanitário" },
       },
     ],
   },
@@ -270,7 +255,6 @@ export default function PageVigilanciaSanitaria() {
           aria-labelledby="hero-titulo"
           className="relative bg-neutral-950 overflow-hidden"
         >
-          {/* Gradiente cinemático teal */}
           <div
             className="absolute inset-0 pointer-events-none"
             style={{
@@ -285,10 +269,7 @@ export default function PageVigilanciaSanitaria() {
             <nav aria-label="Localização na página" className="mb-8">
               <ol className="flex items-center gap-2 text-xs text-neutral-500 font-mono">
                 <li>
-                  <Link
-                    href="/"
-                    className="hover:text-neutral-300 transition-colors"
-                  >
+                  <Link href="/" className="hover:text-neutral-300 transition-colors">
                     Início
                   </Link>
                 </li>
@@ -299,7 +280,7 @@ export default function PageVigilanciaSanitaria() {
               </ol>
             </nav>
 
-            {/* Badge de categoria */}
+            {/* Badge */}
             <div className="mb-5">
               <span
                 className="inline-flex items-center gap-2 px-3 py-1 rounded-full border text-xs font-semibold uppercase tracking-wider"
@@ -321,52 +302,28 @@ export default function PageVigilanciaSanitaria() {
                   className="font-heading font-extrabold text-white text-4xl md:text-5xl lg:text-6xl leading-tight tracking-tight mb-6"
                 >
                   Alvará Sanitário —{" "}
-                  <span style={{ color: "#7dd4d7" }}>
-                    regularização completa
-                  </span>{" "}
+                  <span style={{ color: "#7dd4d7" }}>regularização completa</span>{" "}
                   junto à Vigilância Sanitária
                 </h1>
                 <p className="text-neutral-300 text-lg leading-relaxed mb-8 max-w-xl">
                   {vigilancia.descricao}
                 </p>
 
-                {/* Estados */}
-                <div
-                  className="flex flex-wrap gap-2 mb-10"
-                  aria-label="Estados atendidos"
-                >
+                <div className="flex flex-wrap gap-2 mb-10" aria-label="Estados atendidos">
                   {estadosVigilancia.map((e) => (
                     <BadgeEstado key={e.sigla} sigla={e.sigla} nome={e.nome} />
                   ))}
                 </div>
 
-                {/* CTAs */}
+                {/* CTAs — hover via Tailwind, sem event handlers JS */}
                 <div className="flex flex-col sm:flex-row gap-3">
                   <a
                     href={whatsappUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-lg text-white font-semibold text-sm transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950"
-                    style={{
-                      backgroundColor: "#0d7377",
-                      // hover handled by CSS variable via data-service
-                    }}
-                    onMouseEnter={(e) =>
-                      ((e.currentTarget as HTMLAnchorElement).style.backgroundColor =
-                        "#095e62")
-                    }
-                    onMouseLeave={(e) =>
-                      ((e.currentTarget as HTMLAnchorElement).style.backgroundColor =
-                        "#0d7377")
-                    }
+                    className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-lg bg-[#0d7377] hover:bg-[#095e62] text-white font-semibold text-sm transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0d7377] focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950"
                   >
-                    <svg
-                      width="18"
-                      height="18"
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                      aria-hidden="true"
-                    >
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                       <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
                     </svg>
                     Solicitar orçamento
@@ -380,7 +337,7 @@ export default function PageVigilanciaSanitaria() {
                 </div>
               </div>
 
-              {/* Card lateral — órgãos */}
+              {/* Card lateral */}
               <aside
                 aria-label="Órgãos de Vigilância Sanitária atendidos"
                 className="hidden lg:flex flex-col gap-3 min-w-[220px]"
@@ -393,9 +350,7 @@ export default function PageVigilanciaSanitaria() {
                     key={orgao}
                     className="flex items-center justify-between gap-4 px-4 py-3 rounded-lg bg-neutral-900 border border-white/8"
                   >
-                    <span className="text-sm font-semibold text-white font-mono">
-                      {orgao}
-                    </span>
+                    <span className="text-sm font-semibold text-white font-mono">{orgao}</span>
                   </div>
                 ))}
                 <p className="text-xs font-semibold text-neutral-500 uppercase tracking-wider mt-3 mb-1">
@@ -406,9 +361,7 @@ export default function PageVigilanciaSanitaria() {
                     key={e.sigla}
                     className="flex items-center justify-between gap-4 px-4 py-3 rounded-lg bg-neutral-900 border border-white/8"
                   >
-                    <span className="text-sm font-semibold text-white font-mono">
-                      {e.sigla}
-                    </span>
+                    <span className="text-sm font-semibold text-white font-mono">{e.sigla}</span>
                     <span className="text-xs text-neutral-400">{e.nome}</span>
                   </div>
                 ))}
@@ -418,23 +371,14 @@ export default function PageVigilanciaSanitaria() {
         </section>
 
         {/* ── TRUST BAR ─────────────────────────────────────────────────── */}
-        <section
-          aria-label="Clientes atendidos"
-          className="bg-neutral-900 border-y border-white/8 py-6"
-        >
+        <section aria-label="Clientes atendidos" className="bg-neutral-900 border-y border-white/8 py-6">
           <div className="container-site">
             <p className="text-xs text-neutral-500 text-center uppercase tracking-widest mb-5 font-mono">
               Empresas que confiam na Central de Soluções
             </p>
-            <ul
-              className="flex flex-wrap items-center justify-center gap-x-10 gap-y-3"
-              aria-label="Lista de clientes"
-            >
+            <ul className="flex flex-wrap items-center justify-center gap-x-10 gap-y-3" aria-label="Lista de clientes">
               {clientesDestaque.map((c) => (
-                <li
-                  key={c.id}
-                  className="text-sm font-semibold text-neutral-400 hover:text-neutral-200 transition-colors duration-150 tracking-wide"
-                >
+                <li key={c.id} className="text-sm font-semibold text-neutral-400 hover:text-neutral-200 transition-colors duration-150 tracking-wide">
                   {c.nome}
                 </li>
               ))}
@@ -442,18 +386,12 @@ export default function PageVigilanciaSanitaria() {
           </div>
         </section>
 
-        {/* ── O QUE ESTÁ INCLUÍDO ────────────────────────────────────────── */}
-        <section
-          aria-labelledby="incluido-titulo"
-          className="bg-white py-20 md:py-28"
-        >
+        {/* ── ESCOPO ────────────────────────────────────────────────────── */}
+        <section aria-labelledby="incluido-titulo" className="bg-white py-20 md:py-28">
           <div className="container-site">
             <div className="grid md:grid-cols-[1fr_1fr] gap-16 items-start">
               <div>
-                <p
-                  className="text-xs font-semibold uppercase tracking-wider mb-3 font-mono"
-                  style={{ color: "#0d7377" }}
-                >
+                <p className="text-xs font-semibold uppercase tracking-wider mb-3 font-mono" style={{ color: "#0d7377" }}>
                   Escopo do serviço
                 </p>
                 <h2
@@ -463,10 +401,7 @@ export default function PageVigilanciaSanitaria() {
                   O que está incluído no serviço de Alvará Sanitário
                 </h2>
                 <p className="text-neutral-600 text-base leading-relaxed mb-8">
-                  A Central de Soluções assume o processo de ponta a ponta: do
-                  diagnóstico inicial à entrega do Alvará Sanitário. Elaboramos
-                  toda a documentação exigida pela VISA e acompanhamos o
-                  processo junto ao órgão competente.
+                  A Central de Soluções assume o processo de ponta a ponta: do diagnóstico inicial à entrega do Alvará Sanitário. Elaboramos toda a documentação exigida pela VISA e acompanhamos o processo junto ao órgão competente.
                 </p>
                 <ul className="flex flex-col gap-4" aria-label="Itens incluídos">
                   {vigilancia.itens.map((item) => (
@@ -478,15 +413,11 @@ export default function PageVigilanciaSanitaria() {
                 </ul>
               </div>
 
-              {/* Normas e setores */}
               <div>
                 <p className="text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-3 font-mono">
                   Setores prioritários
                 </p>
-                <ul
-                  className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-8"
-                  aria-label="Setores atendidos"
-                >
+                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-8" aria-label="Setores atendidos">
                   {[
                     "Clínicas médicas e odontológicas",
                     "Laboratórios de análises",
@@ -507,7 +438,6 @@ export default function PageVigilanciaSanitaria() {
                   ))}
                 </ul>
 
-                {/* Normas */}
                 {vigilancia.normaBase && (
                   <div className="p-5 rounded-xl bg-neutral-900 border border-white/10">
                     <p className="text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-3 font-mono">
@@ -515,12 +445,7 @@ export default function PageVigilanciaSanitaria() {
                     </p>
                     <ul className="flex flex-col gap-2">
                       {vigilancia.normaBase.map((norma) => (
-                        <li
-                          key={norma}
-                          className="text-sm text-neutral-200 font-mono"
-                        >
-                          {norma}
-                        </li>
+                        <li key={norma} className="text-sm text-neutral-200 font-mono">{norma}</li>
                       ))}
                     </ul>
                   </div>
@@ -530,16 +455,10 @@ export default function PageVigilanciaSanitaria() {
           </div>
         </section>
 
-        {/* ── EQUIPE TÉCNICA (E-E-A-T) ──────────────────────────────────── */}
-        <section
-          aria-labelledby="equipe-titulo"
-          className="bg-neutral-950 py-20 md:py-28 border-t border-white/8"
-        >
+        {/* ── EQUIPE E-E-A-T ────────────────────────────────────────────── */}
+        <section aria-labelledby="equipe-titulo" className="bg-neutral-950 py-20 md:py-28 border-t border-white/8">
           <div className="container-site">
-            <p
-              className="text-xs font-semibold uppercase tracking-wider mb-3 font-mono"
-              style={{ color: "#0d7377" }}
-            >
+            <p className="text-xs font-semibold uppercase tracking-wider mb-3 font-mono" style={{ color: "#0d7377" }}>
               Responsabilidade técnica real
             </p>
             <h2
@@ -548,34 +467,21 @@ export default function PageVigilanciaSanitaria() {
             >
               Profissionais que assinam os projetos e ARTs
             </h2>
-            <ul
-              className="grid sm:grid-cols-2 gap-6"
-              aria-label="Equipe técnica responsável"
-            >
+            <ul className="grid sm:grid-cols-2 gap-6" aria-label="Equipe técnica responsável">
               {equipe.map((membro) => (
                 <li
-                  key={membro.id}
+                  key={membro.slug}
                   className="flex flex-col gap-3 p-6 rounded-xl bg-neutral-900 border border-white/10"
                 >
                   <div>
-                    <p className="font-heading font-semibold text-white text-lg">
-                      {membro.nome}
-                    </p>
-                    <p
-                      className="text-sm mt-0.5"
-                      style={{ color: "#7dd4d7" }}
-                    >
-                      {membro.formacao}
+                    <p className="font-heading font-semibold text-white text-lg">{membro.nome}</p>
+                    <p className="text-sm mt-0.5" style={{ color: "#7dd4d7" }}>
+                      {membro.tituloPrincipal}
                     </p>
                   </div>
-                  <ul
-                    className="flex flex-col gap-1"
-                    aria-label={`Especialidades de ${membro.nome}`}
-                  >
-                    {membro.especialidades.map((esp) => (
-                      <li key={esp} className="text-sm text-neutral-400">
-                        {esp}
-                      </li>
+                  <ul className="flex flex-col gap-1" aria-label={`Especializações de ${membro.nome}`}>
+                    {membro.especializacoes.map((esp) => (
+                      <li key={esp} className="text-sm text-neutral-400">{esp}</li>
                     ))}
                   </ul>
                 </li>
@@ -585,15 +491,9 @@ export default function PageVigilanciaSanitaria() {
         </section>
 
         {/* ── FAQ ───────────────────────────────────────────────────────── */}
-        <section
-          aria-labelledby="faq-titulo"
-          className="bg-white py-20 md:py-28 border-t border-neutral-100"
-        >
+        <section aria-labelledby="faq-titulo" className="bg-white py-20 md:py-28 border-t border-neutral-100">
           <div className="container-site max-w-3xl">
-            <p
-              className="text-xs font-semibold uppercase tracking-wider mb-3 font-mono"
-              style={{ color: "#0d7377" }}
-            >
+            <p className="text-xs font-semibold uppercase tracking-wider mb-3 font-mono" style={{ color: "#0d7377" }}>
               Perguntas frequentes
             </p>
             <h2
@@ -618,10 +518,7 @@ export default function PageVigilanciaSanitaria() {
         </section>
 
         {/* ── CTA FINAL ─────────────────────────────────────────────────── */}
-        <section
-          aria-labelledby="cta-titulo"
-          className="bg-neutral-950 py-20 md:py-28 border-t border-white/8"
-        >
+        <section aria-labelledby="cta-titulo" className="bg-neutral-950 py-20 md:py-28 border-t border-white/8">
           <div className="container-site text-center max-w-2xl">
             <h2
               id="cta-titulo"
@@ -630,24 +527,14 @@ export default function PageVigilanciaSanitaria() {
               Precisa do Alvará Sanitário?
             </h2>
             <p className="text-neutral-400 text-lg mb-10">
-              Fale com nossa equipe e receba um diagnóstico gratuito sobre as
-              exigências da Vigilância Sanitária para o seu estabelecimento.
+              Fale com nossa equipe e receba um diagnóstico gratuito sobre as exigências da Vigilância Sanitária para o seu estabelecimento.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <a
                 href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-lg text-white font-semibold text-base transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950"
-                style={{ backgroundColor: "#0d7377" }}
-                onMouseEnter={(e) =>
-                  ((e.currentTarget as HTMLAnchorElement).style.backgroundColor =
-                    "#095e62")
-                }
-                onMouseLeave={(e) =>
-                  ((e.currentTarget as HTMLAnchorElement).style.backgroundColor =
-                    "#0d7377")
-                }
+                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-lg bg-[#0d7377] hover:bg-[#095e62] text-white font-semibold text-base transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0d7377] focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950"
               >
                 Solicitar diagnóstico gratuito
               </a>
