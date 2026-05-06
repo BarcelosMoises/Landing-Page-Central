@@ -1,3 +1,5 @@
+"use client";
+
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -337,23 +339,40 @@ export default function HomePage() {
 
         {/* ─────────────────────────────────────────────────────────────────────
             4. TABS DE SERVIÇOS
+            id="servicos" — âncora usada pela NavPrimaria e pelos pilares do hero.
             Client Component isolado.
             Recebe arrays serializáveis (string | boolean | string[]);
             page.tsx permanece Server Component puro.
         ───────────────────────────────────────────────────────────────────── */}
-        <ServicosTabs
-          legalizacao={servicosLegalizacao}
-          projetos={servicosProjetos}
-          laudos={servicosLaudos}
-        />
+        <section id="servicos" aria-label="Serviços da Central de Soluções">
+          <ServicosTabs
+            legalizacao={servicosLegalizacao}
+            projetos={servicosProjetos}
+            laudos={servicosLaudos}
+          />
+        </section>
 
         {/* ─────────────────────────────────────────────────────────────────────
-            5+ SEÇÕES DE SUPORTE — ordem inalterada
+            5. SETORES ATENDIDOS
+            id="setores" — âncora usada pela NavPrimaria.
         ───────────────────────────────────────────────────────────────────── */}
-        <SetoresAtendidos />
+        <section id="setores" aria-label="Setores atendidos pela Central de Soluções">
+          <SetoresAtendidos />
+        </section>
+
         <MapaAtuacao />
-        <EquipeTecnica />
+
+        {/* ─────────────────────────────────────────────────────────────────────
+            7. EQUIPE TÉCNICA
+            id="equipe" — âncora usada pela NavPrimaria.
+        ───────────────────────────────────────────────────────────────────── */}
+        <section id="equipe" aria-label="Equipe técnica da Central de Soluções">
+          <EquipeTecnica />
+        </section>
+
         <Glossario />
+
+        {/* FormularioContato já declara id="contato" internamente */}
         <FormularioContato />
       </main>
     </>
