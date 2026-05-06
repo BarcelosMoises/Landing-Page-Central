@@ -125,7 +125,8 @@ const faqJsonLd = {
       name: "Qual a diferença entre VISA Municipal e ANVISA?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "A ANVISA (Âgencia Nacional de Vigilância Sanitária) é o órgão federal que regula medicamentos, alimentos industrializados, cosméticos e equipamentos médicos em nível nacional. A VISA Municipal é o órgão local responsável pela fiscalização de estabelecimentos comerciais, de serviços e de saúde no âmbito do município. Na maioria dos casos, o Alvará Sanitário é emitido pela VISA Municipal, com a ANVISA atuando em registros federais específicos.",
+        // FIX (Problema 4): typo corrigido — "Âgencia" → "Agência"
+        text: "A ANVISA (Agência Nacional de Vigilância Sanitária) é o órgão federal que regula medicamentos, alimentos industrializados, cosméticos e equipamentos médicos em nível nacional. A VISA Municipal é o órgão local responsável pela fiscalização de estabelecimentos comerciais, de serviços e de saúde no âmbito do município. Na maioria dos casos, o Alvará Sanitário é emitido pela VISA Municipal, com a ANVISA atuando em registros federais específicos.",
       },
     },
     {
