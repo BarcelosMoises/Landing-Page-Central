@@ -376,6 +376,69 @@ Border radius padrão: rounded-lg (8px) | rounded-xl (12px) para cards
 </section>
 ```
 
+### ServicosTabs
+
+> Componente interativo principal da homepage. Único Client Component chamado diretamente por `app/page.tsx`.
+
+#### Estrutura das tabs
+
+```tsx
+// Barra de tabs
+<div role="tablist" aria-label="Categorias de serviço" className="flex gap-0 border-b border-neutral-200">
+  {TABS.map((tab) => (
+    <button
+      key={tab.id}
+      role="tab"
+      aria-selected={tabAtiva === tab.id}
+      aria-controls={`painel-${tab.id}`}
+      onClick={() => setTabAtiva(tab.id)}
+      className={
+        tabAtiva === tab.id
+          ? "pb-3 px-5 text-sm font-semibold border-b-2 border-[#800000] text-[#800000] -mb-px transition-colors duration-200"
+          : "pb-3 px-5 text-sm text-neutral-500 hover:text-neutral-800 transition-colors duration-200"
+      }
+    >
+      {tab.label}
+    </button>
+  ))}
+</div>
+
+// Painéis de conteúdo — todos renderizados no DOM, tabs inativas ocultas via CSS
+{TABS.map((tab) => (
+  <div
+    key={tab.id}
+    id={`painel-${tab.id}`}
+    role="tabpanel"
+    aria-labelledby={`tab-${tab.id}`}
+    className={tabAtiva === tab.id ? "" : "hidden"}  // CSS display:none — Googlebot indexa normalmente
+  >
+    {/* cards de serviço */}
+  </div>
+))}
+```
+
+#### Regras de implementação
+
+- `role="tablist"` / `role="tab"` / `role="tabpanel"` — ARIA obrigatório para acessibilidade
+- `aria-selected` no tab ativo, `aria-controls` apontando para o painel correspondente
+- Tab ativa: `border-b-2 border-[#800000] text-[#800000] font-semibold -mb-px`
+- Tab inativa: `text-neutral-500 hover:text-neutral-800 transition-colors duration-200`
+- Barra separadora: `border-b border-neutral-200` como linha de base das tabs
+- Transição: `transition-colors duration-200` em todos os itens de tab
+- **Nunca** usar `display: none` via JavaScript inline — usar `className="hidden"` do Tailwind
+- Cards dos serviços usam `var(--color-service-accent, #800000)` para accent
+- Cada card linka para `servico.pathRota` — nunca hardcodar URLs
+
+#### Expansão futura: cor por tab
+
+Quando o design evoluir para mostrar a cor do serviço por tab ativa, envolver o painel em:
+```tsx
+<section data-service={tabAtiva === "legalizacao" ? "avcb" : tabAtiva === "laudos" ? "laudos" : "avcb"}>
+  {/* cards */}
+</section>
+```
+O CSS variable do `globals.css` ativará automaticamente a cor correta.
+
 ### Botões
 
 ```tsx
@@ -524,6 +587,7 @@ Border radius padrão: rounded-lg (8px) | rounded-xl (12px) para cards
 | Logos TrustBar | `grayscale(1) → grayscale(0)` + `opacity 0.5 → 1` | `250ms` | `ease` |
 | Números de métricas | Contador animado ao entrar no viewport | `1200ms` | `ease-out` |
 | NavPrimaria ao scroll | `bg transparent → bg #111827/95 backdrop-blur` | `300ms` | `ease` |
+| Troca de tab (ServicosTabs) | `transition-colors duration-200` na borda/texto do tab | `200ms` | `ease` |
 
 ```tsx
 // Exemplo de entrada com respeito a prefers-reduced-motion
@@ -564,3 +628,6 @@ const animation = prefersReduced ? {} : { opacity: [0, 1], transform: ["translat
 - [ ] `<CrosshairDecor />` presente em todas as seções escuras
 - [ ] Fotos reais do portfólio usadas (sem stock photos genéricos)
 - [ ] Dados da equipe técnica completos (nome completo + especialidades exatas)
+- [ ] ServicosTabs: todos os 3 painéis renderizados no DOM (verificar no DevTools → Elements)
+- [ ] ServicosTabs: `role="tablist"` / `role="tab"` / `role="tabpanel"` presentes
+- [ ] ServicosTabs: tab ativa com `aria-selected="true"` e foco visível via teclado

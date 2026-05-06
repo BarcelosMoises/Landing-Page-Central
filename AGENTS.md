@@ -212,6 +212,39 @@ app/
 
 ---
 
+## Componentes da Homepage
+
+### ServicosTabs
+- **Arquivo:** `components/ServicosTabs.tsx`
+- **Tipo:** Client Component (`"use client"`) — único CC chamado diretamente pela homepage
+- **O quê:** Tabs interativas com 3 categorias de serviço (Legalização, Projetos Técnicos, Laudos Técnicos), exibindo cards de serviço com link para a subpágina correspondente
+- **Props:**
+  ```tsx
+  interface ServicosTabsProps {
+    legalizacao: readonly Servico[];
+    projetos:    readonly Servico[];
+    laudos:      readonly Servico[];
+  }
+  ```
+- **Fluxo de dados:** `app/page.tsx` (Server Component) chama `getServicosPorCategoria()` e passa os arrays como props; `ServicosTabs` recebe dados serializáveis (apenas `string`, `boolean` e `readonly string[]`) — sem `Date`, `Map` ou `Function`.
+- **Estado:** `useState<"legalizacao" | "projetos" | "laudos">("legalizacao")` — tab ativa
+- **SEO:** todas as 3 tabs renderizam no DOM; as tabs inativas usam `className="hidden"` (CSS `display: none`) — o Googlebot indexa o conteúdo normalmente
+- **Cor:** todos os cards usam `var(--color-service-accent, #800000)` como accent — a homepage não define `data-service`, portanto o fallback `#800000` é aplicado
+- **Expansão futura:** mapear tab → `data-service` no `<section>` wrapper para ativar a cor do serviço correspondente por tab
+
+#### Padrão visual das tabs
+- Tab ativa: `border-b-2 border-[#800000] text-[#800000] font-semibold`
+- Tab inativa: `text-neutral-500 hover:text-neutral-800 transition-colors duration-200`
+- Barra base das tabs: `border-b border-neutral-200` como linha de referência
+- Transição de seleção: `transition-colors duration-200`
+
+### ServicosGrid *(aposentado)*
+- **Arquivo:** `components/ServicosGrid.tsx` — **mantido como referência, não usar**
+- Substituído por `ServicosTabs` no plano Oceânica (Maio 2026)
+- Não importar em nenhuma página — arquivo preservado para consulta histórica
+
+---
+
 ## Arquivos de Contexto do Projeto
 
 | Arquivo | Conteúdo |
@@ -222,3 +255,4 @@ app/
 | `data/servicos.ts` | Dados estruturados dos serviços para uso nos componentes |
 | `data/equipe.ts` | Dados tipados da equipe técnica — fonte única de verdade |
 | `components/CrosshairDecor.tsx` | SVG decorativo da retícula de engenharia do cliente |
+| `components/ServicosTabs.tsx` | Tabs interativas de serviços — único Client Component da homepage |
