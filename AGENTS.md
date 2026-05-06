@@ -252,10 +252,36 @@ app/
 | `bg-neutral-900` / `#111827` como fundo da nav | `bg-[#1a0000]` — vinho escuro da marca |
 | `bg-[#111827]` / `bg-neutral-900` como fundo de seção de conteúdo | `bg-[#1a0000]` — único fundo escuro de seção do site |
 | `text-neutral-400` sobre fundo `#1a0000` | `style={{ color: "#c4a8a8" }}` — cinza rosado quente, contraste ≈ 6.5:1 |
+| Item em `NAV_ITENS` sem `id` declarado na seção correspondente em `app/page.tsx` | Declarar `id` na seção antes de adicionar o item na nav |
+| Categorias de serviço (`legalizacao`, `projetos`, `laudos`) como itens diretos de nav | Âncoras de seção estrutural: `servicos` · `setores` · `equipe` · `contato` |
 
 ---
 
 ## Componentes da Homepage
+
+### NavPrimaria
+- **Arquivo:** `components/NavPrimaria.tsx`
+- **Tipo:** Client Component (`"use client"`) — necessário para scroll spy, estado de scroll e menu mobile
+- **O quê:** Header fixo com logo, links de navegação âncora, CTA WhatsApp e menu mobile hamburger
+- **IDs vinculados (homepage):** `servicos` · `setores` · `equipe` · `contato`
+  - Esses IDs são declarados como wrappers `<section id="...">` em `app/page.tsx`
+  - O scroll spy (`IntersectionObserver`) observa exatamente esses 4 IDs
+  - **Regra de sincronização:** `NAV_ITENS` e os `id` das seções em `app/page.tsx` devem estar sempre em paridade — alterar um exige alterar o outro
+- **Comportamento em subpáginas:** `isHomepage === false` → itens renderizam como `<Link href="/#id">` em vez de `<button onClick={scroll}>`
+- **Estado de scroll:** transparente → `bg-[#1a0000]/95 backdrop-blur-sm` ao ultrapassar 40px de scroll
+- **Indicador de seção ativa:** `after:` pseudo-elemento underline em `#800000` no item ativo
+- **Nunca:** adicionar item em `NAV_ITENS` que aponte para um `id` inexistente no DOM
+
+#### Estrutura de NAV_ITENS
+```ts
+// IDs devem ter seção correspondente em app/page.tsx com id="..."
+const NAV_ITENS = [
+  { id: "servicos", label: "Serviços", href: "/#servicos" },
+  { id: "setores",  label: "Setores",  href: "/#setores"  },
+  { id: "equipe",   label: "Equipe",   href: "/#equipe"   },
+  { id: "contato",  label: "Contato",  href: "/#contato"  },
+] as const;
+```
 
 ### ServicosTabs
 - **Arquivo:** `components/ServicosTabs.tsx`
@@ -298,4 +324,5 @@ app/
 | `data/servicos.ts` | Dados estruturados dos serviços para uso nos componentes |
 | `data/equipe.ts` | Dados tipados da equipe técnica — fonte única de verdade |
 | `components/CrosshairDecor.tsx` | SVG decorativo da retícula de engenharia do cliente |
+| `components/NavPrimaria.tsx` | Header fixo com scroll spy — IDs vinculados: servicos · setores · equipe · contato |
 | `components/ServicosTabs.tsx` | Tabs interativas de serviços — único Client Component da homepage |
