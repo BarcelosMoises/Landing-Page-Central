@@ -21,10 +21,38 @@
 |---|---|---|
 | `neutral-50` | `#f5f5f5` | Background de seções claras |
 | `neutral-100` | `#e8e8e8` | Bordas sutis, divisores |
-| `neutral-400` | `#9ca3af` | Textos secundários, placeholders |
+| `neutral-400` | `#9ca3af` | Textos secundários sobre fundo **claro** (nunca sobre #1a0000) |
 | `neutral-700` | `#374151` | Textos de corpo |
 | `neutral-900` | `#111827` | Headings, textos de alta ênfase |
 | `brand-dark` | `#1a0000` | Nav ao scroll, menus mobile — vinho escuro cinemático |
+| `brand-dark-deep` | `#1a0000` | Seções escuras (SetoresAtendidos, FormularioContato, Footer, Glossário) |
+
+> **Atenção:** `neutral-400` (#9ca3af) não deve ser usado como texto sobre `#1a0000`.
+> O tom azul-acinzentado cria disssonância de temperatura sobre o vinho escuro.
+> Usar os tokens quentes abaixo em todos os fundos `#1a0000`.
+
+### Tokens de Texto sobre Fundos Escuros (`#1a0000`)
+
+| Token | Hex | Contraste sobre `#1a0000` | Uso |
+|---|---|---|---|
+| `text-warm-secondary` | `#c4a8a8` | ~6.3:1 ✓ WCAG AA | Parágrafos, descrições, links secundários |
+| `text-warm-primary` | `#e0c8c8` | ~10.2:1 ✓ WCAG AAA | Links de contato, nomes de serviço |
+| `text-white` | `#ffffff` | ~18.1:1 ✓ WCAG AAA | Headings, rótulos em caps |
+| `text-white/70` | `rgba(255,255,255,0.70)` | ~10.4:1 ✓ WCAG AAA | Labels de categoria (uppercase 12px) |
+
+**Implementação React:** não existem classes Tailwind para #c4a8a8/#e0c8c8. Usar `style={{ color: "#c4a8a8" }}` ou `style={{ color: "#e0c8c8" }}` diretamente no elemento.
+
+### Hierarquia dos Fundos Escuros
+
+| Posição | Componente | Fundo | Observação |
+|---|---|---|---|
+| Nav ao scroll | `NavPrimaria` | `#1a0000/95` + backdrop-blur | Sem texto secundário |
+| Menu mobile | `NavPrimaria` (dropdown) | `#1a0000/98` | |
+| Seção de setores | `SetoresAtendidos` | `#1a0000` | Texto: #c4a8a8 |
+| Formulário/contato | `FormularioContato` | `#1a0000` | Texto: #c4a8a8 |
+| Rodapé | `Footer` | `#1a0000` | Texto: #c4a8a8 / #e0c8c8 |
+| Glossário/Normas | `GlossarioSecao` (futuro) | `#1a0000` | Texto: #c4a8a8 |
+| Hero cinemtico | `HeroSection` | `#0a0a0a` + overlay vinho | Fundo mais escuro que o vinho |
 
 ### Cores de Sistema
 
@@ -265,7 +293,7 @@ export function CrosshairDecor({ className = "" }: { className?: string }) {
 }
 ```
 
-- **Uso:** `<CrosshairDecor />` dentro de qualquer `<section className="relative">` com fundo escuro
+- **Uso:** `<CrosshairDecor />` dentro de qualquer `<section className="relative">` com fundo escuro (`bg-[#1a0000]`, `bg-[#0a0a0a]`, hero)
 - **Opacidade:** `0.08` sobre fundo escuro | `0.05` sobre fundo branco
 - **Cor:** `text-white` sobre escuro | `text-neutral-900` sobre claro
 
@@ -290,7 +318,7 @@ export function CrosshairDecor({ className = "" }: { className?: string }) {
 | SetoresAtendidos — Depósito | Interior de galpão logístico com pallets e prateleiras | `/images/portfolio/setor-deposito.jpg` |
 | SetoresAtendidos — Telecom | Antena parabólica gigante, céu azul | `/images/portfolio/setor-telecom.jpg` |
 | SetoresAtendidos — Tecnologia | Racks com cabos vermelhos em data center | `/images/portfolio/setor-tecnologia.jpg` |
-| SetoresAtendidos — Indústria | Plataforma elevatória em galpão / sistema de tubulações | `/images/portfolio/setor-industria.jpg` |
+| SetoresAtendidos — Indústria | Plataforma elevatria em galpão / sistema de tubulações | `/images/portfolio/setor-industria.jpg` |
 | SetoresAtendidos — Solar | Painéis fotovoltaicos em campo aberto | `/images/portfolio/setor-solar.jpg` |
 | SetoresAtendidos — Combustível | Cobertura de posto de combustível | `/images/portfolio/setor-combustivel.jpg` |
 | EquipeTecnica — Durval | Foto com capacete branco, braços cruzados, fundo interno | `/images/equipe/durval.jpg` |
@@ -555,7 +583,8 @@ O CSS variable do `globals.css` ativará automaticamente a cor correta.
 
 ### Seção de Normas / Glossário
 
-- **Background:** `bg-[#1a0000]` (vinho escuro da marca — fundo da nav ao scroll)
+- **Background:** `bg-[#1a0000]` (vinho escuro da marca)
+- **Texto secundário:** `style={{ color: "#c4a8a8" }}` — nunca `text-neutral-400` sobre `#1a0000`
 - **Layout:** grid 2 ou 3 colunas em desktop
 - **Crosshair:** inserir `<CrosshairDecor />` no canto inferior direito da seção
 - **Nunca:** glassmorphism — texto deve estar no DOM com contraste mínimo 4.5:1
@@ -667,3 +696,6 @@ const animation = prefersReduced ? {} : { opacity: [0, 1], transform: ["translat
 - [ ] Nenhum `<a>` exibe azul do navegador — coberto por `a { color: inherit }` no `globals.css`
 - [ ] Nenhum `ring-*` ou `outline` azul visível — coberto por `ringColor.DEFAULT` e `:focus-visible` globais
 - [ ] NavPrimaria ao scroll usa `bg-[#1a0000]/95` (vinho escuro) — nunca `bg-neutral-900`
+- [ ] Seções escuras (`SetoresAtendidos`, `FormularioContato`, `Footer`, Glossário) usam `bg-[#1a0000]` — nunca `bg-neutral-900` ou `bg-[#111827]`
+- [ ] Texto secundário sobre `#1a0000` usa `style={{ color: "#c4a8a8" }}` — nunca `text-neutral-400`
+- [ ] Links de contato sobre `#1a0000` usam `style={{ color: "#e0c8c8" }}` — nunca `text-neutral-300`
