@@ -37,7 +37,7 @@ import Link from "next/link";
 import { type Servico } from "@/data/servicos";
 import { CrosshairDecor } from "@/components/CrosshairDecor";
 
-// ─── Tipos ────────────────────────────────────────────────────────────────────
+// ─── Tipos ───────────────────────────────────────────────────────────────────────────────
 
 type TabId = "legalizacao" | "projetos" | "laudos";
 
@@ -47,7 +47,7 @@ export interface ServicosTabsProps {
   laudos: readonly Servico[];
 }
 
-// ─── Mapa de ícones ────────────────────────────────────────────────────────────
+// ─── Mapa de ícones ──────────────────────────────────────────────────────────────────────────
 
 type IconComponent = React.ComponentType<LucideProps>;
 
@@ -64,7 +64,7 @@ const ICON_MAP: Record<string, IconComponent> = {
   Ruler,
 };
 
-// ─── Configuração das tabs ─────────────────────────────────────────────────────
+// ─── Configuração das tabs ───────────────────────────────────────────────────────────────────
 
 const TABS: { id: TabId; label: string; ariaLabel: string }[] = [
   {
@@ -84,7 +84,7 @@ const TABS: { id: TabId; label: string; ariaLabel: string }[] = [
   },
 ];
 
-// ─── Variantes de animação ─────────────────────────────────────────────────────
+// ─── Variantes de animação ───────────────────────────────────────────────────────────────────
 // motion/react respeita prefers-reduced-motion automaticamente
 
 const containerVariants = {
@@ -106,7 +106,7 @@ const itemVariants = {
   },
 };
 
-// ─── Sub-componente: card de serviço ──────────────────────────────────────────
+// ─── Sub-componente: card de serviço ──────────────────────────────────────────────────────
 
 function ServicoCard({ servico }: { servico: Servico }) {
   const Icon = ICON_MAP[servico.iconeLucide] ?? ShieldAlert;
@@ -161,11 +161,13 @@ function ServicoCard({ servico }: { servico: Servico }) {
           {cobertura}
         </span>
 
-        {/* Link para subpágina do serviço */}
+        {/* FIX (Problema 2a): adicionado focus-visible:ring-[#800000] explícito.
+            Antes: focus-visible:ring-2 focus-visible:ring-offset-2 sem cor
+            → herdava --tw-ring-color azul do Preflight do Tailwind v3. */}
         <Link
           href={servico.pathRota}
           style={{ color: "var(--color-service-accent, #800000)" }}
-          className="text-sm font-semibold hover:underline underline-offset-2 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+          className="text-sm font-semibold hover:underline underline-offset-2 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#800000] focus-visible:ring-offset-2"
           aria-label={`Saiba mais sobre ${servico.nome}`}
         >
           Saiba mais →
@@ -175,7 +177,7 @@ function ServicoCard({ servico }: { servico: Servico }) {
   );
 }
 
-// ─── Sub-componente: painel de conteúdo da tab ────────────────────────────────
+// ─── Sub-componente: painel de conteúdo da tab ────────────────────────────────────────────
 
 function TabPanel({
   id,
@@ -223,7 +225,7 @@ function TabPanel({
   );
 }
 
-// ─── Componente principal ─────────────────────────────────────────────────────
+// ─── Componente principal ────────────────────────────────────────────────────────────────────────
 
 export function ServicosTabs({
   legalizacao,
@@ -318,7 +320,10 @@ export function ServicosTabs({
                     // Layout e tipografia
                     "relative px-6 py-4 text-base font-semibold whitespace-nowrap",
                     "border-b-2 -mb-px transition-colors duration-200",
-                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-1",
+                    // FIX (Problema 2b): adicionado focus-visible:ring-[#800000] explícito.
+                    // Antes: focus-visible:ring-2 focus-visible:ring-offset-1 sem cor
+                    // → herdava --tw-ring-color azul do Preflight do Tailwind v3.
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#800000] focus-visible:ring-offset-1",
                     // Cor condicional
                     isActive
                       ? /* cores aplicadas via style= inline acima */
