@@ -119,6 +119,7 @@ app/
 - **Arquivo:** `components/CrosshairDecor.tsx`
 - **O quê:** SVG inline da retícula de engenharia presente em todos os posts do Instagram do cliente
 - **Quando usar:** em toda `<section className="relative">` com fundo escuro (`bg-[#1a0000]`, `bg-[#0a0a0a]`, hero)
+- **Fundos escuros que recebem CrosshairDecor:** `bg-[#1a0000]` (nav, SetoresAtendidos, FormularioContato, Footer, Glossário/Normas) · `bg-[#0a0a0a]` (hero) · qualquer seção com overlay escuro
 - **Props:** `corner` (bottom-right | bottom-left | top-right | top-left), `variant` (light | dark), `size` (sm | md | lg)
 - **Padrão:** `<CrosshairDecor />` — já posicionado no canto inferior direito
 - **Nunca** escalar ou colorir manualmente — usar as props fornecidas
@@ -172,9 +173,40 @@ app/
 - **Cor primária global:** `#800000` (vinho) — homepage, nav, footer
 - **Fundo da nav ao scroll:** `#1a0000` (vinho escuro cinemático) — `bg-[#1a0000]/95`
 - **Fundo do menu mobile:** `#1a0000` (vinho escuro cinemático) — `bg-[#1a0000]/98`
+- **Fundo de seções escuras de conteúdo:** `#1a0000` — SetoresAtendidos, FormularioContato, Footer, Glossário/Normas
+- **Token de texto sobre `#1a0000` (secundário):** `#c4a8a8` — cinza rosado quente, contraste ≈ 6.5:1 ✓ WCAG AA
+- **Token de texto sobre `#1a0000` (primário suave):** `#e0c8c8` — bege rosado, contraste ≈ 11:1 ✓ WCAG AAA
 - **Accent por serviço:** ver tabela acima — sempre via CSS variable
 - **Estilo:** Cinemático industrial — sóbrio, técnico, confiável
 - **Nunca usar:** glassmorphism em conteúdo indexável pelo Google
+
+---
+
+## Hierarquia dos Fundos Escuros
+
+> Regra de temperatura de cor: todos os fundos escuros do site são **quentes** (família vinho/preto-quente).
+> O cinza azulado `#111827` (Tailwind `neutral-900`) nunca deve aparecer como fundo de seção ou nav.
+
+| Papel | Valor | Componentes |
+|---|---|---|
+| Fundo hero / mais escuro | `#0a0a0a` | Hero section, seções cinemáticas de impacto máximo |
+| Fundo padrão de seções escuras | `#1a0000` | SetoresAtendidos, FormularioContato, Footer, Glossário/Normas |
+| Nav ao scroll (95% opacidade) | `bg-[#1a0000]/95` + `backdrop-blur` | NavPrimaria (estado scrolled) |
+| Nav menu mobile (98% opacidade) | `bg-[#1a0000]/98` | NavPrimaria (dropdown mobile) |
+| Overlay de hero sobre foto | `from-[#4f0101]/85 to-[#0a0000]/60` | Hero section gradient |
+
+### Textos sobre fundos `#1a0000`
+
+| Papel | Classe / Valor | Contraste |
+|---|---|---|
+| Texto principal | `text-white` | ~16:1 ✓ AAA |
+| Texto secundário / subtítulos | `style={{ color: "#c4a8a8" }}` | ≈ 6.5:1 ✓ AA |
+| Texto terciário / labels | `text-white/70` | ≈ 10.7:1 ✓ AAA |
+| Links e e-mails secundários | `style={{ color: "#c4a8a8" }}` | ≈ 6.5:1 ✓ AA |
+| Cor primária suave (nomes, destaques) | `style={{ color: "#e0c8c8" }}` | ≈ 11:1 ✓ AAA |
+
+> **Nunca usar** `text-neutral-400` (`#9ca3af`) sobre `#1a0000` — o tom azulado-acinzentado cria
+> dissonância de temperatura de cor com o fundo vinho escuro. Usar sempre `#c4a8a8` ou `#e0c8c8`.
 
 ---
 
@@ -218,6 +250,8 @@ app/
 | `focus-visible:ring-2` sem cor explícita (usa azul padrão do Tailwind) | `focus-visible:ring-[#800000]` ou `focus-visible:ring-primary` |
 | `outline` / `ring` azul em qualquer elemento | Foco sempre em `#800000` — coberto globalmente pelo `globals.css` |
 | `bg-neutral-900` / `#111827` como fundo da nav | `bg-[#1a0000]` — vinho escuro da marca |
+| `bg-[#111827]` / `bg-neutral-900` como fundo de seção de conteúdo | `bg-[#1a0000]` — único fundo escuro de seção do site |
+| `text-neutral-400` sobre fundo `#1a0000` | `style={{ color: "#c4a8a8" }}` — cinza rosado quente, contraste ≈ 6.5:1 |
 
 ---
 
