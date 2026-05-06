@@ -76,8 +76,12 @@ function SetorCard({ setorId, nome }: SetorCardProps) {
     >
       {/* Ícone + nome */}
       <div className="flex items-center gap-3">
+        {/*
+          Opacity aumentada de /30→/50 e borda de /40→/60 para manter
+          visibilidade do ícone sobre o fundo vinho escuro (#1a0000).
+        */}
         <div
-          className="w-9 h-9 bg-[#800000]/30 border border-[#800000]/40 rounded-lg flex items-center justify-center flex-shrink-0"
+          className="w-9 h-9 bg-[#800000]/50 border border-[#800000]/60 rounded-lg flex items-center justify-center flex-shrink-0"
           aria-hidden="true"
         >
           <Icon className="w-4 h-4 text-white/70" aria-hidden="true" />
@@ -90,7 +94,8 @@ function SetorCard({ setorId, nome }: SetorCardProps) {
       {/* Serviços mais demandados — lista inline */}
       {servicosDemandados.length > 0 && (
         <p
-          className="text-sm text-neutral-400 leading-relaxed"
+          className="text-sm leading-relaxed"
+          style={{ color: "#c4a8a8" }}
           aria-label={`Serviços demandados por ${nome}`}
         >
           {servicosDemandados
@@ -112,7 +117,7 @@ export function SetoresAtendidos() {
     <section
       ref={secaoRef}
       aria-labelledby="setores-heading"
-      className="bg-[#111827] py-16 md:py-24"
+      className="bg-[#1a0000] py-16 md:py-24"
     >
       <div className="container-site">
 
@@ -132,7 +137,12 @@ export function SetoresAtendidos() {
           >
             Atendemos Todos os Segmentos
           </h2>
-          <p className="text-neutral-400 text-lg leading-relaxed">
+          {/*
+            text-neutral-400 (#9ca3af, tom azul-acinzentado) sobre #1a0000 cria
+            dissonância de temperatura de cor. Substituído por #c4a8a8 — cinza
+            levemente rosado, temperatura quente, contraste ≈ 6.5:1 ✓ WCAG AA.
+          */}
+          <p className="text-lg leading-relaxed" style={{ color: "#c4a8a8" }}>
             Indústria, energia, telecom, agronegócio e muito mais — cada
             segmento tem exigências próprias e a Central de Soluções conhece
             cada uma delas.
