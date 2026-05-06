@@ -2,17 +2,17 @@ import type { Metadata } from "next";
 
 import { JsonLd } from "@/components/JsonLd";
 import { NavPrimaria } from "@/components/NavPrimaria";
-import { HeroFullscreen } from "@/components/HeroFullscreen";
+import { ServicosTabs } from "@/components/ServicosTabs";
 import { MetricasEmpresa } from "@/components/MetricasEmpresa";
 import { TrustBar } from "@/components/TrustBar";
-import { ServicosGrid } from "@/components/ServicosGrid";
 import { SetoresAtendidos } from "@/components/SetoresAtendidos";
 import { MapaAtuacao } from "@/components/MapaAtuacao";
 import { EquipeTecnica } from "@/components/EquipeTecnica";
 import { Glossario } from "@/components/Glossario";
 import { FormularioContato } from "@/components/FormularioContato";
+import { getServicosPorCategoria } from "@/data/servicos";
 
-// ─── Metadata ─────────────────────────────────────────────────────────────────
+// ─── Metadata ──────────────────────────────────────────────────────────────────
 
 export const metadata: Metadata = {
   title:
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
   },
 };
 
-// ─── JSON-LD WebSite ───────────────────────────────────────────────────────────────
+// ─── JSON-LD WebSite ───────────────────────────────────────────────────────────
 // LocalBusiness já está no layout.tsx — não duplicar aqui.
 
 const websiteJsonLd = {
@@ -65,76 +65,20 @@ const websiteJsonLd = {
   },
 };
 
-// ─── Dados das seções fullscreen ───────────────────────────────────────────────────────
+// ─── Dados das tabs (Server Component — sem 'use client') ─────────────────────
+//
+// getServicosPorCategoria() retorna readonly Servico[].
+// A tab "Laudos" agrega as categorias 'laudo' E 'instalacao' para cobrir
+// SPDA, Aterramento, Teste de Continuidade e Laudos Técnicos em um único painel.
 
-const SECOES = [
-  {
-    id: "legalizacao",
-    titulo: "Legalização",
-    descricao:
-      "Regularize sua empresa junto ao Corpo de Bombeiros, Vigilância Sanitária, órgãos ambientais e prefeituras municipais em ES, MG, RJ e SP. Cada processo com ART e responsável técnico habilitado.",
-    imagemFundo: "/images/bg-legalizacao.jpg",
-    imagemAlt:
-      "Engenheiro analisando documentação técnica para regularização junto ao Corpo de Bombeiros",
-    isPrimeiro: true,
-    itens: [
-      { nome: "AVCB / CLCB", descricao: "Regularização junto ao Corpo de Bombeiros" },
-      { nome: "Alvará Sanitário", descricao: "Vigilância Sanitária municipal e ANVISA" },
-      { nome: "Licenciamento Ambiental", descricao: "INEA, CETESB, SUPRAM, IEMA" },
-      { nome: "Regularização Municipal", descricao: "Habite-se e uso do solo junto à Prefeitura" },
-    ],
-  },
-  {
-    id: "projetos",
-    titulo: "Projetos Técnicos",
-    descricao:
-      "Elaboração de projetos completos de engenharia e arquitetura com ART: combate a incêndio, arquitetônico, hidráulico, acessibilidade e gerenciamento de resíduos.",
-    imagemFundo: "/images/bg-projetos.jpg",
-    imagemAlt:
-      "Engenheiro civil analisando planta arquitetônica de projeto técnico",
-    isPrimeiro: false,
-    itens: [
-      { nome: "Combate a Incêndio e Pânico", descricao: "conforme IT do CB estadual" },
-      { nome: "Levantamento Arquitetônico", descricao: "AutoCAD / PDF com ART" },
-      { nome: "Projeto Hidráulico / Sanitário", descricao: "abastecimento, esgoto e pluvial" },
-      { nome: "Acessibilidade NBR 9050", descricao: "rampas, pisos táteis e sinalização" },
-    ],
-  },
-  {
-    id: "laudos",
-    titulo: "Laudos Técnicos",
-    descricao:
-      "Laudos de engenharia com validade jurídica e ART: exigências do Corpo de Bombeiros, SPDA, aterramento elétrico e testes de continuidade conforme NBR 5419 e NR-10.",
-    imagemFundo: "/images/bg-laudos.jpg",
-    imagemAlt:
-      "Técnico realizando medição elétrica em campo para laudo técnico de SPDA",
-    isPrimeiro: false,
-    itens: [
-      { nome: "Laudo de Exigências", descricao: "diagnóstico do Corpo de Bombeiros" },
-      { nome: "Laudo SPDA", descricao: "conforme ABNT NBR 5419" },
-      { nome: "Laudo de Aterramento", descricao: "resistividade do solo e NR-10" },
-      { nome: "Teste de Continuidade", descricao: "ensaios com relatório e ART" },
-    ],
-  },
-  {
-    id: "sistemas",
-    titulo: "Sistemas de Segurança",
-    descricao:
-      "Instalação, manutenção e inspeção de sistemas de combate a incêndio, SPDA (para-raios) e aterramento elétrico — com cobertura nacional para SPDA e aterramento.",
-    imagemFundo: "/images/bg-sistemas.jpg",
-    imagemAlt:
-      "Instalação de sistema de sprinklers em galpão logístico industrial",
-    isPrimeiro: false,
-    itens: [
-      { nome: "Combate a Incêndio", descricao: "hidrantes, sprinklers e alarme" },
-      { nome: "SPDA / Para-raios", descricao: "projeto e instalação NBR 5419" },
-      { nome: "Aterramento Elétrico", descricao: "projeto e execução NR-10" },
-      { nome: "Teste de Continuidade", descricao: "inspeção anual de sistemas" },
-    ],
-  },
+const servicosLegalizacao = getServicosPorCategoria("legalizacao");
+const servicosProjetos    = getServicosPorCategoria("projeto");
+const servicosLaudos      = [
+  ...getServicosPorCategoria("laudo"),
+  ...getServicosPorCategoria("instalacao"),
 ] as const;
 
-// ─── Page ───────────────────────────────────────────────────────────────────────────────
+// ─── Page ──────────────────────────────────────────────────────────────────────
 
 export default function HomePage() {
   return (
@@ -147,33 +91,26 @@ export default function HomePage() {
       <main
         id="conteudo-principal"
         aria-label="Página inicial da Central de Soluções"
-        className="motion-safe:snap-y motion-safe:snap-mandatory"
       >
-        {/* ── Seções fullscreen por categoria ── */}
-        {SECOES.map((secao) => (
-          <HeroFullscreen
-            key={secao.id}
-            id={secao.id}
-            titulo={secao.titulo}
-            descricao={secao.descricao}
-            imagemFundo={secao.imagemFundo}
-            imagemAlt={secao.imagemAlt}
-            itens={secao.itens}
-            isPrimeiro={secao.isPrimeiro}
-          />
-        ))}
+        {/*
+         * ServicosTabs — Client Component isolado.
+         * Recebe arrays serializáveis (string | boolean | string[]);
+         * page.tsx permanece Server Component puro.
+         */}
+        <ServicosTabs
+          legalizacao={servicosLegalizacao}
+          projetos={servicosProjetos}
+          laudos={servicosLaudos}
+        />
 
-        {/* ── Seções de suporte (fora do snap) ── */}
-        <div className="motion-safe:snap-none">
-          <MetricasEmpresa />
-          <TrustBar />
-          <ServicosGrid />
-          <SetoresAtendidos />
-          <MapaAtuacao />
-          <EquipeTecnica />
-          <Glossario />
-          <FormularioContato />
-        </div>
+        {/* Seções de suporte — abaixo das tabs */}
+        <MetricasEmpresa />
+        <TrustBar />
+        <SetoresAtendidos />
+        <MapaAtuacao />
+        <EquipeTecnica />
+        <Glossario />
+        <FormularioContato />
       </main>
     </>
   );
