@@ -85,7 +85,7 @@ app/
   ...
 </main>
 
-// app/globals.css
+// app/globals.css — variáveis definidas uma única vez, cobrindo todo o site
 [data-service="vigilancia"] { --color-service-accent: #0d7377; --color-service-accent-hover: #095e62; }
 [data-service="ambiental"]  { --color-service-accent: #2d6a2d; --color-service-accent-hover: #1e4d1e; }
 [data-service="laudos"]     { --color-service-accent: #92610a; --color-service-accent-hover: #6e4908; }
@@ -160,6 +160,9 @@ app/
 - Navegação por teclado testada em todos os formulários
 - Headings em ordem hierárquica: H1 → H2 → H3 (nunca pular níveis)
 - `lang="pt-BR"` no `<html>` do RootLayout
+- **Foco visível sempre em vinho (`#800000`)** — nunca deixar o `outline` ou `ring` azul padrão do navegador/Tailwind aparecer.
+  - Garantia global: `:focus-visible { outline: 2px solid #800000; outline-offset: 3px }` está definido em `app/globals.css` `@layer base` e cobre **todos** os elementos.
+  - Em componentes com `focus-visible:ring-*` explícito, usar sempre `focus-visible:ring-[#800000]` ou `focus-visible:ring-primary`.
 
 ---
 
@@ -209,6 +212,9 @@ app/
 | Importar `equipe` de `data/servicos` | Importar de `data/equipe.ts` |
 | Glassmorphism em texto indexável | Fundo sólido ou semi-transparente com texto no DOM |
 | Pular níveis de heading | H1 → H2 → H3 em sequência |
+| `<a>` sem `color` definido (herda azul do navegador) | `a { color: inherit }` já está em `globals.css @layer base` |
+| `focus-visible:ring-2` sem cor explícita (usa azul padrão do Tailwind) | `focus-visible:ring-[#800000]` ou `focus-visible:ring-primary` |
+| `outline` / `ring` azul em qualquer elemento | Foco sempre em `#800000` — coberto globalmente pelo `globals.css` |
 
 ---
 
@@ -251,7 +257,7 @@ app/
 |---|---|
 | `docs/SEO.md` | Keywords por serviço/estado, concorrentes, nichos, glossário, órgãos |
 | `docs/SERVICOS.md` | Lista completa de serviços, setores atendidos, diferenciais |
-| `docs/DESIGN.md` | Paleta, tipografia, CrosshairDecor, imagens reais, sistema de cores por serviço |
+| `docs/DESIGN.md` | Paleta, tipografia, CrosshairDecor, imagens reais, sistema de cores por serviço, estados de foco |
 | `data/servicos.ts` | Dados estruturados dos serviços para uso nos componentes |
 | `data/equipe.ts` | Dados tipados da equipe técnica — fonte única de verdade |
 | `components/CrosshairDecor.tsx` | SVG decorativo da retícula de engenharia do cliente |

@@ -46,6 +46,13 @@ const config: Config = {
           hover: "#6e4908",
         },
       },
+      // ── Cor padrão do ring-* do Tailwind ──────────────────────────────────
+      // Sem esta configuração, ring-2 sem cor explícita usa o azul padrão do
+      // Tailwind (ring-blue-500). Com ela, ring-2 usa #800000 (vinho da marca)
+      // em qualquer componente que não especifique ring-[cor] explicitamente.
+      ringColor: {
+        DEFAULT: "#800000",
+      },
       fontFamily: {
         heading: ["var(--font-heading)", "sans-serif"],
         body: ["var(--font-body)", "sans-serif"],

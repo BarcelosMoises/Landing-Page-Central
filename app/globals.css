@@ -19,6 +19,28 @@
     scroll-behavior: smooth;
   }
 
+  /*
+   * REGRA GLOBAL: herança de cor em links
+   * Remove o azul nativo do navegador (color: -webkit-link) de todos os <a>.
+   * Cada componente define a cor do link explicitamente; se nenhum componente
+   * definir, o link herda a cor do texto do pai — nunca azul do browser.
+   */
+  a {
+    color: inherit;
+  }
+
+  /*
+   * REGRA GLOBAL: anel de foco na cor da marca
+   * Substitui o outline azul padrão do Chrome/Firefox/Safari pelo vinho (#800000)
+   * em todos os elementos focados via teclado. Garante consistência visual sem
+   * adicionar focus-visible:ring-[#800000] em cada componente individualmente.
+   */
+  :focus-visible {
+    outline: 2px solid #800000;
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     html {
       scroll-behavior: auto;
@@ -32,6 +54,28 @@
       transition-duration: 0.01ms !important;
     }
   }
+}
+
+/* ── CSS Variables por serviço ──────────────────────────────────────────────
+   Ativadas via data-service="[slug]" no <main> de cada subpágina.
+   Componentes genéricos usam var(--color-service-accent, #800000) para que
+   a homepage (sem data-service) receba automaticamente o vinho da marca.
+*/
+[data-service="avcb"] {
+  --color-service-accent: #800000;
+  --color-service-accent-hover: #4f0101;
+}
+[data-service="vigilancia"] {
+  --color-service-accent: #0d7377;
+  --color-service-accent-hover: #095e62;
+}
+[data-service="ambiental"] {
+  --color-service-accent: #2d6a2d;
+  --color-service-accent-hover: #1e4d1e;
+}
+[data-service="laudos"] {
+  --color-service-accent: #92610a;
+  --color-service-accent-hover: #6e4908;
 }
 
 @layer utilities {

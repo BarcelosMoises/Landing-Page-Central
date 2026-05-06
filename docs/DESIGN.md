@@ -34,6 +34,38 @@
 | `success` | `#16a34a` | Ícones de confirmação, badges de serviço ativo |
 | `warning` | `#ca8a04` | Alertas de prazo, urgência |
 
+### Estados de Foco e Interação
+
+> **Regra absoluta:** nenhum elemento do site exibe o outline ou ring azul padrão do navegador
+> (Chrome, Firefox, Safari) ou do Tailwind CSS. Todos os estados de foco são na cor da marca.
+
+| Estado | Cor | Implementação |
+|---|---|---|
+| `:focus-visible` (teclado) | `#800000` | `globals.css @layer base` — cobre **todo** o site automaticamente |
+| `ring-*` sem cor explícita (Tailwind) | `#800000` | `ringColor.DEFAULT` em `tailwind.config.ts` |
+| Links `<a>` sem classe de cor | herda do pai | `a { color: inherit }` em `globals.css @layer base` |
+
+**Por que isso importa:** navegadores modernos injetam `outline: 2px solid -webkit-focus-ring-color`
+(azul) em qualquer elemento focável que não tenha `outline` definido. O Tailwind também define
+`--tw-ring-color` como azul por padrão. Ambos são sobrescritos pelas regras acima, garantindo
+que a paleta da marca (vinho) seja consistente em toda a navegação por teclado e em formulários.
+
+**Código de referência (já implementado em `globals.css`):**
+```css
+@layer base {
+  a { color: inherit; }
+  :focus-visible {
+    outline: 2px solid #800000;
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+}
+```
+
+**Exceção permitida:** em elementos sobre fundo escuro onde o vinho `#800000` teria contraste
+insuficiente (ex.: botão ghost sobre hero escuro), usar `focus-visible:ring-white
+focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]` para garantir WCAG 2.1 AA.
+
 ### Gradientes
 
 ```css
@@ -620,7 +652,7 @@ const animation = prefersReduced ? {} : { opacity: [0, 1], transform: ["translat
 
 - [ ] Contraste ≥ 4.5:1 em todos os textos (verificar com WebAIM Contrast Checker)
 - [ ] Hero testado em mobile 375px e desktop 1440px
-- [ ] Botões com estado `:focus-visible` visível (anel de foco)
+- [ ] Botões com estado `:focus-visible` visível (anel de foco **em vinho `#800000`**, nunca azul)
 - [ ] Logos de clientes com `alt` descritivo
 - [ ] Imagens com `width` e `height` explícitos (evitar CLS)
 - [ ] Nenhum texto em cima de imagem sem overlay de contraste suficiente
@@ -631,3 +663,5 @@ const animation = prefersReduced ? {} : { opacity: [0, 1], transform: ["translat
 - [ ] ServicosTabs: todos os 3 painéis renderizados no DOM (verificar no DevTools → Elements)
 - [ ] ServicosTabs: `role="tablist"` / `role="tab"` / `role="tabpanel"` presentes
 - [ ] ServicosTabs: tab ativa com `aria-selected="true"` e foco visível via teclado
+- [ ] Nenhum `<a>` exibe azul do navegador — coberto por `a { color: inherit }` no `globals.css`
+- [ ] Nenhum `ring-*` ou `outline` azul visível — coberto por `ringColor.DEFAULT` e `:focus-visible` globais
