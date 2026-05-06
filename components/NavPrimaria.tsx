@@ -165,7 +165,7 @@ export function NavPrimaria() {
       className={[
         "fixed top-0 inset-x-0 z-50 transition-colors duration-300",
         scrolled
-          ? "bg-neutral-900/95 backdrop-blur-sm shadow-lg"
+          ? "bg-[#1a0000]/95 backdrop-blur-sm shadow-lg"
           : "bg-transparent",
       ].join(" ")}
     >
@@ -197,7 +197,7 @@ export function NavPrimaria() {
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Solicitar orçamento via WhatsApp"
-          className="hidden md:inline-flex items-center gap-2 bg-[#800000] hover:bg-[#4f0101] text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-900 flex-shrink-0"
+          className="hidden md:inline-flex items-center gap-2 bg-[#800000] hover:bg-[#4f0101] text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#1a0000] flex-shrink-0"
         >
           Solicitar Orçamento
         </a>
@@ -239,7 +239,7 @@ export function NavPrimaria() {
         <nav
           id="menu-mobile"
           aria-label="Menu mobile"
-          className="md:hidden bg-neutral-900/98 backdrop-blur-sm border-t border-white/10 px-4 py-4 flex flex-col gap-1"
+          className="md:hidden bg-[#1a0000]/98 backdrop-blur-sm border-t border-white/10 px-4 py-4 flex flex-col gap-1"
         >
           {NAV_ITENS.map((item) => (
             <NavItemMobile key={item.id} {...item} />

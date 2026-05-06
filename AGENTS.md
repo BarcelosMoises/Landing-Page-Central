@@ -118,7 +118,7 @@ app/
 ### CrosshairDecor
 - **Arquivo:** `components/CrosshairDecor.tsx`
 - **O quê:** SVG inline da retícula de engenharia presente em todos os posts do Instagram do cliente
-- **Quando usar:** em toda `<section className="relative">` com fundo escuro (`bg-neutral-900`, `bg-[#0a0a0a]`, hero)
+- **Quando usar:** em toda `<section className="relative">` com fundo escuro (`bg-[#1a0000]`, `bg-[#0a0a0a]`, hero)
 - **Props:** `corner` (bottom-right | bottom-left | top-right | top-left), `variant` (light | dark), `size` (sm | md | lg)
 - **Padrão:** `<CrosshairDecor />` — já posicionado no canto inferior direito
 - **Nunca** escalar ou colorir manualmente — usar as props fornecidas
@@ -170,6 +170,8 @@ app/
 
 - **Referência completa:** `docs/DESIGN.md`
 - **Cor primária global:** `#800000` (vinho) — homepage, nav, footer
+- **Fundo da nav ao scroll:** `#1a0000` (vinho escuro cinemático) — `bg-[#1a0000]/95`
+- **Fundo do menu mobile:** `#1a0000` (vinho escuro cinemático) — `bg-[#1a0000]/98`
 - **Accent por serviço:** ver tabela acima — sempre via CSS variable
 - **Estilo:** Cinemático industrial — sóbrio, técnico, confiável
 - **Nunca usar:** glassmorphism em conteúdo indexável pelo Google
@@ -215,6 +217,7 @@ app/
 | `<a>` sem `color` definido (herda azul do navegador) | `a { color: inherit }` já está em `globals.css @layer base` |
 | `focus-visible:ring-2` sem cor explícita (usa azul padrão do Tailwind) | `focus-visible:ring-[#800000]` ou `focus-visible:ring-primary` |
 | `outline` / `ring` azul em qualquer elemento | Foco sempre em `#800000` — coberto globalmente pelo `globals.css` |
+| `bg-neutral-900` / `#111827` como fundo da nav | `bg-[#1a0000]` — vinho escuro da marca |
 
 ---
 

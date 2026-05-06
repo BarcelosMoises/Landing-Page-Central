@@ -24,6 +24,7 @@
 | `neutral-400` | `#9ca3af` | Textos secundários, placeholders |
 | `neutral-700` | `#374151` | Textos de corpo |
 | `neutral-900` | `#111827` | Headings, textos de alta ênfase |
+| `brand-dark` | `#1a0000` | Nav ao scroll, menus mobile — vinho escuro cinemático |
 
 ### Cores de Sistema
 
@@ -554,7 +555,7 @@ O CSS variable do `globals.css` ativará automaticamente a cor correta.
 
 ### Seção de Normas / Glossário
 
-- **Background:** `bg-neutral-900` (escuro, contraste com texto branco)
+- **Background:** `bg-[#1a0000]` (vinho escuro da marca — fundo da nav ao scroll)
 - **Layout:** grid 2 ou 3 colunas em desktop
 - **Crosshair:** inserir `<CrosshairDecor />` no canto inferior direito da seção
 - **Nunca:** glassmorphism — texto deve estar no DOM com contraste mínimo 4.5:1
@@ -618,7 +619,7 @@ O CSS variable do `globals.css` ativará automaticamente a cor correta.
 | Hover em botão primário | `opacity 1 → 0.9` + `scale 1 → 1.01` | `150ms` | `ease-out` |
 | Logos TrustBar | `grayscale(1) → grayscale(0)` + `opacity 0.5 → 1` | `250ms` | `ease` |
 | Números de métricas | Contador animado ao entrar no viewport | `1200ms` | `ease-out` |
-| NavPrimaria ao scroll | `bg transparent → bg #111827/95 backdrop-blur` | `300ms` | `ease` |
+| NavPrimaria ao scroll | `bg transparent → bg-[#1a0000]/95 backdrop-blur` | `300ms` | `ease` |
 | Troca de tab (ServicosTabs) | `transition-colors duration-200` na borda/texto do tab | `200ms` | `ease` |
 
 ```tsx
@@ -665,3 +666,4 @@ const animation = prefersReduced ? {} : { opacity: [0, 1], transform: ["translat
 - [ ] ServicosTabs: tab ativa com `aria-selected="true"` e foco visível via teclado
 - [ ] Nenhum `<a>` exibe azul do navegador — coberto por `a { color: inherit }` no `globals.css`
 - [ ] Nenhum `ring-*` ou `outline` azul visível — coberto por `ringColor.DEFAULT` e `:focus-visible` globais
+- [ ] NavPrimaria ao scroll usa `bg-[#1a0000]/95` (vinho escuro) — nunca `bg-neutral-900`
