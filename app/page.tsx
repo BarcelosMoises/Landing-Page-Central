@@ -131,14 +131,14 @@ export default function HomePage() {
         id="conteudo-principal"
         aria-label="Página inicial da Central de Soluções"
       >
-        {/* ──────────────────────────────────────────────────────────────────────
-            Hero Section — standalone, não usa HeroFullscreen (que renderiza <h2>).
+        {/* ─────────────────────────────────────────────────────────────────────
+            1. HERO
+            Section standalone — não usa HeroFullscreen (que renderiza <h2>).
             <h1> único e visível, above-the-fold, com keyword primária.
-            Especificação: DESIGN.md → "Hero Section"
             Foto: /images/portfolio/hero-industrial.jpg (foto real do portfólio)
             Overlay: from-[#4f0101]/85 to-[#0a0000]/60 conforme DESIGN.md
             Altura: min-h-[90vh] conforme DESIGN.md
-        ────────────────────────────────────────────────────────────────────── */}
+        ───────────────────────────────────────────────────────────────────── */}
         <section
           id="hero"
           aria-labelledby="hero-heading"
@@ -220,7 +220,6 @@ export default function HomePage() {
                            transition-opacity duration-200
                            focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
               >
-                {/* Ícone WhatsApp inline — sem dependência de biblioteca */}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -260,10 +259,10 @@ export default function HomePage() {
               </a>
             </div>
 
-            {/* ── Pilares de serviço ──────────────────────────────────────────
+            {/* ── Pilares de serviço ───────────────────────────────────────────
                 3 cards derivados de PILARES_HERO (sem hardcode de serviços).
                 Visíveis no DOM — indexáveis pelo Google.
-                Em mobile: stack vertical. Em md+: grid 3 colunas.
+                Em mobile: stack vertical. Em sm+: grid 3 colunas.
             ─────────────────────────────────────────────────────────────────── */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-3xl">
               {PILARES_HERO.map((pilar) => (
@@ -326,22 +325,31 @@ export default function HomePage() {
           <CrosshairDecor variant="light" size="lg" corner="bottom-right" />
         </section>
 
-        {/* ── Restante da homepage (inalterado) ──────────────────────────── */}
+        {/* ─────────────────────────────────────────────────────────────────────
+            2. MÉTRICAS — números da empresa (projetos, clientes, estados)
+        ───────────────────────────────────────────────────────────────────── */}
+        <MetricasEmpresa />
 
-        {/*
-         * ServicosTabs — Client Component isolado.
-         * Recebe arrays serializáveis (string | boolean | string[]);
-         * page.tsx permanece Server Component puro.
-         */}
+        {/* ─────────────────────────────────────────────────────────────────────
+            3. LOGOS DE CLIENTES — TrustBar com logos âncora (Claro, Ambev…)
+        ───────────────────────────────────────────────────────────────────── */}
+        <TrustBar />
+
+        {/* ─────────────────────────────────────────────────────────────────────
+            4. TABS DE SERVIÇOS
+            Client Component isolado.
+            Recebe arrays serializáveis (string | boolean | string[]);
+            page.tsx permanece Server Component puro.
+        ───────────────────────────────────────────────────────────────────── */}
         <ServicosTabs
           legalizacao={servicosLegalizacao}
           projetos={servicosProjetos}
           laudos={servicosLaudos}
         />
 
-        {/* Seções de suporte — abaixo das tabs */}
-        <MetricasEmpresa />
-        <TrustBar />
+        {/* ─────────────────────────────────────────────────────────────────────
+            5+ SEÇÕES DE SUPORTE — ordem inalterada
+        ───────────────────────────────────────────────────────────────────── */}
         <SetoresAtendidos />
         <MapaAtuacao />
         <EquipeTecnica />

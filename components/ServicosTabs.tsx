@@ -284,11 +284,15 @@ export function ServicosTabs({
           {/*
            * role="tablist" + aria-label: descreve o conjunto de tabs para leitores de tela.
            * Cada botão com role="tab" + aria-selected + aria-controls vinculado ao painel.
+           *
+           * overflow-x-auto REMOVIDO: 3 tabs cabem em qualquer viewport >= 320px;
+           * a scrollbar horizontal era desnecessária e prejudicava a UX em mobile.
+           * Em telas muito estreitas (<320px) as tabs vão para próxima linha via flex-wrap.
            */}
           <div
             role="tablist"
             aria-label="Categorias de serviço"
-            className="flex border-b border-neutral-200 mb-10 overflow-x-auto"
+            className="flex flex-wrap border-b border-neutral-200 mb-10"
           >
             {TABS.map((tab) => {
               const isActive = tab.id === tabAtiva;
