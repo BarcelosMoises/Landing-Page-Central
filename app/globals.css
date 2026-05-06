@@ -9,9 +9,20 @@
     --color-primary-light: #a30000;
   }
 
+  /*
+   * CORREÇÃO: --tw-ring-color padrão do Preflight do Tailwind v3
+   *
+   * O Tailwind v3 injeta em *, ::before, ::after via Preflight:
+   *   --tw-ring-color: rgb(59 130 246 / 0.5)   ← azul hardcoded
+   *
+   * Qualquer elemento com focus-visible:ring-2 sem ring-[cor] explícita
+   * herdava esse azul. Declarar aqui sobrescreve o valor globalmente com a
+   * cor da marca, garantindo fallback correto em toda a aplicação.
+   */
   *,
   *::before,
   *::after {
+    --tw-ring-color: rgb(128 0 0 / 0.5); /* vinho #800000 com 50% opacidade */
     box-sizing: border-box;
   }
 
