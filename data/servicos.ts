@@ -5,7 +5,17 @@
 // Atualizar sempre que docs/SERVICOS.md for alterado.
 // ─────────────────────────────────────────────────────────────────────────────
 
-// ─── Tipos base ───────────────────────────────────────────────────────────────
+// ─── Equipe técnica (re-exportada de data/equipe.ts) ───────────────────────────────
+//
+// As páginas de serviço importam `equipe` deste arquivo.
+// A fonte única de verdade é data/equipe.ts — nunca duplicar dados aqui.
+// MembroEquipeServico é um tipo de compatibilidade (slug→id, tituloPrincipal→formacao,
+// especializacoes→especialidades) exposto via equipeServicos em data/equipe.ts.
+
+export type { MembroEquipeServico as MembroEquipe } from "@/data/equipe";
+export { equipeServicos as equipe } from "@/data/equipe";
+
+// ─── Tipos base ───────────────────────────────────────────────────────────────────────────
 
 export type EstadoSigla = "RJ" | "SP" | "MG" | "ES" | "BR";
 
@@ -61,14 +71,6 @@ export interface Diferencial {
   readonly descricao: string;
 }
 
-export interface MembroEquipe {
-  readonly id: string;
-  readonly nome: string;
-  readonly formacao: string;
-  readonly especialidades: readonly string[];
-  readonly fotoPerfil?: string;
-}
-
 export interface EstadoAtuacao {
   readonly sigla: EstadoSigla;
   readonly nome: string;
@@ -85,27 +87,7 @@ export interface ContatoEmpresa {
   readonly instagramUrl: string;
 }
 
-// ─── Equipe técnica ───────────────────────────────────────────────────────────
-
-export const equipe: readonly MembroEquipe[] = [
-  {
-    id: "durval",
-    nome: "Durval Ribeiro de Queiroz",
-    formacao: "Arquiteto e Urbanista",
-    especialidades: [
-      "Engenharia de Segurança do Trabalho",
-      "Engenharia de Segurança Contra Incêndio e Pânico",
-    ],
-  },
-  {
-    id: "theyllor",
-    nome: "Theyllor Estulano do Espírito Santo",
-    formacao: "Engenheiro Civil",
-    especialidades: ["Técnico em Mecânica"],
-  },
-] as const;
-
-// ─── Estados de atuação ───────────────────────────────────────────────────────
+// ─── Estados de atuação ───────────────────────────────────────────────────────────────────
 
 export const estadosAtuacao: readonly EstadoAtuacao[] = [
   {
@@ -138,7 +120,7 @@ export const estadosAtuacao: readonly EstadoAtuacao[] = [
   },
 ] as const;
 
-// ─── Catálogo de serviços ─────────────────────────────────────────────────────
+// ─── Catálogo de serviços ─────────────────────────────────────────────────────────────────
 
 export const servicos: readonly Servico[] = [
   {
@@ -458,7 +440,7 @@ export const servicos: readonly Servico[] = [
   },
 ] as const;
 
-// ─── Setores atendidos ────────────────────────────────────────────────────────
+// ─── Setores atendidos ─────────────────────────────────────────────────────────────────
 
 export const setores: readonly Setor[] = [
   {
@@ -523,7 +505,7 @@ export const setores: readonly Setor[] = [
   },
 ] as const;
 
-// ─── Clientes (prova social) ──────────────────────────────────────────────────
+// ─── Clientes (prova social) ───────────────────────────────────────────────────────────────
 
 export const clientes: readonly Cliente[] = [
   {
@@ -626,7 +608,7 @@ export const clientes: readonly Cliente[] = [
   },
 ] as const;
 
-// ─── Diferenciais competitivos ────────────────────────────────────────────────
+// ─── Diferenciais competitivos ──────────────────────────────────────────────────────────────
 
 export const diferenciais: readonly Diferencial[] = [
   {
@@ -667,7 +649,7 @@ export const diferenciais: readonly Diferencial[] = [
   },
 ] as const;
 
-// ─── Contato ──────────────────────────────────────────────────────────────────
+// ─── Contato ──────────────────────────────────────────────────────────────────────────────
 
 export const contato: ContatoEmpresa = {
   whatsapp: "5522981121315",
@@ -677,7 +659,7 @@ export const contato: ContatoEmpresa = {
   instagramUrl: "https://www.instagram.com/centraldesolucoes",
 } as const;
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
+// ─── Helpers ──────────────────────────────────────────────────────────────────────────────
 
 /** Retorna um serviço pelo seu id */
 export function getServicoPorId(id: string): Servico | undefined {

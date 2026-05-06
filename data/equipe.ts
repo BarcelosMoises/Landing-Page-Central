@@ -4,7 +4,7 @@
 // NÃO editar nomes ou especialidades sem confirmar com o cliente.
 // ─────────────────────────────────────────────────────────────────────────────
 
-// ─── Tipo principal ───────────────────────────────────────────────────────────
+// ─── Tipo canônico (schema completo, fonte única de verdade) ──────────────────────
 
 export interface MembroEquipe {
   /** Identificador único — usado como key em listas e como seletor de foto */
@@ -42,7 +42,7 @@ export interface MembroEquipe {
   readonly linkedin?: string;
 }
 
-// ─── Dados da equipe ─────────────────────────────────────────────────────────
+// ─── Dados da equipe ───────────────────────────────────────────────────────────────────
 // Ordem: sócios fundadores primeiro, depois demais membros.
 
 export const equipe: readonly MembroEquipe[] = [
@@ -75,9 +75,41 @@ export const equipe: readonly MembroEquipe[] = [
   },
 ] as const;
 
-// ─── Helper ───────────────────────────────────────────────────────────────────
+// ─── Helper ─────────────────────────────────────────────────────────────────────────────
 
 /** Retorna um membro da equipe pelo slug */
 export function getMembroPorSlug(slug: string): MembroEquipe | undefined {
   return equipe.find((m) => m.slug === slug);
 }
+
+// ─── Tipo de compatibilidade para data/servicos.ts e páginas de serviço ──────────────────
+//
+// As páginas de serviço (ex: vigilancia-sanitaria/page.tsx) importam `equipe`
+// de @/data/servicos e consomem os campos: id, nome, formacao, especialidades.
+//
+// Este tipo mapeia o schema canônico acima para esses campos, permitindo que
+// data/servicos.ts re-exporte equipe sem duplicar os dados.
+//
+// NUNCA usar MembroEquipeServico fora de data/servicos.ts — prefer sempre
+// MembroEquipe com os campos canônicos (slug, tituloPrincipal, especializacoes).
+
+export interface MembroEquipeServico {
+  readonly id: string;              // ← mapeado de slug
+  readonly nome: string;            // ← idêntico
+  readonly formacao: string;        // ← mapeado de tituloPrincipal
+  readonly especialidades: readonly string[]; // ← mapeado de especializacoes
+}
+
+/**
+ * Versão da equipe com campos compatíveis com as páginas de serviço.
+ * Re-exportado por data/servicos.ts como `equipe` para manter o import
+ * existente nas páginas sem duplicar dados.
+ */
+export const equipeServicos: readonly MembroEquipeServico[] = equipe.map(
+  (m) => ({
+    id: m.slug,
+    nome: m.nome,
+    formacao: m.tituloPrincipal,
+    especialidades: m.especializacoes,
+  })
+);
