@@ -6,12 +6,16 @@ import { usePathname } from "next/navigation";
 import { getWhatsAppUrl } from "@/data/servicos";
 
 // ─── Dados estáticos da nav ───────────────────────────────────────────────────
+//
+// REGRA: cada id aqui deve ter um elemento com id correspondente na homepage.
+// IDs declarados em app/page.tsx: servicos · setores · equipe · contato
+// Nunca adicionar um item sem antes declarar o id na seção correspondente.
 
 const NAV_ITENS = [
-  { id: "legalizacao", label: "Legalização",    href: "/#legalizacao" },
-  { id: "projetos",    label: "Projetos",        href: "/#projetos" },
-  { id: "laudos",      label: "Laudos Técnicos", href: "/#laudos" },
-  { id: "sistemas",    label: "Sistemas",        href: "/#sistemas" },
+  { id: "servicos", label: "Serviços", href: "/#servicos" },
+  { id: "setores",  label: "Setores",  href: "/#setores"  },
+  { id: "equipe",   label: "Equipe",   href: "/#equipe"   },
+  { id: "contato",  label: "Contato",  href: "/#contato"  },
 ] as const;
 
 const CTA_WHATSAPP = getWhatsAppUrl(
@@ -24,8 +28,8 @@ export function NavPrimaria() {
   const pathname = usePathname();
   const isHomepage = pathname === "/";
 
-  const [ativa, setAtiva]         = useState<string>(NAV_ITENS[0].id);
-  const [scrolled, setScrolled]   = useState(false);
+  const [ativa, setAtiva]           = useState<string>(NAV_ITENS[0].id);
+  const [scrolled, setScrolled]     = useState(false);
   const [menuAberto, setMenuAberto] = useState(false);
   const observersRef = useRef<IntersectionObserver[]>([]);
 
@@ -116,10 +120,7 @@ export function NavPrimaria() {
     }
 
     return (
-      <Link
-        href={href}
-        className={baseClasses}
-      >
+      <Link href={href} className={baseClasses}>
         {label}
       </Link>
     );
