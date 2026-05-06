@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { getWhatsAppUrl, contato } from "@/data/servicos";
 
-// ─── Schema Zod ──────────────────────────────────────────────────────────────────
+// ─── Schema Zod ─────────────────────────────────────────────────────────────────────
 
 const TELEFONE_BR_REGEX = /^\(?\d{2}\)?[\s\-]?9?\d{4}[\s\-]?\d{4}$/;
 
@@ -55,7 +55,7 @@ const contatoSchema = z.object({
 
 type ContatoFormData = z.infer<typeof contatoSchema>;
 
-// ─── Labels e opções ───────────────────────────────────────────────────────────────
+// ─── Labels e opções ───────────────────────────────────────────────────────────────────
 
 const ESTADOS_OPTIONS = [
   { value: "rj", label: "Rio de Janeiro" },
@@ -97,7 +97,7 @@ const SERVICO_LABEL: Record<string, string> = {
   outro: "serviço a definir",
 };
 
-// ─── Classes reutilizáveis ───────────────────────────────────────────────────────────────
+// ─── Classes reutilizáveis ───────────────────────────────────────────────────────────────────
 
 const inputBase =
   "w-full border rounded-lg px-4 py-3 text-neutral-700 text-base bg-white outline-none transition-colors duration-150 " +
@@ -107,7 +107,7 @@ const inputBase =
 const inputNormal = inputBase + " border-neutral-200";
 const inputError = inputBase + " border-red-400 bg-red-50";
 
-// ─── Componente principal ─────────────────────────────────────────────────────────
+// ─── Componente principal ─────────────────────────────────────────────────────────────────
 
 export function FormularioContato() {
   const {
@@ -144,7 +144,7 @@ export function FormularioContato() {
     <section
       id="contato"
       aria-labelledby="contato-heading"
-      className="bg-[#111827] py-16 md:py-24"
+      className="bg-[#1a0000] py-16 md:py-24"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
@@ -152,19 +152,23 @@ export function FormularioContato() {
           {/* Lado esquerdo — copy */}
           <div className="flex flex-col gap-6">
             <div>
-              {/* text-white/70 sobre bg-[#111827] → contraste ~10.7:1 ✓ WCAG AAA */}
+              {/* text-white/70 sobre bg-[#1a0000] → contraste ~10.4:1 ✓ WCAG AAA */}
               <p className="text-xs font-semibold uppercase tracking-widest text-white/70 mb-3">
                 Orçamento gratuito
               </p>
-              {/* #fff sobre #111827 → contraste 15.3:1 ✓ WCAG AAA */}
+              {/* #fff sobre #1a0000 → contraste ~18.1:1 ✓ WCAG AAA */}
               <h2
                 id="contato-heading"
                 className="font-heading text-2xl md:text-4xl font-bold text-white leading-tight mb-4"
               >
                 Solicite um Orçamento Sem Compromisso
               </h2>
-              {/* text-neutral-400 sobre #111827 → contraste 7.0:1 ✓ WCAG AA */}
-              <p className="text-neutral-400 text-lg leading-relaxed">
+              {/*
+                text-neutral-400 (#9ca3af, tom azul-acinzentado) sobre #1a0000 cria
+                disssonância de temperatura de cor. Substituído por #c4a8a8 — cinza
+                levemente rosado, temperatura quente, contraste ≈ 6.3:1 ✓ WCAG AA.
+              */}
+              <p className="text-lg leading-relaxed" style={{ color: "#c4a8a8" }}>
                 Preencha o formulário e entraremos em contato pelo WhatsApp em
                 até 1 dia útil. Atendemos indústrias, galpões logísticos,
                 empresas de telecom e energia solar em ES, MG, RJ e SP.
@@ -197,14 +201,19 @@ export function FormularioContato() {
                 <span className="font-semibold text-base">{contato.telefone}</span>
               </a>
 
+              {/*
+                Link de e-mail: text-neutral-400 → #c4a8a8 (mesmo token de texto quente).
+                Ícone: bg-white/10 → bg-white/15 para mais visibilidade sobre #1a0000.
+              */}
               <a
                 href={`mailto:${contato.email}`}
                 aria-label={`Enviar e-mail para ${contato.email}`}
-                className="inline-flex items-center gap-3 text-neutral-400 hover:text-white transition-colors duration-150 text-sm"
+                className="inline-flex items-center gap-3 hover:text-white transition-colors duration-150 text-sm"
+                style={{ color: "#c4a8a8" }}
               >
                 <span
                   aria-hidden="true"
-                  className="w-9 h-9 bg-white/10 rounded-full flex items-center justify-center flex-shrink-0"
+                  className="w-9 h-9 bg-white/15 rounded-full flex items-center justify-center flex-shrink-0"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -331,7 +340,7 @@ export function FormularioContato() {
                   </div>
 
                   {/* Telefone */}
-                  <div className="flex flex-col gap-1.5">
+2                  <div className="flex flex-col gap-1.5">
                     <label
                       htmlFor="telefone"
                       className="text-sm font-semibold text-neutral-700"
@@ -361,7 +370,7 @@ export function FormularioContato() {
                     )}
                   </div>
 
-                  {/* Estado + Serviço lado a lado em md: */}
+                  {/* Estado + Serviço lado a lado em sm: */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     {/* Estado */}
                     <div className="flex flex-col gap-1.5">
