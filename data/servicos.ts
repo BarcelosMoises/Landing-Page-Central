@@ -49,6 +49,12 @@ export interface Servico {
   readonly normaBase?: readonly string[];
   readonly iconeLucide: string;
   readonly pathRota: string;
+  /**
+   * Controla se o serviço aparece como card nas ServicosTabs da homepage.
+   * `undefined` ou `true`  → exibir (padrão para todos os serviços novos).
+   * `false`                → ocultar (usado para entradas de compatibilidade/legado).
+   */
+  readonly exibirNaTabs?: boolean;
 }
 
 export interface Setor {
@@ -592,7 +598,8 @@ export const servicos: readonly Servico[] = [
   },
 
   // ── PROJETOS legado (mantém compatibilidade com setores[] existentes) ──────
-  // NÃO exibir como card nas ServicosTabs — filtrar pelos 5 ids acima.
+  // exibirNaTabs: false — não renderizar como card nas ServicosTabs.
+  // Preservado apenas para manter os IDs referenciados em setores[].
 
   {
     id: "projetos-tecnicos",
@@ -615,6 +622,7 @@ export const servicos: readonly Servico[] = [
     ],
     iconeLucide: "Ruler",
     pathRota: "/projetos",
+    exibirNaTabs: false,
   },
 
 ] as const;

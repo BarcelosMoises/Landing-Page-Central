@@ -75,12 +75,20 @@ const websiteJsonLd = {
 // ─── Dados das tabs (Server Component — sem 'use client') ─────────────────────
 //
 // getServicosPorCategoria() retorna readonly Servico[].
-// A tab "Laudos" agrega as categorias 'laudo' E 'instalacao' para cobrir
-// SPDA, Aterramento, Teste de Continuidade e Laudos Técnicos em um único painel.
+// O filtro `exibirNaTabs !== false` exclui entradas legadas marcadas com
+// `exibirNaTabs: false` no catálogo (ex.: projetos-tecnicos).
+//
+// Contagem final das props:
+//   legalizacao → 4 cards  (avcb · vigilancia-sanitaria · licenciamento-ambiental · regularizacao-prefeitura)
+//   projetos    → 5 cards  (levantamento-arquitetonico · projeto-acessibilidade · projeto-combate-incendio · projeto-spda · estruturas-metalicas)
+//   laudos      → 7 cards  (teste-continuidade · laudos-tecnicos · laudo-spda · estanqueidade-glp-gn + spda · combate-incendio · aterramento)
 
 const servicosLegalizacao = getServicosPorCategoria("legalizacao");
-const servicosProjetos    = getServicosPorCategoria("projeto");
-const servicosLaudos      = [
+
+const servicosProjetos = getServicosPorCategoria("projeto")
+  .filter((s) => s.exibirNaTabs !== false);
+
+const servicosLaudos = [
   ...getServicosPorCategoria("laudo"),
   ...getServicosPorCategoria("instalacao"),
 ] as const;
@@ -341,6 +349,11 @@ export default function HomePage() {
             Client Component isolado.
             Recebe arrays serializáveis (string | boolean | string[]);
             page.tsx permanece Server Component puro.
+
+            Props finais:
+              legalizacao → 4 cards
+              projetos    → 5 cards (projetos-tecnicos excluído via exibirNaTabs: false)
+              laudos      → 7 cards (4 laudo + 3 instalacao)
         ───────────────────────────────────────────────────────────────────── */}
         <section id="servicos" aria-label="Serviços da Central de Soluções">
           <ServicosTabs
