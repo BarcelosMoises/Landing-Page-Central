@@ -87,7 +87,7 @@ export interface ContatoEmpresa {
   readonly instagramUrl: string;
 }
 
-// ─── Estados de atuação ───────────────────────────────────────────────────────────────────
+// ─── Estados de atuação ─────────────────────────────────────────────────────────────────
 
 export const estadosAtuacao: readonly EstadoAtuacao[] = [
   {
@@ -245,7 +245,7 @@ export const servicos: readonly Servico[] = [
     pathRota: "/regularizacao-prefeitura",
   },
 
-  // ── INSTALAÇÃO (mantidos — não aparecem nas tabs de serviços do PDF) ───────
+  // ── INSTALAÇÃO ──────────────────────────────────────────────────────────────────
 
   {
     id: "spda",
@@ -323,7 +323,8 @@ export const servicos: readonly Servico[] = [
     pathRota: "/aterramento",
   },
 
-  // ── LAUDOS (cards do PDF — Etapa 3 adiciona laudo-spda e estanqueidade-glp-gn) ─
+  // ── LAUDOS ───────────────────────────────────────────────────────────────────────
+  // Etapa 3 adiciona: laudo-spda, estanqueidade-glp-gn
 
   {
     id: "teste-continuidade",
@@ -368,9 +369,168 @@ export const servicos: readonly Servico[] = [
     pathRota: "/laudos-tecnicos",
   },
 
-  // ── PROJETOS (subServicos legados — substituídos por serviços independentes na Etapa 2) ─
-  // Mantido para compatibilidade com setores[] e referências existentes.
-  // NÃO usar em ServicosTabs — filtrar por categoria "projeto" diretamente.
+  // ── PROJETOS (5 serviços independentes) ───────────────────────────────────────
+
+  {
+    id: "levantamento-arquitetonico",
+    slug: "levantamento-arquitetonico",
+    nome: "Levantamento Arquitetônico",
+    nomeAbreviado: "Levantamento Arquitetônico",
+    categoria: "projeto",
+    descricao:
+      "Levantamento arquitetônico de edificações existentes com entrega em AutoCAD e PDF, incluindo planta baixa, cortes e fachadas. Base para aprovação em prefeituras e Corpo de Bombeiros.",
+    orgaos: ["CAU", "CREA"],
+    estados: ["RJ", "SP", "MG", "ES"],
+    coberturaNacional: false,
+    itens: [
+      "Planta baixa, cortes e fachadas",
+      "Entrega em AutoCAD e PDF",
+      "ART ou RRT assinada",
+      "Base para aprovação em órgãos públicos",
+    ],
+    setoresPrioritarios: [
+      "Comércio",
+      "Indústria",
+      "Saúde",
+      "Ensino",
+      "Galpões logísticos",
+    ],
+    normaBase: [
+      "NBR 6492 — Representação de projetos de arquitetura",
+      "Legislação municipal de uso e ocupação do solo",
+    ],
+    iconeLucide: "Scan",
+    pathRota: "/levantamento-arquitetonico",
+  },
+  {
+    id: "projeto-acessibilidade",
+    slug: "projeto-acessibilidade",
+    nome: "Projeto de Acessibilidade",
+    nomeAbreviado: "Acessibilidade",
+    categoria: "projeto",
+    descricao:
+      "Elaboração de projeto de acessibilidade conforme ABNT NBR 9050, adequando edificações às normas de acessibilidade universal para pessoas com deficiência ou mobilidade reduzida.",
+    orgaos: ["CAU", "CREA", "Secretarias Municipais"],
+    estados: ["RJ", "SP", "MG", "ES"],
+    coberturaNacional: false,
+    itens: [
+      "Diagnóstico de barreiras arquitetônicas",
+      "Projeto de adequações conforme NBR 9050",
+      "Memorial descritivo e especificações técnicas",
+      "ART ou RRT assinada",
+    ],
+    setoresPrioritarios: [
+      "Comércio",
+      "Escola",
+      "Saúde",
+      "Edifícios públicos",
+      "Hotelaria",
+    ],
+    normaBase: [
+      "ABNT NBR 9050 — Acessibilidade",
+      "Lei Federal 13.146/2015 (Lei Brasileira de Inclusão)",
+    ],
+    iconeLucide: "Accessibility",
+    pathRota: "/projeto-acessibilidade",
+  },
+  {
+    id: "projeto-combate-incendio",
+    slug: "projeto-combate-incendio",
+    nome: "Projeto de Sistemas de Combate ao Incêndio e Pânico",
+    nomeAbreviado: "Projeto de Incêndio",
+    categoria: "projeto",
+    descricao:
+      "Elaboração de projeto técnico completo dos sistemas de combate ao incêndio e pânico conforme as Instruções Técnicas do Corpo de Bombeiros estadual, com ART e acompanhamento até a aprovação.",
+    orgaos: ["CREA", "CBMERJ", "CBPMESP", "CBMMG", "CBMES"],
+    estados: ["RJ", "SP", "MG", "ES"],
+    coberturaNacional: false,
+    itens: [
+      "Projeto de hidrantes e mangueiras",
+      "Projeto de sprinklers (NBR 10897)",
+      "Projeto de detecção e alarme de incêndio",
+      "Projeto de iluminação de emergência e sinalização",
+      "ART assinada e acompanhamento até aprovação no CB",
+    ],
+    setoresPrioritarios: [
+      "Galpões logísticos",
+      "Indústrias",
+      "Comércio",
+      "Hospitais e clínicas",
+      "Escolas",
+    ],
+    normaBase: [
+      "Instrução Técnica (IT) do CB estadual",
+      "ABNT NBR 13714 — Sistemas de hidrantes",
+      "ABNT NBR 10897 — Sprinklers",
+    ],
+    iconeLucide: "Flame",
+    pathRota: "/projeto-combate-incendio",
+  },
+  {
+    id: "projeto-spda",
+    slug: "projeto-spda",
+    nome: "Projeto de Sistema de Proteção Contra Descargas Atmosféricas",
+    nomeAbreviado: "Projeto SPDA",
+    categoria: "projeto",
+    descricao:
+      "Elaboração de projeto técnico de SPDA (para-raios) conforme ABNT NBR 5419, com memorial de cálculo, ART assinada e cobertura em todo o Brasil.",
+    orgaos: ["CREA"],
+    estados: ["RJ", "SP", "MG", "ES", "BR"],
+    coberturaNacional: true,
+    itens: [
+      "Memorial de cálculo de nível de proteção",
+      "Projeto de captação, descida e aterramento",
+      "Memorial descritivo e especificações de materiais",
+      "ART assinada por engenheiro eletricista",
+    ],
+    setoresPrioritarios: [
+      "Usinas fotovoltaicas",
+      "Torres de telecomunicações",
+      "Subestações elétricas",
+      "Agronegócio",
+      "Indústria",
+    ],
+    normaBase: [
+      "ABNT NBR 5419 — Proteção contra descargas atmosféricas",
+    ],
+    iconeLucide: "CloudLightning",
+    pathRota: "/projeto-spda",
+  },
+  {
+    id: "estruturas-metalicas",
+    slug: "estruturas-metalicas",
+    nome: "Projeto de Estruturas Metálicas",
+    nomeAbreviado: "Estruturas Metálicas",
+    categoria: "projeto",
+    descricao:
+      "Elaboração de projeto estrutural metálico para galpões, mezaninos, passarelas e coberturas, conforme ABNT NBR 8681 e NBR 6118, com ART assinada.",
+    orgaos: ["CREA"],
+    estados: ["RJ", "SP", "MG", "ES"],
+    coberturaNacional: false,
+    itens: [
+      "Cálculo estrutural e memorial de cálculo",
+      "Plantas, cortes e detalhamentos em AutoCAD",
+      "Lista de materiais e perfis metálicos",
+      "ART assinada por engenheiro civil ou estrutural",
+    ],
+    setoresPrioritarios: [
+      "Galpões logísticos",
+      "Indústrias",
+      "Agronegócio",
+      "Energia Solar",
+      "Comércio",
+    ],
+    normaBase: [
+      "ABNT NBR 8681 — Ações e segurança nas estruturas",
+      "ABNT NBR 6118 — Projeto de estruturas de concreto",
+      "ABNT NBR 7190 — Projeto de estruturas de madeira (referência)",
+    ],
+    iconeLucide: "Construction",
+    pathRota: "/estruturas-metalicas",
+  },
+
+  // ── PROJETOS legado (mantém compatibilidade com setores[] existentes) ────────────
+  // NÃO exibir como card nas ServicosTabs — filtrar pelos 5 ids acima.
 
   {
     id: "projetos-tecnicos",
@@ -383,9 +543,6 @@ export const servicos: readonly Servico[] = [
     orgaos: ["CREA", "CAU", "CBMERJ", "CBPMESP", "CBMMG", "CBMES"],
     estados: ["RJ", "SP", "MG", "ES"],
     coberturaNacional: false,
-    // subServicos promovidos a serviços independentes na Etapa 2 — ver ids abaixo:
-    // levantamento-arquitetonico | projeto-acessibilidade | projeto-combate-incendio
-    // projeto-spda | estruturas-metalicas
     itens: [
       "Levantamento Arquitetônico (AutoCAD / PDF)",
       "Projeto de Combate ao Incêndio e Pânico com ART",
@@ -406,32 +563,50 @@ export const setores: readonly Setor[] = [
   {
     id: "industria",
     nome: "Indústria",
-    servicoIds: ["avcb", "spda", "laudos-tecnicos", "licenciamento-ambiental"],
+    servicoIds: [
+      "avcb", "spda", "laudos-tecnicos", "licenciamento-ambiental",
+      "projeto-combate-incendio", "projeto-spda", "estruturas-metalicas",
+    ],
   },
   {
     id: "comercio",
     nome: "Comércio (lojas e supermercados)",
-    servicoIds: ["avcb", "vigilancia-sanitaria", "projetos-tecnicos"],
+    servicoIds: [
+      "avcb", "vigilancia-sanitaria",
+      "levantamento-arquitetonico", "projeto-acessibilidade", "projeto-combate-incendio",
+    ],
   },
   {
     id: "galpao-logistico",
     nome: "Depósito / Galpão Logístico",
-    servicoIds: ["avcb", "spda", "laudos-tecnicos"],
+    servicoIds: [
+      "avcb", "spda", "laudos-tecnicos",
+      "projeto-combate-incendio", "estruturas-metalicas",
+    ],
   },
   {
     id: "telecom",
     nome: "Telecomunicações (torres)",
-    servicoIds: ["spda", "avcb", "laudos-tecnicos", "aterramento"],
+    servicoIds: [
+      "spda", "avcb", "laudos-tecnicos", "aterramento",
+      "projeto-spda",
+    ],
   },
   {
     id: "energia-solar",
     nome: "Energia Solar (usinas fotovoltaicas)",
-    servicoIds: ["spda", "aterramento", "laudos-tecnicos"],
+    servicoIds: [
+      "spda", "aterramento", "laudos-tecnicos",
+      "projeto-spda", "estruturas-metalicas",
+    ],
   },
   {
     id: "subestacoes",
     nome: "Subestações Elétricas",
-    servicoIds: ["spda", "aterramento", "teste-continuidade"],
+    servicoIds: [
+      "spda", "aterramento", "teste-continuidade",
+      "projeto-spda",
+    ],
   },
   {
     id: "posto-combustivel",
@@ -441,22 +616,34 @@ export const setores: readonly Setor[] = [
   {
     id: "escola",
     nome: "Escola",
-    servicoIds: ["avcb", "projetos-tecnicos", "vigilancia-sanitaria"],
+    servicoIds: [
+      "avcb", "vigilancia-sanitaria",
+      "levantamento-arquitetonico", "projeto-acessibilidade", "projeto-combate-incendio",
+    ],
   },
   {
     id: "igreja",
     nome: "Igreja",
-    servicoIds: ["avcb", "projetos-tecnicos"],
+    servicoIds: [
+      "avcb",
+      "levantamento-arquitetonico", "projeto-combate-incendio",
+    ],
   },
   {
     id: "agronegocio",
     nome: "Agronegócio",
-    servicoIds: ["spda", "licenciamento-ambiental", "aterramento"],
+    servicoIds: [
+      "spda", "licenciamento-ambiental", "aterramento",
+      "projeto-spda", "estruturas-metalicas",
+    ],
   },
   {
     id: "saude",
     nome: "Clínica / Saúde",
-    servicoIds: ["vigilancia-sanitaria", "projetos-tecnicos"],
+    servicoIds: [
+      "vigilancia-sanitaria",
+      "levantamento-arquitetonico", "projeto-acessibilidade", "projeto-combate-incendio",
+    ],
   },
   {
     id: "ceramica",
@@ -465,7 +652,7 @@ export const setores: readonly Setor[] = [
   },
 ] as const;
 
-// ─── Clientes (prova social) ───────────────────────────────────────────────────────────────
+// ─── Clientes (prova social) ──────────────────────────────────────────────────────────────
 
 export const clientes: readonly Cliente[] = [
   {
