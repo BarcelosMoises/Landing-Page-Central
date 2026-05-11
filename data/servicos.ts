@@ -87,7 +87,7 @@ export interface ContatoEmpresa {
   readonly instagramUrl: string;
 }
 
-// ─── Estados de atuação ─────────────────────────────────────────────────────────────────
+// ─── Estados de atuação ───────────────────────────────────────────────────────────────────
 
 export const estadosAtuacao: readonly EstadoAtuacao[] = [
   {
@@ -245,7 +245,7 @@ export const servicos: readonly Servico[] = [
     pathRota: "/regularizacao-prefeitura",
   },
 
-  // ── INSTALAÇÃO ──────────────────────────────────────────────────────────────────
+  // ── INSTALAÇÃO ────────────────────────────────────────────────────────────
 
   {
     id: "spda",
@@ -323,8 +323,7 @@ export const servicos: readonly Servico[] = [
     pathRota: "/aterramento",
   },
 
-  // ── LAUDOS ───────────────────────────────────────────────────────────────────────
-  // Etapa 3 adiciona: laudo-spda, estanqueidade-glp-gn
+  // ── LAUDOS (4 cards — catálogo completo conforme PDF) ─────────────────────
 
   {
     id: "teste-continuidade",
@@ -368,8 +367,71 @@ export const servicos: readonly Servico[] = [
     iconeLucide: "FileText",
     pathRota: "/laudos-tecnicos",
   },
+  {
+    id: "laudo-spda",
+    slug: "laudo-spda",
+    nome: "Laudo Técnico SPDA",
+    nomeAbreviado: "Laudo SPDA",
+    categoria: "laudo",
+    descricao:
+      "Elaboração de laudo técnico do Sistema de Proteção contra Descargas Atmosféricas (SPDA) com inspeção visual, teste de continuidade, teste de condutividade elétrica do solo e ART. Cobertura em todo o Brasil.",
+    orgaos: ["CREA"],
+    estados: ["RJ", "SP", "MG", "ES", "BR"],
+    coberturaNacional: true,
+    itens: [
+      "Inspeção visual do sistema de captação, descida e aterramento",
+      "Teste de continuidade conforme ABNT NBR 5419",
+      "Teste de condutividade elétrica do solo",
+      "Relatório técnico com registro fotográfico",
+      "ART assinada por engenheiro eletricista",
+    ],
+    setoresPrioritarios: [
+      "Usinas fotovoltaicas",
+      "Torres de telecomunicações",
+      "Subestações elétricas",
+      "Agronegócio",
+      "Indústria",
+    ],
+    normaBase: [
+      "ABNT NBR 5419 — Proteção contra descargas atmosféricas",
+      "NR-10 — Segurança em instalações elétricas",
+    ],
+    iconeLucide: "ShieldCheck",
+    pathRota: "/laudo-spda",
+  },
+  {
+    id: "estanqueidade-glp-gn",
+    slug: "estanqueidade-glp-gn",
+    nome: "Teste de Estanqueidade de Rede GLP/GN",
+    nomeAbreviado: "Estanqueidade GLP/GN",
+    categoria: "laudo",
+    descricao:
+      "Realização de teste de estanqueidade em redes de gás GLP e GN com emissão de laudo técnico e ART, conforme ABNT NBR 15526. Exigido para obtenção do habite-se e licenças sanitárias.",
+    orgaos: ["CREA", "VISA Municipal", "Secretarias Municipais"],
+    estados: ["RJ", "SP", "MG", "ES"],
+    coberturaNacional: false,
+    itens: [
+      "Teste de pressão e estanqueidade da rede GLP/GN",
+      "Verificação de conformidade das instalações",
+      "Laudo técnico com resultado e memorial de ensaio",
+      "ART assinada por responsável técnico",
+    ],
+    setoresPrioritarios: [
+      "Restaurantes e lanchonetes",
+      "Indústrias alimentícias",
+      "Hospitais e clínicas",
+      "Hotéis e pousadas",
+      "Condomínios residenciais e comerciais",
+    ],
+    normaBase: [
+      "ABNT NBR 15526 — Redes de distribuição interna para gases combustíveis",
+      "ABNT NBR 13523 — Central de GLP",
+    ],
+    iconeLucide: "Gauge",
+    pathRota: "/estanqueidade-glp-gn",
+  },
 
-  // ── PROJETOS (5 serviços independentes) ───────────────────────────────────────
+  // ── PROJETOS (5 serviços independentes) ───────────────────────────────────
 
   {
     id: "levantamento-arquitetonico",
@@ -529,7 +591,7 @@ export const servicos: readonly Servico[] = [
     pathRota: "/estruturas-metalicas",
   },
 
-  // ── PROJETOS legado (mantém compatibilidade com setores[] existentes) ────────────
+  // ── PROJETOS legado (mantém compatibilidade com setores[] existentes) ──────
   // NÃO exibir como card nas ServicosTabs — filtrar pelos 5 ids acima.
 
   {
@@ -566,6 +628,7 @@ export const setores: readonly Setor[] = [
     servicoIds: [
       "avcb", "spda", "laudos-tecnicos", "licenciamento-ambiental",
       "projeto-combate-incendio", "projeto-spda", "estruturas-metalicas",
+      "laudo-spda", "estanqueidade-glp-gn",
     ],
   },
   {
@@ -574,6 +637,7 @@ export const setores: readonly Setor[] = [
     servicoIds: [
       "avcb", "vigilancia-sanitaria",
       "levantamento-arquitetonico", "projeto-acessibilidade", "projeto-combate-incendio",
+      "estanqueidade-glp-gn",
     ],
   },
   {
@@ -589,7 +653,7 @@ export const setores: readonly Setor[] = [
     nome: "Telecomunicações (torres)",
     servicoIds: [
       "spda", "avcb", "laudos-tecnicos", "aterramento",
-      "projeto-spda",
+      "projeto-spda", "laudo-spda",
     ],
   },
   {
@@ -597,7 +661,7 @@ export const setores: readonly Setor[] = [
     nome: "Energia Solar (usinas fotovoltaicas)",
     servicoIds: [
       "spda", "aterramento", "laudos-tecnicos",
-      "projeto-spda", "estruturas-metalicas",
+      "projeto-spda", "estruturas-metalicas", "laudo-spda",
     ],
   },
   {
@@ -605,13 +669,16 @@ export const setores: readonly Setor[] = [
     nome: "Subestações Elétricas",
     servicoIds: [
       "spda", "aterramento", "teste-continuidade",
-      "projeto-spda",
+      "projeto-spda", "laudo-spda",
     ],
   },
   {
     id: "posto-combustivel",
     nome: "Posto de Combustível",
-    servicoIds: ["avcb", "licenciamento-ambiental", "vigilancia-sanitaria"],
+    servicoIds: [
+      "avcb", "licenciamento-ambiental", "vigilancia-sanitaria",
+      "estanqueidade-glp-gn",
+    ],
   },
   {
     id: "escola",
@@ -634,7 +701,7 @@ export const setores: readonly Setor[] = [
     nome: "Agronegócio",
     servicoIds: [
       "spda", "licenciamento-ambiental", "aterramento",
-      "projeto-spda", "estruturas-metalicas",
+      "projeto-spda", "estruturas-metalicas", "laudo-spda",
     ],
   },
   {
@@ -643,6 +710,7 @@ export const setores: readonly Setor[] = [
     servicoIds: [
       "vigilancia-sanitaria",
       "levantamento-arquitetonico", "projeto-acessibilidade", "projeto-combate-incendio",
+      "estanqueidade-glp-gn",
     ],
   },
   {
@@ -652,7 +720,7 @@ export const setores: readonly Setor[] = [
   },
 ] as const;
 
-// ─── Clientes (prova social) ──────────────────────────────────────────────────────────────
+// ─── Clientes (prova social) ───────────────────────────────────────────────────────────────
 
 export const clientes: readonly Cliente[] = [
   {
