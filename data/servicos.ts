@@ -123,6 +123,9 @@ export const estadosAtuacao: readonly EstadoAtuacao[] = [
 // ─── Catálogo de serviços ─────────────────────────────────────────────────────────────────
 
 export const servicos: readonly Servico[] = [
+
+  // ── LEGALIZAÇÃO (4 cards) ─────────────────────────────────────────────────
+
   {
     id: "avcb",
     slug: "avcb-corpo-de-bombeiros",
@@ -135,10 +138,10 @@ export const servicos: readonly Servico[] = [
     estados: ["RJ", "SP", "MG", "ES"],
     coberturaNacional: false,
     itens: [
-      "Levantamento das exigências do CB estadual",
-      "Elaboração do Laudo de Exigências",
-      "Execução das adequações necessárias",
-      "Acompanhamento da vistoria até emissão do Certificado de Aprovação / AVCB",
+      "Projeto de Combate ao Incêndio e Pânico",
+      "Laudo de Exigências",
+      "Certificado de Aprovação",
+      "AVCB / CLCB",
     ],
     setoresPrioritarios: [
       "Galpões logísticos",
@@ -161,7 +164,7 @@ export const servicos: readonly Servico[] = [
     id: "vigilancia-sanitaria",
     slug: "vigilancia-sanitaria",
     nome: "Legalização junto à Vigilância Sanitária",
-    nomeAbreviado: "Alvará Sanitário",
+    nomeAbreviado: "Vigilância Sanitária",
     categoria: "legalizacao",
     descricao:
       "Regularização sanitária para obtenção do Alvará Sanitário nos estados do RJ, SP e ES, com elaboração de todos os documentos exigidos pela VISA.",
@@ -169,11 +172,8 @@ export const servicos: readonly Servico[] = [
     estados: ["RJ", "SP", "ES"],
     coberturaNacional: false,
     itens: [
-      "Projeto Arquitetônico adequado às normas da VISA",
-      "Projeto de Acessibilidade conforme NBR 9050",
-      "PGRS — Plano de Gerenciamento de Resíduos Sólidos",
-      "PGRSS — Plano de Gerenciamento de Resíduos de Serviços de Saúde",
-      "Acompanhamento até emissão do Alvará Sanitário",
+      "Alvará sanitário",
+      "Laudo técnico de Atividades",
     ],
     setoresPrioritarios: [
       "Clínicas médicas e odontológicas",
@@ -196,7 +196,7 @@ export const servicos: readonly Servico[] = [
     id: "licenciamento-ambiental",
     slug: "licenciamento-ambiental",
     nome: "Legalização Ambiental / Licenciamento",
-    nomeAbreviado: "Licenciamento Ambiental",
+    nomeAbreviado: "Meio Ambiente",
     categoria: "legalizacao",
     descricao:
       "Licenciamento ambiental para regularização de atividades com impacto ambiental junto ao INEA (RJ), CETESB (SP), SUPRAM/SEMAD (MG) e IEMA (ES).",
@@ -204,10 +204,10 @@ export const servicos: readonly Servico[] = [
     estados: ["RJ", "SP", "MG", "ES"],
     coberturaNacional: false,
     itens: [
-      "LP — Licença Prévia",
-      "LI — Licença de Instalação",
-      "LO — Licença de Operação",
-      "LAS — Licença Ambiental Simplificada",
+      "Licença Ambiental de Instalação",
+      "Licença Ambiental de Operação",
+      "Licença Ambiental Unificada",
+      "Licença Ambiental Comunicada",
     ],
     setoresPrioritarios: [
       "Postos de combustível",
@@ -228,22 +228,25 @@ export const servicos: readonly Servico[] = [
     id: "regularizacao-prefeitura",
     slug: "regularizacao-prefeitura",
     nome: "Regularização junto à Prefeitura",
-    nomeAbreviado: "Regularização Municipal",
+    nomeAbreviado: "Prefeitura",
     categoria: "legalizacao",
     descricao:
-      "Regularização de imóveis junto às prefeituras municipais, incluindo aprovação de projetos, Habite-se e certidões de uso e ocupação do solo.",
+      "Regularização de imóveis junto às prefeituras municipais, incluindo aprovação de projetos, Habite-se, desmembramento e remembramento de lotes.",
     orgaos: ["Secretarias Municipais"],
     estados: ["RJ", "SP", "MG", "ES"],
     coberturaNacional: false,
     itens: [
-      "Aprovação de projetos arquitetônicos",
+      "Projeto legal",
       "Habite-se",
-      "Certidão de uso e ocupação do solo",
-      "Acompanhamento de processos junto às secretarias municipais",
+      "Desmembramento de lotes",
+      "Remembramento de lotes",
     ],
     iconeLucide: "Building2",
     pathRota: "/regularizacao-prefeitura",
   },
+
+  // ── INSTALAÇÃO (mantidos — não aparecem nas tabs de serviços do PDF) ───────
+
   {
     id: "spda",
     slug: "spda-para-raios",
@@ -319,6 +322,9 @@ export const servicos: readonly Servico[] = [
     iconeLucide: "Activity",
     pathRota: "/aterramento",
   },
+
+  // ── LAUDOS (cards do PDF — Etapa 3 adiciona laudo-spda e estanqueidade-glp-gn) ─
+
   {
     id: "teste-continuidade",
     slug: "teste-continuidade",
@@ -343,29 +349,16 @@ export const servicos: readonly Servico[] = [
   {
     id: "laudos-tecnicos",
     slug: "laudos-tecnicos",
-    nome: "Laudos Técnicos",
-    nomeAbreviado: "Laudos Técnicos",
+    nome: "Laudo Técnico dos Sistemas de Combate ao Incêndio e Pânico",
+    nomeAbreviado: "Laudo de Combate a Incêndio",
     categoria: "laudo",
     descricao:
-      "Elaboração de laudos técnicos de engenharia com ART: laudo de exigências do Corpo de Bombeiros, diagnósticos de inconformidades e planos de adequação.",
+      "Elaboração de laudo técnico dos sistemas de combate ao incêndio e pânico com ART: diagnóstico de inconformidades, plano de adequações e acompanhamento até a emissão do AVCB.",
     orgaos: ["CREA", "CBMERJ", "CBPMESP", "CBMMG", "CBMES"],
     estados: ["RJ", "SP", "MG", "ES"],
     coberturaNacional: false,
-    subServicos: [
-      {
-        id: "laudo-exigencias-cb",
-        nome: "Laudo de Exigências (Corpo de Bombeiros)",
-        descricao:
-          "Diagnóstico das inconformidades identificadas pelo CB, relatório técnico com plano de adequações e prazos, com ART do responsável técnico.",
-      },
-      {
-        id: "acompanhamento-avcb",
-        nome: "Acompanhamento até emissão do AVCB",
-        descricao:
-          "Gestão completa da documentação e acompanhamento do processo junto ao CB estadual até a emissão do Certificado de Aprovação.",
-      },
-    ],
     itens: [
+      "Laudo Técnico dos Sistemas de Combate ao Incêndio e Pânico",
       "Laudo de Exigências do Corpo de Bombeiros",
       "Diagnóstico de inconformidades com plano de adequações",
       "Acompanhamento completo até emissão do AVCB",
@@ -374,6 +367,11 @@ export const servicos: readonly Servico[] = [
     iconeLucide: "FileText",
     pathRota: "/laudos-tecnicos",
   },
+
+  // ── PROJETOS (subServicos legados — substituídos por serviços independentes na Etapa 2) ─
+  // Mantido para compatibilidade com setores[] e referências existentes.
+  // NÃO usar em ServicosTabs — filtrar por categoria "projeto" diretamente.
+
   {
     id: "projetos-tecnicos",
     slug: "projetos",
@@ -385,48 +383,9 @@ export const servicos: readonly Servico[] = [
     orgaos: ["CREA", "CAU", "CBMERJ", "CBPMESP", "CBMMG", "CBMES"],
     estados: ["RJ", "SP", "MG", "ES"],
     coberturaNacional: false,
-    subServicos: [
-      {
-        id: "levantamento-arquitetonico",
-        nome: "Levantamento Arquitetônico",
-        descricao:
-          "Levantamento físico do imóvel com planta baixa, cortes e fachadas.",
-        entregavel: "Pranchas técnicas em AutoCAD / PDF",
-      },
-      {
-        id: "projeto-incendio-panico",
-        nome: "Projeto de Combate ao Incêndio e Pânico",
-        descricao:
-          "Projeto completo conforme Instrução Técnica do CB estadual, incluindo hidrantes, sprinklers, extintores, saídas de emergência e sinalização, com ART.",
-        norma: "IT do Corpo de Bombeiros estadual",
-      },
-      {
-        id: "projeto-arquitetonico-visa",
-        nome: "Projeto Arquitetônico (Vigilância Sanitária)",
-        descricao:
-          "Projeto adequado às normas da VISA para aprovação do Alvará Sanitário, com planta baixa, memorial descritivo e especificação de materiais.",
-      },
-      {
-        id: "projeto-hidraulico",
-        nome: "Projeto Hidráulico / Sanitário",
-        descricao:
-          "Dimensionamento de instalações hidráulicas e sanitárias: abastecimento de água, esgoto sanitário e águas pluviais.",
-      },
-      {
-        id: "projeto-acessibilidade",
-        nome: "Projeto de Acessibilidade",
-        descricao:
-          "Adequação do imóvel à NBR 9050: rampas, pisos táteis, sanitários adaptados e sinalização.",
-        norma: "ABNT NBR 9050",
-      },
-      {
-        id: "pgrs-pgrss",
-        nome: "PGRS / PGRSS",
-        descricao:
-          "Plano de Gerenciamento de Resíduos Sólidos (Lei 12.305/2010) e Plano de Gerenciamento de Resíduos de Serviços de Saúde (RDC ANVISA 222/2018).",
-        norma: "Lei 12.305/2010 | RDC ANVISA 222/2018",
-      },
-    ],
+    // subServicos promovidos a serviços independentes na Etapa 2 — ver ids abaixo:
+    // levantamento-arquitetonico | projeto-acessibilidade | projeto-combate-incendio
+    // projeto-spda | estruturas-metalicas
     itens: [
       "Levantamento Arquitetônico (AutoCAD / PDF)",
       "Projeto de Combate ao Incêndio e Pânico com ART",
@@ -438,6 +397,7 @@ export const servicos: readonly Servico[] = [
     iconeLucide: "Ruler",
     pathRota: "/projetos",
   },
+
 ] as const;
 
 // ─── Setores atendidos ─────────────────────────────────────────────────────────────────
