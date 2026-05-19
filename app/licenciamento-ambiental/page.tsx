@@ -1,7 +1,6 @@
 // app/licenciamento-ambiental/page.tsx
 // Página de serviço: Licenciamento Ambiental
 // Server Component puro — sem "use client".
-// Accent: #2d6a2d (verde) — cor da categoria ambiental.
 
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -50,7 +49,7 @@ export const metadata: Metadata = {
   },
 };
 
-// ─── JSON-LD ────────────────────────────────────────────────────────────────
+// ─── JSON-LD ────────────────────────────────────────────────────────────────────────
 
 const serviceJsonLd = {
   "@context": "https://schema.org",
@@ -158,7 +157,7 @@ function BadgeEstado({ sigla, nome }: { sigla: string; nome: string }) {
     <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-neutral-800 border border-white/10 text-xs font-semibold text-neutral-200 font-mono tracking-wide">
       <span
         className="w-1.5 h-1.5 rounded-full"
-        style={{ backgroundColor: "#2d6a2d" }}
+        style={{ backgroundColor: "var(--color-service-accent)" }}
         aria-hidden="true"
       />
       {sigla} · {nome}
@@ -168,17 +167,7 @@ function BadgeEstado({ sigla, nome }: { sigla: string; nome: string }) {
 
 function IconeLeaf() {
   return (
-    <svg
-      width="20"
-      height="20"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z" />
       <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" />
     </svg>
@@ -198,7 +187,7 @@ function IconeCheck() {
       strokeLinejoin="round"
       aria-hidden="true"
       className="shrink-0 mt-0.5"
-      style={{ color: "#2d6a2d" }}
+      style={{ color: "var(--color-service-accent)" }}
     >
       <path d="M20 6 9 17l-5-5" />
     </svg>
@@ -207,18 +196,7 @@ function IconeCheck() {
 
 function IconeChevron() {
   return (
-    <svg
-      width="18"
-      height="18"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-      className="shrink-0 text-neutral-400"
-    >
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="shrink-0 text-neutral-400">
       <path d="m9 18 6-6-6-6" />
     </svg>
   );
@@ -237,31 +215,18 @@ function IconeWhatsApp() {
 export default function PageLicenciamentoAmbiental() {
   return (
     <>
-      {/* JSON-LD */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
 
       <NavPrimaria />
 
       <main data-service="ambiental">
 
         {/* ── HERO ──────────────────────────────────────────────────────── */}
-        <section
-          aria-labelledby="hero-titulo"
-          className="relative bg-neutral-950 overflow-hidden"
-        >
+        <section aria-labelledby="hero-titulo" className="relative bg-neutral-950 overflow-hidden">
           <div
             className="absolute inset-0 pointer-events-none"
-            style={{
-              background:
-                "radial-gradient(ellipse 70% 60% at 60% 40%, rgba(45,106,45,0.22) 0%, transparent 70%)",
-            }}
+            style={{ background: "radial-gradient(ellipse 70% 60% at 60% 40%, rgba(45,106,45,0.22) 0%, transparent 70%)" }}
             aria-hidden="true"
           />
           <CrosshairDecor corner="top-right" size="lg" variant="light" />
@@ -270,15 +235,9 @@ export default function PageLicenciamentoAmbiental() {
           <div className="container-site relative z-10 pt-24 pb-20 md:pt-32 md:pb-28">
             <nav aria-label="Localização na página" className="mb-8">
               <ol className="flex items-center gap-2 text-xs text-neutral-500 font-mono">
-                <li>
-                  <Link href="/" className="hover:text-neutral-300 transition-colors">
-                    Início
-                  </Link>
-                </li>
+                <li><Link href="/" className="hover:text-neutral-300 transition-colors">Início</Link></li>
                 <li aria-hidden="true">/</li>
-                <li aria-current="page" className="text-neutral-300">
-                  Licenciamento Ambiental
-                </li>
+                <li aria-current="page" className="text-neutral-300">Licenciamento Ambiental</li>
               </ol>
             </nav>
 
@@ -286,9 +245,9 @@ export default function PageLicenciamentoAmbiental() {
               <span
                 className="inline-flex items-center gap-2 px-3 py-1 rounded-full border text-xs font-semibold uppercase tracking-wider"
                 style={{
-                  borderColor: "rgba(45,106,45,0.4)",
-                  backgroundColor: "rgba(45,106,45,0.1)",
-                  color: "#86c986",
+                  borderColor: "color-mix(in srgb, var(--color-service-accent) 40%, transparent)",
+                  backgroundColor: "color-mix(in srgb, var(--color-service-accent) 10%, transparent)",
+                  color: "var(--color-service-accent-light)",
                 }}
               >
                 <IconeLeaf />
@@ -303,7 +262,7 @@ export default function PageLicenciamentoAmbiental() {
                   className="font-heading font-extrabold text-white text-4xl md:text-5xl lg:text-6xl leading-tight tracking-tight mb-6"
                 >
                   Licenciamento Ambiental —{" "}
-                  <span style={{ color: "#86c986" }}>LP, LI, LO e LAS</span>{" "}
+                  <span style={{ color: "var(--color-service-accent-light)" }}>LP, LI, LO e LAS</span>{" "}
                   em RJ, SP, MG e ES
                 </h1>
                 <p className="text-neutral-300 text-lg leading-relaxed mb-8 max-w-xl">
@@ -321,7 +280,11 @@ export default function PageLicenciamentoAmbiental() {
                     href={whatsappUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-lg bg-[#2d6a2d] hover:bg-[#1e4d1e] text-white font-semibold text-sm transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2d6a2d] focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950"
+                    className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-lg text-white font-semibold text-sm transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950"
+                    style={{
+                      backgroundColor: "var(--color-service-accent)",
+                      ["--tw-ring-color" as string]: "var(--color-service-accent)",
+                    }}
                   >
                     <IconeWhatsApp />
                     Solicitar orçamento
@@ -335,21 +298,11 @@ export default function PageLicenciamentoAmbiental() {
                 </div>
               </div>
 
-              <aside
-                aria-label="Órgãos ambientais licenciadores"
-                className="hidden lg:flex flex-col gap-3 min-w-[252px]"
-              >
-                <p className="text-xs font-semibold text-neutral-500 uppercase tracking-wider mb-1 font-mono">
-                  Órgãos licenciadores
-                </p>
+              <aside aria-label="Órgãos ambientais licenciadores" className="hidden lg:flex flex-col gap-3 min-w-[252px]">
+                <p className="text-xs font-semibold text-neutral-500 uppercase tracking-wider mb-1 font-mono">Órgãos licenciadores</p>
                 {estadosAmbiental.map((e) => (
-                  <div
-                    key={e.sigla}
-                    className="flex items-center justify-between gap-4 px-4 py-3 rounded-lg bg-neutral-900 border border-white/8"
-                  >
-                    <span className="text-sm font-semibold text-white font-mono">
-                      {e.orgaoAmbiental}
-                    </span>
+                  <div key={e.sigla} className="flex items-center justify-between gap-4 px-4 py-3 rounded-lg bg-neutral-900 border border-white/8">
+                    <span className="text-sm font-semibold text-white font-mono">{e.orgaoAmbiental}</span>
                     <span className="text-xs text-neutral-400">{e.sigla}</span>
                   </div>
                 ))}
@@ -359,23 +312,14 @@ export default function PageLicenciamentoAmbiental() {
         </section>
 
         {/* ── TRUST BAR ───────────────────────────────────────────────────── */}
-        <section
-          aria-label="Clientes atendidos"
-          className="bg-neutral-900 border-y border-white/8 py-6"
-        >
+        <section aria-label="Clientes atendidos" className="bg-neutral-900 border-y border-white/8 py-6">
           <div className="container-site">
             <p className="text-xs text-neutral-500 text-center uppercase tracking-widest mb-5 font-mono">
               Empresas que confiam na Central de Soluções
             </p>
-            <ul
-              className="flex flex-wrap items-center justify-center gap-x-10 gap-y-3"
-              aria-label="Lista de clientes"
-            >
+            <ul className="flex flex-wrap items-center justify-center gap-x-10 gap-y-3" aria-label="Lista de clientes">
               {clientesDestaque.map((c) => (
-                <li
-                  key={c.id}
-                  className="text-sm font-semibold text-neutral-400 hover:text-neutral-200 transition-colors duration-150 tracking-wide"
-                >
+                <li key={c.id} className="text-sm font-semibold text-neutral-400 hover:text-neutral-200 transition-colors duration-150 tracking-wide">
                   {c.nome}
                 </li>
               ))}
@@ -383,37 +327,24 @@ export default function PageLicenciamentoAmbiental() {
           </div>
         </section>
 
-        {/* ── ESCOPO DO SERVIÇO ────────────────────────────────────────────── */}
-        <section
-          aria-labelledby="escopo-titulo"
-          className="bg-white py-20 md:py-28"
-        >
+        {/* ── ESCOPO DO SERVIÇO ──────────────────────────────────────────────────── */}
+        <section aria-labelledby="escopo-titulo" className="bg-white py-20 md:py-28">
           <div className="container-site">
             <div className="grid md:grid-cols-[1fr_1fr] gap-16 items-start">
               <div>
                 <p
                   className="text-xs font-semibold uppercase tracking-wider mb-3 font-mono"
-                  style={{ color: "#2d6a2d" }}
+                  style={{ color: "var(--color-service-accent)" }}
                 >
                   Escopo do serviço
                 </p>
-                <h2
-                  id="escopo-titulo"
-                  className="font-heading font-bold text-neutral-900 text-3xl md:text-4xl leading-tight mb-6"
-                >
+                <h2 id="escopo-titulo" className="font-heading font-bold text-neutral-900 text-3xl md:text-4xl leading-tight mb-6">
                   Modalidades de Licenciamento Ambiental
                 </h2>
                 <p className="text-neutral-600 text-base leading-relaxed mb-8">
-                  A Central de Soluções conduz o processo de licenciamento de
-                  ponta a ponta: diagnóstico da atividade, definição da
-                  modalidade aplicável, elaboração dos estudos ambientais e
-                  acompanhamento junto ao órgão licenciador até a emissão da
-                  licença.
+                  A Central de Soluções conduz o processo de licenciamento de ponta a ponta: diagnóstico da atividade, definição da modalidade aplicável, elaboração dos estudos ambientais e acompanhamento junto ao órgão licenciador até a emissão da licença.
                 </p>
-                <ul
-                  className="flex flex-col gap-4"
-                  aria-label="Modalidades incluídas no serviço"
-                >
+                <ul className="flex flex-col gap-4" aria-label="Modalidades incluídas no serviço">
                   {ambiental.itens.map((item) => (
                     <li key={item} className="flex items-start gap-3">
                       <IconeCheck />
@@ -424,18 +355,10 @@ export default function PageLicenciamentoAmbiental() {
               </div>
 
               <div>
-                <p className="text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-3 font-mono">
-                  Setores prioritários
-                </p>
-                <ul
-                  className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-8"
-                  aria-label="Setores atendidos pelo licenciamento ambiental"
-                >
+                <p className="text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-3 font-mono">Setores prioritários</p>
+                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-8" aria-label="Setores atendidos pelo licenciamento ambiental">
                   {ambiental.setoresPrioritarios?.map((setor) => (
-                    <li
-                      key={setor}
-                      className="flex items-center gap-3 px-4 py-3 rounded-lg bg-neutral-50 border border-neutral-200 text-sm text-neutral-700"
-                    >
+                    <li key={setor} className="flex items-center gap-3 px-4 py-3 rounded-lg bg-neutral-50 border border-neutral-200 text-sm text-neutral-700">
                       <IconeChevron />
                       {setor}
                     </li>
@@ -444,17 +367,10 @@ export default function PageLicenciamentoAmbiental() {
 
                 {ambiental.normaBase && (
                   <div className="p-5 rounded-xl bg-neutral-900 border border-white/10">
-                    <p className="text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-3 font-mono">
-                      Base normativa
-                    </p>
+                    <p className="text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-3 font-mono">Base normativa</p>
                     <ul className="flex flex-col gap-2">
                       {ambiental.normaBase.map((norma) => (
-                        <li
-                          key={norma}
-                          className="text-sm text-neutral-200 font-mono"
-                        >
-                          {norma}
-                        </li>
+                        <li key={norma} className="text-sm text-neutral-200 font-mono">{norma}</li>
                       ))}
                     </ul>
                   </div>
@@ -464,50 +380,31 @@ export default function PageLicenciamentoAmbiental() {
           </div>
         </section>
 
-        {/* ── EQUIPE TÉCNICA (E-E-A-T) ──────────────────────────────────────────── */}
-        <section
-          aria-labelledby="equipe-titulo"
-          className="relative bg-neutral-950 py-20 md:py-28 border-t border-white/8"
-        >
+        {/* ── EQUIPE TÉCNICA (E-E-A-T) ─────────────────────────────────────────── */}
+        <section aria-labelledby="equipe-titulo" className="relative bg-neutral-950 py-20 md:py-28 border-t border-white/8">
           <CrosshairDecor corner="bottom-right" size="md" variant="light" />
           <div className="container-site">
             <p
               className="text-xs font-semibold uppercase tracking-wider mb-3 font-mono"
-              style={{ color: "#86c986" }}
+              style={{ color: "var(--color-service-accent-light)" }}
             >
               Responsabilidade técnica real
             </p>
-            <h2
-              id="equipe-titulo"
-              className="font-heading font-bold text-white text-3xl md:text-4xl leading-tight mb-12"
-            >
+            <h2 id="equipe-titulo" className="font-heading font-bold text-white text-3xl md:text-4xl leading-tight mb-12">
               Engenheiros que conduzem o processo
             </h2>
-            <ul
-              className="grid sm:grid-cols-2 gap-6"
-              aria-label="Equipe técnica responsável pelo licenciamento ambiental"
-            >
+            <ul className="grid sm:grid-cols-2 gap-6" aria-label="Equipe técnica responsável pelo licenciamento ambiental">
               {equipe.map((membro) => (
-                <li
-                  key={membro.slug}
-                  className="flex flex-col gap-3 p-6 rounded-xl bg-neutral-900 border border-white/10"
-                >
+                <li key={membro.slug} className="flex flex-col gap-3 p-6 rounded-xl bg-neutral-900 border border-white/10">
                   <div>
-                    <p className="font-heading font-semibold text-white text-lg">
-                      {membro.nome}
-                    </p>
-                    <p className="text-sm mt-0.5" style={{ color: "#86c986" }}>
+                    <p className="font-heading font-semibold text-white text-lg">{membro.nome}</p>
+                    <p className="text-sm mt-0.5" style={{ color: "var(--color-service-accent-light)" }}>
                       {membro.tituloPrincipal}
                     </p>
                   </div>
-                  <ul
-                    className="flex flex-col gap-1"
-                    aria-label={`Especializações de ${membro.nome}`}
-                  >
+                  <ul className="flex flex-col gap-1" aria-label={`Especializações de ${membro.nome}`}>
                     {membro.especializacoes.map((esp) => (
-                      <li key={esp} className="text-sm text-neutral-400">
-                        {esp}
-                      </li>
+                      <li key={esp} className="text-sm text-neutral-400">{esp}</li>
                     ))}
                   </ul>
                 </li>
@@ -517,35 +414,30 @@ export default function PageLicenciamentoAmbiental() {
         </section>
 
         {/* ── FAQ ─────────────────────────────────────────────────────────── */}
-        <section
-          aria-labelledby="faq-titulo"
-          className="bg-white py-20 md:py-28 border-t border-neutral-100"
-        >
+        <section aria-labelledby="faq-titulo" className="bg-white py-20 md:py-28 border-t border-neutral-100">
           <div className="container-site max-w-3xl">
             <p
               className="text-xs font-semibold uppercase tracking-wider mb-3 font-mono"
-              style={{ color: "#2d6a2d" }}
+              style={{ color: "var(--color-service-accent)" }}
             >
               Perguntas frequentes
             </p>
-            <h2
-              id="faq-titulo"
-              className="font-heading font-bold text-neutral-900 text-3xl md:text-4xl leading-tight mb-10"
-            >
+            <h2 id="faq-titulo" className="font-heading font-bold text-neutral-900 text-3xl md:text-4xl leading-tight mb-10">
               Tudo sobre Licenciamento Ambiental
             </h2>
             <div className="flex flex-col gap-3">
               {faqJsonLd.mainEntity.map((faq, i) => (
                 <details key={i} className="group border border-neutral-100 rounded-xl bg-white overflow-hidden">
                   <summary
-                    className="flex items-center justify-between gap-4 px-6 py-4 cursor-pointer list-none font-heading text-base font-bold text-neutral-900 hover:bg-neutral-50 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2d6a2d] focus-visible:ring-inset"
+                    className="flex items-center justify-between gap-4 px-6 py-4 cursor-pointer list-none font-heading text-base font-bold text-neutral-900 hover:bg-neutral-50 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset"
+                    style={{ ["--tw-ring-color" as string]: "var(--color-service-accent)" }}
                     aria-label={faq.name}
                   >
                     <span>{faq.name}</span>
                     <span
                       aria-hidden="true"
                       className="flex-shrink-0 transition-transform duration-200 group-open:rotate-180"
-                      style={{ color: "#2d6a2d" }}
+                      style={{ color: "var(--color-service-accent)" }}
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <polyline points="6 9 12 15 18 9" />
@@ -562,30 +454,26 @@ export default function PageLicenciamentoAmbiental() {
         </section>
 
         {/* ── CTA FINAL ──────────────────────────────────────────────────────── */}
-        <section
-          aria-labelledby="cta-titulo"
-          className="relative bg-neutral-950 py-20 md:py-28 border-t border-white/8"
-        >
+        <section aria-labelledby="cta-titulo" className="relative bg-neutral-950 py-20 md:py-28 border-t border-white/8">
           <CrosshairDecor corner="top-left" size="sm" variant="light" />
           <CrosshairDecor corner="bottom-right" size="lg" variant="light" />
           <div className="container-site text-center max-w-2xl">
-            <h2
-              id="cta-titulo"
-              className="font-heading font-extrabold text-white text-3xl md:text-4xl leading-tight mb-4"
-            >
+            <h2 id="cta-titulo" className="font-heading font-extrabold text-white text-3xl md:text-4xl leading-tight mb-4">
               Precisa de Licença Ambiental?
             </h2>
             <p className="text-neutral-400 text-lg mb-10">
-              Fale com nossos engenheiros e receba um diagnóstico gratuito sobre
-              a modalidade de licenciamento aplicável à sua atividade e o órgão
-              competente em seu estado.
+              Fale com nossos engenheiros e receba um diagnóstico gratuito sobre a modalidade de licenciamento aplicável à sua atividade e o órgão competente em seu estado.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <a
                 href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-lg bg-[#2d6a2d] hover:bg-[#1e4d1e] text-white font-semibold text-base transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2d6a2d] focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950"
+                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-lg text-white font-semibold text-base transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950"
+                style={{
+                  backgroundColor: "var(--color-service-accent)",
+                  ["--tw-ring-color" as string]: "var(--color-service-accent)",
+                }}
               >
                 Solicitar diagnóstico gratuito
               </a>
