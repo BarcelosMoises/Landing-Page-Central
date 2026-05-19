@@ -131,27 +131,42 @@ background: linear-gradient(to bottom, rgba(79,1,1,0.85) 0%, rgba(10,0,0,0.6) 10
 
 ### Como Aplicar nas Subpáginas
 
-Cada `page.tsx` de subpágina define a cor do serviço via CSS variable inline no elemento `<main>`:
+> **Regra fundamental (App Router):** a CSS variable deve ser definida num `<div>` wrapper no
+> `layout.tsx` da subpágina — **não** apenas no `<main>`. Isso garante que `NavPrimaria` e
+> `Footer`, renderizados dentro do mesmo layout, herdem a cor correta do serviço.
+
+Cada subpágina de serviço possui um `layout.tsx` que envolve todo o conteúdo num `<div>` com a variável:
 
 ```tsx
-// Exemplo: /vigilancia-sanitaria/page.tsx
-<main
-  style={{ "--color-service-accent": "#0d7377" } as React.CSSProperties}
-  className="[--color-service-accent-hover:#095e62] [--color-service-accent-bg:#0d737710]"
->
+// Exemplo: app/licenciamento-ambiental/layout.tsx
+import type React from "react"
+
+export default function LayoutAmbiental({ children }: { children: React.ReactNode }) {
+  return (
+    <div
+      style={{
+        "--color-service-accent": "#2d6a2d",
+        "--color-service-accent-hover": "#1e4d1e",
+      } as React.CSSProperties}
+    >
+      {children}
+    </div>
+  )
+}
 ```
 
-Ou, alternativamente, via `data-service` attribute + CSS global:
+O `<main>` da subpágina mantém o `data-service` attribute para os seletores do `globals.css`:
 
 ```tsx
 // page.tsx
-<main data-service="vigilancia">
+<main data-service="ambiental">
 
-// globals.css
+// globals.css — seletores que cobrem o <main> e seus filhos
 [data-service="vigilancia"] { --color-service-accent: #0d7377; --color-service-accent-hover: #095e62; }
 [data-service="ambiental"]  { --color-service-accent: #2d6a2d; --color-service-accent-hover: #1e4d1e; }
 [data-service="laudos"]     { --color-service-accent: #92610a; --color-service-accent-hover: #6e4908; }
 [data-service="avcb"]       { --color-service-accent: #800000; --color-service-accent-hover: #4f0101; }
+[data-service="projetos"]   { --color-service-accent: #800000; --color-service-accent-hover: #4f0101; }
 ```
 
 Usando nos componentes:
@@ -326,14 +341,17 @@ export function CrosshairDecor({ className = "" }: { className?: string }) {
 
 ### Dados Completos da Equipe Técnica
 
-Extraído do portfólio do cliente. Usar exatamente esses dados na seção `EquipeTecnica`:
+Extraído do portfólio do cliente. Usar exatamente esses dados na seção `EquipeTecnica`.
+**Fonte de verdade:** `data/equipe.ts` — importar sempre dali, nunca hardcodar.
 
 ```ts
-// data/equipe.ts
+// data/equipe.ts — campos canônicos (não alterar nomes de campo sem atualizar este doc)
 export const equipe = [
   {
+    slug: "durval-ribeiro",              // identificador único de URL
     nome: "Durval Ribeiro de Queiroz",
-    especialidades: [
+    tituloPrincipal: "Arquiteto e Urbanista",  // título exibido como subtítulo do card
+    especializacoes: [
       "Arquiteto e Urbanista",
       "Engenheiro de Segurança do Trabalho",
       "Engenheiro de Segurança Contra Incêndio e Pânico",
@@ -342,16 +360,25 @@ export const equipe = [
     fotoAlt: "Durval Ribeiro de Queiroz, Engenheiro de Segurança Contra Incêndio",
   },
   {
-    nome: "Theyllor Estulano do Espirito Santo",
-    especialidades: [
+    slug: "theyllor-estulano",
+    nome: "Theyllor Estulano do Espírito Santo",
+    tituloPrincipal: "Engenheiro Civil",
+    especializacoes: [
       "Engenheiro Civil",
       "Técnico em Mecânica",
     ],
     foto: "/images/equipe/theyllor.jpg",
-    fotoAlt: "Theyllor Estulano do Espirito Santo, Engenheiro Civil em campo",
+    fotoAlt: "Theyllor Estulano do Espírito Santo, Engenheiro Civil em campo",
   },
 ] as const;
 ```
+
+> **Campos renomeados em relação à versão anterior:**
+> - `id` → `slug`
+> - `formacao` → `tituloPrincipal`
+> - `especialidades` → `especializacoes`
+>
+> Qualquer componente que iterava sobre `equipe` deve usar os novos nomes de campo.
 
 ### next/image — Regras de Uso
 
@@ -689,7 +716,10 @@ const animation = prefersReduced ? {} : { opacity: [0, 1], transform: ["translat
 - [ ] Cor de accent correta para cada subpágina (ver tabela Paleta por Serviço)
 - [ ] `<CrosshairDecor />` presente em todas as seções escuras
 - [ ] Fotos reais do portfólio usadas (sem stock photos genéricos)
-- [ ] Dados da equipe técnica completos (nome completo + especialidades exatas)
+- [ ] Dados da equipe técnica completos (nome completo + especializacoes exatas) — importar de `data/equipe.ts`
+- [ ] Componentes de equipe usam `membro.slug`, `membro.tituloPrincipal` e `membro.especializacoes` (campos canônicos)
+- [ ] Cada subpágina possui `layout.tsx` com CSS variable `--color-service-accent` no `<div>` wrapper
+- [ ] NavPrimaria e Footer herdam a cor do serviço via CSS variable do `layout.tsx`
 - [ ] ServicosTabs: todos os 3 painéis renderizados no DOM (verificar no DevTools → Elements)
 - [ ] ServicosTabs: `role="tablist"` / `role="tab"` / `role="tabpanel"` presentes
 - [ ] ServicosTabs: tab ativa com `aria-selected="true"` e foco visível via teclado
