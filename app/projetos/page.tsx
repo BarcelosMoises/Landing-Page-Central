@@ -9,11 +9,11 @@ import { NavPrimaria } from "@/components/NavPrimaria";
 import { CrosshairDecor } from "@/components/CrosshairDecor";
 import {
   servicos,
-  equipe,
   clientes,
   contato,
   getWhatsAppUrl,
 } from "@/data/servicos";
+import { equipe } from "@/data/equipe";
 
 // ─── Metadata ─────────────────────────────────────────────────────────────────
 
@@ -384,13 +384,13 @@ export default function PageProjetosTecnicos() {
             </h2>
             <ul className="grid sm:grid-cols-2 gap-6" aria-label="Equipe técnica responsável">
               {equipe.map((membro) => (
-                <li key={membro.id} className="flex flex-col gap-3 p-6 rounded-xl bg-neutral-900 border border-white/10">
+                <li key={membro.slug} className="flex flex-col gap-3 p-6 rounded-xl bg-neutral-900 border border-white/10">
                   <div>
                     <p className="font-heading font-semibold text-white text-lg">{membro.nome}</p>
-                    <p className="text-sm mt-0.5" style={{ color: ACCENT_LIGHT }}>{membro.formacao}</p>
+                    <p className="text-sm mt-0.5" style={{ color: ACCENT_LIGHT }}>{membro.tituloPrincipal}</p>
                   </div>
                   <ul className="flex flex-col gap-1" aria-label={`Especialidades de ${membro.nome}`}>
-                    {membro.especialidades.map((esp) => (
+                    {membro.especializacoes.map((esp) => (
                       <li key={esp} className="text-sm text-neutral-400">{esp}</li>
                     ))}
                   </ul>
