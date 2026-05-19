@@ -1,16 +1,19 @@
 # SERVICOS.md — Central de Soluções
 > Fonte única de verdade para todos os serviços, setores e diferenciais da empresa.
 > Base para gerar `/data/servicos.ts` e alimentar os componentes da landing page.
-> Última atualização: Abril 2026
+> Última atualização: Maio 2026
 
 ---
 
 ## Equipe Técnica
 
-| Nome | Formação | Especialidades |
-|---|---|---|
-| Durval Ribeiro de Queiroz | Arquiteto e Urbanista | Eng. de Segurança do Trabalho, Eng. de Segurança Contra Incêndio e Pânico |
-| Theyllor Estulano do Espírito Santo | Engenheiro Civil | Técnico em Mecânica |
+> Fonte de verdade: `data/equipe.ts` — importar sempre dali, nunca hardcodar.
+> Campos canônicos: `slug` | `nome` | `tituloPrincipal` | `especializacoes` | `foto` | `fotoAlt`
+
+| slug | nome | tituloPrincipal | especializacoes |
+|---|---|---|---|
+| `durval-ribeiro` | Durval Ribeiro de Queiroz | Arquiteto e Urbanista | Arquiteto e Urbanista · Eng. de Segurança do Trabalho · Eng. de Segurança Contra Incêndio e Pânico |
+| `theyllor-estulano` | Theyllor Estulano do Espírito Santo | Engenheiro Civil | Engenheiro Civil · Técnico em Mecânica |
 
 ---
 
@@ -181,7 +184,7 @@
 | Athan Energia | Energia |
 | Sonne Solução em Energia | Energia Solar |
 | Natural Energia | Energia |
-| Eco Soluções em Energia | Energia |
+| Eco Soluções em Energia | Energia Solar |
 | Della & Delle | Comércio |
 | Casa das Telhas | Comércio |
 | PMC | — |
