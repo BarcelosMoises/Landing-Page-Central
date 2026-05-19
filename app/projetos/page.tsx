@@ -49,7 +49,7 @@ export const metadata: Metadata = {
   },
 };
 
-// ─── JSON-LD ──────────────────────────────────────────────────────────────────
+// ─── JSON-LD ────────────────────────────────────────────────────────────────
 
 const serviceJsonLd = {
   "@context": "https://schema.org",
@@ -129,10 +129,18 @@ const faqJsonLd = {
         text: "Sim. Todos os projetos elaborados pela Central de Soluções são assinados com ART (Anotação de Responsabilidade Técnica) pelo engenheiro ou arquiteto responsável, garantindo validade legal e responsabilidade técnica perante o CREA e os órgãos reguladores. Não trabalhamos com projetos sem ART.",
       },
     },
+    {
+      "@type": "Question",
+      name: "Qual a diferença entre o projeto de hidrantes (NBR 13714) e de sprinklers (NBR 10897)?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "A NBR 13714 regulamenta o sistema de combate a incêndio por hidrantes e mangotinhos, que são sistemas de ação manual: o operador aciona a mangueira para combater o foco de incêndio. Já a NBR 10897 regulamenta os sistemas de chuveiros automáticos (sprinklers), que atuam de forma automática ao detectar calor elevado, suprimindo ou controlando o incêndio sem intervenção humana imediata. As Instruções Técnicas do Corpo de Bombeiros determinam qual sistema é exigido conforme a ocupação, área e altura da edificação. Em muitos casos, os dois sistemas são exigidos de forma complementar.",
+      },
+    },
   ],
 };
 
-// ─── Dados locais ─────────────────────────────────────────────────────────────
+// ─── Dados locais ─────────────────────────────────────────────────────────────────
 
 const projetos = servicos.find((s) => s.id === "projetos-tecnicos")!;
 const clientesDestaque = clientes.filter((c) => c.destaque);
@@ -140,12 +148,11 @@ const whatsappUrl = getWhatsAppUrl(
   "Olá! Tenho interesse nos serviços de Projetos Técnicos. Pode me passar mais informações?"
 );
 
-// Accent visual deste serviço
 const ACCENT = "#1a3a5c";
 const ACCENT_HOVER = "#122845";
 const ACCENT_LIGHT = "#7aaacc";
 
-// ─── Componentes internos ─────────────────────────────────────────────────────
+// ─── Componentes internos ────────────────────────────────────────────────────────────────
 
 function IconeRegua() {
   return (
@@ -172,7 +179,7 @@ function IconeArrow() {
   );
 }
 
-// ─── Page ─────────────────────────────────────────────────────────────────────
+// ─── Page ────────────────────────────────────────────────────────────────────────────────
 
 export default function PageProjetosTecnicos() {
   return (
@@ -185,7 +192,7 @@ export default function PageProjetosTecnicos() {
 
       <main data-service="projetos">
 
-        {/* ── HERO ──────────────────────────────────────────────────────────── */}
+        {/* ── HERO ─────────────────────────────────────────────────────────── */}
         <section aria-labelledby="hero-titulo" className="relative bg-neutral-950 overflow-hidden">
           <div
             className="absolute inset-0 pointer-events-none"
@@ -196,7 +203,6 @@ export default function PageProjetosTecnicos() {
           <CrosshairDecor corner="bottom-left" size="sm" variant="light" />
 
           <div className="container-site relative z-10 pt-24 pb-20 md:pt-32 md:pb-28">
-            {/* Breadcrumb */}
             <nav aria-label="Localização na página" className="mb-8">
               <ol className="flex items-center gap-2 text-xs text-neutral-500 font-mono">
                 <li><Link href="/" className="hover:text-neutral-300 transition-colors">Início</Link></li>
@@ -205,7 +211,6 @@ export default function PageProjetosTecnicos() {
               </ol>
             </nav>
 
-            {/* Badge */}
             <div className="mb-5">
               <span
                 className="inline-flex items-center gap-2 px-3 py-1 rounded-full border text-xs font-semibold uppercase tracking-wider"
@@ -233,7 +238,6 @@ export default function PageProjetosTecnicos() {
                   {projetos.descricao}
                 </p>
 
-                {/* Estados */}
                 <div className="flex flex-wrap gap-2 mb-10" aria-label="Estados atendidos">
                   {["RJ", "SP", "MG", "ES"].map((sigla) => (
                     <span
@@ -246,7 +250,6 @@ export default function PageProjetosTecnicos() {
                   ))}
                 </div>
 
-                {/* CTAs */}
                 <div className="flex flex-col sm:flex-row gap-3">
                   <a
                     href={whatsappUrl}
@@ -254,7 +257,6 @@ export default function PageProjetosTecnicos() {
                     rel="noopener noreferrer"
                     className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-lg text-white font-semibold text-sm transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950"
                     style={{ backgroundColor: ACCENT }}
-                    onMouseEnter={undefined}
                   >
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                       <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
@@ -270,7 +272,6 @@ export default function PageProjetosTecnicos() {
                 </div>
               </div>
 
-              {/* Card lateral — órgãos */}
               <aside aria-label="Órgãos responsáveis" className="hidden lg:flex flex-col gap-3 min-w-[220px]">
                 <p className="text-xs font-semibold text-neutral-500 uppercase tracking-wider mb-1">Órgãos / Registros</p>
                 {projetos.orgaos.map((orgao) => (
@@ -283,7 +284,7 @@ export default function PageProjetosTecnicos() {
           </div>
         </section>
 
-        {/* ── TRUST BAR ─────────────────────────────────────────────────────── */}
+        {/* ── TRUST BAR ───────────────────────────────────────────────────── */}
         <section aria-label="Clientes atendidos" className="bg-neutral-900 border-y border-white/8 py-6">
           <div className="container-site">
             <p className="text-xs text-neutral-500 text-center uppercase tracking-widest mb-5 font-mono">
@@ -299,7 +300,7 @@ export default function PageProjetosTecnicos() {
           </div>
         </section>
 
-        {/* ── SUB-SERVIÇOS ──────────────────────────────────────────────────── */}
+        {/* ── SUB-SERVIÇOS ───────────────────────────────────────────────────── */}
         <section aria-labelledby="subservicos-titulo" className="bg-white py-20 md:py-28">
           <div className="container-site">
             <div className="mb-12">
@@ -317,7 +318,6 @@ export default function PageProjetosTecnicos() {
               </p>
             </div>
 
-            {/* Grid de sub-serviços */}
             <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5" aria-label="Sub-serviços de projetos técnicos">
               {projetos.subServicos?.map((sub) => (
                 <li
@@ -345,7 +345,6 @@ export default function PageProjetosTecnicos() {
               ))}
             </ul>
 
-            {/* Lista resumida de itens */}
             <div className="mt-16 grid md:grid-cols-2 gap-10">
               <div>
                 <p className="text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-4 font-mono">O que está incluído</p>
@@ -370,7 +369,7 @@ export default function PageProjetosTecnicos() {
           </div>
         </section>
 
-        {/* ── EQUIPE E-E-A-T ──────────────────────────────────────────────── */}
+        {/* ── EQUIPE E-E-A-T ─────────────────────────────────────────────────────── */}
         <section aria-labelledby="equipe-titulo" className="relative bg-neutral-950 py-20 md:py-28 border-t border-white/8">
           <CrosshairDecor corner="bottom-right" size="md" variant="light" />
           <div className="container-site">
@@ -413,18 +412,35 @@ export default function PageProjetosTecnicos() {
             >
               Tudo sobre Projetos Técnicos de Engenharia
             </h2>
-            <dl className="flex flex-col divide-y divide-neutral-200">
+            <div className="flex flex-col gap-3">
               {faqJsonLd.mainEntity.map((faq, i) => (
-                <div key={i} className="py-6">
-                  <dt className="font-heading font-semibold text-neutral-900 text-base md:text-lg mb-3">{faq.name}</dt>
-                  <dd className="text-neutral-600 text-base leading-relaxed">{faq.acceptedAnswer.text}</dd>
-                </div>
+                <details key={i} className="group border border-neutral-100 rounded-xl bg-white overflow-hidden">
+                  <summary
+                    className="flex items-center justify-between gap-4 px-6 py-4 cursor-pointer list-none font-heading text-base font-bold text-neutral-900 hover:bg-neutral-50 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset"
+                    style={{ "--tw-ring-color": ACCENT } as React.CSSProperties}
+                    aria-label={faq.name}
+                  >
+                    <span>{faq.name}</span>
+                    <span
+                      aria-hidden="true"
+                      className="flex-shrink-0 transition-transform duration-200 group-open:rotate-180"
+                      style={{ color: ACCENT }}
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="6 9 12 15 18 9" />
+                      </svg>
+                    </span>
+                  </summary>
+                  <p className="px-6 pb-5 pt-1 text-neutral-600 text-base leading-relaxed">
+                    {faq.acceptedAnswer.text}
+                  </p>
+                </details>
               ))}
-            </dl>
+            </div>
           </div>
         </section>
 
-        {/* ── CTA FINAL ─────────────────────────────────────────────────────── */}
+        {/* ── CTA FINAL ──────────────────────────────────────────────────────── */}
         <section aria-labelledby="cta-titulo" className="relative bg-neutral-950 py-20 md:py-28 border-t border-white/8">
           <CrosshairDecor corner="top-left" size="sm" variant="light" />
           <CrosshairDecor corner="bottom-right" size="lg" variant="light" />
