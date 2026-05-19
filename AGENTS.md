@@ -40,16 +40,22 @@ app/
 ├── layout.tsx                  # RootLayout com JSON-LD Organization + nav
 ├── page.tsx                    # Homepage — keyword: "regularização engenharia civil"
 ├── avcb-corpo-de-bombeiros/
+│   ├── layout.tsx              # Define --color-service-accent: #800000
 │   └── page.tsx                # keyword: "avcb [estado] regularização"
 ├── vigilancia-sanitaria/
+│   ├── layout.tsx              # Define --color-service-accent: #0d7377
 │   └── page.tsx                # keyword: "alvará sanitário [estado] consultoria"
 ├── spda-para-raios/
+│   ├── layout.tsx              # Define --color-service-accent: #92610a
 │   └── page.tsx                # keyword: "laudo spda com art [estado]"
 ├── laudos-tecnicos/
+│   ├── layout.tsx              # Define --color-service-accent: #92610a
 │   └── page.tsx                # keyword: "laudo técnico engenharia [estado]"
 ├── licenciamento-ambiental/
+│   ├── layout.tsx              # Define --color-service-accent: #2d6a2d
 │   └── page.tsx                # keyword: "licenciamento ambiental [estado]"
 └── projetos/
+    ├── layout.tsx              # Define --color-service-accent: #800000
     └── page.tsx                # keyword: "projeto combate incêndio pânico"
 ```
 
@@ -64,7 +70,9 @@ app/
 
 ### Regra principal
 - A cor global da marca (`#800000`) é o accent da homepage, navegação e footer.
-- Cada **subpágina de serviço** define seu accent via `data-service` attribute no `<main>`.
+- Cada **subpágina de serviço** define seu accent via `layout.tsx` — **não apenas no `<main>`**.
+- O `layout.tsx` de cada subpágina envolve o conteúdo num `<div>` com a CSS variable, garantindo que `NavPrimaria` e `Footer` também herdem a cor do serviço.
+- O `<main data-service="...">` da `page.tsx` ainda é mantido para os seletores do `globals.css`.
 - Componentes genéricos usam `var(--color-service-accent, #800000)` — o fallback `#800000` garante que a homepage funcione sem o attribute.
 - **Proibido hardcodar `#800000` em componentes reutilizados entre subpáginas** (botões, cards, badges).
 
@@ -77,19 +85,29 @@ app/
 | Licenciamento Ambiental | `/licenciamento-ambiental` | `#2d6a2d` | `#1e4d1e` |
 | Laudos / SPDA | `/laudos-tecnicos`, `/spda-para-raios` | `#92610a` | `#6e4908` |
 
-### Como aplicar em subpáginas
+### Regra de Layout por Subpágina
+
+> **Obrigatório:** toda subpágina de serviço deve ter um `layout.tsx` próprio.
+> Esse arquivo é um Server Component puro (sem `"use client"`), define a CSS variable no `<div>` wrapper
+> e não redeclara `<html>` nem `<body>` — apenas o RootLayout os define.
 
 ```tsx
-// Exemplo: app/vigilancia-sanitaria/page.tsx
-<main data-service="vigilancia">
-  ...
-</main>
+// Padrão canônico — copiar e ajustar as cores por subpágina
+// Exemplo: app/licenciamento-ambiental/layout.tsx
+import type React from "react"
 
-// app/globals.css — variáveis definidas uma única vez, cobrindo todo o site
-[data-service="vigilancia"] { --color-service-accent: #0d7377; --color-service-accent-hover: #095e62; }
-[data-service="ambiental"]  { --color-service-accent: #2d6a2d; --color-service-accent-hover: #1e4d1e; }
-[data-service="laudos"]     { --color-service-accent: #92610a; --color-service-accent-hover: #6e4908; }
-[data-service="avcb"]       { --color-service-accent: #800000; --color-service-accent-hover: #4f0101; }
+export default function LayoutAmbiental({ children }: { children: React.ReactNode }) {
+  return (
+    <div
+      style={{
+        "--color-service-accent": "#2d6a2d",
+        "--color-service-accent-hover": "#1e4d1e",
+      } as React.CSSProperties}
+    >
+      {children}
+    </div>
+  )
+}
 ```
 
 ### Como usar nos componentes
@@ -206,7 +224,7 @@ app/
 | Cor primária suave (nomes, destaques) | `style={{ color: "#e0c8c8" }}` | ≈ 11:1 ✓ AAA |
 
 > **Nunca usar** `text-neutral-400` (`#9ca3af`) sobre `#1a0000` — o tom azulado-acinzentado cria
-> dissonância de temperatura de cor com o fundo vinho escuro. Usar sempre `#c4a8a8` ou `#e0c8c8`.
+> disssonância de temperatura de cor com o fundo vinho escuro. Usar sempre `#c4a8a8` ou `#e0c8c8`.
 
 ---
 
@@ -218,6 +236,7 @@ app/
 | `data/equipe.ts` | Dados tipados da equipe técnica (Durval e Theyllor) | Nomes, especialidades, fotos, slugs |
 
 > Componentes **nunca hardcodam** nomes, especialidades ou descrições — importar sempre dos arquivos acima.
+> Campos canônicos de `data/equipe.ts`: `slug` · `nome` · `tituloPrincipal` · `especializacoes` · `foto` · `fotoAlt`
 
 ---
 
@@ -255,6 +274,10 @@ app/
 | `text-neutral-400` sobre fundo `#1a0000` | `style={{ color: "#c4a8a8" }}` — cinza rosado quente, contraste ≈ 6.5:1 |
 | Item em `NAV_ITENS` sem `id` declarado na seção correspondente em `app/page.tsx` | Declarar `id` na seção antes de adicionar o item na nav |
 | Categorias de serviço (`legalizacao`, `projetos`, `laudos`) como itens diretos de nav | Âncoras de seção estrutural: `servicos` · `setores` · `equipe` · `contato` |
+| Definir `data-service` **só** no `<main>` da subpágina | Criar `layout.tsx` na subpágina com CSS variable no `<div>` wrapper (propaga para nav e footer) |
+| Usar `especializacoes` como `especialidades` (nome de campo antigo) | `membro.especializacoes` — campo canônico em `data/equipe.ts` |
+| Usar `formacao` ou `Formação` como campo da equipe | `membro.tituloPrincipal` — campo canônico em `data/equipe.ts` |
+| Acessar membro da equipe sem `slug` | Usar `membro.slug` para links e IDs (ex.: `durval-ribeiro`, `theyllor-estulano`) |
 
 ---
 
@@ -269,61 +292,5 @@ app/
   - O scroll spy (`IntersectionObserver`) observa exatamente esses 4 IDs
   - **Regra de sincronização:** `NAV_ITENS` e os `id` das seções em `app/page.tsx` devem estar sempre em paridade — alterar um exige alterar o outro
 - **Comportamento em subpáginas:** `isHomepage === false` → itens renderizam como `<Link href="/#id">` em vez de `<button onClick={scroll}>`
-- **Estado de scroll:** transparente → `bg-[#1a0000]/95 backdrop-blur-sm` ao ultrapassar 40px de scroll
-- **Indicador de seção ativa:** `after:` pseudo-elemento underline em `#800000` no item ativo
-- **Nunca:** adicionar item em `NAV_ITENS` que aponte para um `id` inexistente no DOM
-
-#### Estrutura de NAV_ITENS
-```ts
-// IDs devem ter seção correspondente em app/page.tsx com id="..."
-const NAV_ITENS = [
-  { id: "servicos", label: "Serviços", href: "/#servicos" },
-  { id: "setores",  label: "Setores",  href: "/#setores"  },
-  { id: "equipe",   label: "Equipe",   href: "/#equipe"   },
-  { id: "contato",  label: "Contato",  href: "/#contato"  },
-] as const;
-```
-
-### ServicosTabs
-- **Arquivo:** `components/ServicosTabs.tsx`
-- **Tipo:** Client Component (`"use client"`) — único CC chamado diretamente pela homepage
-- **O quê:** Tabs interativas com 3 categorias de serviço (Legalização, Projetos Técnicos, Laudos Técnicos), exibindo cards de serviço com link para a subpágina correspondente
-- **Props:**
-  ```tsx
-  interface ServicosTabsProps {
-    legalizacao: readonly Servico[];
-    projetos:    readonly Servico[];
-    laudos:      readonly Servico[];
-  }
-  ```
-- **Fluxo de dados:** `app/page.tsx` (Server Component) chama `getServicosPorCategoria()` e passa os arrays como props; `ServicosTabs` recebe dados serializáveis (apenas `string`, `boolean` e `readonly string[]`) — sem `Date`, `Map` ou `Function`.
-- **Estado:** `useState<"legalizacao" | "projetos" | "laudos">("legalizacao")` — tab ativa
-- **SEO:** todas as 3 tabs renderizam no DOM; as tabs inativas usam `className="hidden"` (CSS `display: none`) — o Googlebot indexa o conteúdo normalmente
-- **Cor:** todos os cards usam `var(--color-service-accent, #800000)` como accent — a homepage não define `data-service`, portanto o fallback `#800000` é aplicado
-- **Expansão futura:** mapear tab → `data-service` no `<section>` wrapper para ativar a cor do serviço correspondente por tab
-
-#### Padrão visual das tabs
-- Tab ativa: `border-b-2 border-[#800000] text-[#800000] font-semibold`
-- Tab inativa: `text-neutral-500 hover:text-neutral-800 transition-colors duration-200`
-- Barra base das tabs: `border-b border-neutral-200` como linha de referência
-- Transição de seleção: `transition-colors duration-200`
-
-### ServicosGrid *(aposentado)*
-- **Arquivo:** `components/ServicosGrid.tsx` — **mantido como referência, não usar**
-- Substituído por `ServicosTabs` no plano Oceânica (Maio 2026)
-- Não importar em nenhuma página — arquivo preservado para consulta histórica
-
----
-
-## Arquivos de Contexto do Projeto
-
-| Arquivo | Conteúdo |
-|---|---|
-| `docs/SEO.md` | Keywords por serviço/estado, concorrentes, nichos, glossário, órgãos |
-| `docs/SERVICOS.md` | Lista completa de serviços, setores atendidos, diferenciais |
-| `docs/DESIGN.md` | Paleta, tipografia, CrosshairDecor, imagens reais, sistema de cores por serviço, estados de foco |
-| `data/servicos.ts` | Dados estruturados dos serviços para uso nos componentes |
-| `data/equipe.ts` | Dados tipados da equipe técnica — fonte única de verdade |
-| `components/CrosshairDecor.tsx` | SVG decorativo da retícula de engenharia do cliente |
-| `components/NavPrimaria.tsx` | Header fixo com scroll spy — IDs vinculados: servicos · setores · equipe · contato |
-| `components/ServicosTabs.tsx` | Tabs interativas de serviços — único Client Component da homepage |
+- **Cores nas subpáginas:** NavPrimaria herda `--color-service-accent` do `<div>` wrapper do `layout.tsx` da subpágina — o CTA e o indicador de seção ativa mudam automaticamente
+- **Estado de scroll:** transparente → `bg-[#1a0000]/95 backdrop-blur-sm` ao rolar
