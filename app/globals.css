@@ -67,12 +67,24 @@
   }
 }
 
-/* ── CSS Variables por serviço ──────────────────────────────────────────────
-   Ativadas via data-service="[slug]" no <main> de cada subpágina.
+/* ── CSS Variables por serviço ───────────────────────────────────────────
+   Ativadas de duas formas complementares:
+
+   1. Via layout.tsx de cada subpágina (prioridade): o <div> wrapper define
+      as variáveis inline, garantindo que NavPrimaria e Footer também herdem
+      a cor do serviço — pois vivem fora do <main>.
+
+   2. Via data-service="[slug]" no <main> da page.tsx (complementar): cobre
+      os componentes filhos do <main> e serve como fallback descritivo.
+
    Componentes genéricos usam var(--color-service-accent, #800000) para que
-   a homepage (sem data-service) receba automaticamente o vinho da marca.
+   a homepage (sem layout.tsx de serviço) receba automaticamente o vinho da marca.
 */
 [data-service="avcb"] {
+  --color-service-accent: #800000;
+  --color-service-accent-hover: #4f0101;
+}
+[data-service="projetos"] {
   --color-service-accent: #800000;
   --color-service-accent-hover: #4f0101;
 }
