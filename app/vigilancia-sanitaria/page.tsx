@@ -125,7 +125,6 @@ const faqJsonLd = {
       name: "Qual a diferença entre VISA Municipal e ANVISA?",
       acceptedAnswer: {
         "@type": "Answer",
-        // FIX (Problema 4): typo corrigido — "Âgencia" → "Agência"
         text: "A ANVISA (Agência Nacional de Vigilância Sanitária) é o órgão federal que regula medicamentos, alimentos industrializados, cosméticos e equipamentos médicos em nível nacional. A VISA Municipal é o órgão local responsável pela fiscalização de estabelecimentos comerciais, de serviços e de saúde no âmbito do município. Na maioria dos casos, o Alvará Sanitário é emitido pela VISA Municipal, com a ANVISA atuando em registros federais específicos.",
       },
     },
@@ -449,7 +448,7 @@ export default function PageVigilanciaSanitaria() {
           </div>
         </section>
 
-        {/* ── EQUIPE E-E-A-T ───────────────────────────────────────────────────── */}
+        {/* ── EQUIPE E-E-A-T ──────────────────────────────────────────────────────────── */}
         <section aria-labelledby="equipe-titulo" className="relative bg-neutral-950 py-20 md:py-28 border-t border-white/8">
           <CrosshairDecor corner="bottom-right" size="md" variant="light" />
           <div className="container-site">
@@ -497,18 +496,30 @@ export default function PageVigilanciaSanitaria() {
             >
               Tudo sobre Alvará Sanitário e Vigilância Sanitária
             </h2>
-            <dl className="flex flex-col divide-y divide-neutral-200">
+            <div className="flex flex-col gap-3">
               {faqJsonLd.mainEntity.map((faq, i) => (
-                <div key={i} className="py-6">
-                  <dt className="font-heading font-semibold text-neutral-900 text-base md:text-lg mb-3">
-                    {faq.name}
-                  </dt>
-                  <dd className="text-neutral-600 text-base leading-relaxed">
+                <details key={i} className="group border border-neutral-100 rounded-xl bg-white overflow-hidden">
+                  <summary
+                    className="flex items-center justify-between gap-4 px-6 py-4 cursor-pointer list-none font-heading text-base font-bold text-neutral-900 hover:bg-neutral-50 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0d7377] focus-visible:ring-inset"
+                    aria-label={faq.name}
+                  >
+                    <span>{faq.name}</span>
+                    <span
+                      aria-hidden="true"
+                      className="flex-shrink-0 transition-transform duration-200 group-open:rotate-180"
+                      style={{ color: "#0d7377" }}
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="6 9 12 15 18 9" />
+                      </svg>
+                    </span>
+                  </summary>
+                  <p className="px-6 pb-5 pt-1 text-neutral-600 text-base leading-relaxed">
                     {faq.acceptedAnswer.text}
-                  </dd>
-                </div>
+                  </p>
+                </details>
               ))}
-            </dl>
+            </div>
           </div>
         </section>
 
