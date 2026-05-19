@@ -42,7 +42,7 @@ export const metadata: Metadata = {
   },
 };
 
-// ─── JSON-LD ──────────────────────────────────────────────────────────────────
+// ─── JSON-LD ────────────────────────────────────────────────────────────────
 
 const serviceJsonLd = {
   "@context": "https://schema.org",
@@ -116,10 +116,18 @@ const faqJsonLd = {
         text: "Sim. O serviço de SPDA tem cobertura em todo o Brasil. Para projetos e laudos técnicos em estados fora de RJ, SP, MG e ES, o atendimento é realizado por deslocamento de equipe técnica ou por análise remota de documentação, conforme a complexidade do projeto. Entre em contato para avaliar as condições de atendimento no seu estado.",
       },
     },
+    {
+      "@type": "Question",
+      name: "O que são as zonas de proteção da NBR 5419?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "A ABNT NBR 5419 define zonas de proteção contra raios (LPZ — Lightning Protection Zones) que classificam as áreas de uma estrutura conforme o nível de risco e a intensidade da corrente de raio esperada. A LPZ 0A é a zona exposta diretamente aos impactos e ao campo eletromagnético total; a LPZ 0B é protegida contra impactos diretos mas exposta ao campo; as LPZ 1, 2 e seguintes são zonas internas com níveis crescentes de atenuação. O projeto do SPDA define as medidas de proteção necessárias em cada zona, incluindo o sistema de captores, descidas, aterramento e os DPS (Dispositivos de Proteção contra Surtos) nas fronteiras entre zonas.",
+      },
+    },
   ],
 };
 
-// ─── Dados locais ─────────────────────────────────────────────────────────────
+// ─── Dados locais ─────────────────────────────────────────────────────────────────
 
 const spda = servicos.find((s) => s.id === "spda")!;
 const clientesDestaque = clientes.filter((c) => c.destaque);
@@ -130,7 +138,7 @@ const whatsappUrl = getWhatsAppUrl(
   "Olá! Tenho interesse no serviço de SPDA / Para-raios. Pode me passar mais informações?"
 );
 
-// ─── Componentes internos ─────────────────────────────────────────────────────
+// ─── Componentes internos ────────────────────────────────────────────────────────────────
 
 function BadgeEstado({ sigla, nome }: { sigla: string; nome: string }) {
   return (
@@ -174,7 +182,7 @@ function IconeChevron() {
   );
 }
 
-// ─── Page ─────────────────────────────────────────────────────────────────────
+// ─── Page ────────────────────────────────────────────────────────────────────────────────
 
 export default function PageSPDA() {
   return (
@@ -192,7 +200,6 @@ export default function PageSPDA() {
           aria-labelledby="hero-titulo"
           className="relative bg-neutral-950 overflow-hidden"
         >
-          {/* Gradiente cinemático dourado */}
           <div
             className="absolute inset-0 pointer-events-none"
             style={{
@@ -203,7 +210,6 @@ export default function PageSPDA() {
           />
 
           <div className="container-site relative z-10 pt-24 pb-20 md:pt-32 md:pb-28">
-            {/* Breadcrumb */}
             <nav aria-label="Localização na página" className="mb-8">
               <ol className="flex items-center gap-2 text-xs text-neutral-500 font-mono">
                 <li><Link href="/" className="hover:text-neutral-300 transition-colors">Início</Link></li>
@@ -212,7 +218,6 @@ export default function PageSPDA() {
               </ol>
             </nav>
 
-            {/* Badge de categoria */}
             <div className="mb-5">
               <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#92610a]/40 bg-[#92610a]/10 text-xs font-semibold text-[#f0c97a] uppercase tracking-wider">
                 <IconeZap />
@@ -234,7 +239,6 @@ export default function PageSPDA() {
                   {spda.descricao}
                 </p>
 
-                {/* Estados + cobertura nacional */}
                 <div className="flex flex-wrap gap-2 mb-10" aria-label="Estados atendidos e cobertura">
                   {estadosSPDA.map((e) => (
                     <BadgeEstado key={e.sigla} sigla={e.sigla} nome={e.nome} />
@@ -242,7 +246,6 @@ export default function PageSPDA() {
                   <BadgeNacional />
                 </div>
 
-                {/* CTAs */}
                 <div className="flex flex-col sm:flex-row gap-3">
                   <a
                     href={whatsappUrl}
@@ -264,7 +267,6 @@ export default function PageSPDA() {
                 </div>
               </div>
 
-              {/* Card lateral — órgão regulador + cobertura */}
               <aside
                 aria-label="Órgão regulador e cobertura"
                 className="hidden lg:flex flex-col gap-3 min-w-[220px]"
@@ -287,7 +289,7 @@ export default function PageSPDA() {
           </div>
         </section>
 
-        {/* ── TRUST BAR ─────────────────────────────────────────────────── */}
+        {/* ── TRUST BAR ───────────────────────────────────────────────────── */}
         <section
           aria-label="Clientes atendidos"
           className="bg-neutral-900 border-y border-white/8 py-6"
@@ -312,7 +314,7 @@ export default function PageSPDA() {
           </div>
         </section>
 
-        {/* ── O QUE ESTÁ INCLUÍDO ────────────────────────────────────────── */}
+        {/* ── O QUE ESTÁ INCLUÍDO ────────────────────────────────────────────── */}
         <section
           aria-labelledby="incluido-titulo"
           className="bg-white py-20 md:py-28"
@@ -340,7 +342,6 @@ export default function PageSPDA() {
                 </ul>
               </div>
 
-              {/* Setores + norma */}
               <div>
                 <p className="text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-3 font-mono">Setores prioritários</p>
                 <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2" aria-label="Setores atendidos">
@@ -355,7 +356,6 @@ export default function PageSPDA() {
                   ))}
                 </ul>
 
-                {/* Norma */}
                 {spda.normaBase && (
                   <div className="mt-8 p-5 rounded-xl bg-neutral-900 border border-white/10">
                     <p className="text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-3 font-mono">Base normativa</p>
@@ -369,7 +369,6 @@ export default function PageSPDA() {
                   </div>
                 )}
 
-                {/* Cobertura nacional — destaque */}
                 <div className="mt-6 p-5 rounded-xl bg-[#92610a]/10 border border-[#92610a]/25">
                   <p className="text-xs font-semibold text-[#92610a] uppercase tracking-wider mb-2 font-mono">Cobertura</p>
                   <p className="text-sm text-neutral-700 leading-relaxed">
@@ -381,7 +380,7 @@ export default function PageSPDA() {
           </div>
         </section>
 
-        {/* ── EQUIPE TÉCNICA (E-E-A-T) ──────────────────────────────────── */}
+        {/* ── EQUIPE TÉCNICA (E-E-A-T) ──────────────────────────────────────────── */}
         <section
           aria-labelledby="equipe-titulo"
           className="bg-neutral-950 py-20 md:py-28 border-t border-white/8"
@@ -418,7 +417,7 @@ export default function PageSPDA() {
           </div>
         </section>
 
-        {/* ── FAQ ───────────────────────────────────────────────────────── */}
+        {/* ── FAQ ─────────────────────────────────────────────────────────── */}
         <section
           aria-labelledby="faq-titulo"
           className="bg-white py-20 md:py-28 border-t border-neutral-100"
@@ -431,22 +430,33 @@ export default function PageSPDA() {
             >
               Tudo sobre SPDA e Para-raios
             </h2>
-            <dl className="flex flex-col divide-y divide-neutral-200">
+            <div className="flex flex-col gap-3">
               {faqJsonLd.mainEntity.map((faq, i) => (
-                <div key={i} className="py-6">
-                  <dt className="font-heading font-semibold text-neutral-900 text-base md:text-lg mb-3">
-                    {faq.name}
-                  </dt>
-                  <dd className="text-neutral-600 text-base leading-relaxed">
+                <details key={i} className="group border border-neutral-100 rounded-xl bg-white overflow-hidden">
+                  <summary
+                    className="flex items-center justify-between gap-4 px-6 py-4 cursor-pointer list-none font-heading text-base font-bold text-neutral-900 hover:bg-neutral-50 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#92610a] focus-visible:ring-inset"
+                    aria-label={faq.name}
+                  >
+                    <span>{faq.name}</span>
+                    <span
+                      aria-hidden="true"
+                      className="flex-shrink-0 text-[#92610a] transition-transform duration-200 group-open:rotate-180"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="6 9 12 15 18 9" />
+                      </svg>
+                    </span>
+                  </summary>
+                  <p className="px-6 pb-5 pt-1 text-neutral-600 text-base leading-relaxed">
                     {faq.acceptedAnswer.text}
-                  </dd>
-                </div>
+                  </p>
+                </details>
               ))}
-            </dl>
+            </div>
           </div>
         </section>
 
-        {/* ── CTA FINAL ─────────────────────────────────────────────────── */}
+        {/* ── CTA FINAL ──────────────────────────────────────────────────────── */}
         <section
           aria-labelledby="cta-titulo"
           className="bg-neutral-950 py-20 md:py-28 border-t border-white/8"
