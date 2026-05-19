@@ -44,11 +44,6 @@ export function Footer() {
               <span className="text-[#800000]">Soluções</span>
             </Link>
 
-            {/*
-              text-neutral-400 (#9ca3af, tom azul-acinzentado) sobre #1a0000 cria
-              disssonância de temperatura de cor. Substituído por #c4a8a8 — cinza
-              levemente rosado, temperatura quente, contraste ≈ 6.3:1 ✓ WCAG AA.
-            */}
             <p className="text-sm leading-relaxed max-w-xs" style={{ color: "#c4a8a8" }}>
               Engenharia de regularização para indústrias, galpões e telecom.
               Atendemos RJ, SP, MG e ES com responsabilidade técnica real.
@@ -57,11 +52,6 @@ export function Footer() {
             {/* Contato */}
             <ul className="flex flex-col gap-2" aria-label="Dados de contato">
               <li>
-                {/*
-                  text-neutral-300 (#d1d5db, tom frio) → #e0c8c8 — branco quente
-                  levemente rosado. Contraste ≈ 10.2:1 sobre #1a0000 ✓ WCAG AAA.
-                  Usado nos links de contato que precisam de mais destaque que #c4a8a8.
-                */}
                 <a
                   href={`https://wa.me/${contato.whatsapp}`}
                   target="_blank"
@@ -165,15 +155,10 @@ export function Footer() {
 
         {/* Divider */}
         <div className="border-t border-white/10 mt-10 pt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          {/*
-            text-neutral-500 / text-neutral-600 para o copyright — tótons mais
-            apagados, hierarquia adequada (informação secundária). Mantidos
-            intencionalmente mais escuros que #c4a8a8 para demarcar hierarquia.
-          */}
-          <p className="text-xs text-neutral-500">
+          <p className="text-xs" style={{ color: "#c4a8a8" }}>
             © {ANO_ATUAL} Central de Soluções Engenharia. Todos os direitos reservados.
           </p>
-          <p className="text-xs text-neutral-600">
+          <p className="text-xs" style={{ color: "#c4a8a8" }}>
             CRECI/CREA — Responsabilidade técnica assegurada em cada serviço.
           </p>
         </div>

@@ -161,9 +161,6 @@ function ServicoCard({ servico }: { servico: Servico }) {
           {cobertura}
         </span>
 
-        {/* FIX (Problema 2a): adicionado focus-visible:ring-[#800000] explícito.
-            Antes: focus-visible:ring-2 focus-visible:ring-offset-2 sem cor
-            → herdava --tw-ring-color azul do Preflight do Tailwind v3. */}
         <Link
           href={servico.pathRota}
           style={{ color: "var(--color-service-accent, #800000)" }}
@@ -191,12 +188,6 @@ function TabPanel({
   inView: boolean;
 }) {
   return (
-    /**
-     * role="tabpanel" + aria-labelledby vinculam o painel ao botão da tab.
-     * `hidden` → display:none via CSS, mas o Googlebot ainda indexa o conteúdo.
-     * Não usar `display:none` via style inline — prefere-se a classe Tailwind
-     * para que o CSS possa ser anulado via JavaScript sem conflito de especificidade.
-     */
     <div
       role="tabpanel"
       id={`tabpanel-${id}`}
@@ -204,22 +195,33 @@ function TabPanel({
       className={isActive ? "" : "hidden"}
     >
       <motion.ul
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
+        className="grid grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
         aria-label={`Serviços: ${id}`}
         variants={containerVariants}
         initial="hidden"
         animate={isActive && inView ? "visible" : "hidden"}
-        key={id} /* força re-animação ao trocar de tab */
+        key={id}
       >
-        {servicos.map((servico) => (
-          <motion.li
-            key={servico.id}
-            className="list-none"
-            variants={itemVariants}
-          >
-            <ServicoCard servico={servico} />
-          </motion.li>
-        ))}
+        {servicos.map((servico, index) => {
+          const isLastOdd =
+            servicos.length % 2 !== 0 && index === servicos.length - 1;
+          return (
+            <motion.li
+              key={servico.id}
+              className={[
+                "list-none",
+                isLastOdd
+                  ? "col-span-2 lg:col-span-3 max-w-sm mx-auto w-full"
+                  : "",
+              ]
+                .join(" ")
+                .trim()}
+              variants={itemVariants}
+            >
+              <ServicoCard servico={servico} />
+            </motion.li>
+          );
+        })}
       </motion.ul>
     </div>
   );
@@ -283,14 +285,6 @@ export function ServicosTabs({
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.4, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
         >
-          {/*
-           * role="tablist" + aria-label: descreve o conjunto de tabs para leitores de tela.
-           * Cada botão com role="tab" + aria-selected + aria-controls vinculado ao painel.
-           *
-           * overflow-x-auto REMOVIDO: 3 tabs cabem em qualquer viewport >= 320px;
-           * a scrollbar horizontal era desnecessária e prejudicava a UX em mobile.
-           * Em telas muito estreitas (<320px) as tabs vão para próxima linha via flex-wrap.
-           */}
           <div
             role="tablist"
             aria-label="Categorias de serviço"
@@ -317,17 +311,11 @@ export function ServicosTabs({
                       : undefined
                   }
                   className={[
-                    // Layout e tipografia
                     "relative px-6 py-4 text-base font-semibold whitespace-nowrap",
                     "border-b-2 -mb-px transition-colors duration-200",
-                    // FIX (Problema 2b): adicionado focus-visible:ring-[#800000] explícito.
-                    // Antes: focus-visible:ring-2 focus-visible:ring-offset-1 sem cor
-                    // → herdava --tw-ring-color azul do Preflight do Tailwind v3.
                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#800000] focus-visible:ring-offset-1",
-                    // Cor condicional
                     isActive
-                      ? /* cores aplicadas via style= inline acima */
-                        ""
+                      ? ""
                       : "border-transparent text-neutral-500 hover:text-neutral-800 hover:border-neutral-300",
                   ]
                     .join(" ")
@@ -353,7 +341,6 @@ export function ServicosTabs({
 
       </div>
 
-      {/* Crosshair — assinatura visual do cliente (variant dark = fundo branco) */}
       <CrosshairDecor variant="dark" size="lg" />
     </section>
   );

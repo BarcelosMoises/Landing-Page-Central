@@ -12,10 +12,10 @@ import { getWhatsAppUrl } from "@/data/servicos";
 // Nunca adicionar um item sem antes declarar o id na seção correspondente.
 
 const NAV_ITENS = [
-  { id: "servicos", label: "Serviços", href: "/#servicos" },
-  { id: "setores",  label: "Setores",  href: "/#setores"  },
-  { id: "equipe",   label: "Equipe",   href: "/#equipe"   },
-  { id: "contato",  label: "Contato",  href: "/#contato"  },
+  { id: "servicos", label: "Serviços",        href: "/#servicos" },
+  { id: "setores",  label: "Área de Atuação", href: "/#setores"  },
+  { id: "equipe",   label: "Equipe",          href: "/#equipe"   },
+  { id: "contato",  label: "Contato",         href: "/#contato"  },
 ] as const;
 
 const CTA_WHATSAPP = getWhatsAppUrl(
@@ -104,7 +104,7 @@ export function NavPrimaria() {
       "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#800000]",
       isAtiva
         ? "text-white after:absolute after:bottom-0 after:left-3 after:right-3 after:h-0.5 after:bg-[#800000] after:rounded-full"
-        : "text-neutral-300 hover:text-white",
+        : "text-white/70 hover:text-white",
     ].join(" ");
 
     if (isHomepage) {
