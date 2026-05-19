@@ -121,6 +121,22 @@ const faqJsonLd = {
         text: "Atendemos Rio de Janeiro (CBMERJ), São Paulo (CBPMESP), Minas Gerais (CBMMG) e Espírito Santo (CBMES). Cada estado tem suas próprias Instruções Técnicas e nossos engenheiros são especializados nos processos de cada Corpo de Bombeiros.",
       },
     },
+    {
+      "@type": "Question",
+      name: "O que é o PPCI / PSCI?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "O PPCI (Projeto de Prevenção e Combate a Incêndios) — chamado de PSCI em São Paulo — é o projeto técnico exigido pelo Corpo de Bombeiros estadual para emissão do AVCB. Ele define todos os sistemas de segurança contra incêndio e pânico da edificação: hidrantes, extintores, sprinklers, iluminação de emergência, saídas de emergência e sinalização. O projeto deve ser elaborado por engenheiro habilitado com ART e aprovado pelo CB antes da vistoria. O nome varia por estado: PPCI é utilizado no RJ, MG e ES; PSCI é o termo adotado em SP (CBPMESP).",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "O que é a NR-23?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "A NR-23 (Norma Regulamentadora nº 23 — Proteção Contra Incêndios) é uma norma do Ministério do Trabalho e Emprego (MTE) que estabelece as obrigações do empregador quanto à proteção contra incêndios no ambiente de trabalho. Ela é complementar ao AVCB do Corpo de Bombeiros: enquanto o CB certifica o imóvel quanto às instalações, a NR-23 exige que o empregador mantenha os sistemas operacionais, treine os trabalhadores e garanta a segurança do ambiente laboral. O descumprimento da NR-23 pode resultar em autuação pelo Ministério do Trabalho, independentemente da situação do AVCB.",
+      },
+    },
   ],
 };
 
@@ -419,18 +435,29 @@ export default function PageAVCB() {
             >
               Tudo sobre AVCB e CLCB
             </h2>
-            <dl className="flex flex-col divide-y divide-neutral-200">
+            <div className="flex flex-col gap-3">
               {faqJsonLd.mainEntity.map((faq, i) => (
-                <div key={i} className="py-6">
-                  <dt className="font-heading font-semibold text-neutral-900 text-base md:text-lg mb-3">
-                    {faq.name}
-                  </dt>
-                  <dd className="text-neutral-600 text-base leading-relaxed">
+                <details key={i} className="group border border-neutral-100 rounded-xl bg-white overflow-hidden">
+                  <summary
+                    className="flex items-center justify-between gap-4 px-6 py-4 cursor-pointer list-none font-heading text-base font-bold text-neutral-900 hover:bg-neutral-50 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#800000] focus-visible:ring-inset"
+                    aria-label={faq.name}
+                  >
+                    <span>{faq.name}</span>
+                    <span
+                      aria-hidden="true"
+                      className="flex-shrink-0 text-[#800000] transition-transform duration-200 group-open:rotate-180"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="6 9 12 15 18 9" />
+                      </svg>
+                    </span>
+                  </summary>
+                  <p className="px-6 pb-5 pt-1 text-neutral-600 text-base leading-relaxed">
                     {faq.acceptedAnswer.text}
-                  </dd>
-                </div>
+                  </p>
+                </details>
               ))}
-            </dl>
+            </div>
           </div>
         </section>
 
