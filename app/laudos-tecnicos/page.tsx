@@ -42,7 +42,7 @@ export const metadata: Metadata = {
   },
 };
 
-// ─── JSON-LD ──────────────────────────────────────────────────────────────────
+// ─── JSON-LD ────────────────────────────────────────────────────────────────
 
 const serviceJsonLd = {
   "@context": "https://schema.org",
@@ -120,10 +120,18 @@ const faqJsonLd = {
         text: "Atendemos Rio de Janeiro (CBMERJ), São Paulo (CBPMESP), Minas Gerais (CBMMG) e Espírito Santo (CBMES). Cada estado possui suas próprias Instruções Técnicas e processos específicos. Nossa equipe é especializada nos procedimentos de cada Corpo de Bombeiros estadual, garantindo laudos aderentes às exigências locais.",
       },
     },
+    {
+      "@type": "Question",
+      name: "O que é a NR-10 e quando ela se aplica?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "A NR-10 (Norma Regulamentadora nº 10 — Segurança em Instalações e Serviços em Eletricidade) é uma norma do Ministério do Trabalho e Emprego que estabelece os requisitos mínimos para garantir a segurança dos trabalhadores que interagem, direta ou indiretamente, com instalações elétricas. Ela se aplica a qualquer empresa que possua trabalhadores expostos a riscos elétricos. No contexto dos laudos técnicos, a NR-10 é relevante em diagnósticos de inconformidades elétricas em edificações industriais e comerciais, pois irregularidades nas instalações elétricas são frequentemente apontadas pelo Corpo de Bombeiros como não conformidades no processo de AVCB.",
+      },
+    },
   ],
 };
 
-// ─── Dados locais ─────────────────────────────────────────────────────────────
+// ─── Dados locais ─────────────────────────────────────────────────────────────────
 
 const laudos = servicos.find((s) => s.id === "laudos-tecnicos")!;
 const clientesDestaque = clientes.filter((c) => c.destaque);
@@ -134,7 +142,7 @@ const whatsappUrl = getWhatsAppUrl(
   "Olá! Tenho interesse no serviço de Laudos Técnicos de Engenharia. Pode me passar mais informações?"
 );
 
-// ─── Componentes internos ─────────────────────────────────────────────────────
+// ─── Componentes internos ────────────────────────────────────────────────────────────────
 
 function BadgeEstado({ sigla, nome }: { sigla: string; nome: string }) {
   return (
@@ -173,7 +181,7 @@ function IconeChevron() {
   );
 }
 
-// ─── Page ─────────────────────────────────────────────────────────────────────
+// ─── Page ────────────────────────────────────────────────────────────────────────────────
 
 export default function PageLaudosTecnicos() {
   return (
@@ -191,7 +199,6 @@ export default function PageLaudosTecnicos() {
           aria-labelledby="hero-titulo"
           className="relative bg-neutral-950 overflow-hidden"
         >
-          {/* Gradiente cinemático dourado */}
           <div
             className="absolute inset-0 pointer-events-none"
             style={{
@@ -233,14 +240,12 @@ export default function PageLaudosTecnicos() {
                   {laudos.descricao}
                 </p>
 
-                {/* Estados */}
                 <div className="flex flex-wrap gap-2 mb-10" aria-label="Estados atendidos">
                   {estadosLaudos.map((e) => (
                     <BadgeEstado key={e.sigla} sigla={e.sigla} nome={e.nome} />
                   ))}
                 </div>
 
-                {/* CTAs */}
                 <div className="flex flex-col sm:flex-row gap-3">
                   <a
                     href={whatsappUrl}
@@ -262,7 +267,7 @@ export default function PageLaudosTecnicos() {
                 </div>
               </div>
 
-              {/* Card lateral — órgãos */}
+              {/* Card lateral */}
               <aside
                 aria-label="Órgãos e corpos de bombeiros atendidos"
                 className="hidden lg:flex flex-col gap-3 min-w-[220px]"
@@ -281,7 +286,7 @@ export default function PageLaudosTecnicos() {
           </div>
         </section>
 
-        {/* ── TRUST BAR ─────────────────────────────────────────────────── */}
+        {/* ── TRUST BAR ───────────────────────────────────────────────────── */}
         <section
           aria-label="Clientes atendidos"
           className="bg-neutral-900 border-y border-white/8 py-6"
@@ -306,7 +311,7 @@ export default function PageLaudosTecnicos() {
           </div>
         </section>
 
-        {/* ── O QUE ESTÁ INCLUÍDO ────────────────────────────────────────── */}
+        {/* ── O QUE ESTÁ INCLUÍDO ────────────────────────────────────────────── */}
         <section
           aria-labelledby="incluido-titulo"
           className="bg-white py-20 md:py-28"
@@ -334,7 +339,6 @@ export default function PageLaudosTecnicos() {
                 </ul>
               </div>
 
-              {/* Sub-serviços */}
               <div>
                 <p className="text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-3 font-mono">Modalidades disponíveis</p>
                 {laudos.subServicos && (
@@ -351,7 +355,6 @@ export default function PageLaudosTecnicos() {
                   </ul>
                 )}
 
-                {/* Corpos de Bombeiros por estado */}
                 <div className="mt-8 p-5 rounded-xl bg-neutral-900 border border-white/10">
                   <p className="text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-3 font-mono">Corpos de Bombeiros atendidos</p>
                   <ul className="flex flex-col gap-2">
@@ -368,7 +371,7 @@ export default function PageLaudosTecnicos() {
           </div>
         </section>
 
-        {/* ── EQUIPE TÉCNICA (E-E-A-T) ──────────────────────────────────── */}
+        {/* ── EQUIPE TÉCNICA (E-E-A-T) ──────────────────────────────────────────── */}
         <section
           aria-labelledby="equipe-titulo"
           className="bg-neutral-950 py-20 md:py-28 border-t border-white/8"
@@ -405,7 +408,7 @@ export default function PageLaudosTecnicos() {
           </div>
         </section>
 
-        {/* ── FAQ ───────────────────────────────────────────────────────── */}
+        {/* ── FAQ ─────────────────────────────────────────────────────────── */}
         <section
           aria-labelledby="faq-titulo"
           className="bg-white py-20 md:py-28 border-t border-neutral-100"
@@ -418,22 +421,33 @@ export default function PageLaudosTecnicos() {
             >
               Tudo sobre Laudos Técnicos de Engenharia
             </h2>
-            <dl className="flex flex-col divide-y divide-neutral-200">
+            <div className="flex flex-col gap-3">
               {faqJsonLd.mainEntity.map((faq, i) => (
-                <div key={i} className="py-6">
-                  <dt className="font-heading font-semibold text-neutral-900 text-base md:text-lg mb-3">
-                    {faq.name}
-                  </dt>
-                  <dd className="text-neutral-600 text-base leading-relaxed">
+                <details key={i} className="group border border-neutral-100 rounded-xl bg-white overflow-hidden">
+                  <summary
+                    className="flex items-center justify-between gap-4 px-6 py-4 cursor-pointer list-none font-heading text-base font-bold text-neutral-900 hover:bg-neutral-50 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#92610a] focus-visible:ring-inset"
+                    aria-label={faq.name}
+                  >
+                    <span>{faq.name}</span>
+                    <span
+                      aria-hidden="true"
+                      className="flex-shrink-0 text-[#92610a] transition-transform duration-200 group-open:rotate-180"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="6 9 12 15 18 9" />
+                      </svg>
+                    </span>
+                  </summary>
+                  <p className="px-6 pb-5 pt-1 text-neutral-600 text-base leading-relaxed">
                     {faq.acceptedAnswer.text}
-                  </dd>
-                </div>
+                  </p>
+                </details>
               ))}
-            </dl>
+            </div>
           </div>
         </section>
 
-        {/* ── CTA FINAL ─────────────────────────────────────────────────── */}
+        {/* ── CTA FINAL ──────────────────────────────────────────────────────── */}
         <section
           aria-labelledby="cta-titulo"
           className="bg-neutral-950 py-20 md:py-28 border-t border-white/8"
