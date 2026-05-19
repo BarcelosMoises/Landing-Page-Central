@@ -2,113 +2,10 @@ import { JsonLd } from "@/components/JsonLd";
 
 // ─── Tipos ──────────────────────────────────────────────────────────────────
 
-interface SiglaItem {
-  readonly sigla: string;
-  readonly significado: string;
-  readonly descricao: string;
-  readonly normaOrgao: string;
-}
-
 interface FaqItem {
   readonly pergunta: string;
   readonly resposta: string;
 }
-
-// ─── Dados das siglas (fonte: docs/SEO.md — Glossário de Siglas) ────────────────────
-
-const SIGLAS: readonly SiglaItem[] = [
-  {
-    sigla: "AVCB",
-    significado: "Auto de Vistoria do Corpo de Bombeiros",
-    descricao:
-      "Documento emitido pelo Corpo de Bombeiros estadual que certifica que um imóvel atende a todas as exigências de prevenção e combate a incêndio. É obrigatório para operação legal de indústrias, comércios, galpões e edificações em geral.",
-    normaOrgao: "CBMERJ / CBPMESP / CBMMG / CBMES",
-  },
-  {
-    sigla: "CLCB",
-    significado: "Certificado de Licença do Corpo de Bombeiros",
-    descricao:
-      "Equivalente ao AVCB para edificações de baixo risco, utilizado principalmente no estado de São Paulo. Tem processo simplificado em relação ao AVCB completo.",
-    normaOrgao: "CBPMESP (SP)",
-  },
-  {
-    sigla: "SPDA",
-    significado: "Sistema de Proteção contra Descargas Atmosféricas",
-    descricao:
-      "Popularmente chamado de para-raios, o SPDA é um conjunto de dispositivos instalados em edificações e estruturas para capturar e dissipar a energia de raios com segurança, protegendo pessoas, equipamentos e instalações elétricas.",
-    normaOrgao: "ABNT NBR 5419",
-  },
-  {
-    sigla: "ART",
-    significado: "Anotação de Responsabilidade Técnica",
-    descricao:
-      "Documento obrigatório emitido pelo CREA que vincula um engenheiro ou arquiteto a um serviço técnico específico. A ART garante que o profissional habilitado assume responsabilidade legal pela execução do projeto ou laudo.",
-    normaOrgao: "CREA",
-  },
-  {
-    sigla: "PPCI / PSCI",
-    significado: "Projeto de Prevenção e Combate a Incêndios",
-    descricao:
-      "Projeto técnico que define todos os sistemas de prevenção e combate a incêndio de uma edificação: hidrantes, extintores, sprinklers, iluminação de emergência e saídas de emergência. É exigência do Corpo de Bombeiros para emissão do AVCB.",
-    normaOrgao: "Instrução Técnica do CB estadual",
-  },
-  {
-    sigla: "NR-10",
-    significado: "Norma Regulamentadora de Segurança em Instalações Elétricas",
-    descricao:
-      "Norma do Ministério do Trabalho que estabelece os requisitos mínimos de segurança para trabalhos em instalações elétricas. Exige laudo técnico de aterramento e continuidade elétrica com ART do responsável.",
-    normaOrgao: "MTE (Ministério do Trabalho e Emprego)",
-  },
-  {
-    sigla: "NR-23",
-    significado: "Norma Regulamentadora de Proteção Contra Incêndios",
-    descricao:
-      "Norma do Ministério do Trabalho que determina as obrigações do empregador quanto à proteção contra incêndios no ambiente de trabalho, complementando as exigências do Corpo de Bombeiros.",
-    normaOrgao: "MTE (Ministério do Trabalho e Emprego)",
-  },
-  {
-    sigla: "PGRS",
-    significado: "Plano de Gerenciamento de Resíduos Sólidos",
-    descricao:
-      "Documento obrigatório pela Lei 12.305/2010 (Política Nacional de Resíduos Sólidos) que estabelece como a empresa coleta, armazena, transporta e destina seus resíduos sólidos. É exigência para alvará sanitário e licenças ambientais.",
-    normaOrgao: "Lei 12.305/2010",
-  },
-  {
-    sigla: "PGRSS",
-    significado: "Plano de Gerenciamento de Resíduos de Serviços de Saúde",
-    descricao:
-      "Plano específico para clínicas, laboratórios, hospitais e demais estabelecimentos de saúde que define o manejo adequado de resíduos biológicos, químicos e radioativos, evitando riscos à saúde pública e ao meio ambiente.",
-    normaOrgao: "RDC ANVISA 222/2018",
-  },
-  {
-    sigla: "LP / LI / LO",
-    significado: "Licenças Ambientais: Prévia, de Instalação e de Operação",
-    descricao:
-      "As três fases do licenciamento ambiental brasileiro. A LP (Licença Prévia) aprova a viabilidade do empreendimento; a LI (Licença de Instalação) autoriza a construção; a LO (Licença de Operação) autoriza o funcionamento após verificar que as condições foram cumpridas.",
-    normaOrgao: "Resolução CONAMA 237/1997",
-  },
-  {
-    sigla: "INEA",
-    significado: "Instituto Estadual do Ambiente",
-    descricao:
-      "Órgão ambiental do estado do Rio de Janeiro, responsável pelo licenciamento, fiscalização e monitoramento das atividades que causam impacto ambiental no RJ. É o órgão ao qual as empresas devem solicitar licenças LP, LI e LO no estado.",
-    normaOrgao: "Governo do Estado do Rio de Janeiro",
-  },
-  {
-    sigla: "IEMA",
-    significado: "Instituto Estadual de Meio Ambiente e Recursos Hídricos",
-    descricao:
-      "Órgão ambiental do Espírito Santo, responsável pelo licenciamento ambiental estadual, controle da poluição e gestão dos recursos naturais do ES. Equivalente ao INEA no RJ e à CETESB em SP.",
-    normaOrgao: "Governo do Estado do Espírito Santo",
-  },
-  {
-    sigla: "CETESB",
-    significado: "Companhia Ambiental do Estado de São Paulo",
-    descricao:
-      "Agência de licenciamento e fiscalização ambiental do estado de São Paulo, vinculada à Secretaria de Infraestrutura e Meio Ambiente. É referência nacional em controle ambiental e emite as licenças LP, LI e LO para atividades com impacto ambiental em SP.",
-    normaOrgao: "Governo do Estado de São Paulo",
-  },
-] as const;
 
 // ─── Dados do FAQPage (mínimo 5 pares — exigência AGENTS.md) ──────────────────
 
@@ -165,46 +62,7 @@ const faqJsonLd = {
   })),
 };
 
-// ─── Sub-componente: card de sigla ────────────────────────────────────────────────────
-
-function SiglaCard({ sigla, significado, descricao, normaOrgao }: SiglaItem) {
-  return (
-    <article
-      aria-label={`Sigla ${sigla}: ${significado}`}
-      className="bg-white border border-neutral-100 rounded-xl p-5 flex flex-col gap-3"
-    >
-      {/* Sigla em destaque */}
-      {/* text-[#800000] sobre #fff → contraste 5.9:1 ✓ WCAG AA */}
-      <span
-        className="font-heading text-2xl font-bold text-[#800000] leading-none"
-        aria-label={`Sigla: ${sigla}`}
-      >
-        {sigla}
-      </span>
-
-      {/* Significado completo */}
-      {/* text-neutral-900 sobre #fff → contraste 18.1:1 ✓ WCAG AAA */}
-      <h3 className="font-heading text-sm font-bold text-neutral-900 leading-snug">
-        {significado}
-      </h3>
-
-      {/* Descrição — no DOM, indexada pelo Google */}
-      {/* text-neutral-700 sobre #fff → contraste 9.4:1 ✓ WCAG AAA */}
-      <p className="text-neutral-700 text-sm leading-relaxed flex-1">
-        {descricao}
-      </p>
-
-      {/* Norma / Órgão */}
-      {/* text-neutral-400 sobre #fff → contraste 2.9:1 — apenas para texto pequeno decorativo */}
-      <p className="text-xs text-neutral-500 font-medium mt-auto">
-        {/* text-neutral-500 (#6b7280) sobre #fff → contraste 4.6:1 ✓ WCAG AA para texto \u2265 14px bold */}
-        {normaOrgao}
-      </p>
-    </article>
-  );
-}
-
-// ─── Sub-componente: item de FAQ visível ──────────────────────────────────────────────────
+// ─── Sub-componente: item de FAQ accordion ────────────────────────────────────
 
 function FaqAccordionItem({ pergunta, resposta }: FaqItem) {
   return (
@@ -214,7 +72,6 @@ function FaqAccordionItem({ pergunta, resposta }: FaqItem) {
         aria-label={pergunta}
       >
         <span>{pergunta}</span>
-        {/* Chevron — rotaciona quando aberto */}
         <span
           aria-hidden="true"
           className="flex-shrink-0 text-[#800000] transition-transform duration-200 group-open:rotate-180"
@@ -234,7 +91,6 @@ function FaqAccordionItem({ pergunta, resposta }: FaqItem) {
           </svg>
         </span>
       </summary>
-      {/* Resposta no DOM — indexada pelo Google mesmo quando fechada */}
       <p className="px-6 pb-5 pt-1 text-neutral-700 text-base leading-relaxed">
         {resposta}
       </p>
@@ -242,7 +98,7 @@ function FaqAccordionItem({ pergunta, resposta }: FaqItem) {
   );
 }
 
-// ─── Componente principal ─────────────────────────────────────────────────────────
+// ─── Componente principal ─────────────────────────────────────────────────────
 
 export function Glossario() {
   return (
@@ -255,40 +111,12 @@ export function Glossario() {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-          {/* Cabeçalho */}
-          <div className="max-w-2xl mb-12">
-            <p className="text-xs font-semibold uppercase tracking-widest text-[#800000] mb-3">
-              Transparência técnica
-            </p>
-            <h2
-              id="glossario-heading"
-              className="font-heading text-2xl md:text-4xl font-bold text-neutral-900 leading-tight mb-4"
-            >
-              Entenda os Termos Técnicos
-            </h2>
-            <p className="text-neutral-700 text-lg leading-relaxed">
-              Siglas como AVCB, SPDA e ART não são jargão — são exigências
-              legais que toda empresa precisa cumprir para operar com segurança
-              e regularidade. Entender cada uma facilita o processo de
-              regularização.
-            </p>
-          </div>
-
-          {/* Grid de siglas */}
-          <ul
-            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 mb-16"
-            aria-label="Glossário de siglas técnicas"
-          >
-            {SIGLAS.map((item) => (
-              <li key={item.sigla} className="list-none">
-                <SiglaCard {...item} />
-              </li>
-            ))}
-          </ul>
-
           {/* Seção de perguntas frequentes */}
           <div>
-            <h2 className="font-heading text-xl md:text-2xl font-bold text-neutral-900 mb-6">
+            <h2
+              id="glossario-heading"
+              className="font-heading text-xl md:text-2xl font-bold text-neutral-900 mb-6"
+            >
               Perguntas Frequentes
             </h2>
             <div
