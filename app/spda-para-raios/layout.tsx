@@ -1,12 +1,14 @@
-import type React from "react"
+import type React from "react";
+import { Footer } from "@/components/Footer";
 
 /**
  * Layout da subpágina SPDA / Para-raios
  *
  * Define --color-service-accent no <div> wrapper para que NavPrimaria
- * e Footer herdem a cor do serviço — pois vivem fora do <main>.
+ * e Footer herdem a cor do serviço via CSS custom property.
  *
- * Cor: dourado #92610a (mesmo cluster visual dos Laudos Técnicos)
+ * Cor: amarelo/dourado #92610a — paleta SPDA conforme briefing do cliente.
+ * Hover: #6e4908
  */
 export default function LayoutSpda({ children }: { children: React.ReactNode }) {
   return (
@@ -17,6 +19,7 @@ export default function LayoutSpda({ children }: { children: React.ReactNode }) 
       } as React.CSSProperties}
     >
       {children}
+      <Footer />
     </div>
-  )
+  );
 }

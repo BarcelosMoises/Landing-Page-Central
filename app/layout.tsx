@@ -1,7 +1,12 @@
 import type { Metadata } from "next";
 import { Inter, Montserrat } from "next/font/google";
-import { Footer } from "@/components/Footer";
 import "./globals.css";
+
+// NOTA: <Footer /> foi removido daqui.
+// Cada subpágina de serviço renderiza seu próprio <Footer /> dentro do
+// <div> wrapper do layout.tsx — garantindo que var(--color-service-accent)
+// seja herdada corretamente.
+// A homepage renderiza o Footer via app/(homepage)/layout.tsx.
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -151,7 +156,6 @@ export default function RootLayout({
       </head>
       <body className="font-body bg-white text-neutral-700 antialiased">
         {children}
-        <Footer />
       </body>
     </html>
   );

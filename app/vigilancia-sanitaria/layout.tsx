@@ -1,12 +1,14 @@
-import type React from "react"
+import type React from "react";
+import { Footer } from "@/components/Footer";
 
 /**
  * Layout da subpágina Vigilância Sanitária
  *
  * Define --color-service-accent no <div> wrapper para que NavPrimaria
- * e Footer herdem a cor do serviço — pois vivem fora do <main>.
+ * e Footer herdem a cor do serviço via CSS custom property.
  *
- * Cor: teal #0d7377 (extraído dos posts de Instagram da categoria)
+ * Cor: teal/ciano #0d7377 — paleta Vigilância Sanitária conforme briefing do cliente.
+ * Hover: #095e62
  */
 export default function LayoutVigilancia({ children }: { children: React.ReactNode }) {
   return (
@@ -17,6 +19,7 @@ export default function LayoutVigilancia({ children }: { children: React.ReactNo
       } as React.CSSProperties}
     >
       {children}
+      <Footer />
     </div>
-  )
+  );
 }

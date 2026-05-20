@@ -1,12 +1,14 @@
-import type React from "react"
+import type React from "react";
+import { Footer } from "@/components/Footer";
 
 /**
  * Layout da subpágina AVCB / Corpo de Bombeiros
  *
  * Define --color-service-accent no <div> wrapper para que NavPrimaria
- * e Footer herdem a cor do serviço — pois vivem fora do <main>.
+ * e Footer herdem a cor do serviço via CSS custom property.
  *
- * Cor: vinho #800000 (mesmo cluster visual da homepage e projetos)
+ * Cor: vermelho #800000 — paleta AVCB conforme briefing do cliente.
+ * Hover: #4f0101
  */
 export default function LayoutAvcb({ children }: { children: React.ReactNode }) {
   return (
@@ -17,6 +19,7 @@ export default function LayoutAvcb({ children }: { children: React.ReactNode }) 
       } as React.CSSProperties}
     >
       {children}
+      <Footer />
     </div>
-  )
+  );
 }
