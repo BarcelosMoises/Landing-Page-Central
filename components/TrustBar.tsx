@@ -9,7 +9,7 @@ export interface OrgaoReguladorBadge {
   title: string;
 }
 
-// ─── Órgãos reguladores ──────────────────────────────────────────────────────
+// ─── Órgãos reguladores ───────────────────────────────────────────────────────
 
 const ORGAOS_REGULADORES: readonly OrgaoReguladorBadge[] = [
   {
@@ -44,16 +44,14 @@ const ORGAOS_REGULADORES: readonly OrgaoReguladorBadge[] = [
   },
 ] as const;
 
-// ─── Componente ──────────────────────────────────────────────────────────────
+// ─── Componente ───────────────────────────────────────────────────────────────
 // Server Component — sem "use client", sem JS no cliente.
-// Slider implementado com CSS @keyframes (globals.css — trustbar-marquee).
-// prefers-reduced-motion: pausa via media query CSS, sem JS.
-// Logos exibidos em cor natural, sem grayscale nem opacidade reduzida.
+// Slider via CSS @keyframes (globals.css — trustbar-marquee).
+// prefers-reduced-motion: pausa via media query CSS.
+// mix-blend-mode: multiply remove fundo branco dos PNGs sem reprocessar arquivos.
 
 export function TrustBar() {
   const todosLogos = getTodosClientesLogos();
-  // Duplica para loop visual contínuo imperceptível.
-  // Segunda metade: aria-hidden="true" — leitores de tela veem apenas a 1ª cópia.
   const logosSlider = [...todosLogos, ...todosLogos];
 
   return (
@@ -62,7 +60,7 @@ export function TrustBar() {
       className="bg-neutral-50 border-y border-neutral-100 py-10 overflow-hidden"
     >
 
-      {/* ── Faixa 1 — Slider de logos ─────────────────────────────────────── */}
+      {/* ── Faixa 1 — Slider de logos ───────────────────────────────────── */}
       <div className="mb-8">
         <p
           className="text-xs font-semibold uppercase tracking-widest text-neutral-400 text-center mb-6"
@@ -71,7 +69,8 @@ export function TrustBar() {
           Empresas que confiam na Central de Soluções
         </p>
 
-        <div className="overflow-hidden">
+        {/* w-full garante que overflow-hidden respeite a largura da viewport */}
+        <div className="overflow-hidden w-full">
           <ul
             className="flex items-center gap-12 w-max"
             style={{ animation: "trustbar-marquee 60s linear infinite" }}
@@ -93,6 +92,7 @@ export function TrustBar() {
                   width={160}
                   height={40}
                   className="h-10 w-auto object-contain"
+                  style={{ mixBlendMode: "multiply" }}
                   loading="lazy"
                 />
               </li>
@@ -101,7 +101,7 @@ export function TrustBar() {
         </div>
       </div>
 
-      {/* ── Divisor ───────────────────────────────────────────────────────── */}
+      {/* ── Divisor ──────────────────────────────────────────────────────── */}
       <div
         aria-hidden="true"
         className="border-t border-neutral-100 mb-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
