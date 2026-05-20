@@ -17,6 +17,7 @@ import {
   getServicosPorCategoria,
   getWhatsAppUrl,
   contato,
+  type Servico,
 } from "@/data/servicos";
 
 // ─── Metadata ──────────────────────────────────────────────────────────────────────────
@@ -72,16 +73,54 @@ const websiteJsonLd = {
   },
 };
 
+// ─── Helper: preenche até o próximo múltiplo de 3 com mock cards ──────────────────
+//
+// Mock cards têm `isPlaceholder: true` — identificados no ServicosTabs
+// para renderizar ServicoCardPlaceholder (visual discreto, sem link).
+// Nunca adicionados a data/servicos.ts para não poluir a fonte de dados.
+
+export type ServicoOuPlaceholder = Servico & { isPlaceholder?: boolean };
+
+function padServicos(lista: readonly Servico[]): ServicoOuPlaceholder[] {
+  const remainder = lista.length % 3;
+  if (remainder === 0) return [...lista];
+  const needed = 3 - remainder;
+  const placeholders: ServicoOuPlaceholder[] = Array.from(
+    { length: needed },
+    (_, i) => ({
+      // Campos mínimos exigidos pelo tipo Servico
+      id: `placeholder-${i}`,
+      slug: `placeholder-${i}`,
+      nome: "Em breve",
+      nomeAbreviado: "Em breve",
+      categoria: "legalizacao" as const,
+      descricao: "Novo serviço em desenvolvimento. Entre em contato para mais informações.",
+      orgaos: [],
+      estados: [],
+      coberturaNacional: false,
+      itens: [],
+      iconeLucide: "Clock",
+      pathRota: "/",
+      isPlaceholder: true,
+    })
+  );
+  return [...lista, ...placeholders];
+}
+
 // ─── Dados das tabs (Server Component — sem 'use client') ─────────────────────────
-const servicosLegalizacao = getServicosPorCategoria("legalizacao");
+const servicosLegalizacao = padServicos(getServicosPorCategoria("legalizacao"));
+// legalizacao: 4 itens → 2 placeholders → 6 (2×3) ✓
 
-const servicosProjetos = getServicosPorCategoria("projeto")
-  .filter((s) => s.exibirNaTabs !== false);
+const servicosProjetos = padServicos(
+  getServicosPorCategoria("projeto").filter((s) => s.exibirNaTabs !== false)
+);
+// projetos: 5 itens → 1 placeholder → 6 (2×3) ✓
 
-const servicosLaudos = [
+const servicosLaudos = padServicos([
   ...getServicosPorCategoria("laudo"),
   ...getServicosPorCategoria("instalacao"),
-] as const;
+]);
+// laudos: 7 itens → 2 placeholders → 9 (3×3) ✓
 
 const PILARES_HERO = [
   {

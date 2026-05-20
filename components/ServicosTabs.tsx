@@ -6,7 +6,7 @@
  * Client Component isolado. Toda a lógica de estado (tab ativa) fica aqui;
  * o app/page.tsx permanece Server Component e passa os dados via props.
  *
- * Props são arrays de Servico[] serializáveis (string | boolean | string[]).
+ * Props são arrays de ServicoOuPlaceholder[] serializáveis.
  * Nunca importar `servicos` diretamente aqui — receber sempre via props.
  *
  * Estrutura das tabs:
@@ -16,6 +16,8 @@
  *
  * SEO: todos os painéis renderizam no DOM; painéis inativos ocultados com
  * `hidden` (Tailwind → display:none via CSS, indexado pelo Googlebot).
+ *
+ * Grid: sempre múltiplo de 3. Placeholders preenchidos pelo page.tsx.
  */
 
 import { useState, useRef } from "react";
@@ -31,10 +33,12 @@ import {
   Radio,
   FileText,
   Ruler,
+  Clock,
   type LucideProps,
 } from "lucide-react";
 import Link from "next/link";
 import { type Servico } from "@/data/servicos";
+import { type ServicoOuPlaceholder } from "@/app/(homepage)/page";
 import { CrosshairDecor } from "@/components/CrosshairDecor";
 
 // ─── Tipos ───────────────────────────────────────────────────────────────────────────────
@@ -42,9 +46,9 @@ import { CrosshairDecor } from "@/components/CrosshairDecor";
 type TabId = "legalizacao" | "projetos" | "laudos";
 
 export interface ServicosTabsProps {
-  legalizacao: readonly Servico[];
-  projetos: readonly Servico[];
-  laudos: readonly Servico[];
+  legalizacao: readonly ServicoOuPlaceholder[];
+  projetos: readonly ServicoOuPlaceholder[];
+  laudos: readonly ServicoOuPlaceholder[];
 }
 
 // ─── Mapa de ícones ──────────────────────────────────────────────────────────────────────────
@@ -62,6 +66,7 @@ const ICON_MAP: Record<string, IconComponent> = {
   Radio,
   FileText,
   Ruler,
+  Clock,
 };
 
 // ─── Configuração das tabs ───────────────────────────────────────────────────────────────────
@@ -106,7 +111,7 @@ const itemVariants = {
   },
 };
 
-// ─── Sub-componente: card de serviço ─────────────────────────────────────────────────────
+// ─── Sub-componente: card de serviço real ────────────────────────────────────────────────
 
 function ServicoCard({ servico }: { servico: Servico }) {
   const Icon = ICON_MAP[servico.iconeLucide] ?? ShieldAlert;
@@ -120,7 +125,6 @@ function ServicoCard({ servico }: { servico: Servico }) {
       aria-label={`Serviço: ${servico.nomeAbreviado}`}
       className="bg-white border border-neutral-200/70 rounded-xl p-6 hover:shadow-lg transition-shadow duration-200 flex flex-col gap-4 h-full"
     >
-      {/* Ícone com fundo colorido derivado do accent */}
       <div
         style={{
           backgroundColor:
@@ -137,7 +141,6 @@ function ServicoCard({ servico }: { servico: Servico }) {
         />
       </div>
 
-      {/* Textos */}
       <div className="flex flex-col gap-2 flex-1">
         <h3 className="font-heading text-xl font-bold text-neutral-900 leading-snug">
           {servico.nomeAbreviado}
@@ -147,9 +150,7 @@ function ServicoCard({ servico }: { servico: Servico }) {
         </p>
       </div>
 
-      {/* Rodapé do card: badge de cobertura + link */}
       <div className="flex flex-wrap items-center justify-between gap-3 mt-auto pt-2 border-t border-neutral-100">
-        {/* Badge de estados */}
         <span
           style={{
             backgroundColor:
@@ -174,6 +175,37 @@ function ServicoCard({ servico }: { servico: Servico }) {
   );
 }
 
+// ─── Sub-componente: card placeholder "Em breve" ─────────────────────────────────────────
+//
+// Visual discreto para não confundir o usuário:
+// - borda tracejada, fundo off-white, sem link, sem badge
+// - ícone Clock + label "Em breve"
+// - aria-hidden para não poluir leitores de tela
+
+function ServicoCardPlaceholder() {
+  return (
+    <article
+      aria-hidden="true"
+      className="border border-dashed border-neutral-200 rounded-xl p-6 flex flex-col gap-4 h-full bg-neutral-50/60 select-none"
+    >
+      <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 bg-neutral-100">
+        <Clock className="w-5 h-5 text-neutral-300" strokeWidth={1.5} aria-hidden="true" />
+      </div>
+
+      <div className="flex flex-col gap-2 flex-1">
+        <p className="text-sm font-semibold text-neutral-400 uppercase tracking-widest">
+          Em breve
+        </p>
+        <p className="text-neutral-300 text-base leading-relaxed">
+          Novo serviço em desenvolvimento.
+        </p>
+      </div>
+
+      <div className="mt-auto pt-2 border-t border-neutral-100" />
+    </article>
+  );
+}
+
 // ─── Sub-componente: painel de conteúdo da tab ────────────────────────────────────────────
 
 function TabPanel({
@@ -183,7 +215,7 @@ function TabPanel({
   inView,
 }: {
   id: TabId;
-  servicos: readonly Servico[];
+  servicos: readonly ServicoOuPlaceholder[];
   isActive: boolean;
   inView: boolean;
 }) {
@@ -195,27 +227,24 @@ function TabPanel({
       className={isActive ? "" : "hidden"}
     >
       <motion.ul
-        {/* Grid fluido: auto-fill com minmax(min(300px, 100%), 1fr)
-            — distribui os cards automaticamente sem células vazias.
-            min(300px, 100%) garante que em mobile o card ocupa a largura total. */}
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(min(300px, 100%), 1fr))",
-          gap: "1.5rem",
-        }}
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
         aria-label={`Serviços: ${id}`}
         variants={containerVariants}
         initial="hidden"
         animate={isActive && inView ? "visible" : "hidden"}
         key={id}
       >
-        {servicos.map((servico) => (
+        {servicos.map((servico, index) => (
           <motion.li
             key={servico.id}
             className="list-none"
             variants={itemVariants}
           >
-            <ServicoCard servico={servico} />
+            {servico.isPlaceholder ? (
+              <ServicoCardPlaceholder />
+            ) : (
+              <ServicoCard servico={servico} />
+            )}
           </motion.li>
         ))}
       </motion.ul>
@@ -234,7 +263,7 @@ export function ServicosTabs({
   const secaoRef = useRef<HTMLElement>(null);
   const inView = useInView(secaoRef, { once: true, margin: "-8%" });
 
-  const paineis: Record<TabId, readonly Servico[]> = {
+  const paineis: Record<TabId, readonly ServicoOuPlaceholder[]> = {
     legalizacao,
     projetos,
     laudos,
