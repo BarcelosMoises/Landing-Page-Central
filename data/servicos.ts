@@ -729,106 +729,34 @@ export const setores: readonly Setor[] = [
 ] as const;
 
 // ─── Clientes (prova social) ───────────────────────────────────────────────────────────────
+//
+// destaque: true  → exibido em subpáginas (getClientesDestaque)
+// destaque: false → apenas no slider da homepage (getTodosClientesLogos)
+//
+// Os 20 logos PNG enviados pelo cliente estão em /public/images/clientes/1.png … 20.png
 
 export const clientes: readonly Cliente[] = [
-  {
-    id: "claro",
-    nome: "Claro",
-    segmento: "Telecomunicações",
-    logoPath: "/images/clientes/claro.svg",
-    destaque: true,
-  },
-  {
-    id: "embratel",
-    nome: "Embratel",
-    segmento: "Telecomunicações",
-    logoPath: "/images/clientes/embratel.svg",
-    destaque: true,
-  },
-  {
-    id: "brasil-center",
-    nome: "Brasil Center",
-    segmento: "Telecomunicações",
-    logoPath: "/images/clientes/brasil-center.svg",
-    destaque: false,
-  },
-  {
-    id: "ambev",
-    nome: "Ambev",
-    segmento: "Alimentação / Bebidas",
-    logoPath: "/images/clientes/ambev.svg",
-    destaque: true,
-  },
-  {
-    id: "mercado-livre",
-    nome: "Mercado Livre",
-    segmento: "Logística / E-commerce",
-    logoPath: "/images/clientes/mercado-livre.svg",
-    destaque: true,
-  },
-  {
-    id: "brasol",
-    nome: "Brasol",
-    segmento: "Energia Solar",
-    logoPath: "/images/clientes/brasol.svg",
-    destaque: true,
-  },
-  {
-    id: "rzk-energia",
-    nome: "RZK Energia",
-    segmento: "Energia",
-    logoPath: "/images/clientes/rzk-energia.svg",
-    destaque: false,
-  },
-  {
-    id: "athan-energia",
-    nome: "Athan Energia",
-    segmento: "Energia",
-    logoPath: "/images/clientes/athan-energia.svg",
-    destaque: false,
-  },
-  {
-    id: "sonne-energia",
-    nome: "Sonne Solução em Energia",
-    segmento: "Energia Solar",
-    logoPath: "/images/clientes/sonne-energia.svg",
-    destaque: false,
-  },
-  {
-    id: "natural-energia",
-    nome: "Natural Energia",
-    segmento: "Energia",
-    logoPath: "/images/clientes/natural-energia.svg",
-    destaque: false,
-  },
-  {
-    id: "eco-solucoes",
-    nome: "Eco Soluções em Energia",
-    segmento: "Energia",
-    logoPath: "/images/clientes/eco-solucoes.svg",
-    destaque: false,
-  },
-  {
-    id: "della-delle",
-    nome: "Della & Delle",
-    segmento: "Comércio",
-    logoPath: "/images/clientes/della-delle.svg",
-    destaque: false,
-  },
-  {
-    id: "casa-das-telhas",
-    nome: "Casa das Telhas",
-    segmento: "Comércio",
-    logoPath: "/images/clientes/casa-das-telhas.svg",
-    destaque: false,
-  },
-  {
-    id: "pmc",
-    nome: "PMC",
-    segmento: "Não especificado",
-    logoPath: "/images/clientes/pmc.svg",
-    destaque: false,
-  },
+  // ── Logos PNG (conjunto completo enviado pelo cliente) ────────────────────
+  { id: "cliente-01", nome: "Cliente 1",  segmento: "—", logoPath: "/images/clientes/1.png",  destaque: true  },
+  { id: "cliente-02", nome: "Cliente 2",  segmento: "—", logoPath: "/images/clientes/2.png",  destaque: true  },
+  { id: "cliente-03", nome: "Cliente 3",  segmento: "—", logoPath: "/images/clientes/3.png",  destaque: true  },
+  { id: "cliente-04", nome: "Cliente 4",  segmento: "—", logoPath: "/images/clientes/4.png",  destaque: true  },
+  { id: "cliente-05", nome: "Cliente 5",  segmento: "—", logoPath: "/images/clientes/5.png",  destaque: true  },
+  { id: "cliente-06", nome: "Cliente 6",  segmento: "—", logoPath: "/images/clientes/6.png",  destaque: false },
+  { id: "cliente-07", nome: "Cliente 7",  segmento: "—", logoPath: "/images/clientes/7.png",  destaque: false },
+  { id: "cliente-08", nome: "Cliente 8",  segmento: "—", logoPath: "/images/clientes/8.png",  destaque: false },
+  { id: "cliente-09", nome: "Cliente 9",  segmento: "—", logoPath: "/images/clientes/9.png",  destaque: false },
+  { id: "cliente-10", nome: "Cliente 10", segmento: "—", logoPath: "/images/clientes/10.png", destaque: false },
+  { id: "cliente-11", nome: "Cliente 11", segmento: "—", logoPath: "/images/clientes/11.png", destaque: false },
+  { id: "cliente-12", nome: "Cliente 12", segmento: "—", logoPath: "/images/clientes/12.png", destaque: false },
+  { id: "cliente-13", nome: "Cliente 13", segmento: "—", logoPath: "/images/clientes/13.png", destaque: false },
+  { id: "cliente-14", nome: "Cliente 14", segmento: "—", logoPath: "/images/clientes/14.png", destaque: false },
+  { id: "cliente-15", nome: "Cliente 15", segmento: "—", logoPath: "/images/clientes/15.png", destaque: false },
+  { id: "cliente-16", nome: "Cliente 16", segmento: "—", logoPath: "/images/clientes/16.png", destaque: false },
+  { id: "cliente-17", nome: "Cliente 17", segmento: "—", logoPath: "/images/clientes/17.png", destaque: false },
+  { id: "cliente-18", nome: "Cliente 18", segmento: "—", logoPath: "/images/clientes/18.png", destaque: false },
+  { id: "cliente-19", nome: "Cliente 19", segmento: "—", logoPath: "/images/clientes/19.png", destaque: false },
+  { id: "cliente-20", nome: "Cliente 20", segmento: "—", logoPath: "/images/clientes/20.png", destaque: false },
 ] as const;
 
 // ─── Diferenciais competitivos ──────────────────────────────────────────────────────────────
@@ -906,9 +834,19 @@ export function getServicosPorEstado(estado: EstadoSigla): readonly Servico[] {
   );
 }
 
-/** Retorna os clientes em destaque (para o Trust Bar) */
+/** Retorna os clientes em destaque (subpáginas de serviço) */
 export function getClientesDestaque(): readonly Cliente[] {
   return clientes.filter((c) => c.destaque);
+}
+
+/**
+ * Retorna todos os clientes que possuem logoPath.
+ * Usado exclusivamente pelo slider da homepage (TrustBar).
+ */
+export function getTodosClientesLogos(): readonly Cliente[] {
+  return clientes.filter((c): c is Cliente & { logoPath: string } =>
+    typeof c.logoPath === "string" && c.logoPath.length > 0
+  );
 }
 
 /** Retorna os serviços demandados por um setor */
