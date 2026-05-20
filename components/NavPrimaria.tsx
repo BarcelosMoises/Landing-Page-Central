@@ -94,6 +94,16 @@ export function NavPrimaria() {
     });
   }
 
+  // Fundo escuro da nav ao scrollar — versão muito escura da cor do serviço.
+  // color-mix(18% accent + 82% #0a0a0a) garante legibilidade do texto branco
+  // em qualquer paleta (WCAG AA) e ainda traz o tint da cor do serviço.
+  // Fallback #1a0000 mantém o comportamento original na homepage.
+  const scrolledBg = [
+    "color-mix(in srgb,",
+    "var(--color-service-accent, #800000) 18%,",
+    "#0a0a0a 82%)",
+  ].join(" ");
+
   // ── Renderização de item de nav ─────────────────────────────────────────────
   // Na homepage: botão com scroll suave
   // Nas subpáginas: Link para /#secao (navegação real)
@@ -113,10 +123,6 @@ export function NavPrimaria() {
           onClick={() => scrollParaSecao(id)}
           aria-current={isAtiva ? "true" : undefined}
           className={baseClasses}
-          style={isAtiva ? {
-            // pseudo-element não aceita CSS var via style= inline; usamos um
-            // wrapper real para o indicador de seção ativa
-          } : undefined}
         >
           {label}
           {isAtiva && (
@@ -187,12 +193,13 @@ export function NavPrimaria() {
   return (
     <header
       role="banner"
-      className={[
-        "fixed top-0 inset-x-0 z-50 transition-colors duration-300",
-        scrolled
-          ? "bg-[#1a0000]/95 backdrop-blur-sm shadow-lg"
-          : "bg-transparent",
-      ].join(" ")}
+      className="fixed top-0 inset-x-0 z-50 transition-colors duration-300"
+      style={scrolled ? {
+        backgroundColor: scrolledBg,
+        backdropFilter: "blur(8px)",
+        WebkitBackdropFilter: "blur(8px)",
+        boxShadow: "0 4px 24px rgba(0,0,0,0.4)",
+      } : undefined}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-6">
 
@@ -222,7 +229,7 @@ export function NavPrimaria() {
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Solicitar orçamento via WhatsApp"
-          className="hidden md:inline-flex items-center gap-2 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#1a0000] flex-shrink-0"
+          className="hidden md:inline-flex items-center gap-2 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 flex-shrink-0"
           style={{
             backgroundColor: "var(--color-service-accent, #800000)",
           }}
@@ -275,7 +282,8 @@ export function NavPrimaria() {
         <nav
           id="menu-mobile"
           aria-label="Menu mobile"
-          className="md:hidden bg-[#1a0000]/98 backdrop-blur-sm border-t border-white/10 px-4 py-4 flex flex-col gap-1"
+          className="md:hidden backdrop-blur-sm border-t border-white/10 px-4 py-4 flex flex-col gap-1"
+          style={{ backgroundColor: scrolledBg }}
         >
           {NAV_ITENS.map((item) => (
             <NavItemMobile key={item.id} {...item} />
