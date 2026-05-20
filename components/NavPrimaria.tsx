@@ -103,7 +103,7 @@ export function NavPrimaria() {
       "relative px-4 py-2 text-sm font-medium rounded-md transition-colors duration-200",
       "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#800000]",
       isAtiva
-        ? "text-white after:absolute after:bottom-0 after:left-3 after:right-3 after:h-0.5 after:bg-[#800000] after:rounded-full"
+        ? "text-white"
         : "text-white/70 hover:text-white",
     ].join(" ");
 
@@ -113,8 +113,19 @@ export function NavPrimaria() {
           onClick={() => scrollParaSecao(id)}
           aria-current={isAtiva ? "true" : undefined}
           className={baseClasses}
+          style={isAtiva ? {
+            // pseudo-element não aceita CSS var via style= inline; usamos um
+            // wrapper real para o indicador de seção ativa
+          } : undefined}
         >
           {label}
+          {isAtiva && (
+            <span
+              aria-hidden="true"
+              className="absolute bottom-0 left-3 right-3 h-0.5 rounded-full"
+              style={{ backgroundColor: "var(--color-service-accent, #800000)" }}
+            />
+          )}
         </button>
       );
     }
@@ -122,6 +133,13 @@ export function NavPrimaria() {
     return (
       <Link href={href} className={baseClasses}>
         {label}
+        {isAtiva && (
+          <span
+            aria-hidden="true"
+            className="absolute bottom-0 left-3 right-3 h-0.5 rounded-full"
+            style={{ backgroundColor: "var(--color-service-accent, #800000)" }}
+          />
+        )}
       </Link>
     );
   }
@@ -133,7 +151,7 @@ export function NavPrimaria() {
       "w-full text-left px-4 py-3 rounded-lg text-sm font-medium transition-colors duration-200",
       "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#800000]",
       isAtiva
-        ? "bg-[#800000]/20 text-white"
+        ? "text-white"
         : "text-neutral-300 hover:bg-white/10 hover:text-white",
     ].join(" ");
 
@@ -143,6 +161,9 @@ export function NavPrimaria() {
           onClick={() => scrollParaSecao(id)}
           aria-current={isAtiva ? "true" : undefined}
           className={baseClasses}
+          style={isAtiva ? {
+            backgroundColor: "color-mix(in srgb, var(--color-service-accent, #800000) 20%, transparent)",
+          } : undefined}
         >
           {label}
         </button>
@@ -154,6 +175,9 @@ export function NavPrimaria() {
         href={href}
         onClick={() => setMenuAberto(false)}
         className={baseClasses}
+        style={isAtiva ? {
+          backgroundColor: "color-mix(in srgb, var(--color-service-accent, #800000) 20%, transparent)",
+        } : undefined}
       >
         {label}
       </Link>
@@ -179,7 +203,7 @@ export function NavPrimaria() {
           className="flex-shrink-0 font-heading font-bold text-white text-lg leading-none tracking-tight focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#800000] focus-visible:rounded"
         >
           Central de{" "}
-          <span className="text-[#800000]">Soluções</span>
+          <span style={{ color: "var(--color-service-accent, #800000)" }}>Soluções</span>
         </Link>
 
         {/* Nav desktop */}
@@ -198,7 +222,18 @@ export function NavPrimaria() {
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Solicitar orçamento via WhatsApp"
-          className="hidden md:inline-flex items-center gap-2 bg-[#800000] hover:bg-[#4f0101] text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#1a0000] flex-shrink-0"
+          className="hidden md:inline-flex items-center gap-2 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#1a0000] flex-shrink-0"
+          style={{
+            backgroundColor: "var(--color-service-accent, #800000)",
+          }}
+          onMouseEnter={(e) => {
+            (e.currentTarget as HTMLAnchorElement).style.backgroundColor =
+              "var(--color-service-accent-hover, #4f0101)";
+          }}
+          onMouseLeave={(e) => {
+            (e.currentTarget as HTMLAnchorElement).style.backgroundColor =
+              "var(--color-service-accent, #800000)";
+          }}
         >
           Solicitar Orçamento
         </a>
@@ -250,7 +285,18 @@ export function NavPrimaria() {
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => setMenuAberto(false)}
-            className="mt-2 w-full text-center bg-[#800000] hover:bg-[#4f0101] text-white text-sm font-semibold px-4 py-3 rounded-lg transition-colors duration-200"
+            className="mt-2 w-full text-center text-white text-sm font-semibold px-4 py-3 rounded-lg transition-colors duration-200"
+            style={{
+              backgroundColor: "var(--color-service-accent, #800000)",
+            }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLAnchorElement).style.backgroundColor =
+                "var(--color-service-accent-hover, #4f0101)";
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLAnchorElement).style.backgroundColor =
+                "var(--color-service-accent, #800000)";
+            }}
           >
             Solicitar Orçamento
           </a>
