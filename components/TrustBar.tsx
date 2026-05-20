@@ -1,13 +1,7 @@
 import Image from "next/image";
-import { getTodosClientesLogos, getClientesDestaque } from "@/data/servicos";
-import type { Cliente, OrgaoReguladorBadge } from "@/components/TrustBar";
+import { getTodosClientesLogos } from "@/data/servicos";
 
-// ─── Re-exporta tipos consumidos externamente ────────────────────────────────
-
-export interface LogoItem {
-  src: string;
-  alt: string;
-}
+// ─── Tipos exportados consumidos externamente ─────────────────────────────────
 
 export interface OrgaoReguladorBadge {
   label: string;
@@ -15,15 +9,9 @@ export interface OrgaoReguladorBadge {
   title: string;
 }
 
-// ─── Dimensões dos logos no slider ───────────────────────────────────────────
-// Todos os PNGs têm a mesma altura. Largura max-content via object-contain.
-// h-10 = 40 px — valor calibrado para logos B2B de empresas grandes.
-
-const LOGO_HEIGHT_CLASS = "h-10";
-
 // ─── Órgãos reguladores ──────────────────────────────────────────────────────
 
-const ORGAOS_REGULADORES = [
+const ORGAOS_REGULADORES: readonly OrgaoReguladorBadge[] = [
   {
     label: "CBMERJ · RJ",
     href: "https://www.cbmerj.rj.gov.br",
@@ -58,14 +46,14 @@ const ORGAOS_REGULADORES = [
 
 // ─── Componente ──────────────────────────────────────────────────────────────
 // Server Component — sem "use client", sem JS no cliente.
-// O slider é implementado puramente com CSS @keyframes (globals.css).
-// prefers-reduced-motion: pausa a animação via media query CSS — sem JS.
+// Slider implementado com CSS @keyframes (globals.css — trustbar-marquee).
+// prefers-reduced-motion: pausa via media query CSS, sem JS.
+// Logos exibidos em cor natural, sem grayscale nem opacidade reduzida.
 
 export function TrustBar() {
   const todosLogos = getTodosClientesLogos();
-  // Duplica o array para criar o loop visual contínuo.
-  // A segunda metade recebe aria-hidden="true" — leitores de tela veem apenas
-  // a primeira cópia da lista, sem conteúdo repetido.
+  // Duplica para loop visual contínuo imperceptível.
+  // Segunda metade: aria-hidden="true" — leitores de tela veem apenas a 1ª cópia.
   const logosSlider = [...todosLogos, ...todosLogos];
 
   return (
@@ -83,21 +71,10 @@ export function TrustBar() {
           Empresas que confiam na Central de Soluções
         </p>
 
-        {/*
-          overflow-hidden no pai mascara os logos fora da viewport.
-          A ul tem largura max-content para todos os logos ficarem em linha.
-          animation-duration calibrado em: nLogos × 3s = 20 × 3 = 60s.
-          Ajuste via CSS custom property --slider-duration se necessário.
-        */}
-        <div
-          className="overflow-hidden"
-          aria-hidden="false"
-        >
+        <div className="overflow-hidden">
           <ul
             className="flex items-center gap-12 w-max"
-            style={{
-              animation: "trustbar-marquee 60s linear infinite",
-            }}
+            style={{ animation: "trustbar-marquee 60s linear infinite" }}
             aria-label="Lista de logos de clientes"
           >
             {logosSlider.map((cliente, i) => (
@@ -106,20 +83,18 @@ export function TrustBar() {
                 className="list-none flex-shrink-0"
                 aria-hidden={i >= todosLogos.length ? "true" : undefined}
               >
-                <div className="grayscale hover:grayscale-0 transition-all duration-300 opacity-60 hover:opacity-100">
-                  <Image
-                    src={cliente.logoPath!}
-                    alt={
-                      i >= todosLogos.length
-                        ? ""
-                        : `Logo de ${cliente.nome} — cliente da Central de Soluções`
-                    }
-                    width={160}
-                    height={40}
-                    className={`${LOGO_HEIGHT_CLASS} w-auto object-contain`}
-                    loading="lazy"
-                  />
-                </div>
+                <Image
+                  src={cliente.logoPath!}
+                  alt={
+                    i >= todosLogos.length
+                      ? ""
+                      : `Logo de ${cliente.nome} — cliente da Central de Soluções`
+                  }
+                  width={160}
+                  height={40}
+                  className="h-10 w-auto object-contain"
+                  loading="lazy"
+                />
               </li>
             ))}
           </ul>
