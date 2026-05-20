@@ -55,7 +55,7 @@ app/
 │   ├── layout.tsx              # Define --color-service-accent: #2d6a2d
 │   └── page.tsx                # keyword: "licenciamento ambiental [estado]"
 └── projetos/
-    ├── layout.tsx              # Define --color-service-accent: #800000
+    ├── layout.tsx              # Define --color-service-accent: #1e40af
     └── page.tsx                # keyword: "projeto combate incêndio pânico"
 ```
 
@@ -80,10 +80,11 @@ app/
 
 | Categoria | Rota | Accent | Hover |
 |---|---|---|---|
-| AVCB / Projetos | `/avcb-corpo-de-bombeiros`, `/projetos` | `#800000` | `#4f0101` |
+| AVCB | `/avcb-corpo-de-bombeiros` | `#800000` | `#4f0101` |
 | Vigilância Sanitária | `/vigilancia-sanitaria` | `#0d7377` | `#095e62` |
 | Licenciamento Ambiental | `/licenciamento-ambiental` | `#2d6a2d` | `#1e4d1e` |
 | Laudos / SPDA | `/laudos-tecnicos`, `/spda-para-raios` | `#92610a` | `#6e4908` |
+| Projetos Técnicos | `/projetos` | `#1e40af` | `#1e3a8a` |
 
 ### Regra de Layout por Subpágina
 

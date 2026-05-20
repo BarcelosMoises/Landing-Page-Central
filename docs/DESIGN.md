@@ -120,14 +120,14 @@ background: linear-gradient(to bottom, rgba(79,1,1,0.85) 0%, rgba(10,0,0,0.6) 10
 
 ### Mapeamento de Cor por Subpágina
 
-| Categoria | Rota | Accent principal | Hover | Highlight (10% opacidade) | Origem no material |
-|---|---|---|---|---|---|
-| Corpo de Bombeiros / AVCB | `/avcb-corpo-de-bombeiros` | `#800000` | `#4f0101` | `#800000/10` | Vinho — cor padrão da marca |
-| Projetos de Engenharia | `/projetos` | `#800000` | `#4f0101` | `#800000/10` | Mesmo cluster visual do AVCB |
-| Vigilância Sanitária | `/vigilancia-sanitaria` | `#0d7377` | `#095e62` | `#0d7377/10` | Turquesa/teal dos posts de Vigilância |
-| Licenciamento Ambiental | `/licenciamento-ambiental` | `#2d6a2d` | `#1e4d1e` | `#2d6a2d/10` | Verde dos posts de Meio Ambiente |
-| Laudos Técnicos | `/laudos-tecnicos` | `#92610a` | `#6e4908` | `#92610a/10` | Dourado/ocre dos posts de Laudos |
-| SPDA / Para-raios | `/spda-para-raios` | `#92610a` | `#6e4908` | `#92610a/10` | Mesmo cluster visual dos Laudos |
+| Categoria | Rota | Accent principal | Hover | Highlight (10% opacidade) |
+|---|---|---|---|---|
+| Corpo de Bombeiros / AVCB | `/avcb-corpo-de-bombeiros` | `#800000` | `#4f0101` | `#800000/10` |
+| Projetos de Engenharia | `/projetos` | `#1e40af` | `#1e3a8a` | `#1e40af/10` |
+| Vigilância Sanitária | `/vigilancia-sanitaria` | `#0d7377` | `#095e62` | `#0d7377/10` |
+| Licenciamento Ambiental | `/licenciamento-ambiental` | `#2d6a2d` | `#1e4d1e` | `#2d6a2d/10` |
+| Laudos Técnicos | `/laudos-tecnicos` | `#92610a` | `#6e4908` | `#92610a/10` |
+| SPDA / Para-raios | `/spda-para-raios` | `#92610a` | `#6e4908` | `#92610a/10` |
 
 ### Como Aplicar nas Subpáginas
 
@@ -166,7 +166,7 @@ O `<main>` da subpágina mantém o `data-service` attribute para os seletores do
 [data-service="ambiental"]  { --color-service-accent: #2d6a2d; --color-service-accent-hover: #1e4d1e; }
 [data-service="laudos"]     { --color-service-accent: #92610a; --color-service-accent-hover: #6e4908; }
 [data-service="avcb"]       { --color-service-accent: #800000; --color-service-accent-hover: #4f0101; }
-[data-service="projetos"]   { --color-service-accent: #800000; --color-service-accent-hover: #4f0101; }
+[data-service="projetos"]   { --color-service-accent: #1e40af; --color-service-accent-hover: #1e3a8a; }
 ```
 
 Usando nos componentes:
@@ -197,7 +197,7 @@ Usando nos componentes:
 ### Gradientes de Hero por Serviço
 
 ```css
-/* AVCB / Projetos — vinho (igual ao hero global) */
+/* AVCB — vinho (igual ao hero global) */
 --gradient-hero-avcb: linear-gradient(to bottom, rgba(79,1,1,0.85) 0%, rgba(10,0,0,0.6) 100%);
 
 /* Vigilância Sanitária — teal escuro */
@@ -208,6 +208,9 @@ Usando nos componentes:
 
 /* Laudos / SPDA — dourado escuro */
 --gradient-hero-laudos: linear-gradient(to bottom, rgba(146,97,10,0.88) 0%, rgba(20,10,0,0.65) 100%);
+
+/* Projetos Técnicos — azul escuro */
+--gradient-hero-projetos: linear-gradient(to bottom, rgba(30,64,175,0.88) 0%, rgba(0,5,30,0.65) 100%);
 ```
 
 ---
@@ -330,6 +333,7 @@ export function CrosshairDecor({ className = "" }: { className?: string }) {
 | Hero `/laudos-tecnicos` | Racks de data center com cabos vermelhos | `/images/portfolio/hero-laudos.jpg` |
 | Hero `/licenciamento-ambiental` | Campo com usina solar fotovoltaica | `/images/portfolio/hero-ambiental.jpg` |
 | Hero `/vigilancia-sanitaria` | Engenheiro analisando planta arquitetônica | `/images/portfolio/hero-sanitaria.jpg` |
+| Hero `/projetos` | Projeto técnico em execução, planta ou canteiro | `/images/portfolio/hero-projetos.jpg` |
 | SetoresAtendidos — Depósito | Interior de galpão logístico com pallets e prateleiras | `/images/portfolio/setor-deposito.jpg` |
 | SetoresAtendidos — Telecom | Antena parabólica gigante, céu azul | `/images/portfolio/setor-telecom.jpg` |
 | SetoresAtendidos — Tecnologia | Racks com cabos vermelhos em data center | `/images/portfolio/setor-tecnologia.jpg` |
@@ -348,9 +352,9 @@ Extraído do portfólio do cliente. Usar exatamente esses dados na seção `Equi
 // data/equipe.ts — campos canônicos (não alterar nomes de campo sem atualizar este doc)
 export const equipe = [
   {
-    slug: "durval-ribeiro",              // identificador único de URL
+    slug: "durval-ribeiro",
     nome: "Durval Ribeiro de Queiroz",
-    tituloPrincipal: "Arquiteto e Urbanista",  // título exibido como subtítulo do card
+    tituloPrincipal: "Arquiteto e Urbanista",
     especializacoes: [
       "Arquiteto e Urbanista",
       "Engenheiro de Segurança do Trabalho",
@@ -498,7 +502,7 @@ Border radius padrão: rounded-lg (8px) | rounded-xl (12px) para cards
     id={`painel-${tab.id}`}
     role="tabpanel"
     aria-labelledby={`tab-${tab.id}`}
-    className={tabAtiva === tab.id ? "" : "hidden"}  // CSS display:none — Googlebot indexa normalmente
+    className={tabAtiva === tab.id ? "" : "hidden"}
   >
     {/* cards de serviço */}
   </div>
@@ -516,16 +520,6 @@ Border radius padrão: rounded-lg (8px) | rounded-xl (12px) para cards
 - **Nunca** usar `display: none` via JavaScript inline — usar `className="hidden"` do Tailwind
 - Cards dos serviços usam `var(--color-service-accent, #800000)` para accent
 - Cada card linka para `servico.pathRota` — nunca hardcodar URLs
-
-#### Expansão futura: cor por tab
-
-Quando o design evoluir para mostrar a cor do serviço por tab ativa, envolver o painel em:
-```tsx
-<section data-service={tabAtiva === "legalizacao" ? "avcb" : tabAtiva === "laudos" ? "laudos" : "avcb"}>
-  {/* cards */}
-</section>
-```
-O CSS variable do `globals.css` ativará automaticamente a cor correta.
 
 ### Botões
 
@@ -700,7 +694,7 @@ const animation = prefersReduced ? {} : { opacity: [0, 1], transform: ["translat
 ## Dark Mode
 
 - **Status:** não implementado na v1
-- Preparar tokens CSS com `--color-primary` para facilitar no futuro
+- Preparar tokens CSS com `--color-primary` para facilmente migrar no futuro
 - Não usar valores hex hardcodados em CSS inline — usar sempre classes Tailwind ou variáveis CSS
 
 ---
