@@ -25,7 +25,10 @@ const config: Config = {
         success: "#16a34a",
         warning: "#ca8a04",
 
-        // ── Tokens por serviço ────────────────────────────────────────────────────
+        // ── Tokens por serviço ────────────────────────────────────────────────────────────
+        // Usados como text-service-avcb, bg-service-sanitaria, etc.
+        // Para accent dinâmico (subpáginas), prefira var(--color-service-accent)
+        // via style= inline — CSS variables não são capturadas pelo Tailwind JIT.
         "service-avcb": {
           DEFAULT: "#800000",
           hover: "#4f0101",
@@ -43,14 +46,18 @@ const config: Config = {
           hover: "#6e4908",
         },
       },
+      // ── Cor padrão do ring-* do Tailwind ───────────────────────────────────────
+      // Sem esta configuração, ring-2 sem cor explícita usa o azul padrão do
+      // Tailwind (ring-blue-500). Com ela, ring-2 usa #800000 (vinho da marca)
+      // em qualquer componente que não especifique ring-[cor] explicitamente.
       ringColor: {
         DEFAULT: "#800000",
       },
       fontFamily: {
-        // var(--font-inter) e var(--font-syne) injetados por next/font/google em layout.tsx
-        sans:    ["var(--font-inter)",  "ui-sans-serif", "system-ui", "sans-serif"],
-        heading: ["var(--font-syne)",   "ui-sans-serif", "system-ui", "sans-serif"],
-        body:    ["var(--font-inter)",  "ui-sans-serif", "system-ui", "sans-serif"],
+        // var(--font-heading) = Montserrat (injetado por next/font em layout.tsx)
+        // var(--font-body)    = Inter    (injetado por next/font em layout.tsx)
+        heading: ["var(--font-heading)", "sans-serif"],
+        body:    ["var(--font-body)",    "sans-serif"],
       },
       backgroundImage: {
         "hero-gradient":
