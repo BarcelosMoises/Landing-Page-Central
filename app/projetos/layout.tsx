@@ -6,14 +6,14 @@ import type React from "react"
  * Define --color-service-accent no <div> wrapper para que NavPrimaria
  * e Footer herdem a cor do serviço — pois vivem fora do <main>.
  *
- * Cor: vinho #800000 (mesmo cluster visual do AVCB e da homepage)
+ * Cor: azul #1e40af (Tailwind blue-800) — paleta definida pelo cliente
  */
 export default function LayoutProjetos({ children }: { children: React.ReactNode }) {
   return (
     <div
       style={{
-        "--color-service-accent": "#800000",
-        "--color-service-accent-hover": "#4f0101",
+        "--color-service-accent": "#1e40af",
+        "--color-service-accent-hover": "#1e3a8a",
       } as React.CSSProperties}
     >
       {children}
