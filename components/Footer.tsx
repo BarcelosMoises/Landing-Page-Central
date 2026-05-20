@@ -41,7 +41,7 @@ export function Footer() {
               className="font-heading font-bold text-white text-lg leading-none tracking-tight w-fit focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#800000] focus-visible:rounded"
             >
               Central de{" "}
-              <span className="text-[#800000]">Soluções</span>
+              <span style={{ color: "var(--color-service-accent, #800000)" }}>Soluções</span>
             </Link>
 
             <p className="text-sm leading-relaxed max-w-xs" style={{ color: "#c4a8a8" }}>
@@ -122,7 +122,12 @@ export function Footer() {
               <li className="text-sm" style={{ color: "#c4a8a8" }}>Minas Gerais (MG)</li>
               <li className="text-sm" style={{ color: "#c4a8a8" }}>Espírito Santo (ES)</li>
               <li className="text-sm mt-1" style={{ color: "#c4a8a8" }}>
-                <span className="text-[#800000] font-semibold">SPDA e Aterramento:</span>{" "}
+                <span
+                  className="font-semibold"
+                  style={{ color: "var(--color-service-accent, #800000)" }}
+                >
+                  SPDA e Aterramento:
+                </span>{" "}
                 todo o Brasil
               </li>
             </ul>
