@@ -1,135 +1,53 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* ─────────────────────────────────────────────────────────────────────────────
+   globals.css — Central de Soluções
+   Importações Tailwind + variáveis globais + keyframes customizados
+───────────────────────────────────────────────────────────────────────────── */
 
-@layer base {
-  :root {
-    --color-primary: #800000;
-    --color-primary-dark: #4f0101;
-    --color-primary-light: #a30000;
-  }
+@import "tailwindcss";
 
-  /*
-   * CORREÇÃO: --tw-ring-color padrão do Preflight do Tailwind v3
-   *
-   * O Tailwind v3 injeta em *, ::before, ::after via Preflight:
-   *   --tw-ring-color: rgb(59 130 246 / 0.5)   ← azul hardcoded
-   *
-   * Qualquer elemento com focus-visible:ring-2 sem ring-[cor] explícita
-   * herdava esse azul. Declarar aqui sobrescreve o valor globalmente com a
-   * cor da marca, garantindo fallback correto em toda a aplicação.
-   */
-  *,
-  *::before,
-  *::after {
-    --tw-ring-color: rgb(128 0 0 / 0.5); /* vinho #800000 com 50% opacidade */
-    box-sizing: border-box;
-  }
+/* ─── Fontes ─────────────────────────────────────────────────────────────────
+   Inter       → corpo de texto (var(--font-inter))
+   Syne        → headings (var(--font-syne))
+   Ambas carregadas via next/font/google em app/layout.tsx
+──────────────────────────────────────────────────────────────────────────── */
 
-  html {
-    scroll-behavior: smooth;
-  }
-
-  /*
-   * REGRA GLOBAL: herança de cor em links
-   * Remove o azul nativo do navegador (color: -webkit-link) de todos os <a>.
-   * Cada componente define a cor do link explicitamente; se nenhum componente
-   * definir, o link herda a cor do texto do pai — nunca azul do browser.
-   */
-  a {
-    color: inherit;
-  }
-
-  /*
-   * REGRA GLOBAL: anel de foco na cor da marca
-   * Substitui o outline azul padrão do Chrome/Firefox/Safari pelo vinho (#800000)
-   * em todos os elementos focados via teclado. Garante consistência visual sem
-   * adicionar focus-visible:ring-[#800000] em cada componente individualmente.
-   */
-  :focus-visible {
-    outline: 2px solid #800000;
-    outline-offset: 3px;
-    border-radius: 4px;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    html {
-      scroll-behavior: auto;
-    }
-
-    *,
-    *::before,
-    *::after {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-    }
-  }
+@theme {
+  --font-sans:    var(--font-inter),    ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-syne),     ui-sans-serif, system-ui, sans-serif;
 }
 
-/* ── CSS Variables por serviço ────────────────────────────────────────
-   Ativadas de duas formas complementares:
+/* ─── Reset mínimo ───────────────────────────────────────────────────────────
+   Previne overflow horizontal inesperado e garante scroll suave global.
+──────────────────────────────────────────────────────────────────────────── */
 
-   1. Via layout.tsx de cada subpágina (prioridade): o <div> wrapper define
-      as variáveis inline, garantindo que NavPrimaria e Footer também herdem
-      a cor do serviço — pois vivem fora do <main>.
-
-   2. Via data-service="[slug]" no <main> da page.tsx (complementar): cobre
-      os componentes filhos do <main> e serve como fallback descritivo.
-
-   Componentes genéricos usam var(--color-service-accent, #800000) para que
-   a homepage (sem layout.tsx de serviço) receba automaticamente o vinho da marca.
-*/
-[data-service="avcb"] {
-  --color-service-accent: #800000;
-  --color-service-accent-hover: #4f0101;
-}
-[data-service="projetos"] {
-  --color-service-accent: #1e40af;
-  --color-service-accent-hover: #1e3a8a;
-}
-[data-service="vigilancia"] {
-  --color-service-accent: #0d7377;
-  --color-service-accent-hover: #095e62;
-}
-[data-service="ambiental"] {
-  --color-service-accent: #2d6a2d;
-  --color-service-accent-hover: #1e4d1e;
-}
-[data-service="laudos"] {
-  --color-service-accent: #92610a;
-  --color-service-accent-hover: #6e4908;
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
 }
 
-@layer utilities {
-  .font-heading {
-    font-family: var(--font-heading), sans-serif;
-  }
+body {
+  overflow-x: hidden;
+}
 
-  .font-body {
-    font-family: var(--font-body), sans-serif;
-  }
+/* ─── TrustBar — Slider de logos de clientes ─────────────────────────────────
+   Técnica: duplicação de lista + translateX(-50%) em loop.
+   A ul tem w-max (largura = soma de todos os logos × 2).
+   Ao chegar em -50% o visual é idêntico ao início — loop imperceptível.
 
-  /* Container padrão do projeto — max 1280px centralizado */
-  .container-site {
-    @apply max-w-container mx-auto px-4 sm:px-6 lg:px-8;
-  }
+   Velocidade: 60s para 20 logos (~3s por logo).
+   Ajuste --trustbar-duration no :root para calibrar conforme largura real.
 
-  /* Delays de animação escalonados para stagger de cards */
-  .animation-delay-100 { animation-delay: 100ms; }
-  .animation-delay-200 { animation-delay: 200ms; }
-  .animation-delay-300 { animation-delay: 300ms; }
-  .animation-delay-400 { animation-delay: 400ms; }
-  .animation-delay-500 { animation-delay: 500ms; }
+   prefers-reduced-motion: pausa a animação completamente (paused).
+   O conteúdo ainda é visível e scrollável — sem perda de informação.
+──────────────────────────────────────────────────────────────────────────── */
 
-  /* Melhora quebra de linha em headings curtos */
-  .text-balance {
-    text-wrap: balance;
-  }
+@keyframes trustbar-marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
 
-  /* Linha decorativa vinho abaixo de títulos de seção */
-  .section-title-underline {
-    @apply relative inline-block after:absolute after:left-0 after:-bottom-2
-    after:h-[3px] after:w-12 after:bg-primary after:rounded-full;
+@media (prefers-reduced-motion: reduce) {
+  [style*="trustbar-marquee"] {
+    animation-play-state: paused !important;
   }
 }

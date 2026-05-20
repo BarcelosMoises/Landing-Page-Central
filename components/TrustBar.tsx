@@ -1,14 +1,12 @@
 import Image from "next/image";
-import { getClientesDestaque } from "@/data/servicos";
-import type { Cliente } from "@/data/servicos";
+import { getTodosClientesLogos, getClientesDestaque } from "@/data/servicos";
+import type { Cliente, OrgaoReguladorBadge } from "@/components/TrustBar";
 
-// ─── Tipos ──────────────────────────────────────────────────────────────────
+// ─── Re-exporta tipos consumidos externamente ────────────────────────────────
 
 export interface LogoItem {
   src: string;
   alt: string;
-  width: number;
-  height: number;
 }
 
 export interface OrgaoReguladorBadge {
@@ -17,21 +15,15 @@ export interface OrgaoReguladorBadge {
   title: string;
 }
 
-// ─── Dimensões de exibição dos logos por id de cliente ───────────────────────────
+// ─── Dimensões dos logos no slider ───────────────────────────────────────────
+// Todos os PNGs têm a mesma altura. Largura max-content via object-contain.
+// h-10 = 40 px — valor calibrado para logos B2B de empresas grandes.
 
-const LOGO_DIMENSIONS: Record<string, { width: number; height: number }> = {
-  claro:           { width: 96,  height: 32 },
-  embratel:        { width: 112, height: 32 },
-  ambev:           { width: 88,  height: 32 },
-  "mercado-livre": { width: 128, height: 32 },
-  brasol:          { width: 96,  height: 32 },
-};
+const LOGO_HEIGHT_CLASS = "h-10";
 
-const DEFAULT_DIMENSIONS = { width: 96, height: 32 };
+// ─── Órgãos reguladores ──────────────────────────────────────────────────────
 
-// ─── Órgãos reguladores ────────────────────────────────────────────────────────
-
-const ORGAOS_REGULADORES: readonly OrgaoReguladorBadge[] = [
+const ORGAOS_REGULADORES = [
   {
     label: "CBMERJ · RJ",
     href: "https://www.cbmerj.rj.gov.br",
@@ -64,94 +56,109 @@ const ORGAOS_REGULADORES: readonly OrgaoReguladorBadge[] = [
   },
 ] as const;
 
-// ─── Type guard ───────────────────────────────────────────────────────────────
-
-function hasLogoPath(cliente: Cliente): cliente is Cliente & { logoPath: string } {
-  return typeof cliente.logoPath === "string" && cliente.logoPath.length > 0;
-}
-
-// ─── Componente ─────────────────────────────────────────────────────────────────────
+// ─── Componente ──────────────────────────────────────────────────────────────
+// Server Component — sem "use client", sem JS no cliente.
+// O slider é implementado puramente com CSS @keyframes (globals.css).
+// prefers-reduced-motion: pausa a animação via media query CSS — sem JS.
 
 export function TrustBar() {
-  const logos: LogoItem[] = getClientesDestaque()
-    .filter(hasLogoPath)
-    .map((cliente) => {
-      const dims = LOGO_DIMENSIONS[cliente.id] ?? DEFAULT_DIMENSIONS;
-      return {
-        src: cliente.logoPath,
-        alt: `Logo de ${cliente.nome} — ${cliente.segmento}, cliente da Central de Soluções`,
-        width: dims.width,
-        height: dims.height,
-      };
-    });
+  const todosLogos = getTodosClientesLogos();
+  // Duplica o array para criar o loop visual contínuo.
+  // A segunda metade recebe aria-hidden="true" — leitores de tela veem apenas
+  // a primeira cópia da lista, sem conteúdo repetido.
+  const logosSlider = [...todosLogos, ...todosLogos];
 
   return (
     <section
       aria-label="Empresas e órgãos reguladores parceiros da Central de Soluções"
-      className="bg-neutral-50 border-y border-neutral-100 py-10"
+      className="bg-neutral-50 border-y border-neutral-100 py-10 overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        {/* Faixa 1 — Logos de clientes */}
-        <div className="mb-8">
-          <p
-            className="text-xs font-semibold uppercase tracking-widest text-neutral-400 text-center mb-6"
-            aria-label="Empresas que confiam na Central de Soluções"
-          >
-            Empresas que confiam na Central de Soluções
-          </p>
+      {/* ── Faixa 1 — Slider de logos ─────────────────────────────────────── */}
+      <div className="mb-8">
+        <p
+          className="text-xs font-semibold uppercase tracking-widest text-neutral-400 text-center mb-6"
+          aria-label="Empresas que confiam na Central de Soluções"
+        >
+          Empresas que confiam na Central de Soluções
+        </p>
 
+        {/*
+          overflow-hidden no pai mascara os logos fora da viewport.
+          A ul tem largura max-content para todos os logos ficarem em linha.
+          animation-duration calibrado em: nLogos × 3s = 20 × 3 = 60s.
+          Ajuste via CSS custom property --slider-duration se necessário.
+        */}
+        <div
+          className="overflow-hidden"
+          aria-hidden="false"
+        >
           <ul
-            className="flex flex-wrap justify-center items-center gap-8 md:gap-12"
-            aria-label="Lista de clientes"
+            className="flex items-center gap-12 w-max"
+            style={{
+              animation: "trustbar-marquee 60s linear infinite",
+            }}
+            aria-label="Lista de logos de clientes"
           >
-            {logos.map((logo) => (
-              <li key={logo.src} className="list-none">
-                <div className="grayscale hover:grayscale-0 transition-all duration-300 opacity-70 hover:opacity-100">
+            {logosSlider.map((cliente, i) => (
+              <li
+                key={`${cliente.id}-${i}`}
+                className="list-none flex-shrink-0"
+                aria-hidden={i >= todosLogos.length ? "true" : undefined}
+              >
+                <div className="grayscale hover:grayscale-0 transition-all duration-300 opacity-60 hover:opacity-100">
                   <Image
-                    src={logo.src}
-                    alt={logo.alt}
-                    width={logo.width}
-                    height={logo.height}
-                    className="object-contain h-8"
+                    src={cliente.logoPath!}
+                    alt={
+                      i >= todosLogos.length
+                        ? ""
+                        : `Logo de ${cliente.nome} — cliente da Central de Soluções`
+                    }
+                    width={160}
+                    height={40}
+                    className={`${LOGO_HEIGHT_CLASS} w-auto object-contain`}
+                    loading="lazy"
                   />
                 </div>
               </li>
             ))}
           </ul>
         </div>
-
-        {/* Divisor */}
-        <div aria-hidden="true" className="border-t border-neutral-100 mb-8" />
-
-        {/* Faixa 2 — Órgãos reguladores */}
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-widest text-neutral-400 text-center mb-4">
-            Órgãos reguladores com os quais atuamos
-          </p>
-
-          <ul
-            className="flex flex-wrap justify-center items-center gap-2 md:gap-3"
-            aria-label="Órgãos reguladores parceiros"
-          >
-            {ORGAOS_REGULADORES.map((orgao) => (
-              <li key={orgao.label} className="list-none">
-                <a
-                  href={orgao.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  title={orgao.title}
-                  aria-label={`${orgao.title} — abre em nova aba`}
-                  className="inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wide bg-[#800000]/10 text-[#800000] hover:bg-[#800000]/20 px-2.5 py-1 rounded-full transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#800000] focus-visible:ring-offset-1"
-                >
-                  {orgao.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-
       </div>
+
+      {/* ── Divisor ───────────────────────────────────────────────────────── */}
+      <div
+        aria-hidden="true"
+        className="border-t border-neutral-100 mb-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+      />
+
+      {/* ── Faixa 2 — Órgãos reguladores ─────────────────────────────────── */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <p className="text-xs font-semibold uppercase tracking-widest text-neutral-400 text-center mb-4">
+          Órgãos reguladores com os quais atuamos
+        </p>
+
+        <ul
+          className="flex flex-wrap justify-center items-center gap-2 md:gap-3"
+          aria-label="Órgãos reguladores parceiros"
+        >
+          {ORGAOS_REGULADORES.map((orgao) => (
+            <li key={orgao.label} className="list-none">
+              <a
+                href={orgao.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                title={orgao.title}
+                aria-label={`${orgao.title} — abre em nova aba`}
+                className="inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wide bg-[#800000]/10 text-[#800000] hover:bg-[#800000]/20 px-2.5 py-1 rounded-full transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#800000] focus-visible:ring-offset-1"
+              >
+                {orgao.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
     </section>
   );
 }
