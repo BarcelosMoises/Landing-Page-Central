@@ -106,6 +106,40 @@ const itemVariants = {
   },
 };
 
+// ─── Helpers: classes de alinhamento para cards órfãos ───────────────────────────────────
+//
+// Grid desktop: 3 colunas (lg:grid-cols-3)
+//   remainder 1 → último card ocupa as 3 colunas, limitado a max-w-sm e centralizado
+//   remainder 2 → primeiro card da última linha recebe col-start-2,
+//                 deslocando o par para o centro (colunas 2 e 3)
+//
+// Grid mobile: 2 colunas (grid-cols-2)
+//   ímpar → último card ocupa as 2 colunas (col-span-2), limitado a max-w-sm e centralizado
+//
+// Todos os outros cards não recebem classe extra.
+
+function getOrphanClasses(total: number, index: number): string {
+  const remainder3 = total % 3; // sobra no grid de 3 colunas
+  const isOddTotal = total % 2 !== 0; // sobra no grid de 2 colunas
+
+  // Desktop (lg): 1 card sozinho na última linha → ocupa as 3 colunas centrado
+  if (remainder3 === 1 && index === total - 1) {
+    return "lg:col-span-3 lg:max-w-sm lg:mx-auto lg:w-full col-span-2 max-w-sm mx-auto w-full";
+  }
+
+  // Desktop (lg): 2 cards na última linha → empurra o primeiro para col 2, centrando o par
+  if (remainder3 === 2 && index === total - 2) {
+    return "lg:col-start-2";
+  }
+
+  // Mobile: total ímpar → último card ocupa as 2 colunas centrado
+  if (isOddTotal && index === total - 1) {
+    return "col-span-2 max-w-sm mx-auto w-full";
+  }
+
+  return "";
+}
+
 // ─── Sub-componente: card de serviço ──────────────────────────────────────────────────────
 
 function ServicoCard({ servico }: { servico: Servico }) {
@@ -202,26 +236,17 @@ function TabPanel({
         animate={isActive && inView ? "visible" : "hidden"}
         key={id}
       >
-        {servicos.map((servico, index) => {
-          const isLastOdd =
-            servicos.length % 2 !== 0 && index === servicos.length - 1;
-          return (
-            <motion.li
-              key={servico.id}
-              className={[
-                "list-none",
-                isLastOdd
-                  ? "col-span-2 lg:col-span-3 max-w-sm mx-auto w-full"
-                  : "",
-              ]
-                .join(" ")
-                .trim()}
-              variants={itemVariants}
-            >
-              <ServicoCard servico={servico} />
-            </motion.li>
-          );
-        })}
+        {servicos.map((servico, index) => (
+          <motion.li
+            key={servico.id}
+            className={["list-none", getOrphanClasses(servicos.length, index)]
+              .join(" ")
+              .trim()}
+            variants={itemVariants}
+          >
+            <ServicoCard servico={servico} />
+          </motion.li>
+        ))}
       </motion.ul>
     </div>
   );
