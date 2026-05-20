@@ -67,7 +67,7 @@
   }
 }
 
-/* ── CSS Variables por serviço ────────────────────────────────────────
+/* ── CSS Variables por serviço ──────────────────────────────────────────────────────────────
    Ativadas de duas formas complementares:
 
    1. Via layout.tsx de cada subpágina (prioridade): o <div> wrapper define
@@ -134,22 +134,42 @@
   }
 }
 
-/* ─── TrustBar — Slider de logos de clientes ────────────────────────────────────
-   Técnica: duplicação de lista + translateX(-50%) em loop.
-   A ul tem w-max (largura = soma de todos os logos × 2).
-   Ao chegar em -50% o visual é idêntico ao início — loop imperceptível.
+/* ─── TrustBar — Marquee de logos de clientes ────────────────────────────────────────
 
-   Velocidade: 30s para ~10 logos.
-   prefers-reduced-motion: pausa a animação.
-─────────────────────────────────────────────────────────────────────────────── */
+  Técnica: duplicação de lista + translateX(-50%) em loop.
+  A ul (w-max) tem largura = (n logos × (logoWidth + gap)) × 2.
+  Ao atingir -50%, o visual é idêntico ao início — loop imperceptível.
+
+  Duração: controlada via CSS Custom Property --marquee-duration,
+  calculada no Server Component (velocidade: ~90px/s).
+  Se o número de logos mudar, atualizar o cálculo em TrustBar.tsx.
+
+  Comportamento:
+  - Loop pausado no hover (.trustbar-track:hover)
+  - Loop pausado com prefers-reduced-motion via classe .trustbar-track
+    (seletor de classe — mais confiável que [style*=...] em todos os browsers)
+────────────────────────────────────────────────────────────────────────────── */
 
 @keyframes trustbar-marquee {
   from { transform: translateX(0); }
   to   { transform: translateX(-50%); }
 }
 
+.trustbar-track {
+  animation-name: trustbar-marquee;
+  animation-duration: var(--marquee-duration, 40s);
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+/* Pausa no hover: permite que o usuário leia o nome de uma empresa */
+.trustbar-track:hover {
+  animation-play-state: paused;
+}
+
+/* prefers-reduced-motion: usa seletor de classe (confiável em todos os browsers) */
 @media (prefers-reduced-motion: reduce) {
-  [style*="trustbar-marquee"] {
+  .trustbar-track {
     animation-play-state: paused !important;
   }
 }
