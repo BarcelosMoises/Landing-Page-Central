@@ -51,15 +51,15 @@ export function FaqItem({
         el.style.height = target + "px";
         el.style.opacity = "1";
       });
-      el.addEventListener(
-        "transitionend",
-        () => {
-          el.style.height = "auto";
-          el.style.overflow = "";
-          el.style.transition = "";
-        },
-        { once: true }
-      );
+      // Aguarda apenas o fim da transicao de height (ignora opacity)
+      const onOpenEnd = (e: TransitionEvent) => {
+        if (e.propertyName !== "height") return;
+        el.removeEventListener("transitionend", onOpenEnd);
+        el.style.height = "auto";
+        el.style.overflow = "";
+        el.style.transition = "";
+      };
+      el.addEventListener("transitionend", onOpenEnd);
     } else {
       // Fechamento: scrollHeight -> 0
       el.style.height = el.scrollHeight + "px";
@@ -69,16 +69,16 @@ export function FaqItem({
         el.style.height = "0px";
         el.style.opacity = "0";
       });
-      el.addEventListener(
-        "transitionend",
-        () => {
-          el.style.display = "none";
-          el.style.height = "";
-          el.style.overflow = "";
-          el.style.transition = "";
-        },
-        { once: true }
-      );
+      // Aguarda apenas o fim da transicao de height antes de ocultar
+      const onCloseEnd = (e: TransitionEvent) => {
+        if (e.propertyName !== "height") return;
+        el.removeEventListener("transitionend", onCloseEnd);
+        el.style.display = "none";
+        el.style.height = "";
+        el.style.overflow = "";
+        el.style.transition = "";
+      };
+      el.addEventListener("transitionend", onCloseEnd);
     }
 
     setAberto((prev) => !prev);
