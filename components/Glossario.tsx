@@ -1,19 +1,20 @@
 import { JsonLd } from "@/components/JsonLd";
+import { FaqItem } from "@/components/FaqItem";
 
-// ─── Tipos ──────────────────────────────────────────────────────────────────
+// ─── Tipos ───────────────────────────────────────────────────────────────────────────
 
-interface FaqItem {
+interface FaqItemData {
   readonly pergunta: string;
   readonly resposta: string;
 }
 
-// ─── Dados do FAQPage (mínimo 5 pares — exigência AGENTS.md) ──────────────────
+// ─── Dados do FAQPage (mínimo 5 pares — exigência AGENTS.md) ───────────────────
 
-const FAQ_ITEMS: readonly FaqItem[] = [
+const FAQ_ITEMS: readonly FaqItemData[] = [
   {
     pergunta: "O que é AVCB e quem precisa ter?",
     resposta:
-      "O AVCB (Auto de Vistoria do Corpo de Bombeiros) é o documento emitido pelo Corpo de Bombeiros estadual que certifica que uma edificação atende às normas de prevenção e combate a incêndio. É obrigatório para indústrias, galpões logísticos, comércios, escolas, igrejas, hospitais e qualquer edificação de uso coletivo ou com atividade de risco. Sem o AVCB, a empresa pode ser autuada, multada ou ter suas atividades interrompidas pelos órgãos de fiscalização.",
+      "O AVCB (Auto de Vistoria do Corpo de Bombeiros) é o documento emitido pelo Corpo de Bombeiros estadual que certifica que uma edificação atende às normas de prevenção e combate a incêndio. É obrigatório para indúستrias, galpões logísticos, comércios, escolas, igrejas, hospitais e qualquer edificação de uso coletivo ou com atividade de risco. Sem o AVCB, a empresa pode ser autuada, multada ou ter suas atividades interrompidas pelos órgãos de fiscalização.",
   },
   {
     pergunta: "O que é SPDA e quando é obrigatório?",
@@ -28,12 +29,12 @@ const FAQ_ITEMS: readonly FaqItem[] = [
   {
     pergunta: "Qual a diferença entre AVCB e CLCB?",
     resposta:
-      "O AVCB (Auto de Vistoria do Corpo de Bombeiros) e o CLCB (Certificado de Licença do Corpo de Bombeiros) são documentos equivalentes, mas aplicados a situações distintas. O AVCB é exigido para edificações de médio e alto risco, como indústrias e grandes galpões, passando por vistoria presencial do Corpo de Bombeiros. Já o CLCB é utilizado em edificações de baixo risco, principalmente em São Paulo (CBPMESP), com processo simplificado e sem necessidade de vistoria presencial. A classificação de risco depende do tipo de ocupação, área e carga de incêndio da edificação.",
+      "O AVCB (Auto de Vistoria do Corpo de Bombeiros) e o CLCB (Certificado de Licença do Corpo de Bombeiros) são documentos equivalentes, mas aplicados a situações distintas. O AVCB é exigido para edificações de médio e alto risco, como indúستrias e grandes galpões, passando por vistoria presencial do Corpo de Bombeiros. Já o CLCB é utilizado em edificações de baixo risco, principalmente em São Paulo (CBPMESP), com processo simplificado e sem necessidade de vistoria presencial. A classificação de risco depende do tipo de ocupação, área e carga de incêndio da edificação.",
   },
   {
     pergunta: "O que é licenciamento ambiental e quais empresas precisam?",
     resposta:
-      "O licenciamento ambiental é o procedimento pelo qual os órgãos ambientais estaduais (INEA no RJ, CETESB em SP, SUPRAM/SEMAD em MG e IEMA no ES) avaliam, controlam e autorizam o funcionamento de atividades que causam impacto ao meio ambiente. Empresas dos setores de indústria, agroindústria, mineração, postos de combustível, telecomunicações e energia precisam obter as licenças LP (Licença Prévia), LI (Licença de Instalação) e LO (Licença de Operação), conforme a Resolução CONAMA 237/1997. Operar sem a licença ambiental adequada sujeita a empresa a multas, interdições e responsabilidade civil e penal dos sócios.",
+      "O licenciamento ambiental é o procedimento pelo qual os órgãos ambientais estaduais (INEA no RJ, CETESB em SP, SUPRAM/SEMAD em MG e IEMA no ES) avaliam, controlam e autorizam o funcionamento de atividades que causam impacto ao meio ambiente. Empresas dos setores de indúستria, agroindúستria, mineração, postos de combustível, telecomunicações e energia precisam obter as licenças LP (Licença Prévia), LI (Licença de Instalação) e LO (Licença de Operação), conforme a Resolução CONAMA 237/1997. Operar sem a licença ambiental adequada sujeita a empresa a multas, interdições e responsabilidade civil e penal dos sócios.",
   },
   {
     pergunta: "O que é PGRS e quando uma empresa precisa elaborar?",
@@ -47,7 +48,7 @@ const FAQ_ITEMS: readonly FaqItem[] = [
   },
 ] as const;
 
-// ─── JSON-LD FAQPage ────────────────────────────────────────────────────────────────────
+// ─── JSON-LD FAQPage ───────────────────────────────────────────────────────────────────────────────────
 
 const faqJsonLd = {
   "@context": "https://schema.org",
@@ -62,43 +63,7 @@ const faqJsonLd = {
   })),
 };
 
-// ─── Sub-componente: item de FAQ accordion ────────────────────────────────────
-
-function FaqAccordionItem({ pergunta, resposta }: FaqItem) {
-  return (
-    <details className="group border border-neutral-100 rounded-xl bg-white overflow-hidden">
-      <summary
-        className="flex items-center justify-between gap-4 px-6 py-4 cursor-pointer list-none font-heading text-base font-bold text-neutral-900 hover:bg-neutral-50 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#800000] focus-visible:ring-inset"
-        aria-label={pergunta}
-      >
-        <span>{pergunta}</span>
-        <span
-          aria-hidden="true"
-          className="flex-shrink-0 text-[#800000] transition-transform duration-200 group-open:rotate-180"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="18"
-            height="18"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <polyline points="6 9 12 15 18 9" />
-          </svg>
-        </span>
-      </summary>
-      <p className="px-6 pb-5 pt-1 text-neutral-700 text-base leading-relaxed">
-        {resposta}
-      </p>
-    </details>
-  );
-}
-
-// ─── Componente principal ─────────────────────────────────────────────────────
+// ─── Componente principal ─────────────────────────────────────────────────────────────────────
 
 export function Glossario() {
   return (
@@ -124,10 +89,11 @@ export function Glossario() {
               aria-label="Perguntas frequentes sobre regularização de engenharia civil"
             >
               {FAQ_ITEMS.map((item) => (
-                <FaqAccordionItem
+                <FaqItem
                   key={item.pergunta}
                   pergunta={item.pergunta}
                   resposta={item.resposta}
+                  accentColor="#800000"
                 />
               ))}
             </div>
