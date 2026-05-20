@@ -1,25 +1,13 @@
-/* ─────────────────────────────────────────────────────────────────────────────
+/* ───────────────────────────────────────────────────────────────────────────────
    globals.css — Central de Soluções
-   Importações Tailwind + variáveis globais + keyframes customizados
-───────────────────────────────────────────────────────────────────────────── */
+   Tailwind v3 — directives padrão + variáveis globais + keyframes
+─────────────────────────────────────────────────────────────────────────────── */
 
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-/* ─── Fontes ─────────────────────────────────────────────────────────────────
-   Inter       → corpo de texto (var(--font-inter))
-   Syne        → headings (var(--font-syne))
-   Ambas carregadas via next/font/google em app/layout.tsx
-──────────────────────────────────────────────────────────────────────────── */
-
-@theme {
-  --font-sans:    var(--font-inter),    ui-sans-serif, system-ui, sans-serif;
-  --font-heading: var(--font-syne),     ui-sans-serif, system-ui, sans-serif;
-}
-
-/* ─── Reset mínimo ───────────────────────────────────────────────────────────
-   Previne overflow horizontal inesperado e garante scroll suave global.
-──────────────────────────────────────────────────────────────────────────── */
-
+/* ─── Reset mínimo ──────────────────────────────────────────────────────────────────────
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
@@ -29,17 +17,14 @@ body {
   overflow-x: hidden;
 }
 
-/* ─── TrustBar — Slider de logos de clientes ─────────────────────────────────
+/* ─── TrustBar — Slider de logos de clientes ────────────────────────────────────
    Técnica: duplicação de lista + translateX(-50%) em loop.
    A ul tem w-max (largura = soma de todos os logos × 2).
-   Ao chegar em -50% o visual é idêntico ao início — loop imperceptível.
+   Ao chegar em -50% o visual é idêntico ao início — loop imperceptivel.
 
    Velocidade: 60s para 20 logos (~3s por logo).
-   Ajuste --trustbar-duration no :root para calibrar conforme largura real.
-
-   prefers-reduced-motion: pausa a animação completamente (paused).
-   O conteúdo ainda é visível e scrollável — sem perda de informação.
-──────────────────────────────────────────────────────────────────────────── */
+   prefers-reduced-motion: pausa a animação (paused).
+─────────────────────────────────────────────────────────────────────────────── */
 
 @keyframes trustbar-marquee {
   from { transform: translateX(0); }
