@@ -67,7 +67,7 @@
   }
 }
 
-/* ── CSS Variables por serviço ───────────────────────────────────────────
+/* ── CSS Variables por serviço ────────────────────────────────────────
    Ativadas de duas formas complementares:
 
    1. Via layout.tsx de cada subpágina (prioridade): o <div> wrapper define
@@ -85,8 +85,8 @@
   --color-service-accent-hover: #4f0101;
 }
 [data-service="projetos"] {
-  --color-service-accent: #800000;
-  --color-service-accent-hover: #4f0101;
+  --color-service-accent: #1e40af;
+  --color-service-accent-hover: #1e3a8a;
 }
 [data-service="vigilancia"] {
   --color-service-accent: #0d7377;
