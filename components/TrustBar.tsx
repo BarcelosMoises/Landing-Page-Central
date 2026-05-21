@@ -18,12 +18,12 @@ const ORGAOS_REGULADORES: readonly OrgaoReguladorBadge[] = [
 
 // Tamanho base (default): 187x62px  — logos 1.png (Claro) e 6.png (IF)
 // Tamanho large (+100%):  374x124px — todas as demais logos
-// Gap mantido em 48px; velocidade ajustada para 140px/s (bloco ~2x mais largo)
+// Gap reduzido em 50%: 48px -> 24px
 const LOGO_W_DEFAULT  = 187;
 const LOGO_H_DEFAULT  = 62;
 const LOGO_W_LARGE    = 374;
 const LOGO_H_LARGE    = 124;
-const LOGO_GAP_PX     = 48;
+const LOGO_GAP_PX     = 24;
 const VELOCIDADE_PX_S = 140;
 
 export function TrustBar() {
