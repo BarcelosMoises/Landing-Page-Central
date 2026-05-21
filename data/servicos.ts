@@ -38,6 +38,13 @@ export interface Servico {
   readonly slug: string;
   readonly nome: string;
   readonly nomeAbreviado: string;
+  /**
+   * Nome curto usado exclusivamente no título do card das ServicosTabs
+   * da homepage. Quando presente, substitui nomeAbreviado apenas no card.
+   * nomeAbreviado permanece inalterado para todos os outros usos do site
+   * (SetoresAtendidos, aria-labels, metadata, etc.).
+   */
+  readonly nomeCurto?: string;
   readonly categoria: CategoriaServico;
   readonly descricao: string;
   readonly orgaos: readonly string[];
@@ -137,6 +144,7 @@ export const servicos: readonly Servico[] = [
     slug: "avcb-corpo-de-bombeiros",
     nome: "Legalização junto ao Corpo de Bombeiros (AVCB / CLCB)",
     nomeAbreviado: "AVCB / CLCB",
+    nomeCurto: "Corpo de Bombeiros",
     categoria: "legalizacao",
     descricao:
       "Regularização junto ao Corpo de Bombeiros estadual para obtenção do Auto de Vistoria (AVCB) ou Certificado de Licença (CLCB), com acompanhamento completo até a emissão do certificado.",
