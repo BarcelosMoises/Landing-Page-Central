@@ -72,7 +72,10 @@ function SetorCard({ setorId, nome }: SetorCardProps) {
   return (
     <article
       aria-label={`Setor atendido: ${nome}`}
-      className="bg-white/5 border border-white/10 rounded-xl p-5 hover:bg-white/10 transition-colors duration-200 flex flex-col gap-4"
+      // h-full: ocupa 100% da altura do <motion.li> (que é flex e estica para
+      // preencher a célula do grid) — garante que todos os cards da mesma
+      // linha do grid fiquem com a mesma altura.
+      className="bg-white/5 border border-white/10 rounded-xl p-5 hover:bg-white/10 transition-colors duration-200 flex flex-col gap-4 h-full"
     >
       {/* Ícone + nome */}
       <div className="flex items-center gap-3">
@@ -158,7 +161,9 @@ export function SetoresAtendidos() {
           animate={emVista ? "visible" : "hidden"}
         >
           {setores.map((setor) => (
-            <motion.li key={setor.id} className="list-none" variants={itemVariants}>
+            // flex no <motion.li>: propaga a altura da célula do grid até o
+            // <article> filho — sem impacto nas animações (opacity/transform).
+            <motion.li key={setor.id} className="list-none flex" variants={itemVariants}>
               <SetorCard setorId={setor.id} nome={setor.nome} />
             </motion.li>
           ))}
