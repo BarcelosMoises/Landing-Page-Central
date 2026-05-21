@@ -16,22 +16,21 @@ const ORGAOS_REGULADORES: readonly OrgaoReguladorBadge[] = [
   { label: "ANVISA",        href: "https://www.gov.br/anvisa",                   title: "Agência Nacional de Vigilância Sanitária" },
 ] as const;
 
-// Tamanho default: 187×62px  — logos 1.png (Claro) e 6.png (IF), sem padding
-// Tamanho large:  150×50px   — todas as demais logos, com LOGO_PADDING_LARGE simétrico
-// O padding reduz o espaço disponível para a imagem dentro do contêiner,
-// criando um "respiro" uniforme igual ao visual aprovado na 1.png.
-const LOGO_W_DEFAULT     = 187;
-const LOGO_H_DEFAULT     = 62;
-const LOGO_W_LARGE       = 150;
-const LOGO_H_LARGE       = 50;
-const LOGO_PADDING_LARGE = 8;   // px — aplicado em todos os 4 lados das logos large
-const LOGO_GAP_PX        = 12;
-const VELOCIDADE_PX_S    = 140;
+// Tamanho base (default): 187x62px  — logos 1.png (Claro) e 6.png (IF)
+// Tamanho large (+100%):  374x124px — todas as demais logos
+// Gap: 12px
+const LOGO_W_DEFAULT  = 187;
+const LOGO_H_DEFAULT  = 62;
+const LOGO_W_LARGE    = 374;
+const LOGO_H_LARGE    = 124;
+const LOGO_GAP_PX     = 12;
+const VELOCIDADE_PX_S = 140;
 
 export function TrustBar() {
   const todosLogos = getTodosClientesLogos();
   const logosSlider = [...todosLogos, ...todosLogos];
 
+  // larguraBloco considera a largura real do contêiner de cada logo
   const larguraBloco = todosLogos.reduce((acc, cliente) => {
     const w = cliente.logoSize === "default" ? LOGO_W_DEFAULT : LOGO_W_LARGE;
     return acc + w + LOGO_GAP_PX;
@@ -63,9 +62,8 @@ export function TrustBar() {
               const isEcho = i >= todosLogos.length;
               const isLastOfFirstBlock = i === todosLogos.length - 1;
               const isDefault = cliente.logoSize === "default";
-              const logoW   = isDefault ? LOGO_W_DEFAULT : LOGO_W_LARGE;
-              const logoH   = isDefault ? LOGO_H_DEFAULT : LOGO_H_LARGE;
-              const padding = isDefault ? 0 : LOGO_PADDING_LARGE;
+              const logoW = isDefault ? LOGO_W_DEFAULT : LOGO_W_LARGE;
+              const logoH = isDefault ? LOGO_H_DEFAULT : LOGO_H_LARGE;
 
               return (
                 <li
@@ -75,7 +73,7 @@ export function TrustBar() {
                   aria-hidden={isEcho ? "true" : undefined}
                 >
                   <div
-                    style={{ width: logoW, height: logoH, padding }}
+                    style={{ width: logoW, height: logoH }}
                     className="flex items-center justify-center"
                   >
                     <Image
