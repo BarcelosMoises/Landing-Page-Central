@@ -120,6 +120,10 @@ function ServicoCard({ servico }: { servico: Servico }) {
     ? "Todo o Brasil"
     : servico.estados.filter((e) => e !== "BR").join(" · ");
 
+  // nomeCurto é usado exclusivamente no título do card da tab.
+  // nomeAbreviado permanece inalterado para todos os outros usos do site.
+  const tituloCard = servico.nomeCurto ?? servico.nomeAbreviado;
+
   return (
     <article
       aria-label={`Serviço: ${servico.nomeAbreviado}`}
@@ -143,7 +147,7 @@ function ServicoCard({ servico }: { servico: Servico }) {
 
       <div className="flex flex-col gap-2 flex-1">
         <h3 className="font-heading text-xl font-bold text-neutral-900 leading-snug">
-          {servico.nomeAbreviado}
+          {tituloCard}
         </h3>
         <p className="text-neutral-700 text-base leading-relaxed">
           {servico.descricao}
