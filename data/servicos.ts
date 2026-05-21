@@ -76,6 +76,16 @@ export interface Cliente {
   readonly segmento: string;
   readonly logoPath?: string;
   readonly destaque: boolean;
+  /**
+   * Controla o tamanho do contêiner da logo no slider da TrustBar.
+   * `"large"`   → 374×124px (+100% em relação ao tamanho base) — padrão implícito.
+   * `"default"` → 187×62px  (tamanho base original).
+   *
+   * Omitir este campo equivale a `"large"`.
+   * Usar `"default"` apenas para logos que devem manter o tamanho original
+   * (ex.: logos com muita margem interna ou proporção que não escala bem).
+   */
+  readonly logoSize?: "default" | "large";
 }
 
 export interface Diferencial {
@@ -741,16 +751,20 @@ export const setores: readonly Setor[] = [
 // destaque: true  → exibido em subpáginas (getClientesDestaque)
 // destaque: false → apenas no slider da homepage (getTodosClientesLogos)
 //
+// logoSize: "default" → 187×62px  (tamanho base — usar para logos 1.png e 6.png)
+// logoSize: "large"   → 374×124px (+100% — padrão para todas as demais logos)
+// Omitir logoSize equivale a "large".
+//
 // Logos PNG em /public/images/clientes/1.png … 20.png
 // Ordem dos arquivos conforme entregue pelo cliente.
 
 export const clientes: readonly Cliente[] = [
-  { id: "claro",            nome: "Claro",                       segmento: "Telecomunicações",       logoPath: "/images/clientes/1.png",  destaque: true  },
+  { id: "claro",            nome: "Claro",                       segmento: "Telecomunicações",       logoPath: "/images/clientes/1.png",  destaque: true,  logoSize: "default" },
   { id: "embraer",          nome: "Embraer",                     segmento: "Aeronáutica / Indústria", logoPath: "/images/clientes/2.png",  destaque: true  },
   { id: "brasil-center",    nome: "Brasil Center",               segmento: "Telecomunicações",       logoPath: "/images/clientes/3.png",  destaque: true  },
   { id: "ambev",            nome: "Ambev",                       segmento: "Alimentação / Bebidas",  logoPath: "/images/clientes/4.png",  destaque: true  },
   { id: "della-delle",      nome: "Della & Delle",               segmento: "Comércio",               logoPath: "/images/clientes/5.png",  destaque: true  },
-  { id: "if",               nome: "IF",                          segmento: "Educação",               logoPath: "/images/clientes/6.png",  destaque: false },
+  { id: "if",               nome: "IF",                          segmento: "Educação",               logoPath: "/images/clientes/6.png",  destaque: false, logoSize: "default" },
   { id: "sonne",            nome: "SONNE",                       segmento: "Energia Solar",          logoPath: "/images/clientes/7.png",  destaque: false },
   { id: "brasol",           nome: "Brasol",                      segmento: "Energia Solar",          logoPath: "/images/clientes/8.png",  destaque: false },
   { id: "rzk-energia",      nome: "RZK Energia",                 segmento: "Energia",                logoPath: "/images/clientes/9.png",  destaque: false },
