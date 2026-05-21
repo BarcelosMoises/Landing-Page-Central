@@ -16,18 +16,26 @@ const ORGAOS_REGULADORES: readonly OrgaoReguladorBadge[] = [
   { label: "ANVISA",        href: "https://www.gov.br/anvisa",                   title: "Ag\u00eancia Nacional de Vigil\u00e2ncia Sanit\u00e1ria" },
 ] as const;
 
-// Logos 30% maiores: 144->187px largura, 48->62px altura
-// Gap 25% menor: 64->48px
-const LOGO_CONTAINER_W = 187;
-const LOGO_CONTAINER_H = 62;
-const LOGO_GAP_PX      = 48;
-const VELOCIDADE_PX_S  = 90;
+// Tamanho base (default): 187x62px  — logos 1.png (Claro) e 6.png (IF)
+// Tamanho large (+100%):  374x124px — todas as demais logos
+// Gap mantido em 48px; velocidade ajustada para 140px/s (bloco ~2x mais largo)
+const LOGO_W_DEFAULT  = 187;
+const LOGO_H_DEFAULT  = 62;
+const LOGO_W_LARGE    = 374;
+const LOGO_H_LARGE    = 124;
+const LOGO_GAP_PX     = 48;
+const VELOCIDADE_PX_S = 140;
 
 export function TrustBar() {
   const todosLogos = getTodosClientesLogos();
   const logosSlider = [...todosLogos, ...todosLogos];
 
-  const larguraBloco = todosLogos.length * (LOGO_CONTAINER_W + LOGO_GAP_PX);
+  // largura do bloco considera o tamanho real de cada logo
+  const larguraBloco = todosLogos.reduce((acc, cliente) => {
+    const w = cliente.logoSize === "default" ? LOGO_W_DEFAULT : LOGO_W_LARGE;
+    return acc + w + LOGO_GAP_PX;
+  }, 0);
+
   const duracaoS = Math.round(larguraBloco / VELOCIDADE_PX_S);
 
   return (
@@ -53,6 +61,9 @@ export function TrustBar() {
             {logosSlider.map((cliente, i) => {
               const isEcho = i >= todosLogos.length;
               const isLastOfFirstBlock = i === todosLogos.length - 1;
+              const isDefault = cliente.logoSize === "default";
+              const logoW = isDefault ? LOGO_W_DEFAULT : LOGO_W_LARGE;
+              const logoH = isDefault ? LOGO_H_DEFAULT : LOGO_H_LARGE;
 
               return (
                 <li
@@ -62,14 +73,14 @@ export function TrustBar() {
                   aria-hidden={isEcho ? "true" : undefined}
                 >
                   <div
-                    style={{ width: LOGO_CONTAINER_W, height: LOGO_CONTAINER_H }}
+                    style={{ width: logoW, height: logoH }}
                     className="flex items-center justify-center"
                   >
                     <Image
                       src={cliente.logoPath!}
                       alt={isEcho ? "" : `Logo de ${cliente.nome} \u2014 cliente da Central de Solu\u00e7\u00f5es`}
-                      width={LOGO_CONTAINER_W}
-                      height={LOGO_CONTAINER_H}
+                      width={logoW}
+                      height={logoH}
                       className="max-h-full max-w-full w-auto h-auto object-contain"
                       style={{ mixBlendMode: "darken" }}
                       loading="lazy"
@@ -88,7 +99,7 @@ export function TrustBar() {
         className="border-t border-neutral-100 mb-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
       />
 
-      {/* ── Faixa 2 — Órgãos reguladores ── */}
+      {/* ── Faixa 2 — \u00d3rg\u00e3os reguladores ── */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <p className="text-xs font-semibold uppercase tracking-widest text-neutral-400 text-center mb-4">
           \u00d3rg\u00e3os reguladores com os quais atuamos
