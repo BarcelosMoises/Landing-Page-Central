@@ -18,19 +18,21 @@ const ORGAOS_REGULADORES: readonly OrgaoReguladorBadge[] = [
 
 // Tamanho base (default): 187x62px  — logos 1.png (Claro) e 6.png (IF)
 // Tamanho large (+100%):  374x124px — todas as demais logos
-// Gap reduzido em 50%: 24px -> 12px
+// Gap: 12px
+// Padding interno: 16px por lado — elimina espaço vazio transparente entre logos
 const LOGO_W_DEFAULT  = 187;
 const LOGO_H_DEFAULT  = 62;
 const LOGO_W_LARGE    = 374;
 const LOGO_H_LARGE    = 124;
 const LOGO_GAP_PX     = 12;
+const LOGO_PADDING_X  = 16;
 const VELOCIDADE_PX_S = 140;
 
 export function TrustBar() {
   const todosLogos = getTodosClientesLogos();
   const logosSlider = [...todosLogos, ...todosLogos];
 
-  // largura do bloco considera o tamanho real de cada logo
+  // larguraBloco considera a largura real do contêiner de cada logo (padding é interno, não expande o box)
   const larguraBloco = todosLogos.reduce((acc, cliente) => {
     const w = cliente.logoSize === "default" ? LOGO_W_DEFAULT : LOGO_W_LARGE;
     return acc + w + LOGO_GAP_PX;
@@ -73,7 +75,7 @@ export function TrustBar() {
                   aria-hidden={isEcho ? "true" : undefined}
                 >
                   <div
-                    style={{ width: logoW, height: logoH }}
+                    style={{ width: logoW, height: logoH, paddingInline: `${LOGO_PADDING_X}px` }}
                     className="flex items-center justify-center"
                   >
                     <Image
