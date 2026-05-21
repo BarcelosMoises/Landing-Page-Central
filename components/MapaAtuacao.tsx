@@ -2,7 +2,7 @@ import Link from "next/link";
 import { MapPin, ShieldCheck, Leaf, Globe } from "lucide-react";
 import { estadosAtuacao } from "@/data/servicos";
 
-// ─── Tipos ──────────────────────────────────────────────────────────────────
+// ─── Tipos ────────────────────────────────────────────────────────────────────────────
 
 // Slug de URL por estado (conforme docs/SEO.md)
 const ESTADO_SLUG: Record<string, string> = {
@@ -20,7 +20,7 @@ const ESTADO_CONCORRENCIA: Record<string, string> = {
   ES: "Baixa / Média",
 };
 
-// ─── Sub-componente: card de estado ─────────────────────────────────────────────
+// ─── Sub-componente: card de estado ──────────────────────────────────────────────────
 
 interface EstadoCardProps {
   sigla: string;
@@ -35,7 +35,10 @@ function EstadoCard({ sigla, nome, siglaCB, orgaoAmbiental }: EstadoCardProps) {
   return (
     <article
       aria-label={`Atendimento no estado de ${nome}`}
-      className="bg-white border border-neutral-100 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow duration-200 flex flex-col gap-4"
+      // h-full: ocupa 100% da altura do <li> (que é flex e estica para preencher
+      // a célula do grid) — garante que todos os cards fiquem com a mesma altura.
+      // mt-auto no CTA ancora todos os botões na mesma baseline.
+      className="bg-white border border-neutral-100 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow duration-200 flex flex-col gap-4 h-full"
     >
       {/* Sigla + badge */}
       <div className="flex items-start justify-between gap-2">
@@ -79,7 +82,7 @@ function EstadoCard({ sigla, nome, siglaCB, orgaoAmbiental }: EstadoCardProps) {
         </div>
       </dl>
 
-      {/* Link CTA */}
+      {/* Link CTA — mt-auto empurra para o fundo do card */}
       {slug && (
         // TODO: atualizar para /avcb-corpo-de-bombeiros?estado=${slug} após Fase 6
         <Link
@@ -95,7 +98,7 @@ function EstadoCard({ sigla, nome, siglaCB, orgaoAmbiental }: EstadoCardProps) {
   );
 }
 
-// ─── Card do Brasil (cobertura nacional) ────────────────────────────────────────
+// ─── Card do Brasil (cobertura nacional) ──────────────────────────────────────────────
 
 function CardBrasil() {
   return (
@@ -147,7 +150,7 @@ function CardBrasil() {
   );
 }
 
-// ─── Componente principal ─────────────────────────────────────────────────────────
+// ─── Componente principal ────────────────────────────────────────────────────────────────
 
 export function MapaAtuacao() {
   return (
@@ -182,7 +185,8 @@ export function MapaAtuacao() {
           aria-label="Estados de atendimento da Central de Soluções"
         >
           {estadosAtuacao.map((estado) => (
-            <li key={estado.sigla} className="list-none">
+            // flex no <li>: propaga a altura da célula do grid até o <article> filho
+            <li key={estado.sigla} className="list-none flex">
               <EstadoCard
                 sigla={estado.sigla}
                 nome={estado.nome}
