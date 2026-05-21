@@ -8,18 +8,19 @@ export interface OrgaoReguladorBadge {
 }
 
 const ORGAOS_REGULADORES: readonly OrgaoReguladorBadge[] = [
-  { label: "CBMERJ · RJ",   href: "https://www.cbmerj.rj.gov.br",                title: "Corpo de Bombeiros Militar do Estado do Rio de Janeiro" },
-  { label: "CBPMESP · SP",  href: "https://www.corpodebombeiros.sp.gov.br",      title: "Corpo de Bombeiros da Polícia Militar do Estado de São Paulo" },
-  { label: "CBMMG · MG",    href: "https://www.bombeiros.mg.gov.br",             title: "Corpo de Bombeiros Militar de Minas Gerais" },
-  { label: "CBMES · ES",    href: "https://www.cbmes.es.gov.br",                 title: "Corpo de Bombeiros Militar do Espírito Santo" },
-  { label: "INEA · RJ",     href: "https://inea.rj.gov.br",                      title: "Instituto Estadual do Ambiente do Rio de Janeiro" },
-  { label: "ANVISA",        href: "https://www.gov.br/anvisa",                   title: "Agência Nacional de Vigilância Sanitária" },
+  { label: "CBMERJ \u00b7 RJ",   href: "https://www.cbmerj.rj.gov.br",                title: "Corpo de Bombeiros Militar do Estado do Rio de Janeiro" },
+  { label: "CBPMESP \u00b7 SP",  href: "https://www.corpodebombeiros.sp.gov.br",      title: "Corpo de Bombeiros da Pol\u00edcia Militar do Estado de S\u00e3o Paulo" },
+  { label: "CBMMG \u00b7 MG",    href: "https://www.bombeiros.mg.gov.br",             title: "Corpo de Bombeiros Militar de Minas Gerais" },
+  { label: "CBMES \u00b7 ES",    href: "https://www.cbmes.es.gov.br",                 title: "Corpo de Bombeiros Militar do Esp\u00edrito Santo" },
+  { label: "INEA \u00b7 RJ",     href: "https://inea.rj.gov.br",                      title: "Instituto Estadual do Ambiente do Rio de Janeiro" },
+  { label: "ANVISA",        href: "https://www.gov.br/anvisa",                   title: "Ag\u00eancia Nacional de Vigil\u00e2ncia Sanit\u00e1ria" },
 ] as const;
 
-// Velocidade-alvo: 90px/s | container fixo: 144x48px | gap: 64px
-const LOGO_CONTAINER_W = 144;
-const LOGO_CONTAINER_H = 48;
-const LOGO_GAP_PX      = 64;
+// Logos 30% maiores: 144->187px largura, 48->62px altura
+// Gap 25% menor: 64->48px
+const LOGO_CONTAINER_W = 187;
+const LOGO_CONTAINER_H = 62;
+const LOGO_GAP_PX      = 48;
 const VELOCIDADE_PX_S  = 90;
 
 export function TrustBar() {
@@ -31,19 +32,22 @@ export function TrustBar() {
 
   return (
     <section
-      aria-label="Empresas e órgãos reguladores parceiros da Central de Soluções"
+      aria-label="Empresas e \u00f3rg\u00e3os reguladores parceiros da Central de Solu\u00e7\u00f5es"
       className="bg-neutral-50 border-y border-neutral-100 py-10 overflow-hidden"
     >
       {/* ── Faixa 1 — Marquee de logos ── */}
       <div className="mb-8">
         <p className="text-xs font-semibold uppercase tracking-widest text-neutral-400 text-center mb-6">
-          Empresas que confiam na Central de Soluções
+          Empresas que confiam na Central de Solu\u00e7\u00f5es
         </p>
 
         <div className="overflow-hidden w-full">
           <ul
-            className="trustbar-track flex items-center gap-16 w-max"
-            style={{ "--marquee-duration": `${duracaoS}s` } as React.CSSProperties}
+            className="trustbar-track flex items-center w-max"
+            style={{
+              "--marquee-duration": `${duracaoS}s`,
+              gap: `${LOGO_GAP_PX}px`,
+            } as React.CSSProperties}
             aria-label="Lista de logos de clientes"
           >
             {logosSlider.map((cliente, i) => {
@@ -57,11 +61,13 @@ export function TrustBar() {
                   style={isLastOfFirstBlock ? { paddingRight: `${LOGO_GAP_PX}px` } : undefined}
                   aria-hidden={isEcho ? "true" : undefined}
                 >
-                  {/* Container fixo 144x48px — área visual idêntica para todas as logos */}
-                  <div className="w-36 h-12 flex items-center justify-center">
+                  <div
+                    style={{ width: LOGO_CONTAINER_W, height: LOGO_CONTAINER_H }}
+                    className="flex items-center justify-center"
+                  >
                     <Image
                       src={cliente.logoPath!}
-                      alt={isEcho ? "" : `Logo de ${cliente.nome} — cliente da Central de Soluções`}
+                      alt={isEcho ? "" : `Logo de ${cliente.nome} \u2014 cliente da Central de Solu\u00e7\u00f5es`}
                       width={LOGO_CONTAINER_W}
                       height={LOGO_CONTAINER_H}
                       className="max-h-full max-w-full w-auto h-auto object-contain"
@@ -85,11 +91,11 @@ export function TrustBar() {
       {/* ── Faixa 2 — Órgãos reguladores ── */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <p className="text-xs font-semibold uppercase tracking-widest text-neutral-400 text-center mb-4">
-          Órgãos reguladores com os quais atuamos
+          \u00d3rg\u00e3os reguladores com os quais atuamos
         </p>
         <ul
           className="flex flex-wrap justify-center items-center gap-2 md:gap-3"
-          aria-label="Órgãos reguladores parceiros"
+          aria-label="\u00d3rg\u00e3os reguladores parceiros"
         >
           {ORGAOS_REGULADORES.map((orgao) => (
             <li key={orgao.label} className="list-none">
@@ -98,7 +104,7 @@ export function TrustBar() {
                 target="_blank"
                 rel="noopener noreferrer"
                 title={orgao.title}
-                aria-label={`${orgao.title} — abre em nova aba`}
+                aria-label={`${orgao.title} \u2014 abre em nova aba`}
                 className="inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wide bg-[#800000]/10 text-[#800000] hover:bg-[#800000]/20 px-2.5 py-1 rounded-full transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#800000] focus-visible:ring-offset-1"
               >
                 {orgao.label}
