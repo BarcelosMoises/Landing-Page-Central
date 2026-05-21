@@ -10,7 +10,6 @@ import { MetricasEmpresa } from "@/components/MetricasEmpresa";
 import { TrustBar } from "@/components/TrustBar";
 import { SetoresAtendidos } from "@/components/SetoresAtendidos";
 import { MapaAtuacao } from "@/components/MapaAtuacao";
-import { EquipeTecnica } from "@/components/EquipeTecnica";
 import { Glossario } from "@/components/Glossario";
 import { FormularioContato } from "@/components/FormularioContato";
 import {
@@ -20,7 +19,7 @@ import {
   type Servico,
 } from "@/data/servicos";
 
-// ─── Metadata ──────────────────────────────────────────────────────────────────────────
+// ─── Metadata ────────────────────────────────────────────────────────────────────────────────────
 
 export const metadata: Metadata = {
   title:
@@ -53,7 +52,7 @@ export const metadata: Metadata = {
   },
 };
 
-// ─── JSON-LD WebSite ────────────────────────────────────────────────────────────────
+// ─── JSON-LD WebSite ────────────────────────────────────────────────────────────────────
 // LocalBusiness já está no layout.tsx — não duplicar aqui.
 
 const websiteJsonLd = {
@@ -147,7 +146,7 @@ const whatsappHero = getWhatsAppUrl(
   "Olá! Vim pelo site da Central de Soluções e gostaria de um orçamento."
 );
 
-// ─── Page ──────────────────────────────────────────────────────────────────────────────────
+// ─── Page ───────────────────────────────────────────────────────────────────────────────────────
 
 export default function HomePage() {
   return (
@@ -305,15 +304,13 @@ export default function HomePage() {
           <SetoresAtendidos />
         </section>
 
+        {/* 6. MAPA */}
         <MapaAtuacao />
 
-        {/* 7. EQUIPE */}
-        <section id="equipe" aria-label="Equipe técnica da Central de Soluções">
-          <EquipeTecnica />
-        </section>
-
+        {/* 7. GLOSSÁRIO */}
         <Glossario />
 
+        {/* 8. FORMULÁRIO / CTA */}
         <FormularioContato />
       </main>
     </>
