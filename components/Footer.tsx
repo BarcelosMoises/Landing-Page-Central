@@ -29,7 +29,7 @@ const SERVICOS_FOOTER = [
 
 // ─── JSON-LD Person ────────────────────────────────────────────────────────────────
 //
-// Dados complementares para JSON-LD (knowsAbout) mapeados pelo slug.
+// Dados complementares para JSON-LD (knowsAbout) mapeados pelo id (= slug).
 // Migrado de EquipeTecnica.tsx para garantir cobertura em todas as páginas.
 
 const CONHECIMENTOS_JSONLD: Record<string, string[]> = {
@@ -50,18 +50,18 @@ const CONHECIMENTOS_JSONLD: Record<string, string[]> = {
   ],
 };
 
+// equipe aqui é MembroEquipeServico[] (campos: id, nome, formacao, especialidades)
 const pessoasJsonLd = equipe.map((membro) => ({
   "@context": "https://schema.org",
   "@type": "Person",
   name: membro.nome,
-  jobTitle: membro.tituloPrincipal,
+  jobTitle: membro.formacao,
   worksFor: {
     "@type": "Organization",
     name: "Central de Soluções Engenharia",
     url: "https://www.centraldesolucoes.eng.br",
   },
-  knowsAbout: CONHECIMENTOS_JSONLD[membro.slug] ?? [...membro.especializacoes],
-  ...(membro.linkedin ? { sameAs: membro.linkedin } : {}),
+  knowsAbout: CONHECIMENTOS_JSONLD[membro.id] ?? [...membro.especialidades],
 }));
 
 export function Footer() {
