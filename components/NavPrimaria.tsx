@@ -8,13 +8,12 @@ import { getWhatsAppUrl } from "@/data/servicos";
 // ─── Dados estáticos da nav ───────────────────────────────────────────────────
 //
 // REGRA: cada id aqui deve ter um elemento com id correspondente na homepage.
-// IDs declarados em app/page.tsx: servicos · setores · equipe · contato
+// IDs declarados em app/page.tsx: servicos · setores · contato
 // Nunca adicionar um item sem antes declarar o id na seção correspondente.
 
 const NAV_ITENS = [
   { id: "servicos", label: "Serviços",        href: "/#servicos" },
   { id: "setores",  label: "Área de Atuação", href: "/#setores"  },
-  { id: "equipe",   label: "Equipe",          href: "/#equipe"   },
   { id: "contato",  label: "Contato",         href: "/#contato"  },
 ] as const;
 
