@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 
 import { JsonLd } from "@/components/JsonLd";
@@ -168,15 +167,18 @@ export default function HomePage() {
           aria-labelledby="hero-heading"
           className="relative min-h-[90vh] flex items-center"
         >
-          <Image
-            src="/images/portfolio/hero-industrial.jpg"
-            alt="Engenheiro realizando vistoria técnica em galpão industrial — Central de Soluções"
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover object-center"
-            quality={85}
-          />
+          {/* Vídeo de fundo */}
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            aria-hidden="true"
+            poster="/images/portfolio/hero-industrial.jpg"
+            className="absolute inset-0 w-full h-full object-cover object-center"
+          >
+            <source src="/videos/hero.mp4" type="video/mp4" />
+          </video>
 
           <div
             aria-hidden="true"
