@@ -18,7 +18,6 @@ import { JsonLd } from "@/components/JsonLd";
 
 const ANO_ATUAL = new Date().getFullYear();
 
-// Subconjunto de serviços exibidos no footer (os 6 principais)
 const SERVICOS_FOOTER = [
   "avcb",
   "vigilancia-sanitaria",
@@ -27,11 +26,6 @@ const SERVICOS_FOOTER = [
   "laudos-tecnicos",
   "projetos-tecnicos",
 ] as const;
-
-// ─── JSON-LD Person ────────────────────────────────────────────────────────────────
-//
-// Dados complementares para JSON-LD (knowsAbout) mapeados pelo id (= slug).
-// Migrado de EquipeTecnica.tsx para garantir cobertura em todas as páginas.
 
 const CONHECIMENTOS_JSONLD: Record<string, string[]> = {
   durval: [
@@ -51,7 +45,6 @@ const CONHECIMENTOS_JSONLD: Record<string, string[]> = {
   ],
 };
 
-// equipe aqui é MembroEquipeServico[] (campos: id, nome, formacao, especialidades)
 const pessoasJsonLd = equipe.map((membro) => ({
   "@context": "https://schema.org",
   "@type": "Person",
@@ -70,19 +63,12 @@ export function Footer() {
     (SERVICOS_FOOTER as readonly string[]).includes(s.id)
   );
 
-  // Fundo do footer: versão muito escura da cor do serviço.
-  // color-mix(12% accent + 88% #0a0000) produz um quase-preto com leve tint
-  // da paleta da subpágina, mantendo contraste WCAG AA para texto branco.
-  const bgFooter = "color-mix(in srgb, var(--color-service-accent, #800000) 12%, #0a0000 88%)";
-
-  // Textos secundários: 55% accent + 45% branco dessaturado → cor muted
-  // que combina com a paleta sem perder legibilidade.
-  const textMuted    = "color-mix(in srgb, var(--color-service-accent, #800000) 30%, #b0b0b0 70%)";
+  const bgFooter    = "color-mix(in srgb, var(--color-service-accent, #800000) 12%, #0a0000 88%)";
+  const textMuted   = "color-mix(in srgb, var(--color-service-accent, #800000) 30%, #b0b0b0 70%)";
   const textSubtitle = "color-mix(in srgb, var(--color-service-accent, #800000) 20%, #c8c8c8 80%)";
 
   return (
     <>
-      {/* JSON-LD Person — E-E-A-T: injetado em todas as páginas via Footer */}
       {pessoasJsonLd.map((pessoa) => (
         <JsonLd key={pessoa.name} data={pessoa} />
       ))}
@@ -95,7 +81,6 @@ export function Footer() {
       >
         <div className="container-site py-12 md:py-16">
 
-          {/* Grade principal */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
 
             {/* Coluna 1 — Marca + contato */}
@@ -103,15 +88,19 @@ export function Footer() {
               <Link
                 href="/"
                 aria-label="Central de Soluções — ir para o topo"
-                className="w-fit focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#800000] focus-visible:rounded"
+                className="flex items-center gap-2 w-fit focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#800000] focus-visible:rounded"
               >
                 <Image
                   src="/images/logo.png"
-                  alt="Central de Soluções"
-                  width={120}
+                  alt=""
+                  width={36}
                   height={36}
                   className="h-9 w-auto"
                 />
+                <span className="font-heading font-bold text-white text-lg leading-none tracking-tight">
+                  Central de{" "}
+                  <span style={{ color: "var(--color-service-accent, #800000)" }}>Soluções</span>
+                </span>
               </Link>
 
               <p className="text-sm leading-relaxed max-w-xs" style={{ color: textMuted }}>
@@ -119,7 +108,6 @@ export function Footer() {
                 Atendemos RJ, SP, MG e ES com responsabilidade técnica real.
               </p>
 
-              {/* Contato */}
               <ul className="flex flex-col gap-2" aria-label="Dados de contato">
                 <li>
                   <a
@@ -163,17 +151,11 @@ export function Footer() {
 
             {/* Coluna 2 — Serviços */}
             <div>
-              <h2 className="font-heading text-sm font-semibold text-white uppercase tracking-wider mb-4">
-                Serviços
-              </h2>
+              <h2 className="font-heading text-sm font-semibold text-white uppercase tracking-wider mb-4">Serviços</h2>
               <ul className="flex flex-col gap-2" aria-label="Links dos serviços">
                 {servicosFooter.map((s) => (
                   <li key={s.id}>
-                    <Link
-                      href={s.pathRota}
-                      className="text-sm hover:text-white transition-colors duration-150"
-                      style={{ color: textMuted }}
-                    >
+                    <Link href={s.pathRota} className="text-sm hover:text-white transition-colors duration-150" style={{ color: textMuted }}>
                       {s.nomeAbreviado}
                     </Link>
                   </li>
@@ -183,44 +165,28 @@ export function Footer() {
 
             {/* Coluna 3 — Cobertura */}
             <div>
-              <h2 className="font-heading text-sm font-semibold text-white uppercase tracking-wider mb-4">
-                Cobertura
-              </h2>
+              <h2 className="font-heading text-sm font-semibold text-white uppercase tracking-wider mb-4">Cobertura</h2>
               <ul className="flex flex-col gap-2" aria-label="Estados de atuação">
                 <li className="text-sm" style={{ color: textMuted }}>Rio de Janeiro (RJ)</li>
                 <li className="text-sm" style={{ color: textMuted }}>São Paulo (SP)</li>
                 <li className="text-sm" style={{ color: textMuted }}>Minas Gerais (MG)</li>
                 <li className="text-sm" style={{ color: textMuted }}>Espírito Santo (ES)</li>
                 <li className="text-sm mt-1" style={{ color: textMuted }}>
-                  <span
-                    className="font-semibold"
-                    style={{ color: "var(--color-service-accent, #800000)" }}
-                  >
-                    SPDA e Aterramento:
-                  </span>{" "}
-                  todo o Brasil
+                  <span className="font-semibold" style={{ color: "var(--color-service-accent, #800000)" }}>SPDA e Aterramento:</span>{" "}todo o Brasil
                 </li>
               </ul>
             </div>
 
             {/* Coluna 4 — Equipe técnica (E-E-A-T) */}
             <div>
-              <h2 className="font-heading text-sm font-semibold text-white uppercase tracking-wider mb-4">
-                Equipe Técnica
-              </h2>
+              <h2 className="font-heading text-sm font-semibold text-white uppercase tracking-wider mb-4">Equipe Técnica</h2>
               <ul className="flex flex-col gap-4" aria-label="Responsáveis técnicos">
                 {equipe.map((membro) => (
                   <li key={membro.id} className="flex flex-col gap-0.5">
-                    <span className="text-sm font-semibold text-white">
-                      {membro.nome}
-                    </span>
-                    <span className="text-xs" style={{ color: textMuted }}>
-                      {membro.formacao}
-                    </span>
+                    <span className="text-sm font-semibold text-white">{membro.nome}</span>
+                    <span className="text-xs" style={{ color: textMuted }}>{membro.formacao}</span>
                     {membro.especialidades.map((esp) => (
-                      <span key={esp} className="text-xs" style={{ color: textSubtitle }}>
-                        {esp}
-                      </span>
+                      <span key={esp} className="text-xs" style={{ color: textSubtitle }}>{esp}</span>
                     ))}
                   </li>
                 ))}
@@ -228,14 +194,9 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Divider */}
           <div className="border-t border-white/10 mt-10 pt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <p className="text-xs" style={{ color: textMuted }}>
-              © {ANO_ATUAL} Central de Soluções Engenharia. Todos os direitos reservados.
-            </p>
-            <p className="text-xs" style={{ color: textMuted }}>
-              CRECI/CREA — Responsabilidade técnica assegurada em cada serviço.
-            </p>
+            <p className="text-xs" style={{ color: textMuted }}>© {ANO_ATUAL} Central de Soluções Engenharia. Todos os direitos reservados.</p>
+            <p className="text-xs" style={{ color: textMuted }}>CRECI/CREA — Responsabilidade técnica assegurada em cada serviço.</p>
           </div>
 
         </div>
