@@ -16,11 +16,14 @@ const ORGAOS_REGULADORES: readonly OrgaoReguladorBadge[] = [
   { label: "ANVISA",        href: "https://www.gov.br/anvisa",                   title: "Agência Nacional de Vigilância Sanitária" },
 ] as const;
 
-// Tamanho default (+30% vs original 187x62): 243x81px — logos 1.png (Claro) e 6.png (IF)
-// Tamanho large (+100% vs original 187x62):  374x124px — todas as demais logos
+// Tamanho default (+50% vs base 187x62): 281x93px  — logo 1.png (Claro)
+// Tamanho medium  (+30% vs base 187x62): 243x81px  — logo 6.png (IF)
+// Tamanho large  (+100% vs base 187x62): 374x124px — todas as demais logos
 // Gap: 12px
-const LOGO_W_DEFAULT  = 243;
-const LOGO_H_DEFAULT  = 81;
+const LOGO_W_DEFAULT  = 281;
+const LOGO_H_DEFAULT  = 93;
+const LOGO_W_MEDIUM   = 243;
+const LOGO_H_MEDIUM   = 81;
 const LOGO_W_LARGE    = 374;
 const LOGO_H_LARGE    = 124;
 const LOGO_GAP_PX     = 12;
@@ -32,7 +35,10 @@ export function TrustBar() {
 
   // larguraBloco considera a largura real do contêiner de cada logo
   const larguraBloco = todosLogos.reduce((acc, cliente) => {
-    const w = cliente.logoSize === "default" ? LOGO_W_DEFAULT : LOGO_W_LARGE;
+    const w =
+      cliente.logoSize === "default" ? LOGO_W_DEFAULT
+      : cliente.logoSize === "medium"  ? LOGO_W_MEDIUM
+      : LOGO_W_LARGE;
     return acc + w + LOGO_GAP_PX;
   }, 0);
 
@@ -61,9 +67,14 @@ export function TrustBar() {
             {logosSlider.map((cliente, i) => {
               const isEcho = i >= todosLogos.length;
               const isLastOfFirstBlock = i === todosLogos.length - 1;
-              const isDefault = cliente.logoSize === "default";
-              const logoW = isDefault ? LOGO_W_DEFAULT : LOGO_W_LARGE;
-              const logoH = isDefault ? LOGO_H_DEFAULT : LOGO_H_LARGE;
+              const logoW =
+                cliente.logoSize === "default" ? LOGO_W_DEFAULT
+                : cliente.logoSize === "medium"  ? LOGO_W_MEDIUM
+                : LOGO_W_LARGE;
+              const logoH =
+                cliente.logoSize === "default" ? LOGO_H_DEFAULT
+                : cliente.logoSize === "medium"  ? LOGO_H_MEDIUM
+                : LOGO_H_LARGE;
 
               return (
                 <li
