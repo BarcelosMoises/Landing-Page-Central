@@ -8,7 +8,6 @@ import { NavPrimaria } from "@/components/NavPrimaria";
 import { FaqItem } from "@/components/FaqItem";
 import {
   servicos,
-  clientes,
   contato,
   estadosAtuacao,
   getWhatsAppUrl,
@@ -42,7 +41,7 @@ export const metadata: Metadata = {
   },
 };
 
-// ─── JSON-LD ────────────────────────────────────────────────────────────────
+// ─── JSON-LD ──────────────────────────────────────────────────────────────────────
 
 const serviceJsonLd = {
   "@context": "https://schema.org",
@@ -89,7 +88,7 @@ const faqJsonLd = {
       name: "Quais estruturas são obrigadas a ter SPDA?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Usinas fotovoltaicas, torres de telecomunicações, subestações elétricas, indústrias, galpões de grande porte, estruturas em áreas rurais e edificações com alto risco de descarga atmosférica são as principais. A obrigatoriedade é definida pela análise de risco prevista na ABNT NBR 5419, que leva em conta a localização geográfica, o nível ceráunico da região, a altura da estrutura e o tipo de ocupação.",
+        text: "Usinas fotovoltaicas, torres de telecomunicações, subestações elétricas, indústrias, galpões de grande porte, estruturas em áreas rurais e edificações com alto risco de descarga atmosférica são as principais. A obrigatoriedade é definida pela análise de risco prevista na ABNT NBR 5419, que leva em conta a localização geográfica, o nível cerâunico da região, a altura da estrutura e o tipo de ocupação.",
       },
     },
     {
@@ -130,7 +129,6 @@ const faqJsonLd = {
 // ─── Dados locais ─────────────────────────────────────────────────────────────────
 
 const spda = servicos.find((s) => s.id === "spda")!;
-const clientesDestaque = clientes.filter((c) => c.destaque);
 const estadosSPDA = estadosAtuacao.filter((e) =>
   ["RJ", "SP", "MG", "ES"].includes(e.sigla)
 );
@@ -327,23 +325,7 @@ export default function PageSPDA() {
           </div>
         </section>
 
-        {/* ── TRUST BAR ───────────────────────────────────────────────────── */}
-        <section aria-label="Clientes atendidos" className="bg-neutral-900 border-y border-white/8 py-6">
-          <div className="container-site">
-            <p className="text-xs text-neutral-500 text-center uppercase tracking-widest mb-5 font-mono">
-              Empresas que confiam na Central de Soluções
-            </p>
-            <ul className="flex flex-wrap items-center justify-center gap-x-10 gap-y-3" aria-label="Lista de clientes">
-              {clientesDestaque.map((c) => (
-                <li key={c.id} className="text-sm font-semibold text-neutral-400 hover:text-neutral-200 transition-colors duration-150 tracking-wide">
-                  {c.nome}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
-
-        {/* ── O QUE ESTÁ INCLUÍDO ────────────────────────────────────────────── */}
+        {/* ── O QUE ESTÁ INCLUÍDO ───────────────────────────────────────────── */}
         <section aria-labelledby="incluido-titulo" className="bg-white py-20 md:py-28">
           <div className="container-site">
             <div className="grid md:grid-cols-[1fr_1fr] gap-16 items-start">
@@ -414,7 +396,7 @@ export default function PageSPDA() {
           </div>
         </section>
 
-        {/* ── EQUIPE TÉCNICA (E-E-A-T) ──────────────────────────────────────────── */}
+        {/* ── EQUIPE TÉCNICA (E-E-A-T) ───────────────────────────────────────────── */}
         <section aria-labelledby="equipe-titulo" className="bg-neutral-950 py-20 md:py-28 border-t border-white/8">
           <div className="container-site">
             <p
