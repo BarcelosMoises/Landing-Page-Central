@@ -228,6 +228,19 @@ export default function PageAVCB() {
             }}
             aria-hidden="true"
           />
+
+          {/* Vídeo de fundo */}
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            aria-hidden="true"
+            className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none"
+          >
+            <source src="/videos/sirene.mp4" type="video/mp4" />
+          </video>
+
           <CrosshairDecor corner="top-right" size="lg" variant="light" />
           <CrosshairDecor corner="bottom-left" size="sm" variant="light" />
 
