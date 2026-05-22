@@ -10,7 +10,6 @@ import { CrosshairDecor } from "@/components/CrosshairDecor";
 import { FaqItem } from "@/components/FaqItem";
 import {
   servicos,
-  clientes,
   contato,
   estadosAtuacao,
   getWhatsAppUrl,
@@ -144,7 +143,6 @@ const faqJsonLd = {
 // ─── Dados locais ─────────────────────────────────────────────────────────────────
 
 const avcb = servicos.find((s) => s.id === "avcb")!;
-const clientesDestaque = clientes.filter((c) => c.destaque);
 const estadosAVCB = estadosAtuacao.filter((e) =>
   avcb.estados.includes(e.sigla)
 );
@@ -317,31 +315,6 @@ export default function PageAVCB() {
                 ))}
               </aside>
             </div>
-          </div>
-        </section>
-
-        {/* ── TRUST BAR ───────────────────────────────────────────────────── */}
-        <section
-          aria-label="Clientes atendidos"
-          className="bg-neutral-900 border-y border-white/8 py-6"
-        >
-          <div className="container-site">
-            <p className="text-xs text-neutral-500 text-center uppercase tracking-widest mb-5 font-mono">
-              Empresas que confiam na Central de Soluções
-            </p>
-            <ul
-              className="flex flex-wrap items-center justify-center gap-x-10 gap-y-3"
-              aria-label="Lista de clientes"
-            >
-              {clientesDestaque.map((c) => (
-                <li
-                  key={c.id}
-                  className="text-sm font-semibold text-neutral-400 hover:text-neutral-200 transition-colors duration-150 tracking-wide"
-                >
-                  {c.nome}
-                </li>
-              ))}
-            </ul>
           </div>
         </section>
 
