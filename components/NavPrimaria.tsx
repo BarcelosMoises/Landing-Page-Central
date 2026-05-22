@@ -6,12 +6,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { getWhatsAppUrl } from "@/data/servicos";
 
-// ─── Dados estáticos da nav ───────────────────────────────────────────────────
-//
-// REGRA: cada id aqui deve ter um elemento com id correspondente na homepage.
-// IDs declarados em app/page.tsx: servicos · setores · contato
-// Nunca adicionar um item sem antes declarar o id na seção correspondente.
-
 const NAV_ITENS = [
   { id: "servicos", label: "Serviços",        href: "/#servicos" },
   { id: "setores",  label: "Área de Atuação", href: "/#setores"  },
@@ -21,8 +15,6 @@ const NAV_ITENS = [
 const CTA_WHATSAPP = getWhatsAppUrl(
   "Olá! Vim pelo site da Central de Soluções e gostaria de solicitar um orçamento."
 );
-
-// ─── Componente ───────────────────────────────────────────────────────────────
 
 export function NavPrimaria() {
   const pathname = usePathname();
@@ -149,9 +141,9 @@ export function NavPrimaria() {
           <Image
             src="/images/logo.png"
             alt=""
-            width={36}
-            height={36}
-            className="h-9 w-auto"
+            width={54}
+            height={54}
+            className="h-[54px] w-auto"
             priority
           />
           <span className="font-heading font-bold text-white text-lg leading-none tracking-tight">
