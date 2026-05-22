@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { getWhatsAppUrl } from "@/data/servicos";
@@ -202,14 +203,20 @@ export function NavPrimaria() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-6">
 
-        {/* Logo / Nome */}
+        {/* Logo */}
         <Link
           href="/"
           aria-label="Central de Soluções — ir para o topo"
-          className="flex-shrink-0 font-heading font-bold text-white text-lg leading-none tracking-tight focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#800000] focus-visible:rounded"
+          className="flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#800000] focus-visible:rounded"
         >
-          Central de{" "}
-          <span style={{ color: "var(--color-service-accent, #800000)" }}>Soluções</span>
+          <Image
+            src="/images/logo.png"
+            alt="Central de Soluções"
+            width={120}
+            height={36}
+            className="h-9 w-auto"
+            priority
+          />
         </Link>
 
         {/* Nav desktop */}
