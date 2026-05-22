@@ -228,6 +228,17 @@ export default function PageLicenciamentoAmbiental() {
             style={{ background: "radial-gradient(ellipse 70% 60% at 60% 40%, rgba(45,106,45,0.22) 0%, transparent 70%)" }}
             aria-hidden="true"
           />
+          {/* Vídeo de fundo */}
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            aria-hidden="true"
+            className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none"
+          >
+            <source src="/videos/ambiental.mp4" type="video/mp4" />
+          </video>
           <CrosshairDecor corner="top-right" size="lg" variant="light" />
           <CrosshairDecor corner="bottom-left" size="sm" variant="light" />
 
