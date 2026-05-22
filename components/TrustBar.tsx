@@ -18,14 +18,14 @@ const ORGAOS_REGULADORES: readonly OrgaoReguladorBadge[] = [
 
 // Tamanho default (+50% vs base 187x62): 281x93px  — logo 1.png (Claro)
 // Tamanho medium  (+30% vs base 187x62): 243x81px  — logo 6.png (IF)
-// Tamanho large   (altura 32px, proporção 374:124): 97x32px — todas as demais logos
+// Tamanho large  (+100% vs base 187x62): 374x124px — todas as demais logos
 // Gap: 12px
 const LOGO_W_DEFAULT  = 281;
 const LOGO_H_DEFAULT  = 93;
 const LOGO_W_MEDIUM   = 243;
 const LOGO_H_MEDIUM   = 81;
-const LOGO_W_LARGE    = 97;
-const LOGO_H_LARGE    = 32;
+const LOGO_W_LARGE    = 374;
+const LOGO_H_LARGE    = 124;
 const LOGO_GAP_PX     = 12;
 const VELOCIDADE_PX_S = 140;
 
