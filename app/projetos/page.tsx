@@ -9,7 +9,6 @@ import { FaqItem } from "@/components/FaqItem";
 import { CrosshairDecor } from "@/components/CrosshairDecor";
 import {
   servicos,
-  clientes,
   contato,
   getWhatsAppUrl,
 } from "@/data/servicos";
@@ -143,7 +142,6 @@ const faqJsonLd = {
 // ─── Dados locais ─────────────────────────────────────────────────────────────────
 
 const projetos = servicos.find((s) => s.id === "projetos-tecnicos")!;
-const clientesDestaque = clientes.filter((c) => c.destaque);
 const whatsappUrl = getWhatsAppUrl(
   "Olá! Tenho interesse nos serviços de Projetos Técnicos. Pode me passar mais informações?"
 );
@@ -299,23 +297,7 @@ export default function PageProjetosTecnicos() {
           </div>
         </section>
 
-        {/* ── TRUST BAR ───────────────────────────────────────────────────── */}
-        <section aria-label="Clientes atendidos" className="bg-neutral-900 border-y border-white/8 py-6">
-          <div className="container-site">
-            <p className="text-xs text-neutral-500 text-center uppercase tracking-widest mb-5 font-mono">
-              Empresas que confiam na Central de Soluções
-            </p>
-            <ul className="flex flex-wrap items-center justify-center gap-x-10 gap-y-3" aria-label="Lista de clientes">
-              {clientesDestaque.map((c) => (
-                <li key={c.id} className="text-sm font-semibold text-neutral-400 hover:text-neutral-200 transition-colors duration-150 tracking-wide">
-                  {c.nome}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
-
-        {/* ── SUB-SERVIÇOS ──────────────────────────────────────────────────────── */}
+        {/* ── SUB-SERVIÇOS ──────────────────────────────────────────────────────────── */}
         <section aria-labelledby="subservicos-titulo" className="bg-white py-20 md:py-28">
           <div className="container-site">
             <div className="mb-12">
@@ -393,7 +375,7 @@ export default function PageProjetosTecnicos() {
           </div>
         </section>
 
-        {/* ── EQUIPE E-E-A-T ─────────────────────────────────────────────────────── */}
+        {/* ── EQUIPE E-E-A-T ─────────────────────────────────────────────── */}
         <section aria-labelledby="equipe-titulo" className="relative bg-neutral-950 py-20 md:py-28 border-t border-white/8">
           <CrosshairDecor corner="bottom-right" size="md" variant="light" />
           <div className="container-site">
