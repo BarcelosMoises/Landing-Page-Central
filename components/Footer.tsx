@@ -11,6 +11,7 @@
 // Migrado de EquipeTecnica.tsx (removido). Injetado aqui para cobrir
 // todas as páginas do site, não apenas a homepage.
 
+import Image from "next/image";
 import Link from "next/link";
 import { servicos, contato, equipe } from "@/data/servicos";
 import { JsonLd } from "@/components/JsonLd";
@@ -36,7 +37,7 @@ const CONHECIMENTOS_JSONLD: Record<string, string[]> = {
   durval: [
     "AVCB",
     "CLCB",
-    "Sistemas de Combate a Incêndio",
+    "Sistemas de Combate ao Incêndio",
     "Engenharia de Segurança do Trabalho",
     "Projetos Arquitetônicos",
     "SPDA",
@@ -102,10 +103,15 @@ export function Footer() {
               <Link
                 href="/"
                 aria-label="Central de Soluções — ir para o topo"
-                className="font-heading font-bold text-white text-lg leading-none tracking-tight w-fit focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#800000] focus-visible:rounded"
+                className="w-fit focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#800000] focus-visible:rounded"
               >
-                Central de{" "}
-                <span style={{ color: "var(--color-service-accent, #800000)" }}>Soluções</span>
+                <Image
+                  src="/images/logo.png"
+                  alt="Central de Soluções"
+                  width={120}
+                  height={36}
+                  className="h-9 w-auto"
+                />
               </Link>
 
               <p className="text-sm leading-relaxed max-w-xs" style={{ color: textMuted }}>
