@@ -271,10 +271,53 @@ const inter = Inter({
 
 ### Logo
 
-- **Formato:** ícone de engrenagens/ferramentas abstrato em branco sobre fundo colorido
-- **Implementação no site:** SVG inline com `fill="currentColor"` — funciona em fundos escuros e claros sem duas versões
-- **Nunca:** rasterizar o logo como PNG para uso em navegação — usar sempre SVG
-- **Texto do logo:** `CENTRAL DE SOLUÇÕES` em Montserrat 700, maiúsculas, abaixo do ícone
+A logo da Central de Soluções é composta por um **símbolo de mãos brancas** (PNG com fundo transparente)
+acompanhado do texto "Central de Soluções" na nav.
+
+#### Regra de formato por contexto
+
+| Contexto | Formato | Justificativa |
+|---|---|---|
+| **Nav (símbolo)** | PNG — `next/image` com `priority` | Símbolo com cor fixa (branco). Não deve herdar `currentColor` — as mãos são sempre brancas independentemente do accent de serviço da subpágina. |
+| **Ícone monocromático genérico** | SVG inline com `fill="currentColor"` | Quando o ícone deve mudar de cor com o accent de serviço. |
+
+> **Por que PNG é correto aqui:** `currentColor` aplicado ao SVG pintaria o símbolo nas cores de
+> accent de cada subpágina (teal, verde, azul, dourado), quebrando a identidade visual da marca.
+> Mãos brancas são uma cor fixa de identidade — PNG com fundo transparente é a solução correta.
+
+#### Implementação na NavPrimaria
+
+```tsx
+// Arquivo: public/images/logo.png
+// Dimensões na nav: width=32 height=32 (mantém proporção via object-contain)
+<Image
+  src="/images/logo.png"
+  alt="Símbolo da Central de Soluções — mãos unidas"
+  width={32}
+  height={32}
+  priority
+  className="object-contain w-8 h-8 flex-shrink-0"
+/>
+```
+
+- **`priority`** obrigatório — a nav é `fixed top-0`, portanto always above-the-fold (AGENTS.md)
+- **`alt` descritivo** — nunca `alt=""` para a logo da marca
+- **`object-contain`** — preserva proporção sem distorção
+- **`flex-shrink-0`** — impede que o ícone encolha em viewports estreitos
+
+#### Texto ao lado do símbolo
+
+O `<Link>` da nav envolve símbolo + texto num `flex items-center gap-2`:
+
+```tsx
+<Link href="/" aria-label="Central de Soluções — ir para o topo" className="flex items-center gap-2 flex-shrink-0 ...">
+  <Image src="/images/logo.png" alt="Símbolo da Central de Soluções — mãos unidas" width={32} height={32} priority className="object-contain w-8 h-8 flex-shrink-0" />
+  <span className="font-heading font-bold text-white text-lg leading-none tracking-tight">
+    Central de{" "}
+    <span style={{ color: "var(--color-service-accent, #800000)" }}>Soluções</span>
+  </span>
+</Link>
+```
 
 ### Elemento Crosshair / Retícula
 
@@ -723,3 +766,4 @@ const animation = prefersReduced ? {} : { opacity: [0, 1], transform: ["translat
 - [ ] Seções escuras (`SetoresAtendidos`, `FormularioContato`, `Footer`, Glossário) usam `bg-[#1a0000]` — nunca `bg-neutral-900` ou `bg-[#111827]`
 - [ ] Texto secundário sobre `#1a0000` usa `style={{ color: "#c4a8a8" }}` — nunca `text-neutral-400`
 - [ ] Links de contato sobre `#1a0000` usam `style={{ color: "#e0c8c8" }}` — nunca `text-neutral-300`
+- [ ] Logo na nav usa `next/image` com `priority`, `alt` descritivo e dimensões explícitas (`width={32} height={32}`)
