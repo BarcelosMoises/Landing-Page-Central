@@ -396,7 +396,7 @@ export function MapaAtuacao() {
               onClick={(e) => handleClick("PA", e)}
               onTouchStart={(e) => handleTouch("PA", e)}
               role="button" tabIndex={0}
-              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") handleClick("PB", e as unknown as React.MouseEvent<SVGPathElement>); }}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") handleClick("PA", e as unknown as React.MouseEvent<SVGPathElement>); }}
             />
             {/* PB */}
             <path
