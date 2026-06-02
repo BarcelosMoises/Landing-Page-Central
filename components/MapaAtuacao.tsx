@@ -1,10 +1,17 @@
+/* eslint-disable react/no-unknown-property */
+"use client";
+
+import { useState, useCallback } from "react";
 import Link from "next/link";
-import { MapPin, ShieldCheck, Leaf, Globe } from "lucide-react";
-import { estadosAtuacao } from "@/data/servicos";
+import { Globe } from "lucide-react";
+import {
+  estadosAtuacao,
+  getServicosPorEstado,
+  getWhatsAppUrl,
+  type EstadoSigla,
+} from "@/data/servicos";
 
-// ─── Tipos ────────────────────────────────────────────────────────────────────────────
-
-// Slug de URL por estado (conforme docs/SEO.md)
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const ESTADO_SLUG: Record<string, string> = {
   RJ: "rio-de-janeiro",
   SP: "sao-paulo",
@@ -12,7 +19,7 @@ const ESTADO_SLUG: Record<string, string> = {
   ES: "espirito-santo",
 };
 
-// Label de concorrência de SEO (para uso interno / futuro)
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const ESTADO_CONCORRENCIA: Record<string, string> = {
   RJ: "Alta",
   SP: "Muito Alta",
@@ -20,105 +27,40 @@ const ESTADO_CONCORRENCIA: Record<string, string> = {
   ES: "Baixa / Média",
 };
 
-// ─── Sub-componente: card de estado ──────────────────────────────────────────────────
+const ESTADOS_COMPLETOS = new Set(
+  estadosAtuacao
+    .filter((e) => e.cobertura === "completa")
+    .map((e) => e.sigla)
+);
 
-interface EstadoCardProps {
-  sigla: string;
-  nome: string;
-  siglaCB: string;
-  orgaoAmbiental: string;
-}
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const ESTADO_INFO = Object.fromEntries(
+  estadosAtuacao.map((e) => [e.sigla, e])
+);
 
-function EstadoCard({ sigla, nome, siglaCB, orgaoAmbiental }: EstadoCardProps) {
-  const slug = ESTADO_SLUG[sigla];
+const NOME_TODOS_ESTADOS: Record<string, string> = {
+  AC: "Acre", AL: "Alagoas", AP: "Amapá", AM: "Amazonas",
+  BA: "Bahia", CE: "Ceará", DF: "Distrito Federal", GO: "Goiás",
+  MA: "Maranhão", MT: "Mato Grosso", MS: "Mato Grosso do Sul", PA: "Pará",
+  PB: "Paraíba", PR: "Paraná", PE: "Pernambuco", PI: "Piauí",
+  RN: "Rio Grande do Norte", RS: "Rio Grande do Sul", RO: "Rondônia",
+  RR: "Roraima", SC: "Santa Catarina", SE: "Sergipe", TO: "Tocantins",
+  RJ: "Rio de Janeiro", SP: "São Paulo", MG: "Minas Gerais", ES: "Espírito Santo",
+};
 
-  return (
-    <article
-      aria-label={`Atendimento no estado de ${nome}`}
-      // h-full: ocupa 100% da altura do <li> (que é flex e estica para preencher
-      // a célula do grid) — garante que todos os cards fiquem com a mesma altura.
-      // mt-auto no CTA ancora todos os botões na mesma baseline.
-      className="bg-white border border-neutral-100 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow duration-200 flex flex-col gap-4 h-full"
-    >
-      {/* Sigla + badge */}
-      <div className="flex items-start justify-between gap-2">
-        <div className="flex items-center gap-2">
-          <MapPin
-            className="w-4 h-4 text-[#800000] flex-shrink-0"
-            aria-hidden="true"
-          />
-          <span className="font-heading text-2xl font-extrabold text-[#800000]">
-            {sigla}
-          </span>
-        </div>
-        <span className="inline-flex items-center gap-1 text-xs font-semibold text-green-700 bg-green-50 border border-green-200 px-2 py-0.5 rounded-full">
-          <ShieldCheck className="w-3 h-3" aria-hidden="true" />
-          Atendimento completo
-        </span>
-      </div>
-
-      {/* Nome do estado */}
-      <h3 className="font-heading text-lg font-bold text-neutral-900 leading-snug">
-        {nome}
-      </h3>
-
-      {/* Metaórgãos */}
-      <dl className="flex flex-col gap-1.5 text-sm">
-        <div className="flex items-center gap-2">
-          <ShieldCheck
-            className="w-3.5 h-3.5 text-[#800000] flex-shrink-0"
-            aria-hidden="true"
-          />
-          <dt className="sr-only">Corpo de Bombeiros</dt>
-          <dd className="text-neutral-700 font-medium">{siglaCB}</dd>
-        </div>
-        <div className="flex items-center gap-2">
-          <Leaf
-            className="w-3.5 h-3.5 text-green-600 flex-shrink-0"
-            aria-hidden="true"
-          />
-          <dt className="sr-only">Órgão ambiental</dt>
-          <dd className="text-neutral-700 font-medium">{orgaoAmbiental}</dd>
-        </div>
-      </dl>
-
-      {/* Link CTA — mt-auto empurra para o fundo do card */}
-      {slug && (
-        // TODO: atualizar para /avcb-corpo-de-bombeiros?estado=${slug} após Fase 6
-        <Link
-          href="/#servicos"
-          aria-label={`Ver serviços de regularização de engenharia civil no ${nome}`}
-          className="mt-auto inline-flex items-center gap-1 text-sm font-semibold text-[#800000] hover:text-[#4f0101] transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#800000] focus-visible:rounded"
-        >
-          Ver serviços no {sigla}
-          <span aria-hidden="true">&rarr;</span>
-        </Link>
-      )}
-    </article>
-  );
-}
-
-// ─── Card do Brasil (cobertura nacional) ──────────────────────────────────────────────
+interface TooltipState { sigla: string; nome: string; x: number; y: number; }
 
 function CardBrasil() {
   return (
     <article
       aria-label="SPDA e sistemas de segurança com cobertura nacional"
-      // bg-[#800000] com texto branco: contraste 5.9:1 ✓ WCAG AA
       className="bg-[#800000] border border-[#4f0101] rounded-xl p-6 shadow-sm flex flex-col gap-4 col-span-1 md:col-span-4"
     >
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        {/* Lado esquerdo */}
         <div className="flex flex-col gap-2">
           <div className="flex items-center gap-2">
-            <Globe
-              className="w-5 h-5 text-white/80"
-              aria-hidden="true"
-            />
-            {/* #fff sobre #800000 → contraste 5.9:1 ✓ WCAG AA */}
-            <span className="font-heading text-2xl font-extrabold text-white">
-              Brasil
-            </span>
+            <Globe className="w-5 h-5 text-white/80" aria-hidden="true" />
+            <span className="font-heading text-2xl font-extrabold text-white">Brasil</span>
             <span className="text-xs font-semibold uppercase tracking-wide bg-white/20 text-white px-2.5 py-0.5 rounded-full">
               Cobertura Nacional
             </span>
@@ -126,7 +68,6 @@ function CardBrasil() {
           <h3 className="font-heading text-lg md:text-xl font-bold text-white leading-snug">
             SPDA e Sistemas de Segurança: Todo o Brasil
           </h3>
-          {/* text-white/80 sobre #800000 → contraste ~4.7:1 ✓ WCAG AA */}
           <p className="text-white/80 text-sm leading-relaxed max-w-xl">
             Projeto, laudo e instalação de SPDA (para-raios), aterramento
             elétrico e teste de continuidade conforme NBR 5419 e NR-10.
@@ -134,75 +75,537 @@ function CardBrasil() {
             em qualquer estado brasileiro.
           </p>
         </div>
-
-        {/* CTA */}
-        {/* TODO: atualizar para /spda-para-raios após Fase 6 */}
         <Link
           href="/#servicos"
           aria-label="Ver serviços de SPDA e sistemas de proteção em todo o Brasil"
           className="flex-shrink-0 inline-flex items-center gap-2 bg-white text-[#800000] hover:bg-neutral-100 font-semibold text-sm px-5 py-3 rounded-lg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#800000] self-start sm:self-center"
         >
-          Ver serviços de SPDA
-          <span aria-hidden="true">&rarr;</span>
+          Ver serviços de SPDA <span aria-hidden="true">&rarr;</span>
         </Link>
       </div>
     </article>
   );
 }
 
-// ─── Componente principal ────────────────────────────────────────────────────────────────
-
 export function MapaAtuacao() {
-  return (
-    <section
-      aria-labelledby="mapa-atuacao-heading"
-      className="bg-neutral-50 py-16 md:py-24"
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  const [hoveredState, setHoveredState] = useState<string | null>(null);
+  const [selectedState, setSelectedState] = useState<string | null>(null);
+  const [tooltip, setTooltip] = useState<TooltipState | null>(null);
 
-        {/* Cabeçalho */}
+  const getEstadoFill = useCallback((sigla: string): string => {
+    if (selectedState === sigla) return "#800000";
+    if (selectedState !== null && selectedState !== sigla) return "#1a0000";
+    if (hoveredState === sigla && ESTADOS_COMPLETOS.has(sigla)) return "#800000";
+    if (hoveredState === sigla && !ESTADOS_COMPLETOS.has(sigla)) return "#4f0101";
+    return "#3d3d3d";
+  }, [hoveredState, selectedState]);
+
+  const getEstadoOpacity = useCallback((sigla: string): number => {
+    if (selectedState !== null && selectedState !== sigla) return 0.4;
+    return 1;
+  }, [selectedState]);
+
+  const handleMouseEnter = useCallback((sigla: string, e: React.MouseEvent<SVGPathElement>) => {
+    setHoveredState(sigla);
+    setTooltip({ sigla, nome: NOME_TODOS_ESTADOS[sigla] ?? sigla, x: e.clientX, y: e.clientY });
+  }, []);
+
+  const handleMouseMove = useCallback((_sigla: string, e: React.MouseEvent<SVGPathElement>) => {
+    setTooltip((prev) => prev ? { ...prev, x: e.clientX, y: e.clientY } : null);
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    setHoveredState(null); setTooltip(null);
+  }, []);
+
+  const handleClick = useCallback((sigla: string, e: React.MouseEvent<SVGPathElement> | React.KeyboardEvent<SVGPathElement>) => {
+    e.stopPropagation();
+    setSelectedState((prev) => (prev === sigla ? null : sigla));
+    const rect = (e.currentTarget as SVGPathElement).getBoundingClientRect();
+    setTooltip({ sigla, nome: NOME_TODOS_ESTADOS[sigla] ?? sigla, x: rect.left + rect.width / 2, y: rect.top });
+  }, []);
+
+  const handleTouch = useCallback((sigla: string, e: React.TouchEvent<SVGPathElement>) => {
+    e.preventDefault();
+    const touch = e.touches[0];
+    setHoveredState(sigla);
+    setSelectedState((prev) => (prev === sigla ? null : sigla));
+    setTooltip({ sigla, nome: NOME_TODOS_ESTADOS[sigla] ?? sigla, x: touch.clientX, y: touch.clientY - 10 });
+  }, []);
+
+  const handleSvgClick = useCallback((e: React.MouseEvent<SVGSVGElement>) => {
+    if ((e.target as SVGElement).tagName !== "path") {
+      setSelectedState(null); setHoveredState(null); setTooltip(null);
+    }
+  }, []);
+
+  const renderTooltipContent = () => {
+    if (!tooltip) return null;
+    const { sigla, nome } = tooltip;
+    if (ESTADOS_COMPLETOS.has(sigla)) {
+      const servicos = getServicosPorEstado(sigla as EstadoSigla);
+      return (
+        <>
+          <p className="font-bold text-white text-sm leading-snug">{nome}</p>
+          <ul className="mt-1.5 flex flex-col gap-0.5">
+            {servicos.map((s) => (
+              <li key={s.id} className="text-white/80 text-xs leading-snug">• {s.nomeAbreviado}</li>
+            ))}
+          </ul>
+          <span className="mt-2 inline-flex items-center gap-1 bg-white/20 text-white text-xs font-semibold px-2 py-0.5 rounded-full">
+            ✓ Atendimento completo
+          </span>
+        </>
+      );
+    }
+    const waUrl = getWhatsAppUrl(`Olá! Tenho interesse em serviços no estado de ${nome}.`);
+    return (
+      <>
+        <p className="font-bold text-white text-sm leading-snug">{nome}</p>
+        <p className="text-white/70 text-xs mt-1">Serviços sob consulta</p>
+        <a href={waUrl} target="_blank" rel="noopener noreferrer"
+          style={{ pointerEvents: "auto" }}
+          className="mt-2 inline-flex items-center gap-1 bg-white/20 hover:bg-white/30 text-white text-xs font-semibold px-2 py-1 rounded transition-colors">
+          Consultar pelo WhatsApp →
+        </a>
+      </>
+    );
+  };
+
+  const getTooltipStyle = (): React.CSSProperties => {
+    if (!tooltip) return { display: "none" };
+    const W = 220, H = 160, OY = 16;
+    let x = Math.max(8, Math.min(tooltip.x - W / 2, window.innerWidth - W - 8));
+    let y = tooltip.y - H - OY;
+    if (y < 8) y = tooltip.y + OY;
+    return { position: "fixed", left: x, top: y, zIndex: 50, pointerEvents: "none", maxWidth: W, minWidth: 160 };
+  };
+
+    return (
+    <section aria-labelledby="mapa-atuacao-heading" className="bg-[#1a0000] py-16 md:py-24">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-2xl mb-12">
-          <p className="text-xs font-semibold uppercase tracking-widest text-[#800000] mb-3">
-            Área de atuação
-          </p>
-          {/* text-neutral-900 sobre bg-neutral-50: contraste 18.1:1 ✓ WCAG AAA */}
-          <h2
-            id="mapa-atuacao-heading"
-            className="font-heading text-2xl md:text-4xl font-bold text-neutral-900 leading-tight mb-4"
-          >
+          <p className="text-xs font-semibold uppercase tracking-widest text-[#800000] mb-3">Área de atuação</p>
+          <h2 id="mapa-atuacao-heading" className="font-heading text-2xl md:text-4xl font-bold text-white leading-tight mb-4">
             Atuamos em Todo o Sudeste do Brasil
           </h2>
-          {/* text-neutral-700 sobre bg-neutral-50: contraste 9.4:1 ✓ WCAG AAA */}
-          <p className="text-neutral-700 text-lg leading-relaxed">
-            ES, MG, RJ e SP — com atendimento nacional para SPDA e
-            sistemas de segurança.
+          <p className="text-white/70 text-lg leading-relaxed">
+            ES, MG, RJ e SP — com atendimento nacional para SPDA e sistemas de segurança.
           </p>
         </div>
 
-        {/* Grid: 4 estados + card Brasil */}
-        <ul
-          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5"
-          aria-label="Estados de atendimento da Central de Soluções"
-        >
-          {estadosAtuacao.map((estado) => (
-            // flex no <li>: propaga a altura da célula do grid até o <article> filho
-            <li key={estado.sigla} className="list-none flex">
-              <EstadoCard
-                sigla={estado.sigla}
-                nome={estado.nome}
-                siglaCB={estado.siglaCB}
-                orgaoAmbiental={estado.orgaoAmbiental}
-              />
-            </li>
-          ))}
-
-          {/* Card nacional — largura completa */}
-          <li className="list-none col-span-1 sm:col-span-2 md:col-span-4">
-            <CardBrasil />
-          </li>
+        <ul className="sr-only">
+          {estadosAtuacao.map((estado) => {
+            const servicos = getServicosPorEstado(estado.sigla);
+            return (
+              <li key={estado.sigla}>
+                <strong>{estado.nome}</strong>: atendimento completo —{" "}
+                {servicos.map((s) => s.nomeAbreviado).join(", ")}
+              </li>
+            );
+          })}
         </ul>
 
-      </div>
-    </section>
-  );
-}
+        <div className="w-full flex justify-center mb-10">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 613 639"
+            aria-label="Mapa interativo dos estados de atuação da Central de Soluções"
+            role="img"
+            className="w-full max-w-2xl h-auto select-none"
+            onClick={handleSvgClick}
+            style={{ display: "block" }}
+          >
+                        {/* AC */}
+            <path
+              id="ac"
+              aria-label={NOME_TODOS_ESTADOS["AC"] ?? "Acre"}
+              d="m 30.732574,238.03114 -2.08,-0.04 0.54,-1.81 -0.21,-0.83 -0.25,-0.49 -1.25,-0.7 -0.14,-0.45 0.27,-1.15 -0.77,-1.95 -1.09,-0.64 -5.6,-1.25 -7.34,-0.19 0.27,-0.56 2.49,-2.26 0.89,-1.23 0.29,-1.2 -0.22,-1.23 -0.68,-0.91 -0.83,-0.44 -1.68,-2.95 -0.77,-0.44 -0.9,-0.19 -1.13,-1.13 -0.92,-2.38 -2,-1.53 -0.98,-3.62 -0.87,-1.64 -1.88,-1.08 -0.08,-1.17 0.81,0.1 0.42,-0.52 0.07,-0.67 -0.2,-0.42 -2.12,-0.93 -0.36,-0.66 -2.16999996,-1.89 0.04,-0.37 0.62,-0.05 0.49999996,-1.32 -0.01,-1.31 3.01,-0.39 0.5,-0.39 -0.22,-1.35 -1.17,-1.57 0,0 17.95,7.48 23.66,5.66 12.14,3.14 26.44,14.17 28.509996,12.13 0,0 2.97,1.26 0,0 -0.3,0.48 -1.57,0.66 -2.09,1.59 -2.86,2.79 -1.65,0.86 -0.66,-0.18 -1.53,0.18 -0.05,0.56 -1.92,1.3 -2.08,0.99 -1.439996,1.83 -0.44,1.18 -0.61,0.28 -1.17,-0.75 -0.76,-0.13 -2.37,0.05 -0.68,0.26 -0.63,0.45 -0.36,0.86 -2.44,3.48 -3.77,1.25 -0.84,0.69 -1.94,0.51 -1.03,0.03 0.08,-2.11 -1.36,0.2 -3.55,-0.77 -5.24,-0.47 -5.09,0.38 -0.66,-0.58 -2.27,-0.17 -3.56,1.83 -2.73,0.62 -1.68,-0.67 -1.4,-1.44 -1.64,1.16 0.04,-17.55 0.05,-1.1 0.47,-0.71 0.07,-2.35 -0.26,-0.88 0.97,-1.18 0.48,-1.14 -1.16,0.2 -2.97,2.59 -1.6,1.01 -2.06,2.38 -1.95,0.67 -0.65,1.08 -1.81,0.99 z"
+              style={{ fill: getEstadoFill("AC"), opacity: getEstadoOpacity("AC"), transition: "fill 200ms ease, opacity 200ms ease", cursor: "pointer" }}
+              onMouseEnter={(e) => handleMouseEnter("AC", e)}
+              onMouseMove={(e) => handleMouseMove("AC", e)}
+              onMouseLeave={handleMouseLeave}
+              onClick={(e) => handleClick("AC", e)}
+              onTouchStart={(e) => handleTouch("AC", e)}
+              role="button" tabIndex={0}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") handleClick("AC", e as unknown as React.MouseEvent<SVGPathElement>); }}
+            />
+            {/* AL */}
+            <path
+              id="al"
+              aria-label={NOME_TODOS_ESTADOS["AL"] ?? "Alagoas"}
+              d="m 562.17257,230.56114 -0.2,-0.73 -1.42,-0.78 -0.45,0.09 -1.02,-0.29 -0.54,-1.4 0,0 1.32,-1.07 0.64,-1.09 2.17,-0.76 2.38,-3.29 0.09,-0.69 0.82,-0.6 1,1.22 1.67,0.3 1.08,-0.12 2.55,2.02 1.9,2.12 1.78,1.05 1.91,0.48 2.5,-0.65 3.14,0.29 1.17,-0.11 1.86,-1.06 1.16,0.05 1.81,-1.11 2.18,-2.29 0.12,-0.45 1.55,-1.24 2,-0.24 2.24,0.85 2.56,-1.29 1.47,-0.19 1.92,0.81 2.9,0.27 0.27,0.21 0,0 -2.78,4.96 -4.55,5.13 -3.58,3.58 -3.04,4.58 -3.33,2.88 -1,2.03 -1.32,1.79 0,0 -0.6,-1.31 -3.59,-2.23 -0.46,-0.03 -1.66,-0.79 -1.76,-1.45 -1.3,-2.45 -5.42,-3.07 -3.68,-0.95 z"
+              style={{ fill: getEstadoFill("AL"), opacity: getEstadoOpacity("AL"), transition: "fill 200ms ease, opacity 200ms ease", cursor: "pointer" }}
+              onMouseEnter={(e) => handleMouseEnter("AL", e)}
+              onMouseMove={(e) => handleMouseMove("AL", e)}
+              onMouseLeave={handleMouseLeave}
+              onClick={(e) => handleClick("AL", e)}
+              onTouchStart={(e) => handleTouch("AL", e)}
+              role="button" tabIndex={0}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") handleClick("AL", e as unknown as React.MouseEvent<SVGPathElement>); }}
+            />
+            {/* AP */}
+            <path
+              id="ap"
+              aria-label={NOME_TODOS_ESTADOS["AP"] ?? "Amapá"}
+              d="m 345.24257,99.961144 -0.94,-0.06 -0.77,0.339996 -1.3,0.12 -2.79,-0.679996 -1.45,-1.03 -0.43,-1.5 -1.87,-1.39 -0.11,-1.3 0.21,-0.69 -0.31,-1.58 -0.33,-0.47 -0.95,-0.19 -0.41,-0.94 0.08,-2.43 -2.93,-3.28 -0.78,0.36 -0.82,-0.19 -1.5,-3.48 0.13,-1.58 -0.59,-1.81 -0.62,-0.56 -0.67,-1.51 -0.19,-2.11 0.43,-3.14 -0.17,-0.33 -2.57,-0.73 -2.02,-2.26 -0.76,-2.83 0.19,-0.72 0.68,-0.23 -0.49,-1.18 -0.68,0.03 -2.84,-2.66 -0.94,0.14 -0.38,0.42 -1.33,0.14 -0.84,-0.27 -0.8,-0.98 -1.14,-0.84 -1.19,-0.12 -0.49,-1.28 -0.67,-0.8 -1.93,-1.05 -1.29,-0.49 -3.39,-0.37 -1.08,0.29 -1.17,-0.02 -0.31,-0.54 -0.24,-1.44 0.25,-4.54 0.62,-1.3 -0.37,-2.3 -0.62,-0.57 0,0 0.35,-0.21 0.99,0.3 -0.01,0.81 -0.29,0.18 0.34,0.97 1.47,-0.06 0.82,0.23 0.35,0.9 0.84,0.71 2.25,0.78 3.29,0.75 2.76,-1.78 0.35,-0.76 1.73,-1.17 0.83,-0.29 0.69,0.94 2.71,0.94 1.08,-0.12 1.72,-1.01 0.12,-0.42 0.32,0.03 1.46,1.3 -0.2,0.87 2.37,-0.17 0.51,0.5 0.95,0.17 0.62,-0.01 0.91,-0.48 1.67,-1.5 1.78,-1.1 1.75,-2.3 0.37,-1 -0.2,-0.54 3.13,-6.5 0.11,-1.82 1.11,-1.3 0.73,-0.19 3.6,-5.79 0.23,-1.15 0.84,-1.2 1.79,-1.55 0.63,-1.66 2.11,-1.14 0.47,-0.92 1.04,-0.58 0.56,1.46 0.88,1.36 -1.67,-4.8 -0.07,-1.29 0.18,-0.33 3.37,2.42 1.14,1.21 0.91,1.22 0.52,1.19 0.03,1.58 0.44,0.31 0.32,-0.48 0.38,-0.1 0.21,0.4 0.21,7.89 0.66,3.87 2.71,6.05 2.66,8.94 3.32,5 1.01,0.35 3.27,-0.08 2.78,0.94 1.29,0.85 0.77,2.65 -0.16,3.33 -1.29,0.96 -1.73,0.43 -0.38,0.33 1.79,-0.15 1.04,-0.42 0.28,0.23 0.12,0.59 -0.17,0.73 -5.03,4.06 -1.17,2.1 -2.15,1.41 -1.94,3.72 -2.91,3.5 -0.7,0.46 -0.94,-0.09 -1.45,0.52 -2.08,2.98 0,0 -1.34,0.07 -0.75,0.9 0,0 -1.47,1.68 -0.97,2.22 -1.12,1.87 -0.84,0.65 -3.01,3.45 -0.36,2.4 0.17,1.8 -1.95,1.81 -0.98,0.12 z m 23.36,-46.99 -0.45,-0.33 -1.1,-1.86 0.07,-0.88 0.23,-0.41 1.66,-0.45 0.43,0.39 0.83,2.27 -0.99,1.1 -0.68,0.17 z m 2.49,17.61 -0.4,-0.25 -0.08,-0.71 1.11,-1.1 0.88,-0.15 1.25,0.24 0.46,-0.11 0.44,-0.64 0.05,0.59 -0.97,1.44 -0.99,0.5 -1.75,0.19 z m 3.44,-2.87 -0.78,-0.23 0,-0.56 0.72,-1.04 1.25,-0.1 0.18,0.35 -0.1,0.51 -1.27,1.07 z m -7.19,-18.42 -0.76,-0.5 0.26,-0.83 0.88,-0.17 0.86,0.32 0.01,0.73 -1.25,0.45 z"
+              style={{ fill: getEstadoFill("AP"), opacity: getEstadoOpacity("AP"), transition: "fill 200ms ease, opacity 200ms ease", cursor: "pointer" }}
+              onMouseEnter={(e) => handleMouseEnter("AP", e)}
+              onMouseMove={(e) => handleMouseMove("AP", e)}
+              onMouseLeave={handleMouseLeave}
+              onClick={(e) => handleClick("AP", e)}
+              onTouchStart={(e) => handleTouch("AP", e)}
+              role="button" tabIndex={0}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") handleClick("AP", e as unknown as React.MouseEvent<SVGPathElement>); }}
+            />
+                        {/* AM */}
+            <path
+              id="am"
+              aria-label={NOME_TODOS_ESTADOS["AM"] ?? "Amazonas"}
+              d="m 166.08257,47.551144 0.72,0.78 0.75,0.34 0.61,0.01 1.13,-0.42 0.63,0.11 0.06,0.96 1.21,1.17 0.97,0.37 0.88,-0.21 1.36,0.11 1.95,0.95 0.49,0.66 -0.91,3.32 -0.71,1.5 2.73,3.74 1.66,4.76 0.19,2.26 0.87,1.12 0.05,0.45 -1.62,1.46 0.36,1.59 0.66,1.58 -0.77,3.04 -0.57,0.96 0.29,4.98 0.88,2.17 1.22,0.84 0.58,0.9 1.13,4.33 -0.06,0.58 -1.14,1.32 -1.84,-0.33 -0.14,1.14 5.01,4.42 0.52,0.04 1.96,1.31 1.48,1.649996 1.04,2.04 0.53,0.07 1.34,-0.42 2.36,1.04 -0.44,-2.11 0.75,-2.289996 0.25,-1.73 -0.37,-1.8 0.82,-2.97 1.02,-1.26 1.28,-0.69 2.09,-0.71 0.55,-0.89 1.6,-0.06 2.83,0.93 1.87,2.04 0.92,2.51 1.82,0.23 1.25,-0.46 1.41,-1.41 2.03,-0.55 0.42,-0.39 0.02,-0.53 -1.14,-1.41 -0.23,-0.73 0.11,-0.66 1.15,-2.64 0.07,-1.13 1.66,-3.03 2.33,-3.26 -0.03,-0.68 18.49,0.07 0,0 0.4,4.86 -0.43,1.45 0.18,2.27 0.24,0.68 1.7,0.85 0.18,0.41 -0.35,0.69 -0.05,2.11 1.83,1.99 0.36,0.19 0.7,-0.18 1.84,1.23 0.55,1.83 0.04,0.93 0.3,0.45 4.64,3.769996 4.58,2.54 0.63,0.9 1.35,1.09 1.88,0.67 2.37,1.31 2.26,0.65 1.36,0.15 1.32,0.82 0.08,0.61 1.27,1.34 2.7,1.44 1.1,2.17 1.87,0.79 0.85,-0.61 1.38,-0.35 0.19,0.48 -0.13,0.78 1.81,1.67 -29.9,64.24 -0.78,1.31 -1.45,1.13 -0.58,0.97 -0.03,1.13 0.82,2.33 0.38,0.57 1.07,0.58 1.58,1.56 0.64,1.26 0.15,1.96 0.57,0.57 0,0 -1.18,1.2 -0.2,0.61 -0.06,0.76 0.34,0.84 -0.27,1.01 -1.2,1.82 -0.86,0.64 -0.42,0.85 0.1,0.85 0.66,1.37 0.46,1.94 -1.38,4.22 -1.18,5.22 -1.21,0.73 -47.85,0.32 0,0 0.04,-0.7 -0.36,-0.38 -1.39,-0.28 -1.92,1.08 -0.54,1.74 -0.68,0.19 -3.24,-1.48 -0.68,-2.88 -0.62,-0.2 -0.98,0.13 -0.46,-0.21 -1.25,-3.27 -2.54,-0.98 -1.33,-1.27 -0.8,-1.91 -0.45,-0.49 -2.15,-1.13 -10.79,0.06 -1.38,2.56 -1.72,0.5 0.09,1.17 -0.26,0.22 -2.48,0.53 -1.19,1.59 -0.05,0.67 0.9,0.7 0.17,0.45 -0.36,1.02 -0.81,1.15 -2.06,1.21 -0.11,1.81 0.24,1.46 -3.87,-0.46 -2.13,0.38 -1.2,1.07 -1.79,-0.1 -0.84,-0.55 -0.46,-0.02 -1.75,1.26 -0.53,0.84 0.26,1.75 -2.54,3.16 -0.68,0.08 -0.68,-0.53 -0.64,-2.26 -0.38,-0.09 -1.84,1.02 -1.3,1.21 -1.37,0.39 -0.77,-0.13 -1.08,0.5 -0.41,0.53 -0.13,0.72 -1.22,0.79 -0.37,0.02 -2.31,-2.33 -0.72,-0.37 -2.87,0.33 -3.96,-0.26 0.16,1.29 -0.15,0.56 -1.55,1.81 -1.92,0.58 -3.26,2.56 0,0 -28.509996,-12.13 -26.44,-14.17 -12.14,-3.14 -23.66,-5.66 -17.95,-7.48 0,0 -0.07,-0.65 0.7,-2.92 1.22,-1.4 4.92,-3.47 2.26,-0.24 0.47,-0.3 0.98,-1.56 0.08,-1.03 -1.74,-4.49 0.38,-1.19 1.18,-2.19 1.28,-1.32 0.92,-1.25 0.42,-0.98 0.3,-1.74 -0.29,-1.32 0.67,-2.04 0.31,-2.31 0.73,-0.75 3.66,-1.63 2.19,-1.23 1.15,-1.04 0.44,-1.4 0.78,-0.37 1.41,-0.11 1.65,-0.93 3.54,-2.73 2.42,-0.43 1.51,0.29 4.19,-1.22 1.5,-0.77 1.82,-0.36 3.33,0.38 1.3,-1.59 0.63,-1.45 1.09,-0.61 2.14,0.2 0.64,0.54 1.32,-0.24 1.1,-0.74 1.71,0.12 0.31,0.53 -0.02,1.18 1.61,1.29 2.83,0.08 0.58,-0.4 0.46,-0.78 -0.11,-0.39 1.17,-4.92 6.7,-37.17 1.16,-2.92 -0.99,-4.959996 0.12,-0.26 -1.3,-1.05 -1.48,-2.75 -0.04,-0.49 0.65,-1.39 -0.52,-1.78 -0.37,-0.4 -1.7,-0.59 -3.03,-2.35 -1.94,-2.28 0.2,-11.51 3.89,-0.26 1.75,-1.17 3.5,-0.92 2.68,1.76 1.22,0.11 1.27,-0.43 -0.49,-1.69 0.3,-1.72 -1.37,-2.1 -0.57,-0.54 -1.15,-0.6 -1.51,0.53 -2.79,-0.61 -3.57,0.09 -0.06,-9.9 0.96,0.04 1.32,-0.58 2.28,-0.6 2.84,0.87 19.03,0.06 -0.46,-0.66 -0.79,-0.14 -0.38,-1.2 0.95,-1.93 1.43,0.4 0.61,1.52 0.87,1.32 0.66,0.35 0.83,0.01 1.61,-0.61 1.94,-2.09 0.32,-0.84 1.259996,-1.24 2.55,-1.39 1.29,0.46 1.17,2.58 1.62,1.99 0.74,1.3 0.66,1.78 0.23,1.55 -0.49,3.63 0.2,1.76 3.2,-0.75 8.31,7.06 0.79,0.28 2.5,0.21 2.3,-1 1.7,-1.7 2.11,-1.16 2.19,-0.11 0.56,0.29 0.77,1.08 -0.02,0.97 -1.11,1.7 0.37,0.98 0.58,0.27 1.33,-0.72 0.56,-0.91 0.23,-1.29 1,-1.16 0.47,-0.23 1,0.18 0.55,-0.18 0.41,-0.66 0.46,-2.31 0.51,-0.37 1.51,-0.36 2.93,-1.77 0.97,0.55 0.93,-0.29 1.6,-1.04 1.02,-1.61 2.11,-1.21 2.03,0.55 z"
+              style={{ fill: getEstadoFill("AM"), opacity: getEstadoOpacity("AM"), transition: "fill 200ms ease, opacity 200ms ease", cursor: "pointer" }}
+              onMouseEnter={(e) => handleMouseEnter("AM", e)}
+              onMouseMove={(e) => handleMouseMove("AM", e)}
+              onMouseLeave={handleMouseLeave}
+              onClick={(e) => handleClick("AM", e)}
+              onTouchStart={(e) => handleTouch("AM", e)}
+              role="button" tabIndex={0}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") handleClick("AM", e as unknown as React.MouseEvent<SVGPathElement>); }}
+            />
+            {/* BA */}
+            <path
+              id="ba"
+              aria-label={NOME_TODOS_ESTADOS["BA"] ?? "Bahia"}
+              d="m 451.56257,319.75114 -0.81,0.18 -2.39,-0.66 -1.15,-0.85 -3.04,-3.75 -0.79,-0.52 -2.18,-0.23 -1.31,-0.5 -0.71,-0.73 -0.35,-1.17 -0.68,-0.79 -0.98,-0.28 -2.93,0.18 -0.69,-0.3 -0.73,-0.88 -0.4,-1.15 -0.78,-0.68 -1.44,-0.41 -1.18,0.07 -0.88,0.65 -1.49,1.97 -1.54,0.88 -1.09,-0.38 -1.36,-1.4 -0.96,-2.75 -1.14,-1.29 -2.21,-0.56 -0.86,0.27 -0.7,0.71 -0.55,-0.09 -0.64,-1.14 0.08,-0.82 0.8,-0.97 0.05,-0.54 -0.42,-0.55 -1.93,-0.38 -0.92,-1.29 -0.56,-0.09 -0.59,0.26 -0.3,0.95 0.13,0.82 -0.26,0.84 -0.56,0.26 -0.89,-0.15 -2.13,-1.42 -1.15,-0.19 -0.73,0.21 -0.51,0.59 0.1,0.7 0.76,0.99 0.24,0.78 -0.3,1.08 -0.7,0.53 -1.05,-0.07 -2.47,-2.02 -0.97,-0.06 -0.72,0.42 -0.41,0.68 -0.5,2.61 -0.45,0.61 -0.73,0.12 -0.94,-0.47 -2.14,-2.52 -2.19,-1.69 -0.81,0.21 -0.87,1.11 -0.97,0.44 -1.15,-0.5 -1.02,-1.87 -1.37,-0.39 -3.36,-2.81 -1.17,-1.57 0.02,-0.97 -0.6,-0.52 -0.91,-0.18 -1.05,0.34 -1.83,1.58 -0.88,0.23 -0.61,-0.25 -0.43,-0.65 0.04,-1.29 -0.61,-0.63 -0.91,-0.29 -1.44,0.49 -1.41,-0.1 -1.61,-0.96 -0.5,-0.71 0.16,-0.79 1.48,-2.2 0.13,-0.72 -0.45,-0.92 -1.3,-1.0 -1.03,-0.3 -3.44,0.39 -1.73,-0.46 -1.6,-1.27 -0.98,0.13 -0.99,0.87 -1.29,0.23 -0.62,-0.27 -0.38,-0.6 0.27,-0.8 2.06,-1.48 0.28,-0.74 -0.23,-0.77 -1.68,-1.57 -0.44,-0.85 0.17,-1.09 0.93,-1.47 0.07,-0.92 -0.44,-0.57 -0.73,-0.1 -1.85,0.63 -0.93,-0.04 -0.47,-0.44 -0.02,-0.79 0.56,-0.82 -0.04,-0.52 -0.57,-0.27 -3.17,1.2 -0.79,-0.12 -0.73,-0.73 -0.08,-0.77 0.54,-0.71 2.73,-1.59 0.58,-0.71 0.07,-0.81 -1.06,-2.98 0.15,-0.73 0.68,-0.6 1.3,0.07 0.55,-0.22 0.24,-0.59 -0.25,-1.83 0.13,-0.67 0.69,-0.7 2.65,-0.27 0.83,-0.4 0.53,-0.7 0.62,-2.22 1.04,-1.66 0.08,-0.84 -0.62,-1.33 0.11,-0.95 1.09,-1.38 0.15,-0.68 -0.44,-1.31 0.05,-0.6 0.54,-0.37 0.91,0.07 0.82,-0.35 0.57,-0.77 0.24,-0.99 -0.15,-1.24 -0.59,-0.84 -0.08,-0.54 0.49,-0.52 2.03,0.28 0.63,-0.17 1.3,-1.34 0.98,-0.41 3.12,-0.26 1.66,-0.76 0.6,-0.73 0.12,-0.85 -0.27,-0.75 -1.02,-0.55 -0.25,-0.59 0.16,-0.79 1.25,-1.61 0.13,-0.6 -0.43,-1.14 0.05,-0.56 0.42,-0.38 1.17,0.1 0.71,-0.31 0.34,-0.71 -0.04,-0.96 -0.49,-0.78 -1.98,-1.59 -0.43,-0.72 0.07,-0.75 0.72,-0.81 3.5,-1.74 0.82,-0.79 0.22,-0.75 -0.51,-1.69 0.06,-0.6 0.42,-0.4 0.66,-0.05 2.26,1.01 0.71,-0.07 1.07,-0.67 1.23,-1.79 0.84,-0.57 0.97,0.07 1.72,0.97 0.9,0.04 0.55,-0.31 0.2,-0.58 -0.49,-2.06 0.44,-0.99 2.03,-2.13 0.62,-1.47 0,0 1.73,0.8 2.38,2.7 1.18,0.69 1.15,-0.01 0.77,-0.5 0.76,-1.21 0.88,-0.75 1.04,-0.18 0.87,0.49 0.44,0.7 0.03,0.96 0.42,0.68 0.76,0.19 3.33,-0.55 0.86,0.14 0.67,0.52 0.4,0.83 0.59,0.56 3.72,0.4 0.72,-0.26 0.61,-0.83 0.18,-0.97 -0.14,-0.87 -0.69,-1.1 0.07,-0.86 0.59,-0.67 0.96,-0.11 2.67,0.67 1.0,0.02 0.65,-0.26 0.28,-0.56 0.05,-2.27 0.34,-0.55 0.7,-0.15 2.4,0.41 0.74,-0.19 1.38,-1.3 0.78,-0.23 0.74,0.38 0.45,0.76 0.38,1.5 0.64,0.84 2.61,1.38 0.89,0.82 0.36,0.86 -0.01,0.94 -0.49,0.94 -0.01,0.63 0.52,0.43 0.99,0.01 1.4,-0.72 0.72,-0.02 0.71,0.52 0.32,0.81 -0.12,1.09 0.35,0.63 0.73,0.18 1.8,-0.52 0.77,0.04 0.55,0.43 0.22,0.8 -0.68,1.64 -0.09,0.78 0.27,0.58 0.73,0.37 3.67,0.17 0.87,0.33 0.51,0.57 0.08,0.81 -0.56,2.27 0.18,0.69 1.04,0.89 0.25,0.68 -0.41,1.41 0.16,0.56 0.57,0.23 0.81,-0.24 0.81,0.25 0.45,0.67 -0.05,0.78 -1.36,2.12 -0.27,1.09 0.27,1.03 0.73,0.76 2.87,1.29 0.83,0.7 0.34,0.82 -0.04,0.81 -0.49,0.72 -1.77,1.08 -0.52,0.66 -0.1,0.77 0.43,0.88 1.65,1.35 0.44,0.65 0.15,1.65 0.5,0.8 0.83,0.35 2.42,-0.07 0.76,0.18 0.46,0.53 0.07,0.78 -1.02,2.32 -0.03,0.74 0.41,0.55 0.83,0.27 0.72,-0.19 1.14,-1.19 0.73,-0.22 0.69,0.26 0.33,0.65 -0.28,2.08 0.25,0.72 1.69,1.52 0.4,0.74 0.09,1.67 0.37,0.65 0.72,0.25 3.46,-0.21 0.69,0.22 0.49,0.59 0.07,0.86 -0.97,2.4 -0.09,0.89 0.31,0.59 0.72,0.24 1.19,-0.24 0.64,0.18 0.38,0.55 0.1,2.01 0.36,0.67 0.7,0.31 3.96,-0.59 0.74,0.05 0.49,0.43 0.2,0.79 -0.36,2.51 0.23,0.72 0.77,0.42 1.37,-0.05 0.62,0.25 0.38,0.57 0.13,1.32 0.41,0.77 0.76,0.35 1.77,-0.14 0.65,0.18 0.48,0.58 0.02,0.79 -0.76,1.49 -0.07,0.72 0.35,0.66 0.86,0.31 1.58,-0.43 0.73,0.08 0.74,0.77 0.39,1.81 0.68,1.14 2.0,1.11 0.64,0.77 0.12,0.89 -0.86,2.37 0,0 -1.67,0.35 -2.08,1.42 -0.82,1.05 -0.03,0.73 0.35,0.41 1.07,0.3 0.52,0.47 0.0,0.61 -0.62,0.7 -0.61,0.26 -0.64,-0.15 -0.67,-0.64 -0.74,-0.19 -0.72,0.3 -0.44,0.73 0.14,0.9 1.42,1.27 0.29,0.7 -0.11,0.62 -0.63,0.43 -0.74,-0.07 -2.06,-1.31 -0.76,0.01 -0.55,0.41 -0.13,0.74 1.21,2.69 -0.05,0.72 -0.54,0.54 -0.78,0.06 -2.39,-0.89 -0.77,0.07 -0.56,0.5 -0.12,0.74 0.45,1.26 0.01,0.76 -0.37,0.67 -0.72,0.27 -3.23,-0.05 -0.73,0.24 -0.46,0.56 -0.03,0.75 0.38,0.56 1.36,0.71 0.41,0.6 0.02,0.72 -0.39,0.62 -1.28,0.62 -0.48,0.55 -0.01,0.72 0.55,0.66 0.58,0.16 1.16,-0.44 0.6,0.01 0.55,0.46 0.09,0.73 -1.08,2.12 -0.15,0.76 0.18,0.64 0.64,0.42 0.76,-0.06 1.51,-0.95 0.64,-0.05 0.55,0.41 0.08,0.71 -0.45,0.93 -0.08,0.71 0.31,0.56 0.68,0.27 4.03,-0.14 0.65,0.19 0.48,0.55 0.01,0.73 -0.56,1.02 -0.08,0.72 0.3,0.6 0.68,0.28 2.1,-0.24 0.67,0.2 0.47,0.6 0.0,0.74 -1.6,2.48 -0.06,0.67 0.38,0.6 0.72,0.25 1.38,-0.38 0.67,0.12 0.5,0.52 0.04,0.73 -0.97,2.27 0,0 -2.32,-1.03 -3.38,0.27 -1.72,0.75 -0.41,0.51 -0.05,0.77 0.24,0.65 2.0,1.71 0.28,0.62 -0.08,0.7 -0.53,0.56 -0.8,0.14 -1.07,-0.33 -0.7,0.11 -0.51,0.53 -0.04,0.78 0.82,1.35 0.1,0.67 -0.28,0.55 -0.68,0.24 -0.81,-0.22 -1.49,-1.24 -0.75,-0.14 -0.61,0.29 -0.26,0.66 0.33,1.88 -0.12,0.66 -0.55,0.43 -0.77,-0.03 -2.38,-1.43 -0.78,-0.09 -0.58,0.36 -0.18,0.69 0.31,0.68 1.14,0.93 0.28,0.66 -0.08,0.69 -0.5,0.48 -0.75,0.1 -2.0,-0.72 -0.75,0.05 -0.56,0.44 -0.1,0.72 0.41,0.63 1.38,0.73 0.38,0.62 -0.03,0.71 -0.47,0.54 -0.74,0.13 -1.47,-0.5 -0.74,0.09 -0.55,0.47 -0.06,0.73 0.49,0.65 0.77,0.28 2.41,0.02 0.67,0.27 0.36,0.59 -0.1,0.71 -1.26,1.44 -0.18,0.67 0.14,0.63 0.55,0.43 0.77,-0.05 3.26,-1.6 0.68,-0.04 0.55,0.39 0.17,0.68 -0.34,0.97 0.05,0.7 0.48,0.52 0.75,0.1 3.38,-0.97 0.69,0.06 0.49,0.47 0.07,0.71 -0.8,1.69 0,0 -10.06,0.52 -3.3,1.04 -1.42,-0.14 -1.11,-0.62 -0.5,-0.71 -0.09,-1.79 -0.31,-0.6 -0.7,-0.24 -1.35,0.27 -0.71,-0.12 -1.53,-1.17 -0.84,-0.14 -1.56,0.4 -3.7,-0.1 -1.35,0.27 -1.0,0.72 -0.36,0.72 0.04,0.78 0.47,0.61 1.55,0.79 0.36,0.58 -0.06,0.69 -0.5,0.52 -0.76,0.09 -3.15,-0.64 -0.78,0.07 -1.38,0.87 -0.72,0.15 -0.63,-0.23 -0.44,-0.63 0.03,-0.77 0.54,-0.75 0.06,-0.69 -0.38,-0.57 -0.72,-0.17 -1.46,0.35 -0.66,-0.1 -0.53,-0.49 -0.05,-0.75 1.25,-2.25 0.01,-0.72 -0.45,-0.57 -0.75,-0.09 -3.79,1.12 -0.75,-0.03 -0.57,-0.44 -0.11,-0.72 0.37,-0.67 2.14,-1.79 0.3,-0.65 -0.12,-0.71 -0.55,-0.47 -0.78,0.02 -3.97,1.87 -0.72,0.07 -0.54,-0.4 -0.12,-0.71 0.34,-0.7 1.61,-1.3 0.27,-0.65 -0.15,-0.7 -0.59,-0.41 -0.78,0.09 -2.86,1.68 -0.74,0.08 -0.57,-0.37 -0.14,-0.7 0.31,-0.67 1.11,-0.89 0.28,-0.65 -0.14,-0.7 -0.59,-0.41 -0.78,0.09 -1.98,1.18 -0.73,0.09 -0.57,-0.36 -0.15,-0.7 0.28,-0.65 0.84,-0.71 0.25,-0.65 -0.14,-0.69 -0.58,-0.41 -0.77,0.08 -1.41,0.83 -0.7,0.1 -0.55,-0.36 -0.14,-0.68 0.26,-0.64 1.94,-1.66 0.26,-0.66 -0.15,-0.7 -0.59,-0.41 -0.78,0.08 -2.67,1.57 -0.72,0.09 -0.56,-0.38 -0.14,-0.71 0.28,-0.65 z"
+              style={{ fill: getEstadoFill("BA"), opacity: getEstadoOpacity("BA"), transition: "fill 200ms ease, opacity 200ms ease", cursor: "pointer" }}
+              onMouseEnter={(e) => handleMouseEnter("BA", e)}
+              onMouseMove={(e) => handleMouseMove("BA", e)}
+              onMouseLeave={handleMouseLeave}
+              onClick={(e) => handleClick("BA", e)}
+              onTouchStart={(e) => handleTouch("BA", e)}
+              role="button" tabIndex={0}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") handleClick("BA", e as unknown as React.MouseEvent<SVGPathElement>); }}
+            />
+            {/* CE */}
+            <path
+              id="ce"
+              aria-label={NOME_TODOS_ESTADOS["CE"] ?? "Ceará"}
+              d="m 515.57257,167.41114 -0.93,-0.12 -1.56,0.58 -0.83,0.74 -0.26,0.73 0.14,0.71 0.91,0.78 0.17,0.55 -0.38,1.14 -0.72,0.57 -4.37,0.49 -0.95,0.43 -0.43,0.63 0.08,0.83 0.87,1.04 0.07,0.57 -0.54,1.35 -1.37,1.13 -0.38,0.65 0.12,0.87 0.83,0.82 0.17,0.6 -0.34,1.09 -1.01,0.83 -0.27,0.68 0.22,0.84 1.33,1.02 0.28,0.7 -0.13,0.77 -0.68,0.74 -3.12,1.34 -0.62,0.6 -0.16,0.74 0.37,0.88 2.47,2.69 0.33,0.71 -0.08,0.76 -0.57,0.71 -0.88,0.33 -5.25,-0.35 -0.89,0.25 -0.62,0.68 -0.06,0.8 0.57,0.72 1.2,0.57 0.43,0.62 0.02,0.81 -0.52,0.79 -1.4,0.66 -0.42,0.6 0.1,0.84 0.81,0.79 0.15,0.58 -0.35,0.96 -1.96,2.14 -0.24,0.65 0.16,0.85 0.72,0.67 0.15,0.59 -0.26,1.02 -0.87,0.75 -0.22,0.66 0.24,0.87 1.06,0.78 0.18,0.58 -0.25,0.99 -2.35,2.49 -0.3,0.68 0.1,0.78 0.59,0.66 3.24,1.51 0.55,0.62 0.09,0.78 -0.31,0.64 -1.17,0.73 -0.33,0.64 0.11,0.82 0.72,0.61 0.12,0.55 -0.45,1.19 0,0 -3.66,-0.06 -0.85,0.34 -0.57,0.68 -0.08,0.8 0.48,0.83 0.05,0.63 -0.44,0.75 -1.19,0.62 -0.39,0.58 0.06,0.86 0.66,0.74 0.11,0.57 -0.35,0.98 -0.8,0.71 -0.15,0.56 0.2,0.77 0.96,0.82 0.12,0.55 -0.33,1.05 -1.75,1.67 -0.3,0.64 0.08,0.75 0.55,0.64 3.53,1.48 0.5,0.54 0.17,0.84 -0.31,0.88 -1.59,1.52 -0.27,0.63 0.12,0.78 0.58,0.63 3.98,1.35 0.52,0.55 0.1,0.78 -0.36,0.69 -1.37,0.82 0,0 -1.6,-0.04 -1.05,-0.5 -2.12,-2.12 -0.85,-0.52 -1.28,-0.27 -1.68,0.25 -1.02,-0.22 -0.71,-0.58 -0.67,-1.24 -1.47,-1.27 -1.02,-0.4 -2.5,-0.23 -1.09,0.23 -0.82,0.6 -0.25,0.75 0.08,0.79 -0.22,0.51 -0.73,0.22 -1.64,-0.47 -0.83,0.02 -0.7,0.44 -0.34,0.77 0.11,0.97 -0.32,0.68 -0.75,0.39 -5.15,-0.57 -1.05,0.28 -0.69,0.6 0,0 -3.07,-1.82 -0.52,-0.77 0.03,-0.75 0.64,-0.64 0.04,-0.57 -0.47,-0.74 -1.47,-0.83 -0.41,-0.62 0.08,-0.77 0.69,-0.65 0.08,-0.55 -0.44,-0.79 -2.26,-1.92 -0.4,-0.67 0.06,-0.75 0.63,-0.66 0.07,-0.57 -0.42,-0.78 -3.41,-2.96 -0.37,-0.65 0.06,-0.74 0.63,-0.65 0.08,-0.57 -0.41,-0.76 -1.27,-1.08 -0.35,-0.63 0.06,-0.73 0.66,-0.71 0.07,-0.57 -0.41,-0.75 -3.4,-2.85 -0.36,-0.63 0.05,-0.72 0.63,-0.65 0.07,-0.56 -0.41,-0.76 -1.48,-1.27 -0.35,-0.62 0.04,-0.72 0.65,-0.7 0.06,-0.57 -0.41,-0.76 -3.63,-3.07 0,0 0.56,-0.77 3.82,-2.3 0.81,-0.94 0.09,-0.74 -0.52,-1.1 0.05,-0.65 0.45,-0.56 0.79,-0.22 0.79,0.36 0.62,0.05 0.48,-0.39 0.13,-0.72 -0.32,-0.74 -2.41,-2.97 -0.28,-0.69 0.1,-0.75 0.57,-0.64 3.95,-1.76 0.53,-0.58 0.09,-0.74 -0.3,-0.65 -1.57,-1.55 -0.27,-0.64 0.08,-0.73 0.53,-0.6 0.78,-0.2 3.09,0.57 0.73,-0.12 1.52,-1.13 0.68,-0.13 0.6,0.29 0.31,0.62 -0.01,0.73 0.34,0.6 0.68,0.24 1.06,-0.23 0.6,-0.47 0.09,-0.7 -0.38,-0.65 -0.06,-0.56 0.34,-0.68 0.73,-0.36 2.64,0.16 0.67,-0.2 0.9,-1.0 0.71,-0.21 0.62,0.24 0.34,0.6 0.07,1.19 0.36,0.57 0.67,0.17 0.58,-0.31 0.15,-0.63 -0.39,-1.42 0.12,-0.63 0.53,-0.45 0.76,0.01 1.69,0.87 0.69,0.06 1.09,-0.47 0.64,-0.05 0.52,0.37 0.11,0.66 -0.46,1.42 0.06,0.67 0.5,0.46 0.75,0.06 4.17,-1.08 0.72,0.04 0.51,0.43 0.1,0.7 -0.39,0.79 -0.04,0.62 0.37,0.53 0.7,0.13 2.05,-0.63 0.69,0.05 0.5,0.42 0.13,0.7 -0.31,0.65 -2.9,3.03 -0.25,0.64 0.14,0.72 0.58,0.5 0.77,0.0 4.17,-1.75 0.73,0.02 0.52,0.42 0.13,0.7 -0.3,0.64 -1.31,1.3 -0.26,0.64 0.14,0.72 0.58,0.5 0.76,0.0 3.1,-1.28 0.68,0.0 0.51,0.4 0.13,0.69 -0.29,0.62 -2.04,2.1 -0.24,0.62 0.16,0.71 0.6,0.49 0.77,-0.02 2.19,-0.92 0.67,0.01 0.5,0.4 0.12,0.69 -0.33,0.68 -1.01,0.93 z"
+              style={{ fill: getEstadoFill("CE"), opacity: getEstadoOpacity("CE"), transition: "fill 200ms ease, opacity 200ms ease", cursor: "pointer" }}
+              onMouseEnter={(e) => handleMouseEnter("CE", e)}
+              onMouseMove={(e) => handleMouseMove("CE", e)}
+              onMouseLeave={handleMouseLeave}
+              onClick={(e) => handleClick("CE", e)}
+              onTouchStart={(e) => handleTouch("CE", e)}
+              role="button" tabIndex={0}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") handleClick("CE", e as unknown as React.MouseEvent<SVGPathElement>); }}
+            />
+                        {/* DF */}
+            <path
+              id="df"
+              aria-label={NOME_TODOS_ESTADOS["DF"] ?? "Distrito Federal"}
+              d="m 394.03257,354.82114 -0.69,-0.3 -1.18,-1.2 -0.92,-0.44 -0.97,0.1 -0.71,0.61 -0.11,0.74 0.73,1.59 0.04,0.76 -0.44,0.66 -0.72,0.19 -1.45,-0.51 -0.64,0.17 -0.54,0.61 -0.01,0.76 0.54,0.65 0.07,0.57 -0.42,0.77 -0.76,0.37 -1.16,-0.17 -0.62,0.25 -0.44,0.7 0.07,0.77 0.62,0.59 0.08,0.53 -0.43,0.89 0,0 -1.51,-0.34 -2.56,-2.07 -0.81,-1.17 0.03,-0.99 1.52,-1.97 0.2,-0.99 -0.27,-0.93 -3.11,-3.46 0,0 1.0,-0.74 3.8,-0.46 1.56,-0.69 0.85,-0.94 0.19,-1.0 -0.51,-1.19 0.03,-0.74 0.46,-0.55 1.1,-0.28 0.48,-0.44 0.07,-0.69 -0.46,-0.66 0,0 2.73,0.12 1.04,0.46 3.2,3.56 0.64,1.13 -0.15,0.9 -0.81,0.79 -0.14,0.71 0.43,0.69 0.88,0.42 0.96,-0.04 2.08,-0.98 0.75,-0.03 0.56,0.43 0.08,0.73 z"
+              style={{ fill: getEstadoFill("DF"), opacity: getEstadoOpacity("DF"), transition: "fill 200ms ease, opacity 200ms ease", cursor: "pointer" }}
+              onMouseEnter={(e) => handleMouseEnter("DF", e)}
+              onMouseMove={(e) => handleMouseMove("DF", e)}
+              onMouseLeave={handleMouseLeave}
+              onClick={(e) => handleClick("DF", e)}
+              onTouchStart={(e) => handleTouch("DF", e)}
+              role="button" tabIndex={0}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") handleClick("DF", e as unknown as React.MouseEvent<SVGPathElement>); }}
+            />
+            {/* ES */}
+            <path
+              id="es"
+              aria-label={NOME_TODOS_ESTADOS["ES"] ?? "Espírito Santo"}
+              d="m 491.93257,402.04114 -1.83,2.28 -1.42,3.07 -0.87,1.04 -2.44,1.6 -2.5,3.08 -1.44,0.96 -0.96,0.16 -1.71,-0.39 -1.32,0.32 -2.48,1.82 -0.79,0.12 -0.6,-0.31 -0.18,-0.68 0.35,-1.19 -0.1,-0.68 -0.58,-0.44 -1.38,0.09 -0.65,0.36 -0.22,0.63 0.34,1.34 -0.06,0.67 -0.5,0.49 -0.75,0.06 -2.22,-0.77 0,0 -0.1,-4.26 0.47,-0.88 1.89,-1.52 0.43,-0.65 0.14,-2.72 -0.38,-1.28 -1.59,-2.31 -0.27,-0.88 0.16,-0.83 1.52,-2.24 0.24,-0.86 -0.06,-0.71 -0.46,-0.57 -1.84,-0.76 -0.41,-0.57 0.11,-0.78 0.58,-0.56 2.65,-1.0 0.55,-0.54 0.08,-0.72 -0.49,-0.7 -0.82,-0.33 -1.54,0.02 -0.67,-0.28 -0.35,-0.65 0.17,-0.88 1.0,-1.11 0.18,-0.68 -0.13,-0.68 -0.55,-0.48 -0.79,-0.04 -1.8,0.73 -0.7,-0.01 -0.55,-0.42 -0.1,-0.72 0.38,-0.63 0.79,-0.43 0.3,-0.6 -0.08,-0.71 -1.3,-1.48 0,0 2.35,-2.42 5.96,-3.62 1.82,-0.57 1.0,0.13 1.52,1.04 0.87,0.15 0.7,-0.25 0.55,-0.72 0.17,-0.86 -0.07,-0.82 -0.43,-0.67 -0.03,-0.6 0.42,-0.62 1.55,-0.84 0.43,-0.6 0.05,-0.71 -0.8,-2.1 0.07,-0.64 0.47,-0.53 0.74,-0.1 1.77,0.58 0.72,-0.06 0.53,-0.47 0.06,-0.72 -0.48,-0.67 -1.46,-0.88 -0.38,-0.61 0.12,-0.79 0.76,-0.72 0.2,-0.65 -0.14,-0.73 -0.72,-0.61 -0.2,-0.63 0.18,-0.71 0.75,-0.67 3.04,-1.32 0,0 0.68,0.85 -0.09,3.07 0.43,1.44 0.95,0.97 0.44,0.77 -0.12,1.57 0.26,0.8 2.33,2.21 0.34,0.75 0.04,3.02 0.26,0.82 0.69,0.53 1.51,0.03 0.59,0.36 0.27,0.68 -0.27,2.06 0.21,0.74 0.64,0.43 0.97,-0.1 0.62,0.21 0.39,0.58 -0.03,0.73 -1.29,1.96 -0.14,0.69 0.28,0.74 0.85,0.54 0.27,0.67 -0.11,0.77 -0.63,0.63 -0.1,0.58 0.33,0.69 1.56,1.12 0.27,0.64 -0.05,0.73 -1.74,2.22 -0.17,0.66 0.2,0.74 0.77,0.64 0.19,0.63 -0.16,0.72 -0.64,0.59 z"
+              style={{ fill: getEstadoFill("ES"), opacity: getEstadoOpacity("ES"), transition: "fill 200ms ease, opacity 200ms ease", cursor: "pointer" }}
+              onMouseEnter={(e) => handleMouseEnter("ES", e)}
+              onMouseMove={(e) => handleMouseMove("ES", e)}
+              onMouseLeave={handleMouseLeave}
+              onClick={(e) => handleClick("ES", e)}
+              onTouchStart={(e) => handleTouch("ES", e)}
+              role="button" tabIndex={0}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") handleClick("ES", e as unknown as React.MouseEvent<SVGPathElement>); }}
+            />
+            {/* GO */}
+            <path
+              id="go"
+              aria-label={NOME_TODOS_ESTADOS["GO"] ?? "Goiás"}
+              d="m 393.50257,287.47114 -0.59,0.64 -0.17,0.68 0.25,0.74 1.77,1.84 0.26,0.69 -0.1,0.74 -0.53,0.64 -2.87,1.5 -0.52,0.6 -0.1,0.74 0.37,0.72 1.7,1.4 0.32,0.65 -0.04,0.73 -0.45,0.6 -0.77,0.28 -1.37,-0.26 -0.68,0.13 -0.56,0.55 -0.07,0.74 0.47,0.69 1.61,1.02 0.38,0.65 -0.05,0.74 -0.49,0.62 -0.78,0.19 -2.92,-0.6 -0.74,0.1 -0.56,0.52 -0.08,0.74 0.44,0.71 2.19,1.74 0.34,0.65 -0.04,0.74 -0.49,0.64 -0.77,0.24 -1.55,-0.37 -0.7,0.1 -0.56,0.53 -0.08,0.74 0.43,0.71 1.03,0.7 0.33,0.64 -0.06,0.73 -0.5,0.62 -0.77,0.2 -2.47,-0.49 -0.71,0.09 -0.55,0.5 -0.1,0.73 0.38,0.68 1.65,1.26 0.34,0.64 -0.06,0.73 -0.5,0.62 -0.77,0.2 -3.25,-0.61 -0.72,0.09 -0.54,0.48 -0.11,0.72 0.35,0.67 2.42,1.93 0.31,0.64 -0.07,0.72 -0.5,0.61 -0.76,0.2 -1.64,-0.37 -0.69,0.1 -0.53,0.49 -0.1,0.72 0.36,0.67 1.22,0.95 0.3,0.63 -0.07,0.72 -0.5,0.61 -0.76,0.2 -2.5,-0.51 -0.7,0.1 -0.53,0.49 -0.1,0.71 0.35,0.66 2.15,1.71 0.3,0.63 -0.07,0.72 -0.5,0.61 -0.76,0.2 -1.64,-0.37 -0.69,0.1 -0.53,0.49 -0.1,0.71 0.35,0.66 1.2,0.94 0.3,0.63 -0.07,0.72 -0.5,0.61 -0.76,0.2 -2.42,-0.5 -0.7,0.1 -0.53,0.48 -0.1,0.71 0.34,0.66 3.27,2.61 0.3,0.64 -0.07,0.72 -1.51,1.73 0,0 -0.46,0.66 0.07,0.77 0.62,0.59 0.08,0.53 -0.43,0.89 0,0 -3.11,-3.46 -0.27,-0.93 0.03,-0.99 1.52,-1.97 0.2,-0.99 -0.81,-1.17 -2.56,-2.07 -1.51,-0.34 0,0 0.43,-0.89 -0.08,-0.53 -0.62,-0.59 -0.07,-0.77 0.44,-0.66 -0.04,-0.76 -0.73,-1.59 0.11,-0.74 0.71,-0.61 0.97,-0.1 0.92,0.44 1.18,1.2 0.69,0.3 0,0 -0.08,-0.73 -0.56,-0.43 -0.75,0.03 -2.08,0.98 -0.96,0.04 -0.88,-0.42 -0.43,-0.69 0.14,-0.71 0.81,-0.79 0.15,-0.9 -0.64,-1.13 -3.2,-3.56 -1.04,-0.46 -2.73,-0.12 0,0 -0.53,-0.56 0.09,-0.82 0.53,-0.56 0.23,-0.68 -0.28,-0.97 -2.19,-2.95 -0.31,-0.72 0.07,-0.75 0.55,-0.64 3.98,-1.35 0.58,-0.63 -0.12,-0.78 -0.27,-0.63 -1.59,-1.52 -0.31,-0.88 0.17,-0.84 0.5,-0.55 3.53,-1.48 0.55,-0.64 -0.08,-0.75 -0.3,-0.64 -1.75,-1.67 -0.33,-1.05 0.12,-0.55 0.96,-0.82 0.2,-0.77 -0.15,-0.56 -0.8,-0.71 -0.35,-0.98 0.11,-0.57 0.66,-0.74 0.06,-0.86 -0.39,-0.58 -1.19,-0.62 -0.44,-0.75 0.05,-0.63 0.48,-0.83 -0.08,-0.8 -0.57,-0.68 -0.85,-0.34 -3.66,0.06 0,0 0.45,-1.19 -0.12,-0.55 -0.72,-0.61 -0.11,-0.82 0.33,-0.64 1.17,-0.73 0.31,-0.64 -0.09,-0.78 -0.55,-0.62 -3.24,-1.51 -0.59,-0.66 -0.1,-0.78 0.3,-0.68 2.35,-2.49 0.25,-0.99 -0.18,-0.58 -1.06,-0.78 -0.24,-0.87 0.22,-0.66 0.87,-0.75 0.26,-1.02 -0.15,-0.59 -0.72,-0.67 -0.16,-0.85 0.24,-0.65 1.96,-2.14 0.35,-0.96 -0.15,-0.58 -0.81,-0.79 -0.1,-0.84 0.42,-0.6 1.4,-0.66 0.52,-0.79 -0.02,-0.81 -0.43,-0.62 -1.2,-0.57 -0.57,-0.72 0.06,-0.8 0.62,-0.68 0.89,-0.25 5.25,0.35 0.88,-0.33 0.57,-0.71 0.08,-0.76 -0.33,-0.71 -2.47,-2.69 -0.37,-0.88 0.16,-0.74 0.62,-0.6 3.12,-1.34 0.68,-0.74 0.13,-0.77 -0.28,-0.7 -1.33,-1.02 -0.22,-0.84 0.27,-0.68 1.01,-0.83 0.34,-1.09 -0.17,-0.6 -0.83,-0.82 -0.12,-0.87 0.38,-0.65 1.37,-1.13 0.54,-1.35 -0.07,-0.57 -0.87,-1.04 -0.08,-0.83 0.43,-0.63 0.95,-0.43 4.37,-0.49 0.72,-0.57 0.38,-1.14 -0.17,-0.55 -0.91,-0.78 -0.14,-0.71 0.26,-0.73 0.83,-0.74 1.56,-0.58 0.93,0.12 0,0 2.28,0.05 0.71,0.36 0.35,0.66 -0.07,0.77 -1.37,1.46 -0.18,0.67 0.26,0.75 0.81,0.56 2.97,0.09 0.69,0.28 0.43,0.64 -0.03,0.77 -0.58,0.74 -0.07,0.61 0.37,0.64 0.72,0.28 1.04,-0.18 0.64,0.17 0.46,0.59 0.0,0.76 -0.55,0.71 -0.08,0.6 0.34,0.64 0.71,0.31 1.56,-0.14 0.66,0.17 0.47,0.58 0.01,0.76 -0.53,0.68 -0.1,0.6 0.3,0.63 0.69,0.33 2.43,-0.11 0.68,0.22 0.45,0.6 0.0,0.76 -0.53,0.69 -0.09,0.6 0.31,0.63 0.69,0.32 1.55,-0.12 0.66,0.17 0.46,0.58 0.01,0.76 -0.54,0.7 -0.08,0.6 0.31,0.63 0.69,0.32 2.3,-0.13 0.68,0.21 0.45,0.6 0.01,0.76 -0.53,0.69 -0.09,0.6 0.31,0.63 0.69,0.33 1.54,-0.12 0.66,0.17 0.46,0.58 0.02,0.76 -0.53,0.7 -0.08,0.59 0.31,0.63 1.34,0.64 0.27,0.57 -0.07,0.7 -0.51,0.56 -2.27,0.85 -0.46,0.53 -0.02,0.69 0.42,0.58 2.88,1.36 0.37,0.54 -0.02,0.67 -0.48,0.57 -3.36,1.42 -0.42,0.51 0.0,0.66 0.44,0.57 1.12,0.44 0.35,0.54 0.0,0.66 -0.45,0.58 -0.81,0.27 -0.32,0.52 0.08,0.65 0.55,0.5 2.36,0.6 0.43,0.51 0.02,0.66 -0.41,0.56 -2.03,1.3 -0.36,0.53 0.04,0.65 0.47,0.53 1.77,0.49 0.37,0.53 0.01,0.64 -0.43,0.56 -0.79,0.25 -0.3,0.52 0.1,0.64 0.56,0.48 2.52,0.54 0.39,0.51 0.0,0.63 -0.42,0.55 -2.1,1.27 z"
+              style={{ fill: getEstadoFill("GO"), opacity: getEstadoOpacity("GO"), transition: "fill 200ms ease, opacity 200ms ease", cursor: "pointer" }}
+              onMouseEnter={(e) => handleMouseEnter("GO", e)}
+              onMouseMove={(e) => handleMouseMove("GO", e)}
+              onMouseLeave={handleMouseLeave}
+              onClick={(e) => handleClick("GO", e)}
+              onTouchStart={(e) => handleTouch("GO", e)}
+              role="button" tabIndex={0}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") handleClick("GO", e as unknown as React.MouseEvent<SVGPathElement>); }}
+            />
+                        {/* MA */}
+            <path
+              id="ma"
+              aria-label={NOME_TODOS_ESTADOS["MA"] ?? "Maranhão"}
+              d="m 458.83257,129.18114 -0.04,0.33 -2.04,2.15 -0.43,0.17 -0.04,1.44 1.97,-1.7 0.68,-1.21 2.12,-1.58 0.89,-1.14 1.03,-6.33 1.15,-0.7 1.11,-0.12 1.67,-0.92 0.65,-0.13 0.46,0.12 0.08,1.63 -0.2,0.45 -1.42,1.87 -3.21,1.75 -0.03,0.72 0.73,0.12 0.45,-0.81 1.15,-0.31 0.22,0.83 -0.59,0.51 0.25,0.3 4.21,-4.97 0.86,0.33 2.58,-0.93 4.04,0.43 -0.46,-2.41 0.61,-0.23 2.42,0.08 1.78,0.38 2.63,1.05 1.04,0.11 2.15,1.38 1.4,0.03 1.26,1.3 1.89,1.32 2.5,0.58 1.16,-0.19 0.56,0.76 0.34,0.05 1.59,-0.09 2.46,0.66 0.26,-0.9 -0.67,-0.47 1.67,-0.38 0.57,0.11 -0.09,0.42 0,0 -0.46,1.43 0.23,0.72 0.63,0.54 -0.38,1.53 -1.79,2.27 -4.13,3.97 -3.32,0.46 -0.8,-0.16 -2.92,3.4 0.04,1.8 -0.88,1.83 -1.89,1.85 -0.82,1.98 -0.64,0.17 -0.77,1.05 0.36,1.92 1.23,0.83 0.38,1.28 -0.28,1.46 -1.14,2.87 1.58,2.81 0.55,2.98 -0.11,2.43 -0.21,0.55 -4.1,4.42 -0.17,2.48 0.12,2.11 0.51,2.3 1.78,2.04 1.61,0.91 0.17,0.5 0.13,0.84 -0.39,2.2 -0.29,0.44 -0.12,1.21 -0.5,1.46 -1.21,1.31 -2.29,0.29 -0.65,-0.28 -0.83,0.04 -2.43,0.86 -1.52,0.11 -2.5,-1.82 -1.01,-0.21 -1.46,0.19 -1.01,0.6 -1.12,0.26 -0.23,-0.3 -0.84,0.24 -0.5,0.22 -1.9,1.91 0.01,0.46 -0.63,0.87 -2.01,2 -2.34,0.91 -2.87,2.56 -1.33,0.53 -1.05,0.04 -1.7,1.53 -1.08,0.36 -2.61,0.32 -2.72,0.76 -2.13,1.95 -0.98,2.97 -0.39,2.97 -0.63,2.32 -1.45,2.74 -0.3,0.22 -0.34,0.82 -0.13,1.52 -1.2,2.48 -1.7,1.4 -0.73,2 0.71,1.94 0.47,3.18 1.73,3.06 -0.04,0.52 -0.76,1.4 -0.13,6.36 -1.15,2.45 -0.26,1.06 -0.05,1.92 0,0 -1.28,-0.66 -0.61,-0.82 -0.82,-0.45 -0.99,-0.29 -1.78,0.2 -0.71,-0.18 -1.35,-2 -0.99,-2.86 -2.13,-1.62 -0.14,-1.65 1.64,-1.81 -0.08,-0.53 -3.88,-1.95 -0.62,-1.05 -0.06,-1.66 -0.75,-1.59 -0.94,-0.69 -2.08,-0.28 -0.2,-0.42 0.26,-0.71 2.63,-2.54 -0.37,-1.31 0.73,-2.68 0.69,-1.43 0.57,-0.55 1.34,-0.54 3.39,-0.35 -0.39,-1.35 0.64,-3.25 -0.08,-1.76 -1.8,-1.21 -4.27,0.94 -2.15,1.34 -2.27,-3.02 -0.91,-0.85 -3,-4.15 -0.88,0.07 -0.84,-1.44 0.61,-1.19 -0.11,-0.88 -0.25,-0.34 -1.37,-0.24 -0.42,0.27 -1.93,-1.33 0.18,-0.71 1.76,-0.66 1.75,-2.04 0.25,-1.59 -0.28,-1 0.31,-2.36 1.77,-6.16 0.01,-0.43 -0.68,-1.14 -0.23,-1.08 0.21,-3.72 -0.64,-1.5 -0.47,-3.49 -0.84,-1.03 -3.4,-1.44 -1.22,-0.02 -0.28,-0.32 -0.08,-1.03 -0.59,-0.69 -1.74,-0.29 -0.96,0.52 -1.4,-0.09 -2.78,-1.51 -0.86,-0.06 -1.96,0.53 -2.62,1.85 -0.53,0.64 0,0 -0.49,-0.08 14.71,-11.83 2.35,0.23 1.17,-0.92 1.55,-2.17 0.43,-1.15 1.55,-1.17 0.62,-2.88 1.12,-0.46 2.44,-2.32 0.47,-1.21 0.29,-1.9 1.6,-4.69 1.96,-1.54 1.48,-1.76 0.83,-1.45 0.46,-1.28 -0.18,-1.82 0.79,-0.81 -1.04,-1.58 3.68,-3.09 -0.13,-1.64 0.5,-2.38 1.74,-1.57 0.36,-0.71 0.9,-3.02 0.08,-1.61 -0.43,-0.53 -0.99,0.16 -0.27,-0.49 0.05,-0.62 1.14,-0.15 0.57,-0.74 0.71,-4.39 -0.16,-1.38 0.47,-1.03 0.77,-0.45 0,0 0.63,0 0.24,-0.24 -0.06,-0.54 0.34,-0.749996 0.58,-0.53 1.34,0.98 0.45,1.839996 1.19,0.12 0.77,-1.36 0.61,2.93 0.99,0.04 0.29,-0.49 0.07,-0.94 0.85,-0.04 1.69,0.53 0.5,0.69 -1.43,1.7 0.67,0.7 0.02,0.55 1.21,-2.04 0.49,-1.54 0.45,0 0.4,1.02 0,0.58 -0.87,0.92 -0.27,0.99 0.08,2.71 0.26,0.33 0.47,0.12 0.58,-0.14 0.96,-0.93 -0.47,-1 0.14,-0.6 1.32,-1.43 1.05,-0.25 2.13,0.59 1.5,-1.11 0.05,0.92 -0.36,0.21 -1.13,1.53 0.59,0.58 0.1,-0.37 1.25,-0.6 0.58,0.79 -0.14,1.21 1.63,1.75 0.86,-0.44 1.58,0.67 0.77,2.4 -0.11,0.95 -2.19,2.73 -0.38,0.89 0.1,0.66 0.6,-1.03 1.75,-1.68 0.83,-0.03 0.87,0.81 0.52,1.89 -0.27,1.23 -0.97,0.19 -1.03,0.91 -1.16,1.49 0.07,0.77 -1.16,2.35 -0.62,3.52 0.21,0.34 0.87,0.23 z m 0.52,0.45 -0.06,-0.79 0.53,-1.53 -0.41,-1.07 0.13,-0.66 0.91,-1.24 0.55,-0.19 0.05,2.35 -0.22,1.34 -0.8,0.6 -0.68,1.19 z m -6.3,-25.76 -0.44,-0.46 -0.08,-0.6 0.8,-1.12 0.84,-0.03 0.68,0.42 0.1,0.34 -0.19,0.36 -1.71,1.09 z m 3.5,4.18 -0.29,-0.3 0.06,-0.53 1.06,-0.89 0.48,0.07 0.5,0.85 -0.14,0.61 -0.4,-0.17 -1.27,0.36 z m -14.16,-4.81 -0.21,-0.05 0.95,-3.579996 0.3,0.09 0.03,0.23 -0.41,3.059996 -0.66,0.25 z"
+              style={{ fill: getEstadoFill("MA"), opacity: getEstadoOpacity("MA"), transition: "fill 200ms ease, opacity 200ms ease", cursor: "pointer" }}
+              onMouseEnter={(e) => handleMouseEnter("MA", e)}
+              onMouseMove={(e) => handleMouseMove("MA", e)}
+              onMouseLeave={handleMouseLeave}
+              onClick={(e) => handleClick("MA", e)}
+              onTouchStart={(e) => handleTouch("MA", e)}
+              role="button" tabIndex={0}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") handleClick("MA", e as unknown as React.MouseEvent<SVGPathElement>); }}
+            />
+            {/* MT */}
+            <path
+              id="mt"
+              aria-label={NOME_TODOS_ESTADOS["MT"] ?? "Mato Grosso"}
+              d="m 207.22257,296.31114 1.47,-1.43 4.11,-2.57 0.52,-2.45 1.43,-3.78 0.93,-1.08 1.64,-0.53 0.43,-0.41 0.58,-0.84 0.52,-2.25 1.66,-2.01 0.56,-2.24 0.07,-1.71 -0.58,-1.49 0.04,-2.05 -1.53,-3.34 -0.9,0.03 -0.58,-0.51 -0.43,-3.25 0.14,-1.32 1.36,-1.08 1.4,-1.75 0.17,-0.75 -1.41,-3.59 -1.07,-0.43 -1.11,-0.11 -3.5,0.09 -1.22,-1.11 0.24,-0.56 -17.16,-0.05 0.9,-9 -1.5,-2.75 -0.27,-1.76 0.03,-0.8 1,-3.52 -0.38,-1.93 0.94,-1.67 -0.83,-2.27 -0.15,-1.39 -0.26,-0.61 -0.78,-0.47 -0.06,-0.35 1.29,-4.99 0.76,-1.42 -0.6,-1.24 -1.4,-0.97 0,0 47.85,-0.32 1.21,-0.73 1.18,-5.22 1.38,-4.22 -0.46,-1.94 -0.66,-1.37 -0.1,-0.85 0.42,-0.85 0.86,-0.64 1.2,-1.82 0.27,-1.01 -0.34,-0.84 0.06,-0.76 0.2,-0.61 1.18,-1.2 0,0 1.17,1.08 2.45,4.06 0.4,1.76 1.37,3.96 1.32,1.93 0.77,1.62 -0.23,2.44 0.48,2.4 0.73,2.2 1.53,1.11 3,2.75 3.38,1.7 0.23,0.94 -0.04,1.1 0.23,0.49 0.95,0.4 0.82,-0.17 1.63,0.45 0.54,0.72 0.2,1.08 0.35,0.32 1.37,-0.45 3.69,1.49 34.04,2.42 62.97,3.48 0,0 -0.65,1.02 -0.56,1.89 -1.1,1.25 -0.44,3.14 -0.43,0.85 -0.37,0.27 -1.94,5.29 -0.54,2.97 -0.04,2.95 -1.88,5.99 0.06,0.86 1.39,1.34 -0.16,0.87 -0.82,0.89 -0.05,0.5 1.1,2.25 -0.47,3.31 0.01,1.57 0.52,0.58 0.44,3.05 -0.74,2.76 0.98,3.34 0.96,0.51 0.8,0.02 0,0 0.08,0.63 -0.27,1.13 -0.97,0.86 -0.35,0.9 0.16,2.72 -0.39,1.07 -2,3.17 -1.03,2.63 -1.21,0.78 0.12,5.18 -1.6,3.09 -0.58,2.74 0.48,1.14 0.01,0.8 -1.17,2.87 -0.84,2.93 -1.39,1.43 -1.21,0.73 -1.23,-0.68 -1.07,0.26 -1.65,1.01 -1.92,1.94 -0.38,0.74 -0.64,4.1 -0.71,0.96 -1.98,4.19 -0.32,0.28 -2.72,0.86 -2.65,0.13 -1.4,2.62 -1.75,0.97 -0.08,1.54 -0.82,1.43 -1.28,1.04 -0.5,1.01 -0.33,1.95 -1.25,2.02 -1.92,1.77 -2.02,0.84 -0.7,0.77 -0.38,2.91 -2.55,3.85 -0.4,3.41 0.16,0.71 1.41,2.19 0.18,3.43 0.95,2.2 0,0 -1.55,0.31 -1.17,-0.57 -0.87,-0.08 -2.66,0.08 -0.57,0.57 -4.62,-0.27 -1.74,-1.27 -1.3,-0.11 -0.15,-0.53 0.19,-0.46 1.66,-2.83 1.8,-0.7 1.23,-6.61 -1.34,0.13 -5.62,6.01 -1.01,-0.06 -2.13,0.88 -0.99,-0.04 -0.24,-0.25 -0.3,-1.37 -1.59,-1.04 -2.44,-0.07 -1.43,0.61 -0.49,0.85 -1.26,0.8 -4.52,0.63 -1.24,-0.57 -1.26,-1.11 -3.03,-1.16 -0.78,-1.02 -0.27,-0.86 -0.65,-0.35 -2.62,-0.47 -2.79,-1.25 -0.76,-1.15 -1.27,-0.2 -2.02,0.49 -1.35,1.25 -1.66,0.51 -0.77,-0.34 -1.56,0.22 -2.59,-0.03 -1.4,1.45 -0.09,1.17 -2.02,2.95 -2.05,2 -5.62,1.97 -2.15,-1.52 -1.02,-1.1 -0.7,-0.2 0,0 -0.66,-0.67 -0.32,-0.8 0.54,-0.71 -2.44,-2.15 -1.28,0.63 -0.52,-0.05 -1.17,-0.68 -0.45,-0.7 -2.02,-1.41 -1.89,-0.76 -0.3,-0.32 -0.3,-1.12 -0.23,-2.93 -0.61,-1.77 -0.19,-3.66 0.88,-1.64 1.14,-1.09 0.34,-1.78 -0.05,-1.89 -0.96,0.06 -0.4,0.6 -0.38,0.16 -26.86,-1.08 -1.05,-12.65 -5.37,-6.13 4.88,-0.06 -0.35,-7.55 -2.64,-5.32 -0.49,-1.97 0.26,-1.06 0.61,-0.55 0.65,-1.28 -1.44,-2.93 -3.11,-1.04 z"
+              style={{ fill: getEstadoFill("MT"), opacity: getEstadoOpacity("MT"), transition: "fill 200ms ease, opacity 200ms ease", cursor: "pointer" }}
+              onMouseEnter={(e) => handleMouseEnter("MT", e)}
+              onMouseMove={(e) => handleMouseMove("MT", e)}
+              onMouseLeave={handleMouseLeave}
+              onClick={(e) => handleClick("MT", e)}
+              onTouchStart={(e) => handleTouch("MT", e)}
+              role="button" tabIndex={0}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") handleClick("MT", e as unknown as React.MouseEvent<SVGPathElement>); }}
+            />
+                        {/* MS */}
+            <path
+              id="ms"
+              aria-label={NOME_TODOS_ESTADOS["MS"] ?? "Mato Grosso do Sul"}
+              d="m 359.21257,400.07114 -0.4,2.46 -0.28,0.4 -1.5,0.78 -1.32,0.04 -0.47,0.22 -1.22,1.03 -1.99,2.68 -0.73,0.65 -1.01,0.3 -0.62,1.68 -0.16,2.93 -2.59,3.64 -0.96,0.52 -0.23,0.38 0.31,1.93 -0.08,0.95 -1.21,2.34 -2,2.26 0.35,0.85 -0.28,1.21 -1.44,1.03 -0.4,1.21 -1.73,1.69 -1.26,2.44 -1.95,1.87 -7.56,4.53 -1.26,1.14 -0.74,1.54 -0.84,1.08 0,0 -5.41,2.27 -1.11,0.82 -0.93,2.33 0.02,1.15 -1.45,3.56 -0.67,0.68 -1.66,1.01 -1.11,0.32 -0.33,0.35 -1.57,7.92 -0.36,0.82 -2.38,1.56 0,0 -2.55,-2.33 -3.41,-1.89 -3.99,1.97 -0.68,0.75 -1.66,0.49 -2.58,0.43 -2.36,-0.46 -1.01,-0.65 -0.47,-4.27 -0.32,-0.7 -0.9,-0.95 -0.23,-2.47 0.51,-1.34 -0.64,-0.79 -0.09,-0.44 0,-2.87 -0.89,-1.97 -0.6,-2.74 -0.05,-0.72 0.59,-1.36 0.02,-1.61 -1.57,-1.09 -0.38,-0.8 -0.16,-2.16 -1.65,-1.82 -2.17,-0.26 -1.51,0.31 -1.83,-0.29 -2.46,-1.96 -0.56,-1.49 -1.54,0.33 -2.17,2.74 -1,-0.6 -1.72,0.81 -1.08,0.16 -1.74,-0.69 -2.56,-0.49 -3.46,0.23 -3.66,-0.71 -0.48,-0.91 -1.99,-0.13 -0.89,0.52 -2.5,-0.88 0.91,-7.27 -0.43,-2.38 0.6,-1.42 0.98,-1.46 0.6,-6.03 -0.66,-2.33 -0.05,-1.73 -0.76,-0.96 -0.43,-0.09 -0.49,0.65 -0.64,-3.26 -0.79,-1.87 -1.21,-2.02 -0.35,-1.83 4.03,-2.3 0.76,-0.88 -4.2,-3.86 5.38,-11.42 1.12,-0.06 -0.28,-2.13 -0.74,-0.13 3.23,-10.33 0.66,-1.16 -3.09,-5.85 0.03,-1.91 0,0 0.7,0.2 1.02,1.1 2.15,1.52 5.62,-1.97 2.05,-2 2.02,-2.95 0.09,-1.17 1.4,-1.45 2.59,0.03 1.56,-0.22 0.77,0.34 1.66,-0.51 1.35,-1.25 2.02,-0.49 1.27,0.2 0.76,1.15 2.79,1.25 2.62,0.47 0.65,0.35 0.27,0.86 0.78,1.02 3.03,1.16 1.26,1.11 1.24,0.57 4.52,-0.63 1.26,-0.8 0.49,-0.85 1.43,-0.61 2.44,0.07 1.59,1.04 0.3,1.37 0.24,0.25 0.99,0.04 2.13,-0.88 1.01,0.06 5.62,-6.01 1.34,-0.13 -1.23,6.61 -1.8,0.7 -1.66,2.83 -0.19,0.46 0.15,0.53 1.3,0.11 1.74,1.27 4.62,0.27 0.57,-0.57 2.66,-0.08 0.87,0.08 1.17,0.57 1.55,-0.31 0,0 0.19,1.77 -0.26,2.58 0.23,1.32 1.46,2.26 0.01,1.03 -0.54,1.53 0.56,2.66 1.31,2.51 3.26,2.64 0.6,2.09 -0.18,0.88 -1.08,1.46 -0.43,1.55 0.36,2.46 1.5,3.22 2.08,2.53 3.05,2.14 1.49,0.65 z"
+              style={{ fill: getEstadoFill("MS"), opacity: getEstadoOpacity("MS"), transition: "fill 200ms ease, opacity 200ms ease", cursor: "pointer" }}
+              onMouseEnter={(e) => handleMouseEnter("MS", e)}
+              onMouseMove={(e) => handleMouseMove("MS", e)}
+              onMouseLeave={handleMouseLeave}
+              onClick={(e) => handleClick("MS", e)}
+              onTouchStart={(e) => handleTouch("MS", e)}
+              role="button" tabIndex={0}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") handleClick("MS", e as unknown as React.MouseEvent<SVGPathElement>); }}
+            />
+            {/* PA */}
+            <path
+              id="pa"
+              aria-label={NOME_TODOS_ESTADOS["PA"] ?? "Pará"}
+              d="m 344.49257,100.851144 0.75,-0.9 1.34,-0.07 0,0 2.08,-2.98 1.45,-0.52 0.94,0.09 0.7,-0.46 2.91,-3.5 1.94,-3.72 2.15,-1.41 1.17,-2.1 5.03,-4.06 0.17,-0.73 -0.12,-0.59 -0.28,-0.23 -1.04,0.42 -1.79,0.15 0.38,-0.33 1.73,-0.43 1.29,-0.96 0.16,-3.33 -0.77,-2.65 -1.29,-0.85 -2.78,-0.94 -3.27,0.08 -1.01,-0.35 -3.32,-5 -2.66,-8.94 -2.71,-6.05 -0.66,-3.87 -0.21,-7.89 -0.21,-0.4 -0.38,0.1 -0.32,0.48 -0.44,-0.31 -0.03,-1.58 -0.52,-1.19 -0.91,-1.22 -1.14,-1.21 -3.37,-2.42 -0.18,0.33 0.07,1.29 1.67,4.8 -0.56,-1.46 -1.04,0.58 -0.47,0.92 -2.11,1.14 -0.63,1.66 -1.79,1.55 -0.84,1.2 -0.23,1.15 -3.6,5.79 -0.73,0.19 -1.11,1.3 -0.11,1.82 -3.13,6.5 0.2,0.54 -0.37,1 -1.75,2.3 -1.78,1.1 -1.67,1.5 -0.91,0.48 -0.62,0.01 -0.95,-0.17 -0.51,-0.5 -2.37,0.17 0.2,-0.87 -1.46,-1.3 -0.32,-0.03 -0.12,0.42 -1.72,1.01 -1.08,0.12 -2.71,-0.94 -0.69,-0.94 -0.83,0.29 -1.73,1.17 -0.35,0.76 -2.76,1.78 -3.29,-0.75 -2.25,-0.78 -0.84,-0.71 -0.35,-0.9 -0.82,-0.23 -1.47,0.06 -0.34,-0.97 0.29,-0.18 0.01,-0.81 -0.99,-0.3 -0.35,0.21 0,0 -0.42,-0.37 -0.54,-1.17 0.29,-0.79 1.38,-1.49 -0.54,-1.59 -1.49,-0.92 -2.47,0.13 -0.45,-0.3 -0.42,-0.82 0.06,-2.02 -1.26,-0.57 -0.77,0.15 -0.64,-0.65 0.13,-1.72 0.96,-0.95 0.37,-0.89 -0.09,-0.6 -1.35,0.09 -0.45,-0.19 -1.33,-1.9 -1.62,-1.17 -0.53,-0.02 0,0 2.62,-1.85 1.96,-0.53 0.86,0.06 2.78,1.51 1.4,0.09 0.96,-0.52 1.74,0.29 0.59,0.69 0.08,1.03 0.28,0.32 1.22,0.02 3.4,1.44 0.84,1.03 0.47,3.49 0.64,1.5 -0.21,3.72 0.23,1.08 0.68,1.14 -0.01,0.43 -1.77,6.16 -0.31,2.36 0.28,1 -0.25,1.59 -1.75,2.04 -1.76,0.66 -0.18,0.71 1.93,1.33 0.42,-0.27 1.37,0.24 0.25,0.34 0.11,0.88 -0.61,1.19 0.84,1.44 0.88,-0.07 3,4.15 0.91,0.85 2.27,3.02 2.15,-1.34 4.27,-0.94 1.8,1.21 0.08,1.76 -0.64,3.25 0.39,1.35 -3.39,0.35 -1.34,0.54 -0.57,0.55 -0.69,1.43 -0.73,2.68 0.37,1.31 -2.63,2.54 -0.26,0.71 0.2,0.42 2.08,0.28 0.94,0.69 0.75,1.59 0.06,1.66 0.62,1.05 3.88,1.95 0.08,0.53 -1.64,1.81 0.14,1.65 2.13,1.62 0.99,2.86 1.35,2 0.71,0.18 1.78,-0.2 0.99,0.29 0.82,0.45 0.61,0.82 1.28,0.66 0,0 0.05,1.92 0.26,1.06 1.15,2.45 0.13,6.36 0.76,1.4 0.04,0.52 -1.73,3.06 -0.47,3.18 -0.71,1.94 0.73,2 1.7,1.4 1.2,2.48 0.13,1.52 0.34,0.82 0.3,0.22 1.45,2.74 0.63,2.32 0.39,2.97 0.98,2.97 2.13,1.95 2.72,0.76 2.61,0.32 1.08,0.36 1.7,1.53 1.05,0.04 1.33,0.53 2.87,2.56 2.34,0.91 2.01,2 0.63,0.87 -0.01,0.46 1.9,1.91 0.5,0.22 0.84,0.24 0.23,-0.3 1.12,0.26 1.01,0.6 1.46,0.19 1.01,-0.21 2.5,-1.82 1.52,0.11 2.43,0.86 0.83,0.04 0.65,-0.28 2.29,0.29 1.21,1.31 0.5,1.46 0.12,1.21 0.29,0.44 0.39,2.2 -0.13,0.84 -0.17,0.5 -1.61,0.91 -1.78,2.04 -0.51,2.3 -0.12,2.11 0.17,2.48 4.1,4.42 0.21,0.55 0.11,2.43 -0.55,2.98 -1.58,2.81 1.14,2.87 0.28,1.46 -0.38,1.28 -1.23,0.83 -0.36,1.92 0.77,1.05 0.64,0.17 0.82,1.98 1.89,1.85 0.88,1.83 -0.04,1.8 2.92,3.4 0.8,-0.16 3.32,0.46 4.13,3.97 1.79,2.27 0.38,1.53 -0.63,0.54 -0.23,0.72 0.46,1.43 0,0 0.09,-0.42 -0.57,-0.11 -1.67,0.38 0.67,0.47 -0.26,0.9 -2.46,-0.66 -1.59,0.09 -0.34,-0.05 -0.56,-0.76 -1.16,0.19 -2.5,-0.58 -1.89,-1.32 -1.26,-1.3 -1.4,-0.03 -2.15,-1.38 -1.04,-0.11 -2.63,-1.05 -1.78,-0.38 -2.42,-0.08 -0.61,0.23 0.46,2.41 -4.04,-0.43 -2.58,0.93 -0.86,-0.33 -4.21,4.97 -0.25,-0.3 0.59,-0.51 -0.22,-0.83 -1.15,0.31 -0.45,0.81 -0.73,-0.12 0.03,-0.72 3.21,-1.75 1.42,-1.87 0.2,-0.45 -0.08,-1.63 -0.46,-0.12 -0.65,0.13 -1.67,0.92 -1.11,0.12 -1.15,0.7 -1.03,6.33 -0.89,1.14 -2.12,1.58 -0.68,1.21 -1.97,1.7 0.04,-1.44 0.43,-0.17 2.04,-2.15 0.04,-0.33 0,0 -0.87,-0.23 -0.21,-0.34 0.62,-3.52 1.16,-2.35 -0.07,-0.77 1.16,-1.49 1.03,-0.91 0.97,-0.19 0.27,-1.23 -0.52,-1.89 -0.87,-0.81 -0.83,0.03 -1.75,1.68 -0.6,1.03 -0.1,-0.66 0.38,-0.89 2.19,-2.73 0.11,-0.95 -0.77,-2.4 -1.58,-0.67 -0.86,0.44 -1.63,-1.75 0.14,-1.21 -0.58,-0.79 -1.25,0.6 -0.1,0.37 -0.59,-0.58 1.13,-1.53 0.36,-0.21 -0.05,-0.92 -1.5,1.11 -2.13,-0.59 -1.05,0.25 -1.32,1.43 -0.14,0.6 0.47,1 -0.96,0.93 -0.58,0.14 -0.47,-0.12 -0.26,-0.33 -0.08,-2.71 0.27,-0.99 0.87,-0.92 0,-0.58 -0.4,-1.02 -0.45,0 -0.49,1.54 -1.21,2.04 -0.02,-0.55 -0.67,-0.7 1.43,-1.7 -0.5,-0.69 -1.69,-0.53 -0.85,0.04 -0.07,0.94 -0.29,0.49 -0.99,-0.04 -0.61,-2.93 -0.77,1.36 -1.19,-0.12 -0.45,-1.839996 -1.34,-0.98 -0.58,0.53 -0.34,0.749996 0.06,0.54 -0.24,0.24 -0.63,0 0,0 -0.77,0.45 -0.47,1.03 0.16,1.38 -0.71,4.39 -0.57,0.74 -1.14,0.15 -0.05,0.62 0.27,0.49 0.99,-0.16 0.43,0.53 -0.08,1.61 -0.9,3.02 -0.36,0.71 -1.74,1.57 -0.5,2.38 0.13,1.64 -3.68,3.09 1.04,1.58 -0.79,0.81 0.18,1.82 -0.46,1.28 -0.83,1.45 -1.48,1.76 -1.96,1.54 -1.6,4.69 -0.29,1.9 -0.47,1.21 -2.44,2.32 -1.12,0.46 -0.62,2.88 -1.55,1.17 -0.43,1.15 -1.55,2.17 -1.17,0.92 -2.35,-0.23 -14.71,11.83 0,0 -56.18,-0.03 0,0 0.53,-0.64 -1.72,-4.03 -0.28,-2.09 0.26,-1.07 1.26,-2.32 1.84,-2.3 0.37,-0.79 0.3,-1.31 -0.3,-0.51 -0.95,-0.58 -2.09,-5.08 -0.17,-2.04 0.37,-1.29 -0.37,-1.77 -0.89,-0.84 -3.53,-1.41 -0.51,-0.67 -0.54,-1.72 -0.62,-0.52 -1.72,-0.39 -0.85,-0.72 -0.72,-1.3 0.12,-2.1 1.98,-2.59 0.06,-0.56 -0.82,-2.2 -0.49,-0.44 -3.22,-0.18 -3.01,-1.41 -0.52,-0.49 -0.27,-0.73 1.53,-7.27 -0.27,-0.55 -0.97,-0.28 -0.79,0.25 -1.33,-0.28 -1.9,-1.32 -3.08,-3.28 -0.71,-0.35 -4.04,0.35 -1.23,-0.49 -1.57,-1.57 -0.79,-0.39 -1.38,-0.09 -3.74,2.08 -0.88,0.11 -3.47,-1.11 -2.4,-1.92 -0.8,0.38 -1.66,2.42 -0.97,0.83 -4.46,0.9 -2.7,-0.08 -1.74,-0.66 -1.21,-2.21 -1.52,-1.56 -2.14,-0.79 -2.6,0.08 -1.63,1.84 -0.97,0.64 -0.7,0.07 -1.23,-0.75 -0.62,-1.17 0.03,-1.17 0.48,-0.87 2.39,-1.48 0.58,-0.83 -0.39,-1.78 -1.61,-1.94 -4.33,-2.45 -2.46,-0.28 -0.69,-0.49 0.01,-0.73 0.66,-0.82 0.14,-0.69 -0.84,-1.32 -2.24,-0.68 -0.46,-0.47 0.25,-1.5 1.9,-2.01 0.34,-0.99 -0.46,-0.71 -1.29,0.08 -1.19,-0.55 -0.84,-1.37 -0.28,-1.71 0.45,-1.56 1.62,-1.47 0.06,-0.77 -0.7,-1.11 -4.42,-3.88 -0.43,-1.03 0.07,-0.73 1.11,-1.06 -0.02,-0.47 -0.41,-0.61 -2.94,-1.8 -0.44,-0.69 0.11,-1.26 0.74,-1.0 4.51,-1.52 0.79,-0.56 -0.08,-0.84 -1.09,-2.13 -0.12,-1.25 0.66,-0.76 5.25,-2.72 0.7,-0.63 0.2,-0.58 -0.71,-2.9 0.31,-0.57 1.15,-0.42 0.43,-0.5 -0.3,-0.63 -1.71,-0.67 -0.5,-0.6 0.06,-0.55 0.95,-0.81 0.35,-1.2 -0.08,-1.41 -0.8,-1.11 -0.56,-0.26 -5.35,-0.44 -1.5,-0.55 -1.06,-0.91 -0.4,-0.82 0.09,-0.98 1.63,-2.38 0.19,-1.26 -0.33,-0.72 -2.04,-1.33 -0.71,-1.22 0.07,-0.74 0.94,-0.77 5.32,-1.23 0.89,-0.49 0.34,-0.62 -0.14,-0.89 -1.03,-1.25 -0.08,-0.72 0.83,-1.87 -0.18,-0.78 -0.86,-0.48 -3.17,0.07 -0.91,-0.43 -0.56,-1.24 0.19,-1.89 1.49,-2.47 0.26,-1.44 -0.38,-1.28 -1.11,-0.96 -1.04,-0.23 -2.13,0.56 -0.87,-0.26 -0.6,-0.94 0.14,-1.57 1.55,-2.17 0.29,-1.08 -0.18,-0.53 -0.91,-0.38 -0.38,-0.56 -0.02,-1.56 0.89,-2.34 0.08,-1.14 -0.52,-1.36 -1.95,-2.29 -0.52,-1.25 0.07,-1.39 1.62,-3.09 0.41,-2.21 -0.1,-1.23 -1.21,-1.54 -0.21,-0.74 0.09,-0.88 0.99,-1.41 0.17,-0.97 -0.27,-1.78 -1.11,-2.13 -0.15,-0.81 0.24,-0.87 0.99,-0.84 0.32,-0.73 -0.64,-2.46 0.27,-1.39 1.63,-1.68 0.19,-1.08 -0.27,-0.65 -1.46,-0.51 -0.84,-0.72 0.11,-2.4 1.59,-3.07 0.28,-1.17 -0.32,-0.71 -1.21,-0.69 -0.39,-0.67 0.06,-2.61 0.58,-0.73 2.14,-0.51 0.77,-0.48 0.17,-0.68 -0.5,-1.36 0.11,-0.86 1.15,-1.14 0.22,-0.77 -0.51,-1.34 -2.35,-2.14 -0.3,-0.77 0.13,-1.46 0.77,-1.75 0.21,-2.06 -0.72,-2.21 -1.38,-1.08 -5.53,-0.74 -1.27,-0.83 -0.66,-1.19 0.01,-1.44 0.6,-0.89 6.02,-3.73 0.82,-1.13 -0.08,-0.77 -0.81,-0.48 -0.57,-1.13 0.15,-2.7 0.96,-2.28 0.09,-0.79 -0.27,-0.42 -5.07,-1.36 -0.76,-1.39 0.06,-0.84 0.47,-0.5 3.18,-1.05 0.65,-0.55 0.12,-0.61 -0.45,-0.93 -1.54,-0.85 -0.5,-0.93 0.13,-1.27 0.54,-0.78 2.56,-1.7 0.42,-1.06 -0.31,-1.26 -1.35,-1.13 -0.25,-0.7 0.37,-1.46 1.33,-1.72 0.38,-1.25 -0.35,-1.48 -1.03,-1.2 -3.68,-2.0 -0.41,-1.12 0.12,-1.2 1.22,-1.82 0.31,-1.03 -0.43,-0.98 -3.08,-2.37 -0.26,-0.67 0.17,-0.67 2.11,-2.73 0.2,-1.06 -0.23,-0.52 -1.16,-0.55 -0.36,-0.59 0.07,-0.77 2.18,-3.32 0.2,-1.07 -0.06,-0.5 18.49,-0.07 0,0 0.03,0.68 -2.33,3.26 -1.66,3.03 -0.07,1.13 -1.15,2.64 -0.11,0.66 0.23,0.73 1.14,1.41 -0.02,0.53 -0.42,0.39 -2.03,0.55 -1.41,1.41 -1.25,0.46 -1.82,-0.23 -0.92,-2.51 -1.87,-2.04 -2.83,-0.93 -1.6,0.06 -0.55,0.89 -2.09,0.71 -1.28,0.69 -1.02,1.26 -0.82,2.97 0.37,1.8 -0.25,1.73 -0.75,2.289996 0.44,2.11 -2.36,-1.04 -1.34,0.42 -0.53,-0.07 -1.04,-2.04 -1.48,-1.649996 -1.96,-1.31 -0.52,-0.04 -5.01,-4.42 0.14,-1.14 1.84,0.33 1.14,-1.32 0.06,-0.58 -1.13,-4.33 -0.58,-0.9 -1.22,-0.84 -0.88,-2.17 -0.29,-4.98 0.57,-0.96 0.77,-3.04 -0.66,-1.58 -0.36,-1.59 1.62,-1.46 -0.05,-0.45 -0.87,-1.12 -0.19,-2.26 -1.66,-4.76 -2.73,-3.74 0.71,-1.5 0.91,-3.32 -0.49,-0.66 -1.95,-0.95 -1.36,-0.11 -0.88,0.21 -0.97,-0.37 -1.21,-1.17 -0.06,-0.96 -0.63,-0.11 -1.13,0.42 -0.61,-0.01 -0.75,-0.34 -0.72,-0.78 0,0 0.53,-1.17 0.42,-0.37 0,0 0.53,0.02 1.62,1.17 1.33,1.9 0.45,0.19 1.35,-0.09 0.09,0.6 -0.37,0.89 -0.96,0.95 -0.13,1.72 0.64,0.65 0.77,-0.15 1.26,0.57 -0.06,2.02 0.42,0.82 0.45,0.3 2.47,-0.13 1.49,0.92 0.54,1.59 -1.38,1.49 -0.29,0.79 0.54,1.17 0.42,0.37 0,0 0.62,0.57 0.37,2.3 -0.62,1.3 -0.25,4.54 0.24,1.44 0.31,0.54 1.17,0.02 1.08,-0.29 3.39,0.37 1.29,0.49 1.93,1.05 0.67,0.8 0.49,1.28 1.19,0.12 1.14,0.84 0.8,0.98 0.84,0.27 1.33,-0.14 0.38,-0.42 0.94,-0.14 2.84,2.66 0.68,-0.03 0.49,1.18 -0.68,0.23 -0.19,0.72 0.76,2.83 2.02,2.26 2.57,0.73 0.17,0.33 -0.43,3.14 0.19,2.11 0.67,1.51 0.62,0.56 0.59,1.81 -0.13,1.58 1.5,3.48 0.82,0.19 0.78,-0.36 2.93,3.28 -0.08,2.43 0.41,0.94 0.95,0.19 0.33,0.47 0.31,1.58 -0.21,0.69 0.11,1.3 1.87,1.39 0.43,1.5 1.45,1.03 2.79,0.679996 1.3,-0.12 0.77,-0.339996 0.94,0.06 0,0 0.98,-0.12 1.95,-1.81 -0.17,-1.8 0.36,-2.4 3.01,-3.45 0.84,-0.65 1.12,-1.87 0.97,-2.22 1.47,-1.68 0,0 z"
+              style={{ fill: getEstadoFill("PA"), opacity: getEstadoOpacity("PA"), transition: "fill 200ms ease, opacity 200ms ease", cursor: "pointer" }}
+              onMouseEnter={(e) => handleMouseEnter("PA", e)}
+              onMouseMove={(e) => handleMouseMove("PA", e)}
+              onMouseLeave={handleMouseLeave}
+              onClick={(e) => handleClick("PA", e)}
+              onTouchStart={(e) => handleTouch("PA", e)}
+              role="button" tabIndex={0}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") handleClick("PB", e as unknown as React.MouseEvent<SVGPathElement>); }}
+            />
+            {/* PB */}
+            <path
+              id="pb"
+              aria-label={NOME_TODOS_ESTADOS["PB"] ?? "Paraíba"}
+              d="m 554.33257,196.17114 -1.52,0.46 -2.6,-0.41 -1.77,0.52 -1.21,0.76 -1.74,2.26 -2.47,0.78 -1.79,-0.09 -1.01,0.22 -1.72,1.42 -0.88,0.24 -2.74,-0.84 -0.94,0.01 -0.76,0.43 -0.51,0.79 -0.08,1.42 -0.45,0.74 -0.96,0.14 -1.11,-0.58 -0.65,-0.82 -0.43,-1.36 -1.36,-1.77 -0.99,-0.34 -0.71,0.12 -0.53,0.71 0.05,2.37 -0.46,0.72 -1.07,0.25 -1.73,-0.64 -0.86,0.07 -2.29,1.6 -1.71,0.28 -0.75,0.52 -0.49,0.82 -0.48,2.11 -0.89,0.74 -3.4,0.35 0,0 -0.11,-0.52 0.54,-1.9 -0.11,-0.91 -0.7,-0.65 -1.47,-0.27 -1.93,0.46 -0.43,0.43 0.08,1.45 -0.59,0.47 -0.77,-0.06 -1.52,-0.94 -1.01,0.18 -0.73,0.73 0.04,1.11 0.69,0.63 0.15,0.52 -0.3,0.47 -2.25,0.95 -0.93,0.9 -0.27,0.9 0.25,0.7 0.79,0.54 0.2,0.66 -0.22,0.8 -1.83,1.7 -0.19,0.66 0.37,0.73 0,0 -1.04,0.22 -1.55,-0.19 -2.86,-1.23 -0.87,-0.01 -1.56,0.66 -1.17,1.06 -0.54,0.92 -0.51,2.67 0,0 -2.9,-0.27 -1.92,-0.81 -1.47,0.19 -2.56,1.29 -2.24,-0.85 -2,0.24 -1.55,1.24 -0.12,0.45 -2.18,2.29 -1.81,1.11 -1.16,-0.05 -1.86,1.06 -1.17,0.11 -3.14,-0.29 -2.5,0.65 -1.91,-0.48 -1.78,-1.05 -1.9,-2.12 -2.55,-2.02 -1.08,0.12 -1.67,-0.3 -1,-1.22 -0.82,0.6 -0.09,0.69 -2.38,3.29 -2.17,0.76 -0.64,1.09 -1.32,1.07 0,0 -0.38,-0.66 -0.56,-0.38 -3.15,0.48 -0.97,-0.26 -2.44,-2.12 -1.62,-0.55 -3.5,0.05 0,0 0.37,-0.73 -0.19,-0.66 -1.83,-1.7 -0.22,-0.8 0.2,-0.66 0.79,-0.54 0.25,-0.7 -0.27,-0.9 -0.93,-0.9 -2.25,-0.95 -0.3,-0.47 0.15,-0.52 0.69,-0.63 0.04,-1.11 -0.73,-0.73 -1.01,-0.18 -1.52,0.94 -0.77,0.06 -0.59,-0.47 0.08,-1.45 -0.43,-0.43 -1.93,-0.46 -1.47,0.27 -0.7,0.65 -0.11,0.91 0.54,1.9 -0.11,0.52 0,0 3.4,-0.35 0.89,-0.74 0.48,-2.11 0.49,-0.82 0.75,-0.52 1.71,-0.28 2.29,-1.6 0.86,-0.07 1.73,0.64 1.07,-0.25 0.46,-0.72 -0.05,-2.37 0.53,-0.71 0.71,-0.12 0.99,0.34 1.36,1.77 0.43,1.36 0.65,0.82 1.11,0.58 0.96,-0.14 0.45,-0.74 0.08,-1.42 0.51,-0.79 0.76,-0.43 0.94,-0.01 2.74,0.84 0.88,-0.24 1.72,-1.42 1.01,-0.22 1.79,0.09 2.47,-0.78 1.74,-2.26 1.21,-0.76 1.77,-0.52 2.6,0.41 1.52,-0.46 0,0 1.51,0.86 0.87,0.8 3.09,1.2 1.08,-0.04 1.21,-0.72 3.4,-0.29 1.78,0.41 2.29,1.79 0.85,0.37 1.13,-0.37 0.35,-0.71 -0.22,-0.51 -1.15,-0.71 -0.17,-0.57 0.22,-0.42 0.74,-0.17 5.67,1.01 0.95,0.52 0.31,0.59 -0.23,0.82 -0.7,0.41 0.04,0.64 1.24,0.43 3.62,0.04 1.41,-0.45 0.62,-0.62 0.13,-0.65 -0.54,-1.06 0.06,-0.51 0.79,-0.51 2.19,0.16 1.64,-0.74 0.8,-0.78 1.65,0.16 0.83,0.58 0.74,1.14 1.63,0.5 0.89,-0.28 0.73,-0.95 1.54,-0.53 1.32,0.32 0.94,0.82 1.24,0.25 1.5,-0.8 0.69,-0.95 0.99,-0.43 3.87,0.34 1.27,0.8 0.57,0.77 0.16,0.84 -0.42,1.09 0.05,0.54 0.55,0.26 1.75,-0.45 0.84,0.23 0.56,0.68 0.12,0.86 -0.76,1.63 0.01,0.56 0.56,0.37 1.15,-0.13 0.76,-0.56 0.83,0.05 0.66,0.66 0.03,1.17 -0.57,1.07 0.06,0.84 0.75,0.59 1.85,-0.04 0.94,-0.44 0.78,-0.76 1.04,-0.26 0.68,0.29 0.46,0.78 -0.17,1.46 0.23,0.56 0.63,0.16 2.03,-0.83 0.72,0.06 0.57,0.52 0.19,0.96 -0.29,0.85 -2.36,2.42 -0.14,0.57 0.29,0.62 1.06,0.45 0.31,0.47 -0.11,0.74 -0.77,0.74 -0.15,0.64 0.31,0.71 1.32,0.91 0.31,0.64 -0.16,0.72 -0.72,0.64 -0.15,0.56 0.29,0.64 0.83,0.56 0.16,0.64 -0.36,1.44 0.11,0.64 0.57,0.3 z"
+              style={{ fill: getEstadoFill("PB"), opacity: getEstadoOpacity("PB"), transition: "fill 200ms ease, opacity 200ms ease", cursor: "pointer" }}
+              onMouseEnter={(e) => handleMouseEnter("PB", e)}
+              onMouseMove={(e) => handleMouseMove("PB", e)}
+              onMouseLeave={handleMouseLeave}
+              onClick={(e) => handleClick("PB", e)}
+              onTouchStart={(e) => handleTouch("PB", e)}
+              role="button" tabIndex={0}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") handleClick("PB", e as unknown as React.MouseEvent<SVGPathElement>); }}
+            />
+                        {/* PR */}
+            <path
+              id="pr"
+              aria-label={NOME_TODOS_ESTADOS["PR"] ?? "Paraná"}
+              d="m 359.21257,480.57114 -1.49,-0.65 -3.05,-2.14 -2.08,-2.53 -1.5,-3.22 -0.36,-2.46 0.43,-1.55 1.08,-1.46 0.18,-0.88 -0.6,-2.09 -3.26,-2.64 -1.31,-2.51 -0.56,-2.66 0.54,-1.53 -0.01,-1.03 -1.46,-2.26 -0.23,-1.32 0.26,-2.58 -0.19,-1.77 0,0 2.38,-1.56 0.36,-0.82 1.57,-7.92 0.33,-0.35 1.11,-0.32 1.66,-1.01 0.67,-0.68 1.45,-3.56 -0.02,-1.15 0.93,-2.33 1.11,-0.82 5.41,-2.27 0,0 0.84,-1.08 0.74,-1.54 1.26,-1.14 7.56,-4.53 1.95,-1.87 1.26,-2.44 1.73,-1.69 0.4,-1.21 1.44,-1.03 0.28,-1.21 -0.35,-0.85 2,-2.26 1.21,-2.34 0.08,-0.95 -0.31,-1.93 0.23,-0.38 0.96,-0.52 2.59,-3.64 0.16,-2.93 0.62,-1.68 1.01,-0.3 0.73,-0.65 1.99,-2.68 1.22,-1.03 0.47,-0.22 1.32,-0.04 1.5,-0.78 0.28,-0.4 0.4,-2.46 0,0 3.09,5.85 -0.66,1.16 -3.23,10.33 0.74,0.13 0.28,2.13 -1.12,0.06 -5.38,11.42 4.2,3.86 -0.76,0.88 -4.03,2.3 0.35,1.83 1.21,2.02 0.79,1.87 0.64,3.26 0.49,-0.65 0.43,0.09 0.76,0.96 0.05,1.73 0.66,2.33 -0.6,6.03 -0.98,1.46 -0.6,1.42 0.43,2.38 -0.91,7.27 2.5,0.88 0.89,-0.52 1.99,0.13 0.48,0.91 3.66,0.71 3.46,-0.23 2.56,0.49 1.74,0.69 1.08,-0.16 1.72,-0.81 1,0.6 2.17,-2.74 1.54,-0.33 0.56,1.49 2.46,1.96 1.83,0.29 1.51,-0.31 2.17,0.26 1.65,1.82 0.16,2.16 0.38,0.8 1.57,1.09 -0.02,1.61 -0.59,1.36 0.05,0.72 0.6,2.74 0.89,1.97 0,2.87 0.09,0.44 0.64,0.79 -0.51,1.34 0.23,2.47 0.9,0.95 0.32,0.7 0.47,4.27 1.01,0.65 2.36,0.46 2.58,-0.43 1.66,-0.49 0.68,-0.75 3.99,-1.97 3.41,1.89 2.55,2.33 0,0 -0.54,0.8 -1.87,0.8 -1.36,1.13 -0.33,0.82 0.01,1.01 0.69,1.57 0.01,1.57 -0.82,0.86 -1.07,0.07 -1.39,0.57 -1.37,1.09 -0.96,2.26 -2.45,2.72 -1.3,0.62 -3.08,-0.4 -1.33,0.1 -0.88,0.83 -0.17,0.83 0.52,1.08 0.03,0.73 -0.57,0.62 -1.36,0.2 -0.65,0.58 -0.29,0.84 0.21,1.35 -0.21,0.52 -1.6,1.24 -0.32,0.79 0.27,0.84 1.13,0.82 0.27,0.62 -0.17,1.55 -0.97,2.19 -0.03,1.11 0.43,0.76 1.67,0.7 0.48,0.67 -0.12,1.53 -0.5,0.74 -1.32,0.76 -0.58,0.76 0.13,1.03 0.71,0.71 0.14,0.63 -0.51,1.07 -2.1,1.85 -0.51,0.82 0.15,0.88 0.71,0.65 0.18,0.67 -0.55,2.06 0,0 -0.8,-0.26 -4.1,-0.13 -1.49,0.58 -0.56,0.91 0.26,1.16 -0.36,0.35 -4.25,-0.38 -0.76,0.2 -0.5,0.74 0.4,1.64 -0.36,0.45 -0.83,-0.08 -4.4,-2.58 -1.16,-0.34 -0.87,0.09 -1.01,0.62 -0.65,1.03 -0.13,1.09 0.58,1.53 -0.03,0.63 -0.42,0.34 -1.66,-0.1 -0.72,0.22 -0.44,0.6 -0.01,0.76 0.52,0.78 0.04,0.77 -0.62,0.9 -3.76,2.03 -1.37,0.36 -3.23,-0.42 -1.05,0.17 -3.07,2.11 -0.91,0.27 -3.9,-0.44 -1.12,0.3 -1.2,1.47 -0.78,0.47 -2.56,-0.07 -1.05,-0.47 -1.72,-1.71 -1.34,-0.73 -3.49,0.16 -1.64,0.65 -0.94,1.09 -0.45,1.47 -1.58,1.69 -3.22,1.72 -1.82,0.51 -0.9,-0.09 -0.82,-0.62 -0.8,-0.13 -2.78,1.29 -1.46,0.31 -1.47,-0.34 -0.63,-0.48 -0.29,-0.91 0.12,-0.93 0.78,-1.24 0.09,-0.89 -0.74,-0.99 -0.88,-0.45 -4.43,0.48 -0.76,-0.35 -0.27,-0.82 0.28,-0.94 1.25,-1.55 0.25,-0.86 -0.34,-0.67 -1.07,-0.38 -0.52,-0.6 0.03,-0.88 0.62,-1.09 0.04,-0.74 -0.61,-0.74 -1.97,-0.93 -0.5,-0.6 0.03,-0.65 0.47,-0.53 0.04,-0.61 -0.44,-0.56 -1.83,-0.62 -0.43,-0.53 0.04,-0.63 0.57,-0.49 0.08,-0.54 -0.47,-0.72 -2.26,-1.27 -0.45,-0.59 0.07,-0.62 0.89,-0.87 0.13,-0.62 -0.29,-0.54 -1.11,-0.44 -0.37,-0.55 0.1,-1.19 0.61,-1.22 0.01,-0.63 -0.67,-0.77 -2.64,-0.92 -0.66,-0.54 -0.07,-0.64 0.58,-0.96 0.06,-0.65 -0.57,-0.95 -2.46,-1.64 -0.35,-0.77 0.12,-0.6 0.84,-0.75 0.14,-0.64 -0.29,-0.94 -1.32,-1.31 -0.25,-0.72 0.12,-0.6 0.58,-0.48 0.15,-0.58 -0.38,-1.34 z"
+              style={{ fill: getEstadoFill("PR"), opacity: getEstadoOpacity("PR"), transition: "fill 200ms ease, opacity 200ms ease", cursor: "pointer" }}
+              onMouseEnter={(e) => handleMouseEnter("PR", e)}
+              onMouseMove={(e) => handleMouseMove("PR", e)}
+              onMouseLeave={handleMouseLeave}
+              onClick={(e) => handleClick("PR", e)}
+              onTouchStart={(e) => handleTouch("PR", e)}
+              role="button" tabIndex={0}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") handleClick("PR", e as unknown as React.MouseEvent<SVGPathElement>); }}
+            />
+            {/* PE */}
+            <path
+              id="pe"
+              aria-label={NOME_TODOS_ESTADOS["PE"] ?? "Pernambuco"}
+              d="m 503.82257,210.62114 -0.51,-2.67 0.54,-0.92 1.17,-1.06 1.56,-0.66 0.87,0.01 2.86,1.23 1.55,0.19 1.04,-0.22 0,0 -0.37,-0.73 0.19,-0.66 1.83,-1.7 0.22,-0.8 -0.2,-0.66 -0.79,-0.54 -0.25,-0.7 0.27,-0.9 0.93,-0.9 2.25,-0.95 0.3,-0.47 -0.15,-0.52 -0.69,-0.63 -0.04,-1.11 0.73,-0.73 1.01,-0.18 1.52,0.94 0.77,0.06 0.59,-0.47 -0.08,-1.45 0.43,-0.43 1.93,-0.46 1.47,0.27 0.7,0.65 0.11,0.91 -0.54,1.9 0.11,0.52 0,0 3.4,-0.35 0,0 -0.57,0.3 -0.11,0.64 0.36,1.44 -0.16,0.64 -0.83,-0.56 -0.29,-0.64 0.15,-0.56 0.72,-0.64 0.16,-0.72 -0.31,-0.64 -1.32,-0.91 -0.31,-0.71 0.15,-0.64 0.77,-0.74 0.11,-0.74 -0.31,-0.47 -1.06,-0.45 -0.29,-0.62 0.14,-0.57 2.36,-2.42 0.29,-0.85 -0.19,-0.96 -0.57,-0.52 -0.72,-0.06 -2.03,0.83 -0.63,-0.16 -0.23,-0.56 0.17,-1.46 -0.46,-0.78 -0.68,-0.29 -1.04,0.26 -0.78,0.76 -0.94,0.44 -1.85,0.04 -0.75,-0.59 -0.06,-0.84 0.57,-1.07 -0.03,-1.17 -0.66,-0.66 -0.83,-0.05 -0.76,0.56 -1.15,0.13 -0.56,-0.37 -0.01,-0.56 0.76,-1.63 -0.12,-0.86 -0.56,-0.68 -0.84,-0.23 -1.75,0.45 -0.55,-0.26 -0.05,-0.54 0.42,-1.09 -0.16,-0.84 -0.57,-0.77 -1.27,-0.8 -3.87,-0.34 -0.99,0.43 -0.69,0.95 -1.5,0.8 -1.24,-0.25 -0.94,-0.82 -1.32,-0.32 -1.54,0.53 -0.73,0.95 -0.89,0.28 -1.63,-0.5 -0.74,-1.14 -0.83,-0.58 -1.65,-0.16 -0.8,0.78 -1.64,0.74 -2.19,-0.16 -0.79,0.51 -0.06,0.51 0.54,1.06 -0.13,0.65 -0.62,0.62 -1.41,0.45 -3.62,-0.04 -1.24,-0.43 -0.04,-0.64 0.7,-0.41 0.23,-0.82 -0.31,-0.59 -0.95,-0.52 -5.67,-1.01 -0.74,0.17 -0.22,0.42 0.17,0.57 1.15,0.71 0.22,0.51 -0.35,0.71 -1.13,0.37 -0.85,-0.37 -2.29,-1.79 -1.78,-0.41 -3.4,0.29 -1.21,0.72 -1.08,0.04 -3.09,-1.2 -0.87,-0.8 -1.51,-0.86 0,0 1.52,-0.46 0,0 4.55,0.75 0.93,0.53 0.46,0.74 1.19,0.5 4.57,0.36 1.46,-0.28 0.5,-0.46 -0.12,-0.68 -0.83,-0.7 -0.12,-0.56 0.5,-0.64 3.46,0.23 1.14,0.69 0.62,1.04 1.5,0.73 2.08,-0.08 0.68,-0.37 0.24,-0.75 -0.21,-1.16 0.18,-0.6 0.87,-0.46 4.44,0.29 0.82,-0.22 0.36,-0.55 -0.21,-1.07 0.25,-0.67 1.96,-1.25 0.62,-0.78 0.12,-0.7 -0.55,-1.3 0.11,-0.77 0.8,-0.78 4.07,0.03 1.31,-0.47 0.42,-0.61 -0.07,-0.85 -0.58,-0.67 -0.04,-0.53 0.53,-0.66 2.31,-0.74 0.62,-0.56 0.08,-0.65 -0.54,-1.25 0.11,-0.73 0.65,-0.58 2.93,-0.69 0.84,0.07 1.87,1.06 0.81,0.13 0.53,-0.27 0.25,-0.61 -0.13,-0.96 0.2,-0.57 0.89,-0.46 2.57,0.18 0.71,-0.19 0.45,-0.56 -0.04,-0.87 -0.67,-0.74 -0.07,-0.61 0.47,-0.68 1.41,-0.62 0.54,-0.58 0.03,-0.66 -0.54,-0.77 -0.04,-0.59 0.46,-0.55 1.87,-0.67 0.51,-0.6 -0.04,-0.72 -0.71,-0.83 -0.08,-0.64 0.46,-0.58 1.75,-0.62 0.54,-0.59 0.04,-0.72 -0.67,-1.36 0.08,-0.64 0.63,-0.52 1.71,-0.01 0.71,-0.43 0.17,-0.64 -0.63,-1.45 0.09,-0.64 0.75,-0.68 2.64,0.24 0.76,-0.2 0.37,-0.55 -0.08,-1.82 0.29,-0.58 0.79,-0.29 2.27,0.36 0.71,-0.15 0.5,-0.58 0.04,-0.87 -0.75,-1.56 0.13,-0.72 0.71,-0.58 1.97,0.07 0.73,-0.28 0.29,-0.64 -0.63,-2.02 0.08,-0.65 0.63,-0.49 1.47,0.21 0.63,-0.21 0.38,-0.55 -0.08,-1.07 0.5,-0.86 2.93,-1.59 0.5,-0.67 -0.08,-0.74 -1.17,-1.53 -0.04,-0.66 0.46,-0.64 1.84,-0.86 0.5,-0.65 -0.04,-0.73 -1.13,-1.44 -0.08,-0.59 0.38,-0.51 3,-0.96 0.54,-0.59 0.04,-0.73 -0.88,-1.8 0.04,-0.66 0.63,-0.58 2.22,-0.29 0.63,-0.43 0.21,-0.65 -0.38,-0.87 0.21,-2.07 0.5,-0.73 1.42,-0.72 0.29,-0.51 -0.08,-0.73 -1.09,-1.73 -0.04,-0.65 0.5,-0.65 1.55,-0.51 0.42,-0.59 -0.04,-0.8 -0.92,-0.94 0.04,-1.38 0.79,-1.37 2.01,-0.65 0.38,-0.72 -1.67,-4.37 0,0 1.32,-1.07 0,0 0.54,1.4 1.02,0.29 0.45,-0.09 1.42,0.78 0.2,0.73 3.68,0.95 5.42,3.07 1.3,2.45 1.76,1.45 1.66,0.79 0.46,0.03 3.59,2.23 0.6,1.31 0,0 -1.67,4.37 0.38,0.72 -2.01,0.65 -0.79,1.37 -0.04,1.38 0.92,0.94 0.04,0.8 -0.42,0.59 -1.55,0.51 -0.5,0.65 0.04,0.65 1.09,1.73 0.08,0.73 -0.29,0.51 -1.42,0.72 -0.5,0.73 -0.21,2.07 0.38,0.87 -0.21,0.65 -0.63,0.43 -2.22,0.29 -0.63,0.58 -0.04,0.66 0.88,1.8 -0.04,0.73 -0.54,0.59 -3,0.96 -0.38,0.51 0.08,0.59 1.13,1.44 0.04,0.73 -0.5,0.65 -1.84,0.86 -0.46,0.64 0.04,0.66 1.17,1.53 0.08,0.74 -0.5,0.67 -2.93,1.59 -0.5,0.86 0.08,1.07 -0.38,0.55 -0.63,0.21 -1.47,-0.21 -0.63,0.49 -0.08,0.65 0.63,2.02 -0.29,0.64 -0.73,0.28 -1.97,-0.07 -0.71,0.58 -0.13,0.72 0.75,1.56 -0.04,0.87 -0.5,0.58 -0.71,0.15 -2.27,-0.36 -0.79,0.29 -0.29,0.58 0.08,1.82 -0.37,0.55 -0.76,0.2 -2.64,-0.24 -0.75,0.68 -0.09,0.64 0.63,1.45 -0.17,0.64 -0.71,0.43 -1.71,0.01 -0.63,0.52 -0.08,0.64 0.67,1.36 -0.04,0.72 -0.54,0.59 -1.75,0.62 -0.46,0.58 0.08,0.64 0.71,0.83 0.04,0.72 -0.51,0.6 -1.87,0.67 -0.46,0.55 0.04,0.59 0.54,0.77 -0.03,0.66 -0.54,0.58 -1.41,0.62 -0.47,0.68 0.07,0.61 0.67,0.74 0.04,0.87 -0.45,0.56 -0.71,0.19 -2.57,-0.18 -0.89,0.46 -0.2,0.57 0.13,0.96 -0.25,0.61 -0.53,0.27 -0.81,-0.13 -1.87,-1.06 -0.84,-0.07 -2.93,0.69 -0.65,0.58 -0.11,0.73 0.54,1.25 -0.08,0.65 -0.62,0.56 -2.31,0.74 -0.53,0.66 0.04,0.53 0.58,0.67 0.07,0.85 -0.42,0.61 -1.31,0.47 -4.07,-0.03 -0.8,0.78 -0.11,0.77 0.55,1.3 -0.12,0.7 -0.62,0.78 -1.96,1.25 -0.25,0.67 0.21,1.07 -0.36,0.55 -0.82,0.22 -4.44,-0.29 -0.87,0.46 -0.18,0.6 0.21,1.16 -0.24,0.75 -0.68,0.37 -2.08,0.08 -1.5,-0.73 -0.62,-1.04 -1.14,-0.69 -3.46,-0.23 -0.5,0.64 0.12,0.56 0.83,0.7 0.12,0.68 -0.5,0.46 -1.46,0.28 -4.57,-0.36 -1.19,-0.5 -0.46,-0.74 -0.93,-0.53 -4.55,-0.75 z"
+              style={{ fill: getEstadoFill("PE"), opacity: getEstadoOpacity("PE"), transition: "fill 200ms ease, opacity 200ms ease", cursor: "pointer" }}
+              onMouseEnter={(e) => handleMouseEnter("PE", e)}
+              onMouseMove={(e) => handleMouseMove("PE", e)}
+              onMouseLeave={handleMouseLeave}
+              onClick={(e) => handleClick("PE", e)}
+              onTouchStart={(e) => handleTouch("PE", e)}
+              role="button" tabIndex={0}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") handleClick("PE", e as unknown as React.MouseEvent<SVGPathElement>); }}
+            />
+            {/* PI */}
+            <path
+              id="pi"
+              aria-label={NOME_TODOS_ESTADOS["PI"] ?? "Piauí"}
+              d="m 458.34257,129.63114 -0.87,-0.23 -0.21,-0.34 0.62,-3.52 1.16,-2.35 -0.07,-0.77 1.16,-1.49 1.03,-0.91 0.97,-0.19 0.27,-1.23 -0.52,-1.89 -0.87,-0.81 -0.83,0.03 -1.75,1.68 -0.6,1.03 -0.1,-0.66 0.38,-0.89 2.19,-2.73 0.11,-0.95 -0.77,-2.4 -1.58,-0.67 -0.86,0.44 -1.63,-1.75 0.14,-1.21 -0.58,-0.79 -1.25,0.6 -0.1,0.37 -0.59,-0.58 1.13,-1.53 0.36,-0.21 -0.05,-0.92 -1.5,1.11 -2.13,-0.59 -1.05,0.25 -1.32,1.43 -0.14,0.6 0.47,1 -0.96,0.93 -0.58,0.14 -0.47,-0.12 -0.26,-0.33 -0.08,-2.71 0.27,-0.99 0.87,-0.92 0,-0.58 -0.4,-1.02 -0.45,0 -0.49,1.54 -1.21,2.04 -0.02,-0.55 -0.67,-0.7 1.43,-1.7 -0.5,-0.69 -1.69,-0.53 -0.85,0.04 -0.07,0.94 -0.29,0.49 -0.99,-0.04 -0.61,-2.93 -0.77,1.36 -1.19,-0.12 -0.45,-1.839996 -1.34,-0.98 -0.58,0.53 -0.34,0.749996 0.06,0.54 -0.24,0.24 -0.63,0 0,0 -0.77,0.45 -0.47,1.03 0.16,1.38 -0.71,4.39 -0.57,0.74 -1.14,0.15 -0.05,0.62 0.27,0.49 0.99,-0.16 0.43,0.53 -0.08,1.61 -0.9,3.02 -0.36,0.71 -1.74,1.57 -0.5,2.38 0.13,1.64 -3.68,3.09 1.04,1.58 -0.79,0.81 0.18,1.82 -0.46,1.28 -0.83,1.45 -1.48,1.76 -1.96,1.54 -1.6,4.69 -0.29,1.9 -0.47,1.21 -2.44,2.32 -1.12,0.46 -0.62,2.88 -1.55,1.17 -0.43,1.15 -1.55,2.17 -1.17,0.92 -2.35,-0.23 -14.71,11.83 0,0 0.49,0.08 0,0 -0.56,-0.12 -0.85,-0.88 -0.53,-0.24 -2.17,0.33 -0.63,0.48 -1.12,2.03 -0.85,0.54 -0.76,-0.05 -1.37,-1.05 -0.99,-0.27 -2.17,0.62 -0.69,0.68 -0.12,0.79 0.41,0.72 0.02,0.59 -0.52,0.72 -1.19,0.46 -0.55,0.59 0.03,1.12 0.77,1.01 0.1,0.65 -0.47,0.87 -0.91,0.52 -0.27,0.62 0.24,1.11 -0.11,0.86 -1.83,2.54 -0.12,0.72 0.36,0.81 0.02,0.79 -0.47,0.6 -0.94,0.27 -0.5,0.55 0.03,0.79 0.69,0.87 0.1,0.69 -0.36,0.79 -1.62,1.69 -0.36,0.75 0.1,0.71 0.83,0.81 0.14,0.68 -0.28,0.62 -0.84,0.42 -0.17,0.52 0.36,0.79 -0.05,0.55 -0.62,0.47 -0.88,-0.03 -0.65,0.44 -0.12,0.7 0.52,0.71 0.07,0.64 -0.45,0.68 -1.86,1.5 -0.38,0.65 0.05,0.58 0.55,0.37 0.14,0.6 -0.36,0.98 -1.17,1.33 -0.19,0.72 0.22,0.56 0.86,0.4 0.24,0.56 -0.17,0.96 -0.66,0.89 -0.09,0.59 0.36,0.44 2.05,0.68 0.48,0.56 0.02,0.75 -0.38,0.59 -1.59,1.02 -0.31,0.65 0.12,0.58 0.69,0.44 0.19,0.55 -0.31,0.98 -2.07,2.79 -0.26,0.75 0.17,0.65 1.0,0.89 0.12,0.55 -0.29,0.65 -0.86,0.55 -0.22,0.62 0.5,1.46 -0.1,0.72 -0.77,1.0 -0.14,0.68 0.36,0.75 1.36,1.05 0.22,0.58 -0.29,0.96 -1.62,2.0 -0.26,0.68 0.1,0.55 0.72,0.44 0.17,0.65 -0.5,1.46 0.05,0.62 0.62,0.44 0.93,-0.07 0.57,0.27 0.26,0.68 -0.38,1.44 0.1,0.62 0.55,0.27 0.86,-0.27 0.53,0.24 0.19,0.68 -0.45,1.3 0.02,0.59 0.55,0.41 2.48,0.17 0.57,0.38 0.14,0.65 -0.55,1.37 0.07,0.59 0.57,0.27 0.93,-0.14 0.52,0.27 0.14,0.72 -0.57,1.16 0.05,0.72 0.98,1.46 0.19,0.68 -0.31,0.85 -0.88,0.62 -0.17,0.62 0.36,0.65 1.31,0.75 0.24,0.75 -0.62,1.71 0,0 -0.62,0.27 -0.5,-0.22 -1.9,-1.91 -0.01,-0.46 0.63,-0.87 -2.01,-2 -2.34,-0.91 -2.87,-2.56 -1.33,-0.53 -1.05,-0.04 -1.7,-1.53 -1.08,-0.36 -2.61,-0.32 -2.72,-0.76 -2.13,-1.95 -0.98,-2.97 -0.39,-2.97 -0.63,-2.32 -1.45,-2.74 -0.3,-0.22 -0.34,-0.82 -0.13,-1.52 -1.2,-2.48 -1.7,-1.4 -0.73,-2 0.71,-1.94 0.47,-3.18 1.73,-3.06 0.04,-0.52 -0.76,-1.4 -0.13,-6.36 1.15,-2.45 0.26,-1.06 0.05,-1.92 0,0 0.63,-2.32 1.45,-2.74 0.98,-2.97 2.13,-1.95 2.72,-0.76 2.61,-0.32 1.08,-0.36 1.7,-1.53 1.05,-0.04 1.33,-0.53 2.87,-2.56 2.34,-0.91 2.01,-2 0.63,-0.87 -0.01,-0.46 1.9,-1.91 0.84,-0.24 0.23,0.3 1.12,0.26 1.01,0.6 1.46,0.19 1.01,-0.21 2.5,-1.82 1.52,0.11 2.43,0.86 0.83,0.04 0.65,-0.28 2.29,0.29 1.21,1.31 0.5,1.46 0.12,1.21 0.29,0.44 0.39,2.2 -0.13,0.84 -0.17,0.5 -1.61,0.91 -1.78,2.04 -0.51,2.3 -0.12,2.11 0.17,2.48 4.1,4.42 0.21,0.55 0.11,2.43 -0.55,2.98 -1.58,2.81 1.14,2.87 0.28,1.46 -0.38,1.28 -1.23,0.83 -0.36,1.92 0.77,1.05 0.64,0.17 0.82,1.98 1.89,1.85 0.88,1.83 -0.04,1.8 2.92,3.4 3.32,0.46 4.13,3.97 1.79,2.27 0.38,1.53 -0.63,0.54 -0.23,0.72 0.46,1.43 0,0 0.09,-0.42 -0.57,-0.11 -1.67,0.38 0.67,0.47 -0.26,0.9 -2.46,-0.66 -1.59,0.09 -0.34,-0.05 -0.56,-0.76 -1.16,0.19 -2.5,-0.58 -1.89,-1.32 -1.26,-1.3 -1.4,-0.03 -2.15,-1.38 -1.04,-0.11 -2.63,-1.05 -1.78,-0.38 -2.42,-0.08 -0.61,0.23 0.46,2.41 -4.04,-0.43 -2.58,0.93 -0.86,-0.33 -4.21,4.97 -0.25,-0.3 0.59,-0.51 -0.22,-0.83 -1.15,0.31 -0.45,0.81 -0.73,-0.12 0.03,-0.72 3.21,-1.75 1.42,-1.87 0.2,-0.45 -0.08,-1.63 -0.46,-0.12 -0.65,0.13 -1.67,0.92 -1.11,0.12 -1.15,0.7 -1.03,6.33 -0.89,1.14 -2.12,1.58 -0.68,1.21 -1.97,1.7 0.04,-1.44 0.43,-0.17 2.04,-2.15 0.04,-0.33 z"
+              style={{ fill: getEstadoFill("PI"), opacity: getEstadoOpacity("PI"), transition: "fill 200ms ease, opacity 200ms ease", cursor: "pointer" }}
+              onMouseEnter={(e) => handleMouseEnter("PI", e)}
+              onMouseMove={(e) => handleMouseMove("PI", e)}
+              onMouseLeave={handleMouseLeave}
+              onClick={(e) => handleClick("PI", e)}
+              onTouchStart={(e) => handleTouch("PI", e)}
+              role="button" tabIndex={0}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") handleClick("PI", e as unknown as React.MouseEvent<SVGPathElement>); }}
+            />
+            {/* RN */}
+            <path
+              id="rn"
+              aria-label={NOME_TODOS_ESTADOS["RN"] ?? "Rio Grande do Norte"}
+              d="m 554.33257,196.17114 0,0 3.5,-0.05 1.62,0.55 2.44,2.12 0.97,0.26 3.15,-0.48 0.56,0.38 0.38,0.66 0,0 -0.27,0.21 -2.9,-0.27 0,0 1.32,1.07 0,0 -0.57,0.3 -0.11,0.64 0.36,1.44 -0.16,0.64 -0.83,-0.56 -0.29,-0.64 0.15,-0.56 0.72,-0.64 0.16,-0.72 -0.31,-0.64 -1.32,-0.91 -0.31,-0.71 0.15,-0.64 0.77,-0.74 0.11,-0.74 -0.31,-0.47 -1.06,-0.45 -0.29,-0.62 0.14,-0.57 2.36,-2.42 0.29,-0.85 -0.19,-0.96 -0.57,-0.52 -0.72,-0.06 -2.03,0.83 -0.63,-0.16 -0.23,-0.56 0.17,-1.46 -0.46,-0.78 -0.68,-0.29 -1.04,0.26 -0.78,0.76 -0.94,0.44 -1.85,0.04 -0.75,-0.59 -0.06,-0.84 0.57,-1.07 -0.03,-1.17 -0.66,-0.66 -0.83,-0.05 -0.76,0.56 -1.15,0.13 -0.56,-0.37 -0.01,-0.56 0.76,-1.63 -0.12,-0.86 -0.56,-0.68 -0.84,-0.23 -1.75,0.45 -0.55,-0.26 -0.05,-0.54 0.42,-1.09 -0.16,-0.84 -0.57,-0.77 -1.27,-0.8 -3.87,-0.34 -0.99,0.43 -0.69,0.95 -1.5,0.8 -1.24,-0.25 -0.94,-0.82 -1.32,-0.32 -1.54,0.53 -0.73,0.95 -0.89,0.28 -1.63,-0.5 -0.74,-1.14 -0.83,-0.58 -1.65,-0.16 -0.8,0.78 -1.64,0.74 -2.19,-0.16 -0.79,0.51 -0.06,0.51 0.54,1.06 -0.13,0.65 -0.62,0.62 -1.41,0.45 -3.62,-0.04 -1.24,-0.43 -0.04,-0.64 0.7,-0.41 0.23,-0.82 -0.31,-0.59 -0.95,-0.52 -5.67,-1.01 -0.74,0.17 -0.22,0.42 0.17,0.57 1.15,0.71 0.22,0.51 -0.35,0.71 -1.13,0.37 -0.85,-0.37 -2.29,-1.79 -1.78,-0.41 -3.4,0.29 -1.21,0.72 -1.08,0.04 -3.09,-1.2 -0.87,-0.8 -1.51,-0.86 0,0 1.52,-0.46 2.6,0.41 1.77,-0.52 1.21,-0.76 1.74,-2.26 2.47,-0.78 1.79,0.09 1.01,-0.22 1.72,-1.42 0.88,-0.24 2.74,0.84 0.94,-0.01 0.76,-0.43 0.51,-0.79 0.08,-1.42 0.45,-0.74 0.96,-0.14 1.11,0.58 0.65,0.82 0.43,1.36 1.36,1.77 0.99,0.34 0.71,-0.12 0.53,-0.71 -0.05,-2.37 0.46,-0.72 1.07,-0.25 1.73,0.64 0.86,-0.07 2.29,-1.6 1.71,-0.28 0.75,-0.52 0.49,-0.82 0.48,-2.11 0.89,-0.74 3.4,-0.35 0,0 0.11,0.52 -0.54,1.9 0.11,0.91 0.7,0.65 1.47,0.27 1.93,-0.46 0.43,-0.43 -0.08,-1.45 0.59,-0.47 0.77,0.06 1.52,0.94 1.01,-0.18 0.73,-0.73 -0.04,-1.11 -0.69,-0.63 -0.15,-0.52 0.3,-0.47 2.25,-0.95 0.93,-0.9 0.27,-0.9 -0.25,-0.7 -0.79,-0.54 -0.2,-0.66 0.22,-0.8 1.83,-1.7 0.19,-0.66 -0.37,-0.73 0,0 1.04,-0.22 1.55,0.19 2.86,1.23 0.87,0.01 1.56,-0.66 1.17,-1.06 0.54,-0.92 0.51,2.67 0,0 -0.57,0.3 0.11,0.64 -0.36,1.44 0.16,0.64 0.83,-0.56 0.29,-0.64 -0.15,-0.56 -0.72,-0.64 -0.16,-0.72 0.31,-0.64 1.32,-0.91 0.31,-0.71 -0.15,-0.64 -0.77,-0.74 -0.11,-0.74 0.31,-0.47 1.06,-0.45 0.29,-0.62 -0.14,-0.57 -2.36,-2.42 -0.29,-0.85 0.19,-0.96 0.57,-0.52 0.72,-0.06 2.03,0.83 0.63,-0.16 0.23,-0.56 -0.17,-1.46 0.46,-0.78 0.68,-0.29 1.04,0.26 0.78,0.76 0.94,0.44 1.85,0.04 0.75,-0.59 0.06,-0.84 -0.57,-1.07 0.03,-1.17 0.66,-0.66 0.83,-0.05 0.76,0.56 1.15,0.13 0.56,-0.37 0.01,-0.56 -0.76,-1.63 0.12,-0.86 0.56,-0.68 0.84,-0.23 1.75,0.45 0.55,-0.26 0.05,-0.54 -0.42,-1.09 0.16,-0.84 0.57,-0.77 1.27,-0.8 3.87,0.34 0.99,0.43 0.69,0.95 1.5,0.8 1.24,-0.25 0.94,-0.82 1.32,-0.32 1.54,0.53 0.73,0.95 0.89,0.28 1.63,-0.5 0.74,-1.14 0.83,-0.58 1.65,0.16 0.8,0.78 1.64,0.74 2.19,-0.16 0.79,0.51 0.06,0.51 -0.54,1.06 0.13,0.65 0.62,0.62 1.41,0.45 3.62,0.04 1.24,-0.43 0.04,-0.64 -0.7,-0.41 -0.23,-0.82 0.31,-0.59 0.95,-0.52 5.67,1.01 0.74,0.17 0.22,0.42 -0.17,0.57 -1.15,0.71 -0.22,0.51 0.35,0.71 1.13,0.37 0.85,-0.37 2.29,-1.79 1.78,-0.41 3.4,0.29 1.21,0.72 1.08,0.04 3.09,-1.2 0.87,-0.8 1.51,-0.86 z"
+              style={{ fill: getEstadoFill("RN"), opacity: getEstadoOpacity("RN"), transition: "fill 200ms ease, opacity 200ms ease", cursor: "pointer" }}
+              onMouseEnter={(e) => handleMouseEnter("RN", e)}
+              onMouseMove={(e) => handleMouseMove("RN", e)}
+              onMouseLeave={handleMouseLeave}
+              onClick={(e) => handleClick("RN", e)}
+              onTouchStart={(e) => handleTouch("RN", e)}
+              role="button" tabIndex={0}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") handleClick("RN", e as unknown as React.MouseEvent<SVGPathElement>); }}
+            />
+            {/* RS */}
+            <path
+              id="rs"
+              aria-label={NOME_TODOS_ESTADOS["RS"] ?? "Rio Grande do Sul"}
+              d="m 316.14257,558.56114 0.55,-2.06 -0.18,-0.67 -0.71,-0.65 -0.15,-0.88 0.51,-0.82 2.1,-1.85 0.51,-1.07 -0.14,-0.63 -0.71,-0.71 -0.13,-1.03 0.58,-0.76 1.32,-0.76 0.5,-0.74 0.12,-1.53 -0.48,-0.67 -1.67,-0.7 -0.43,-0.76 0.03,-1.11 0.97,-2.19 0.17,-1.55 -0.27,-0.62 -1.13,-0.82 -0.27,-0.84 0.32,-0.79 1.6,-1.24 0.21,-0.52 -0.21,-1.35 0.29,-0.84 0.65,-0.58 1.36,-0.2 0.57,-0.62 -0.03,-0.73 -0.52,-1.08 0.17,-0.83 0.88,-0.83 1.33,-0.1 3.08,0.4 1.3,-0.62 2.45,-2.72 0.96,-2.26 1.37,-1.09 1.39,-0.57 1.07,-0.07 0.82,-0.86 -0.01,-1.57 -0.69,-1.57 -0.01,-1.01 0.33,-0.82 1.36,-1.13 1.87,-0.8 0.54,-0.8 0,0 0.38,1.34 -0.15,0.58 -0.58,0.48 -0.12,0.6 0.25,0.72 1.32,1.31 0.29,0.94 -0.14,0.64 -0.84,0.75 -0.12,0.6 0.35,0.77 2.46,1.64 0.57,0.95 -0.06,0.65 -0.58,0.96 0.07,0.64 0.66,0.54 2.64,0.92 0.67,0.77 -0.01,0.63 -0.61,1.22 -0.1,1.19 0.37,0.55 1.11,0.44 0.29,0.54 -0.13,0.62 -0.89,0.87 -0.07,0.62 0.45,0.59 2.26,1.27 0.47,0.72 -0.08,0.54 -0.57,0.49 -0.04,0.63 0.43,0.53 1.83,0.62 0.44,0.56 -0.04,0.61 -0.47,0.53 -0.03,0.65 0.5,0.6 1.97,0.93 0.61,0.74 -0.04,0.74 -0.62,1.09 -0.03,0.88 0.52,0.6 1.07,0.38 0.34,0.67 -0.25,0.86 -1.25,1.55 -0.28,0.94 0.27,0.82 0.76,0.35 4.43,-0.48 0.88,0.45 0.74,0.99 -0.09,0.89 -0.78,1.24 -0.12,0.93 0.29,0.91 0.63,0.48 1.47,0.34 1.46,-0.31 2.78,-1.29 0.8,0.13 0.82,0.62 0.9,0.09 1.82,-0.51 3.22,-1.72 1.58,-1.69 0.45,-1.47 0.94,-1.09 1.64,-0.65 3.49,-0.16 1.34,0.73 1.72,1.71 1.05,0.47 2.56,0.07 0.78,-0.47 1.2,-1.47 1.12,-0.3 3.9,0.44 0.91,-0.27 3.07,-2.11 1.05,-0.17 3.23,0.42 1.37,-0.36 3.76,-2.03 0.62,-0.9 -0.04,-0.77 -0.52,-0.78 0.01,-0.76 0.44,-0.6 0.72,-0.22 1.66,0.1 0.42,-0.34 0.03,-0.63 -0.58,-1.53 0.13,-1.09 0.65,-1.03 1.01,-0.62 0.87,-0.09 1.16,0.34 4.4,2.58 0.83,0.08 0.36,-0.45 -0.4,-1.64 0.5,-0.74 0.76,-0.2 4.25,0.38 0.36,-0.35 -0.26,-1.16 0.56,-0.91 1.49,-0.58 4.1,0.13 0.8,0.26 0,0 -0.97,3.83 -3.01,4.03 -1.75,3.5 -2.58,2.99 -1.44,2.49 -0.37,2.31 0.37,1.11 1.49,1.44 0.6,1.08 -0.09,0.89 -1.14,1.35 -0.32,1.03 0.24,1.26 1.09,1.47 0.2,0.92 -0.38,1.03 -2.61,2.74 -0.71,1.35 0.07,1.26 0.79,0.79 0.17,0.72 -0.52,1.62 -2.19,2.73 -0.38,1.26 0.3,1.07 1.35,1.08 0.38,0.76 -0.24,1.44 -2.15,3.44 -0.37,2.03 0.59,2.56 2.09,3.33 0.41,1.26 -0.31,1.48 -2.25,3.27 -0.37,1.13 0.12,1.26 0.76,1.07 0.19,0.85 -0.27,1.13 -1.62,2.1 -0.38,1.0 0.17,1.12 1.06,1.24 0.27,0.85 -0.17,0.85 -0.93,0.93 -0.27,0.76 0.17,1.35 1.0,1.44 0.24,0.76 -0.17,0.66 -0.96,0.55 -0.34,0.66 0.07,1.07 0.76,1.16 0.17,0.79 -0.24,0.79 -2.49,2.83 -0.41,1.09 0.17,0.89 0.96,0.83 0.17,0.59 -0.31,0.93 -2.53,2.59 -0.44,0.99 0.03,0.82 0.55,0.62 0.07,0.65 -0.55,0.89 -2.18,1.78 -0.55,0.99 0.1,1.03 1.37,2.04 0.1,1.03 -0.72,0.76 -3.21,1.34 -0.93,0.79 -0.24,0.79 0.24,0.83 0.86,0.86 0.24,0.79 -0.28,0.86 -2.22,2.04 -0.55,1.3 0.24,0.93 1.54,1.34 0.34,0.69 -0.14,0.72 -0.89,0.76 -0.31,0.76 0.21,1.24 1.0,1.07 0.14,0.65 -0.34,0.62 -1.37,0.83 -0.27,0.72 0.31,1.82 -0.1,0.72 -0.76,0.65 -3.45,0.93 -0.72,0.69 -0.07,0.55 0.48,0.72 0.07,0.62 -0.48,0.72 -2.84,1.55 -0.55,0.76 0,1.0 0.69,1.07 0.1,0.83 -0.55,1.0 -4.09,3.79 -0.55,0.93 0.07,1.0 1.13,1.55 0.14,0.72 -0.34,0.83 -2.87,2.66 -0.62,1.07 0.03,0.79 0.69,0.79 0.14,0.66 -0.34,0.79 -2.49,1.96 -0.28,0.66 0.14,0.72 0.96,1.0 0.1,0.59 -0.45,1.03 -1.96,2.11 -0.31,0.93 0.14,0.66 0.72,0.41 0.21,0.62 -0.28,1.58 -1.2,2.0 -0.24,0.93 0.17,0.79 1.34,1.44 0.24,0.72 -0.17,0.66 -1.16,0.96 -0.31,0.72 0.17,1.41 1.03,1.55 0.14,0.79 -0.38,1.13 -1.85,2.04 -0.38,0.86 0.07,0.72 0.62,0.59 0.1,0.55 -0.34,0.83 -3.97,4.37 -0.41,1.0 0.1,0.69 0.76,0.55 0.17,0.55 -0.28,1.03 -2.08,2.56 -0.41,0.96 0.03,0.76 0.55,0.55 0.1,0.59 -0.55,1.75 -3.28,4.68 -0.41,1.16 0.07,0.79 0.62,0.59 0.1,0.55 -0.31,1.13 -3.83,5.09 -0.34,0.93 0.07,0.62 0.55,0.41 0.14,0.59 -0.28,0.86 -1.89,2.07 -0.34,0.72 0.03,0.55 0.48,0.38 0.1,0.52 -0.62,1.62 -5.26,6.75 -0.55,1.07 0.03,0.66 0.55,0.41 0.07,0.52 -0.62,1.85 -1.72,2.49 -0.28,0.93 0.1,0.55 0.55,0.31 0.07,0.45 -0.55,2.01 -0.03,0.93 0.41,0.52 2.94,1.03 0.48,0.55 0.03,0.79 -0.41,0.66 -3.17,2.18 -0.48,0.66 0.03,0.72 0.55,0.59 0.1,0.62 -0.45,0.93 -1.99,2.32 -0.38,0.79 0.07,0.62 0.55,0.38 0.07,0.55 -0.48,1.62 -0.03,0.79 0.38,0.45 2.56,0.59 0.48,0.48 0.03,0.66 -0.38,0.55 -4.26,2.42 -0.48,0.62 0.03,0.59 0.48,0.41 0.1,0.55 -0.38,0.96 -2.7,3.3 -0.38,0.86 0.03,0.59 0.48,0.34 0.07,0.52 -0.55,2.07 -2.08,4.06 -0.17,0.96 0.24,0.62 1.58,1.13 0.24,0.52 -0.1,0.69 -1.13,1.34 -0.24,0.66 0.07,0.55 0.55,0.41 0.1,0.62 -0.48,1.96 -2.04,4.47 -0.34,1.41 0.1,0.79 1.92,2.7 0.24,0.86 -0.17,0.79 -3.24,4.13 -0.38,1.07 0.07,0.72 0.55,0.45 0.1,0.55 -0.38,1.41 -2.46,3.89 -0.24,0.93 0.1,0.62 0.55,0.38 0.1,0.52 -0.24,1.07 -1.34,1.89 -0.28,0.83 0.1,0.66 0.62,0.55 0.1,0.62 -0.28,0.93 -1.06,1.16 -0.21,0.69 0.1,0.55 0.55,0.41 0.07,0.52 -0.34,1.13 -4.53,5.85 -0.55,1.16 0.03,0.66 0.55,0.38 0.07,0.52 -0.34,1.24 -3.55,5.16 -0.34,0.99 0.03,0.66 0.55,0.45 0.07,0.59 -0.28,0.93 -1.2,1.41 -0.28,0.83 0.07,0.59 0.55,0.41 0.07,0.55 -0.34,1.2 -4.88,6.27 -0.34,0.96 0.07,0.62 0.55,0.45 0.07,0.55 -0.31,1.07 -2.18,2.66 0,0 -13.97,-7.96 -8.73,-5.47 -9.35,-4.56 -7.34,-4.48 -2.55,-2.59 -1.06,-1.96 -0.28,-1.34 0.38,-0.93 2.08,-2.03 0.51,-1.13 -0.17,-0.93 -1.44,-1.16 -0.55,-1.0 0.07,-0.99 2.46,-3.58 0.45,-1.34 -0.21,-1.03 -1.75,-1.82 -0.45,-0.99 0.03,-0.96 2.8,-4.33 0.48,-1.27 -0.14,-0.99 -2.91,-3.17 -0.48,-0.89 0.03,-0.82 1.41,-1.75 0.38,-0.99 -0.14,-1.06 -1.68,-2.14 -0.41,-0.99 0.07,-0.89 1.34,-1.62 0.41,-0.93 -0.03,-0.82 -0.89,-1.0 -0.24,-0.82 0.24,-1.34 1.41,-2.04 0.34,-1.06 -0.17,-0.89 -2.35,-2.28 -0.41,-0.89 0.03,-0.76 0.69,-0.72 0.17,-0.66 -0.31,-1.62 -2.7,-4.0 -0.38,-1.34 0.14,-0.99 2.36,-3.06 0.41,-1.16 -0.1,-1.0 -2.22,-3.06 -0.38,-0.96 0.07,-0.79 0.69,-0.66 0.17,-0.62 -0.31,-1.58 -4.5,-7.1 -0.41,-1.24 0.1,-1.06 2.94,-4.0 0.48,-1.2 -0.1,-1.0 -5.84,-8.18 -0.48,-1.13 0.03,-0.93 0.93,-1.03 0.27,-0.86 -0.17,-1.2 -1.85,-2.8 -0.34,-0.96 0.1,-0.86 3.24,-3.89 0.48,-1.13 -0.07,-0.93 -3.07,-4.09 -0.41,-0.96 0.03,-0.79 0.62,-0.62 0.17,-0.62 -0.21,-1.51 -2.18,-3.72 -0.24,-0.89 0.07,-0.79 2.84,-3.44 0.41,-1.0 -0.03,-0.86 -0.62,-0.76 -0.17,-0.69 0.17,-1.37 1.34,-2.14 0.31,-0.96 -0.03,-0.82 -0.62,-0.69 -0.14,-0.62 0.21,-1.51 1.68,-3.06 0.34,-1.06 -0.07,-0.86 -3.07,-4.4 -0.34,-0.89 0.07,-0.72 0.62,-0.55 0.14,-0.59 -0.21,-1.41 -3.17,-5.16 z"
+              style={{ fill: getEstadoFill("RS"), opacity: getEstadoOpacity("RS"), transition: "fill 200ms ease, opacity 200ms ease", cursor: "pointer" }}
+              onMouseEnter={(e) => handleMouseEnter("RS", e)}
+              onMouseMove={(e) => handleMouseMove("RS", e)}
+              onMouseLeave={handleMouseLeave}
+              onClick={(e) => handleClick("RS", e)}
+              onTouchStart={(e) => handleTouch("RS", e)}
+              role="button" tabIndex={0}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") handleClick("RS", e as unknown as React.MouseEvent<SVGPathElement>); }}
+            />
+            {/* RO */}
+            <path
+              id="ro"
+              aria-label={NOME_TODOS_ESTADOS["RO"] ?? "Rondônia"}
+              d="m 166.08257,296.31114 0,0 -3.26,2.56 -1.92,0.58 -1.55,1.81 0.15,-0.56 -0.16,-1.29 3.96,0.26 2.87,-0.33 0.72,0.37 2.31,2.33 0.37,-0.02 1.22,-0.79 0.13,-0.72 0.41,-0.53 1.08,-0.5 0.77,0.13 1.37,-0.39 1.3,-1.21 1.84,-1.02 0.38,0.09 0.64,2.26 0.68,0.53 0.68,-0.08 2.54,-3.16 -0.26,-1.75 0.53,-0.84 1.75,-1.26 0.46,0.02 0.84,0.55 1.79,0.1 1.2,-1.07 2.13,-0.38 3.87,0.46 -0.24,-1.46 0.11,-1.81 2.06,-1.21 0.81,-1.15 0.36,-1.02 -0.17,-0.45 -0.9,-0.7 0.05,-0.67 1.19,-1.59 2.48,-0.53 0.26,-0.22 -0.09,-1.17 1.72,-0.5 1.38,-2.56 10.79,-0.06 2.15,1.13 0.45,0.49 0.8,1.91 1.33,1.27 2.54,0.98 1.25,3.27 0.46,0.21 0.98,-0.13 0.62,0.2 0.68,2.88 3.24,1.48 0.68,-0.19 0.54,-1.74 1.92,-1.08 1.39,0.28 0.36,0.38 -0.04,0.7 0,0 1.4,0.97 0.6,1.24 -0.76,1.42 -1.29,4.99 0.06,0.35 0.78,0.47 0.26,0.61 0.15,1.39 0.83,2.27 -0.94,1.67 0.38,1.93 -1,3.52 -0.03,0.8 0.27,1.76 1.5,2.75 -0.9,9 17.16,0.05 -0.24,0.56 1.22,1.11 3.5,-0.09 1.11,0.11 1.07,0.43 1.41,3.59 -0.17,0.75 -1.4,1.75 -1.36,1.08 -0.14,1.32 0.43,3.25 0.58,0.51 0.9,-0.03 1.53,3.34 -0.04,2.05 0.58,1.49 -0.07,1.71 -0.56,2.24 -1.66,2.01 -0.52,2.25 -0.58,0.84 -0.43,0.41 -1.64,0.53 -0.93,1.08 -1.43,3.78 -0.52,2.45 -4.11,2.57 -1.47,1.43 0,0 -1.4,-0.97 -2.46,-2.54 -1.23,-0.72 -2.98,-0.78 -0.89,0.05 -2.02,0.84 -0.84,0.07 -5.81,-1.61 -0.76,0.07 -0.5,0.35 -0.87,1.33 -0.87,0.5 -2.76,-0.07 -2.05,-1.16 -1.05,-0.19 -6.37,0.8 -1.36,-0.06 -3.76,-1.47 -0.78,0.14 -1.58,1.23 -0.63,0.09 -0.62,-0.36 -0.29,-0.7 0.06,-1.45 -0.34,-0.56 -0.73,-0.04 -2.73,1.2 -3.43,0.59 -0.7,-0.1 -4.2,-2.55 -0.72,-0.03 -1.11,0.47 -3.59,3.08 -1.02,0.39 -2.22,-0.1 -1.65,-0.7 -0.68,-0.71 -0.14,-0.72 0.29,-0.59 0.04,-0.59 -0.35,-0.38 -1.43,-0.03 -0.64,0.26 -0.59,0.63 -1.03,0.35 -0.64,-0.1 -2.16,-1.5 -0.87,-0.25 -1.17,0.3 -0.97,0.73 -0.57,0.12 -6.24,-2.57 0,0 3.11,1.04 1.44,2.93 -0.65,1.28 -0.61,0.55 -0.26,1.06 0.49,1.97 2.64,5.32 0.35,7.55 -4.88,0.06 5.37,6.13 1.05,12.65 26.86,1.08 0.38,-0.16 0.4,-0.6 0.96,-0.06 0.05,1.89 -0.34,1.78 -1.14,1.09 -0.88,1.64 0.19,3.66 0.61,1.77 0.23,2.93 0.3,1.12 0.3,0.32 1.89,0.76 2.02,1.41 0.45,0.7 1.17,0.68 0.52,0.05 1.28,-0.63 2.44,2.15 -0.54,0.71 0.32,0.8 0.66,0.67 0,0 0.03,1.91 -3.09,-5.85 -0.66,1.16 3.23,10.33 z m -0.0,-0.0 -3.23,-10.33 0.74,0.13 0.28,2.13 -1.12,0.06 5.38,11.42 z"
+              style={{ fill: getEstadoFill("RO"), opacity: getEstadoOpacity("RO"), transition: "fill 200ms ease, opacity 200ms ease", cursor: "pointer" }}
+              onMouseEnter={(e) => handleMouseEnter("RO", e)}
+              onMouseMove={(e) => handleMouseMove("RO", e)}
+              onMouseLeave={handleMouseLeave}
+              onClick={(e) => handleClick("RO", e)}
+              onTouchStart={(e) => handleTouch("RO", e)}
+              role="button" tabIndex={0}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") handleClick("RO", e as unknown as React.MouseEvent<SVGPathElement>); }}
+            />
+            {/* RR */}
+            <path
+              id="rr"
+              aria-label={NOME_TODOS_ESTADOS["RR"] ?? "Roraima"}
+              d="m 240.05257,47.481144 0.06,9.9 3.57,-0.09 2.79,0.61 1.51,-0.53 1.15,0.6 0.57,0.54 1.37,2.1 -0.3,1.72 0.49,1.69 -1.27,0.43 -1.22,-0.11 -2.68,-1.76 -3.5,0.92 -1.75,1.17 -3.89,0.26 -0.2,11.51 1.94,2.28 3.03,2.35 1.7,0.59 0.37,0.4 0.52,1.78 -0.65,1.39 0.04,0.49 1.48,2.75 1.3,1.05 -0.12,0.26 0.99,4.959996 -1.16,2.92 -6.7,37.17 -1.17,4.92 0.11,0.39 -0.46,0.78 -0.58,0.4 -2.83,-0.08 -1.61,-1.29 0.02,-1.18 -0.31,-0.53 -1.71,-0.12 -1.1,0.74 -1.32,0.24 -0.64,-0.54 -2.14,-0.2 -1.09,0.61 -0.63,1.45 -1.3,1.59 -3.33,-0.38 -1.82,0.36 -1.5,0.77 -4.19,1.22 -1.51,-0.29 -2.42,0.43 -3.54,2.73 -1.65,0.93 -1.41,0.11 -0.78,0.37 -0.44,1.4 -1.15,1.04 -2.19,1.23 -3.66,1.63 -0.73,0.75 -0.31,2.31 -0.67,2.04 0.29,1.32 -0.3,1.74 -0.42,0.98 -0.92,1.25 -1.28,1.32 -1.18,2.19 -0.38,1.19 1.74,4.49 -0.08,1.03 -0.47,0.3 -2.26,0.24 -4.92,3.47 -1.22,1.4 -0.7,2.92 0.07,0.65 0,0 -2.03,-0.55 -2.11,1.21 -1.02,1.61 -1.6,1.04 -0.93,0.29 -0.97,-0.55 -2.93,1.77 -1.51,0.36 -0.51,0.37 -0.46,2.31 -0.41,0.66 -0.55,0.18 -1,-0.18 -0.47,0.23 -1,1.16 -0.23,1.29 -0.56,0.91 -1.33,0.72 -0.58,-0.27 -0.37,-0.98 1.11,-1.7 0.02,-0.97 -0.77,-1.08 -0.56,-0.29 -2.19,0.11 -2.11,1.16 -1.7,1.7 -2.3,1 -2.5,-0.21 -0.79,-0.28 -8.31,-7.06 -3.2,0.75 -0.2,-1.76 0.49,-3.63 -0.23,-1.55 -0.66,-1.78 -0.74,-1.3 -1.62,-1.99 -1.17,-2.58 -1.29,-0.46 -2.55,1.39 -1.259996,1.24 -0.32,0.84 -1.94,2.09 -1.61,0.61 -0.83,-0.01 -0.66,-0.35 -0.87,-1.32 -0.61,-1.52 -1.43,-0.4 -0.95,1.93 0.38,1.2 0.79,0.14 0.46,0.66 -19.03,-0.06 -2.84,-0.87 -2.28,0.6 -1.32,0.58 -0.96,-0.04 0,0 0.46,-2.3 2.43,-4.07 0.56,-2.38 0.12,-2.33 1.77,-2.24 2.88,-1.16 1.13,-1.37 0.35,-1.3 -0.49,-2.42 0.09,-0.86 0.56,-0.79 3.77,-2.16 0.91,-1.23 0.44,-1.67 -0.04,-1.58 -0.72,-2.5 0.34,-0.91 0.83,-0.61 4.07,-1.28 0.8,-0.77 0.21,-0.91 -0.55,-2.41 0.37,-1.01 1.24,-0.9 1.75,-0.49 0.61,-0.61 0.13,-0.94 -0.64,-1.9 0.04,-0.86 2.07,-3.41 0.42,-1.23 -0.06,-1.37 -0.71,-1.29 0.05,-0.72 0.64,-0.68 3.26,-1.23 0.75,-0.73 0.18,-0.86 -0.42,-2.46 0.15,-0.84 0.67,-0.64 2.59,-0.62 0.69,-0.58 0.17,-0.81 -0.54,-2.37 0.13,-0.77 0.62,-0.64 5.43,-1.85 0.8,-0.73 0.25,-0.93 -0.46,-3.59 0.21,-0.88 1.14,-1.11 0.84,-0.31 5.73,-0.5 0.85,-0.38 1.35,-1.62 0.17,-0.84 -0.29,-0.75 -1.62,-1.12 -0.25,-0.7 0.25,-2.5 1.5,-3.25 0.67,-0.84 0.97,-0.5 10.48,0.33 1.85,-0.22 1.76,-1.03 0.64,-0.86 0.08,-0.88 -0.67,-2.5 0.04,-1.0 0.63,-1.38 1.89,-1.93 0.58,-0.38 3.85,-0.46 2.34,-1.28 1.38,-0.38 4.37,0.25 1.67,-0.25 3.71,-2.5 0.92,-0.25 5.21,0.96 1.38,0.67 0.54,0.88 0.04,0.88 -0.5,1.0 0.04,0.88 1.17,1.63 1.51,0.92 0.97,-0.17 0.71,-0.88 0.38,-1.46 0.67,-0.75 0.97,-0.08 2.42,1.04 0.84,0.96 0.21,0.88 -0.5,4.09 0.29,1.09 0.92,0.75 2.3,0.63 0.84,0.71 0.17,0.88 -0.84,3.88 0.21,1.38 0.84,0.84 1.89,0.5 0.54,0.58 0.04,0.88 -0.54,1.46 0.04,0.88 1.01,1.34 0.17,0.88 -0.42,1.59 0.04,0.84 0.71,0.75 2.34,0.88 0.71,0.71 0.08,0.84 -0.59,2.71 0.13,0.92 0.97,1.0 0.17,0.88 z"
+              style={{ fill: getEstadoFill("RR"), opacity: getEstadoOpacity("RR"), transition: "fill 200ms ease, opacity 200ms ease", cursor: "pointer" }}
+              onMouseEnter={(e) => handleMouseEnter("RR", e)}
+              onMouseMove={(e) => handleMouseMove("RR", e)}
+              onMouseLeave={handleMouseLeave}
+              onClick={(e) => handleClick("RR", e)}
+              onTouchStart={(e) => handleTouch("RR", e)}
+              role="button" tabIndex={0}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") handleClick("RR", e as unknown as React.MouseEvent<SVGPathElement>); }}
+            />
+            {/* SC */}
+            <path
+              id="sc"
+              aria-label={NOME_TODOS_ESTADOS["SC"] ?? "Santa Catarina"}
+              d="m 359.14257,511.56114 -0.27,-0.83 0.32,-0.79 1.6,-1.24 0.21,-0.52 -0.21,-1.35 0.29,-0.84 0.65,-0.58 1.36,-0.2 0.57,-0.62 -0.03,-0.73 -0.52,-1.08 0.17,-0.83 0.88,-0.83 1.33,-0.1 3.08,0.4 1.3,-0.62 2.45,-2.72 0.96,-2.26 1.37,-1.09 1.39,-0.57 1.07,-0.07 0.82,-0.86 -0.01,-1.57 -0.69,-1.57 -0.01,-1.01 0.33,-0.82 1.36,-1.13 1.87,-0.8 0.54,-0.8 0,0 0.55,-2.06 -0.18,-0.67 -0.71,-0.65 -0.15,-0.88 0.51,-0.82 2.1,-1.85 0.51,-1.07 -0.14,-0.63 -0.71,-0.71 -0.13,-1.03 0.58,-0.76 1.32,-0.76 0.5,-0.74 0.12,-1.53 -0.48,-0.67 -1.67,-0.7 -0.43,-0.76 0.03,-1.11 0.97,-2.19 0.17,-1.55 -0.27,-0.62 -1.13,-0.82 0,0 3.76,-2.03 0.62,-0.9 -0.04,-0.77 -0.52,-0.78 0.01,-0.76 0.44,-0.6 0.72,-0.22 1.66,0.1 0.42,-0.34 0.03,-0.63 -0.58,-1.53 0.13,-1.09 0.65,-1.03 1.01,-0.62 0.87,-0.09 1.16,0.34 4.4,2.58 0.83,0.08 0.36,-0.45 -0.4,-1.64 0.5,-0.74 0.76,-0.2 4.25,0.38 0.36,-0.35 -0.26,-1.16 0.56,-0.91 1.49,-0.58 4.1,0.13 0.8,0.26 0,0 0.97,-3.83 0,0 3.17,5.16 0.21,1.41 -0.1,0.59 -0.62,0.55 -0.07,0.72 0.34,0.89 3.07,4.4 0.07,0.86 -0.34,1.06 -1.68,3.06 -0.21,1.51 0.14,0.62 0.62,0.69 0.03,0.82 -0.31,0.96 -1.34,2.14 -0.17,1.37 0.17,0.69 0.62,0.76 0.03,0.86 -0.41,1.0 -2.84,3.44 -0.07,0.79 0.24,0.89 2.18,3.72 0.21,1.51 -0.17,0.62 -0.62,0.62 -0.03,0.79 0.41,0.96 3.07,4.09 0.07,0.93 -0.48,1.13 -3.24,3.89 -0.1,0.86 0.34,0.96 1.85,2.8 0.17,1.2 -0.27,0.86 -0.93,1.03 -0.03,0.93 0.48,1.13 5.84,8.18 0.1,1.0 -0.48,1.2 -2.94,4.0 -0.1,1.06 0.41,1.24 4.5,7.1 0.31,1.58 -0.17,0.62 -0.69,0.66 -0.07,0.79 0.38,0.96 2.22,3.06 0.1,1.0 -0.41,1.16 -2.36,3.06 -0.14,0.99 0.38,1.34 2.7,4.0 0.31,1.62 -0.17,0.66 -0.69,0.72 -0.03,0.76 0.41,0.89 2.35,2.28 0.17,0.89 -0.34,1.06 -1.41,2.04 -0.24,1.34 0.24,0.82 0.89,1.0 0.03,0.82 -0.41,0.93 -1.34,1.62 -0.07,0.89 0.41,0.99 1.68,2.14 0.14,1.06 -0.38,0.99 -1.41,1.75 -0.03,0.82 0.48,0.89 2.91,3.17 0.14,0.99 -0.48,1.27 -2.8,4.33 -0.03,0.96 0.45,0.99 1.75,1.82 0.21,1.03 -0.45,1.34 -2.46,3.58 -0.07,0.99 0.55,1.0 1.44,1.16 0.17,0.93 -0.51,1.13 -2.08,2.03 -0.38,0.93 0.28,1.34 1.06,1.96 2.55,2.59 0,0 -8.1,-2.0 -6.39,-0.48 -6.22,-2.17 -3.97,-2.21 -4.77,-0.97 -3.66,-2.17 -4.36,-1.38 -3.32,-2.69 -2.01,-2.8 -1.02,-2.59 0.1,-1.17 0.83,-1.03 0.28,-0.86 -0.41,-1.24 -3.45,-3.72 -0.55,-1.17 0.07,-1.03 3.07,-4.68 0.41,-1.1 -0.07,-0.96 -3.52,-5.3 -0.41,-1.1 0.1,-0.96 2.42,-3.34 0.38,-1.03 -0.1,-0.96 -2.84,-4.27 -0.34,-0.93 0.1,-0.82 2.39,-3.06 0.41,-1.03 -0.1,-0.93 -4.88,-7.24 -0.38,-1.03 0.1,-0.89 3.07,-3.89 0.41,-1.1 -0.1,-0.96 -3.59,-5.61 -0.38,-1.07 0.1,-0.96 3.9,-4.96 0.38,-1.0 -0.07,-0.86 -1.51,-1.82 -0.28,-0.86 0.14,-1.1 2.8,-3.96 0.34,-0.96 -0.03,-0.82 -0.69,-0.83 -0.17,-0.69 0.17,-1.41 2.18,-3.06 0.24,-0.79 -0.03,-0.69 -0.62,-0.69 z"
+              style={{ fill: getEstadoFill("SC"), opacity: getEstadoOpacity("SC"), transition: "fill 200ms ease, opacity 200ms ease", cursor: "pointer" }}
+              onMouseEnter={(e) => handleMouseEnter("SC", e)}
+              onMouseMove={(e) => handleMouseMove("SC", e)}
+              onMouseLeave={handleMouseLeave}
+              onClick={(e) => handleClick("SC", e)}
+              onTouchStart={(e) => handleTouch("SC", e)}
+              role="button" tabIndex={0}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") handleClick("SC", e as unknown as React.MouseEvent<SVGPathElement>); }}
+            />
+            {/* SE */}
+            <path
+              id="se"
+              aria-label={NOME_TODOS_ESTADOS["SE"] ?? "Sergipe"}
+              d="m 559.88257,248.75114 -2.78,4.96 -4.55,5.13 -3.58,3.58 -3.04,4.58 -3.33,2.88 -1,2.03 -1.32,1.79 0,0 -1.32,-1.79 1,-2.03 3.33,-2.88 3.04,-4.58 3.58,-3.58 4.55,-5.13 2.78,-4.96 0,0 0.64,1.99 z m 3.24,-18.19 -0.27,-0.21 0,0 -3.5,0.05 0,0 0.2,0.73 3.68,0.95 5.42,3.07 1.3,2.45 1.76,1.45 1.66,0.79 0.46,0.03 3.59,2.23 0.6,1.31 0,0 -1.32,1.07 -1.67,4.37 0.38,0.72 -2.01,0.65 -0.79,1.37 -0.04,1.38 0.92,0.94 0.04,0.8 -0.42,0.59 -1.55,0.51 -0.5,0.65 0.04,0.65 1.09,1.73 -4.55,5.13 -2.78,4.96 0,0 -0.64,-1.99 0,0 -0.6,-1.31 -3.59,-2.23 -0.46,-0.03 -1.66,-0.79 -1.76,-1.45 -1.3,-2.45 -5.42,-3.07 -3.68,-0.95 -0.2,-0.73 3.5,-0.05 0,0 0.27,0.21 2.9,0.27 0,0 z"
+              style={{ fill: getEstadoFill("SE"), opacity: getEstadoOpacity("SE"), transition: "fill 200ms ease, opacity 200ms ease", cursor: "pointer" }}
+              onMouseEnter={(e) => handleMouseEnter("SE", e)}
+              onMouseMove={(e) => handleMouseMove("SE", e)}
+              onMouseLeave={handleMouseLeave}
+              onClick={(e) => handleClick("SE", e)}
+              onTouchStart={(e) => handleTouch("SE", e)}
+              role="button" tabIndex={0}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") handleClick("SE", e as unknown as React.MouseEvent<SVGPathElement>); }}
+            />
+            {/* TO */}
+            <path
+              id="to"
+              aria-label={NOME_TODOS_ESTADOS["TO"] ?? "Tocantins"}
+              d="m 366.16257,230.09114 0.53,0.64 -56.18,-0.03 0,0 -0.49,-0.08 0,0 0.62,-1.71 -0.24,-0.75 -1.31,-0.75 -0.36,-0.65 0.17,-0.62 0.88,-0.62 0.31,-0.85 -0.19,-0.68 -0.98,-1.46 -0.05,-0.72 0.57,-1.16 -0.14,-0.72 -0.52,-0.27 -0.93,0.14 -0.57,-0.27 -0.07,-0.59 0.55,-1.37 -0.14,-0.65 -0.57,-0.38 -2.48,-0.17 -0.55,-0.41 -0.02,-0.59 0.45,-1.3 -0.19,-0.68 -0.53,-0.24 -0.86,0.27 -0.55,-0.27 -0.1,-0.62 0.38,-1.44 -0.26,-0.68 -0.57,-0.27 -0.93,0.07 -0.62,-0.44 -0.05,-0.62 0.5,-1.46 -0.17,-0.65 -0.72,-0.44 -0.1,-0.55 0.29,-0.65 -1.0,-0.89 -0.17,-0.65 0.26,-0.75 2.07,-2.79 0.31,-0.98 -0.19,-0.55 -0.69,-0.44 -0.12,-0.58 0.31,-0.65 1.59,-1.02 0.38,-0.59 -0.02,-0.75 -0.48,-0.56 -2.05,-0.68 -0.36,-0.44 0.09,-0.59 0.66,-0.89 0.17,-0.96 -0.24,-0.56 -0.86,-0.4 -0.22,-0.56 0.19,-0.72 1.17,-1.33 0.36,-0.98 -0.14,-0.6 -0.55,-0.37 -0.05,-0.58 0.38,-0.65 1.86,-1.5 0.45,-0.68 -0.07,-0.64 -0.52,-0.71 0.12,-0.7 0.65,-0.44 0.88,0.03 0.62,-0.47 0.05,-0.55 -0.36,-0.79 0.17,-0.52 0.84,-0.42 0.28,-0.62 -0.14,-0.68 -0.83,-0.81 -0.1,-0.71 0.36,-0.75 1.62,-1.69 0.36,-0.79 -0.1,-0.69 -0.69,-0.87 -0.03,-0.79 0.5,-0.55 0.94,-0.27 0.47,-0.6 -0.02,-0.79 0.36,-0.81 -0.24,-1.11 0.27,-0.62 0.91,-0.52 0.47,-0.87 -0.1,-0.65 -0.77,-1.01 -0.03,-1.12 0.55,-0.59 1.19,-0.46 0.52,-0.72 -0.02,-0.59 -0.41,-0.72 0.12,-0.79 0.69,-0.68 2.17,-0.62 0.99,0.27 1.37,1.05 0.76,0.05 0.85,-0.54 1.12,-2.03 0.63,-0.48 2.17,-0.33 0.53,0.24 0.85,0.88 0.56,0.12 0,0 56.18,0.03 0,0 0.05,1.92 -0.26,1.06 -1.15,2.45 -0.13,6.36 0.76,1.4 0.04,0.52 -1.73,3.06 -0.47,3.18 -0.71,1.94 0.73,2 1.7,1.4 1.2,2.48 0.13,1.52 0.34,0.82 0.3,0.22 1.45,2.74 0.63,2.32 0.39,2.97 0.98,2.97 2.13,1.95 2.72,0.76 2.61,0.32 1.08,0.36 1.7,1.53 1.05,0.04 1.33,0.53 2.87,2.56 2.34,0.91 2.01,2 0.63,0.87 -0.01,0.46 1.9,1.91 0.5,0.22 0.84,0.24 0.23,-0.3 1.12,0.26 1.01,0.6 1.46,0.19 1.01,-0.21 2.5,-1.82 1.52,0.11 2.43,0.86 0.83,0.04 0.65,-0.28 2.29,0.29 1.21,1.31 0.5,1.46 0.12,1.21 0.29,0.44 0.39,2.2 -0.13,0.84 -0.62,1.71 0,0 -0.62,0.27 -3.36,-2.81 -1.17,-1.57 0.02,-0.97 -0.6,-0.52 -0.91,-0.18 -1.05,0.34 -1.83,1.58 -0.88,0.23 -0.61,-0.25 -0.43,-0.65 0.04,-1.29 -0.61,-0.63 -0.91,-0.29 -1.44,0.49 -1.41,-0.1 -1.61,-0.96 -0.5,-0.71 0.16,-0.79 1.48,-2.2 0.13,-0.72 -0.45,-0.92 -1.3,-1.0 -1.03,-0.3 -3.44,0.39 -1.73,-0.46 -1.6,-1.27 -0.98,0.13 -0.99,0.87 -1.29,0.23 -0.62,-0.27 -0.38,-0.6 0.27,-0.8 2.06,-1.48 0.28,-0.74 -0.23,-0.77 -1.68,-1.57 -0.44,-0.85 0.17,-1.09 0.93,-1.47 0.07,-0.92 -0.44,-0.57 -0.73,-0.1 -1.85,0.63 -0.93,-0.04 -0.47,-0.44 -0.02,-0.79 0.56,-0.82 -0.04,-0.52 -0.57,-0.27 -3.17,1.2 -0.79,-0.12 -0.73,-0.73 -0.08,-0.77 0.54,-0.71 2.73,-1.59 0.58,-0.71 0.07,-0.81 -1.06,-2.98 0.15,-0.73 0.68,-0.6 1.3,0.07 0.55,-0.22 0.24,-0.59 -0.25,-1.83 0.13,-0.67 0.69,-0.7 2.65,-0.27 0.83,-0.4 0.53,-0.7 0.62,-2.22 1.04,-1.66 0.08,-0.84 -0.62,-1.33 0.11,-0.95 1.09,-1.38 0.15,-0.68 -0.44,-1.31 0.05,-0.6 0.54,-0.37 0.91,0.07 0.82,-0.35 0.57,-0.77 0.24,-0.99 -0.15,-1.24 -0.59,-0.84 -0.08,-0.54 0.49,-0.52 2.03,0.28 0.63,-0.17 1.3,-1.34 0.98,-0.41 3.12,-0.26 1.66,-0.76 0.6,-0.73 0.12,-0.85 -0.27,-0.75 -1.02,-0.55 -0.25,-0.59 0.16,-0.79 1.25,-1.61 0.13,-0.6 -0.43,-1.14 0.05,-0.56 0.42,-0.38 1.17,0.1 0.71,-0.31 0.34,-0.71 -0.04,-0.96 -0.49,-0.78 -1.98,-1.59 -0.43,-0.72 0.07,-0.75 0.72,-0.81 3.5,-1.74 0.82,-0.79 0.22,-0.75 -0.51,-1.69 0.06,-0.6 0.42,-0.4 0.66,-0.05 2.26,1.01 0.71,-0.07 1.07,-0.67 1.23,-1.79 0.84,-0.57 0.97,0.07 1.72,0.97 0.9,0.04 0.55,-0.31 0.2,-0.58 -0.49,-2.06 0.44,-0.99 2.03,-2.13 0.62,-1.47 0,0 z"
+              style={{ fill: getEstadoFill("TO"), opacity: getEstadoOpacity("TO"), transition: "fill 200ms ease, opacity 200ms ease", cursor: "pointer" }}
+              onMouseEnter={(e) => handleMouseEnter("TO", e)}
+              onMouseMove={(e) => handleMouseMove("TO", e)}
+              onMouseLeave={handleMouseLeave}
+              onClick={(e) => handleClick("TO", e)}
+              onTouchStart={(e) => handleTouch("TO", e)}
+              role="button" tabIndex={0}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") handleClick("TO", e as unknown as React.MouseEvent<SVGPathElement>); }}
+            />
+            {/* RJ */}
+            <path
+              id="rj"
+              aria-label={NOME_TODOS_ESTADOS["RJ"] ?? "Rio de Janeiro"}
+              d="m 491.73257,410.68114 -1.45,1.93 -2.28,1.72 -1.44,0.4 -1.13,-0.27 -2.14,-1.62 -1.09,-0.34 -1.07,0.17 -3.59,2.11 -1.14,0.17 -1.09,-0.4 -1.72,-1.55 -1.0,-0.27 -3.62,0.34 -1.09,-0.17 -2.41,-1.17 -0.72,0.03 -0.55,0.41 -0.27,0.72 0.14,0.96 -0.24,0.65 -0.79,0.27 -3.04,-0.27 -0.76,0.2 -0.55,0.55 -1.17,2.49 -0.93,0.65 -1.07,0.07 -2.07,-0.72 -0.89,0.07 -0.62,0.48 -0.17,0.82 0.41,1.44 -0.03,0.72 -0.48,0.58 -2.11,0.96 -0.41,0.62 0.14,1.03 0.72,1.17 0.07,0.69 -0.38,0.55 -2.87,1.03 -0.55,0.69 0.07,1.03 0.79,1.24 0.07,0.79 -0.48,0.76 -2.18,1.58 0,0 -2.49,-0.59 -1.44,-1.03 -3.07,-3.89 -1.17,-2.97 -0.17,-1.58 0.62,-2.39 -0.1,-1.03 -0.72,-0.62 -0.72,-0.07 -0.55,0.41 -0.62,0.03 -2.08,-1.03 -0.69,-0.76 -0.03,-0.69 0.62,-0.72 0.07,-0.76 -0.62,-1.48 -0.03,-0.83 0.69,-0.62 3.38,-1.31 0.62,-0.69 -0.07,-0.83 -1.93,-2.7 -0.24,-0.9 0.31,-0.72 1.13,-0.79 0.31,-0.72 -0.28,-1.51 0.1,-0.72 0.62,-0.69 4.16,-1.93 0.55,-0.72 -0.1,-0.83 -2.46,-3.72 -0.17,-0.96 0.38,-0.79 1.68,-1.1 0.38,-0.69 -0.1,-0.83 -2.25,-4.0 -0.14,-0.86 0.34,-0.79 2.7,-2.7 0.34,-0.72 -0.03,-0.79 -0.72,-0.93 -0.1,-0.72 0.27,-0.62 0.86,-0.52 0.31,-0.62 -0.17,-1.37 0.14,-0.66 0.58,-0.55 1.89,-0.62 0.48,-0.59 -0.03,-0.69 -0.96,-1.44 -0.1,-0.72 0.31,-0.62 3.04,-2.01 0.38,-0.62 -0.07,-0.76 -0.79,-0.86 -0.14,-0.72 0.27,-0.62 1.37,-0.9 0,0 1.58,1.72 3.38,1.79 1.3,1.03 0.59,1.44 0.86,0.69 1.58,0.31 1.13,-0.34 1.17,-1.1 0.72,-0.17 1.72,0.52 4.68,2.56 1.06,0.27 1.13,-0.07 2.77,-0.97 1.13,-0.07 0.93,0.41 1.72,1.65 0.97,0.27 1.0,-0.17 3.48,-1.86 1.37,0.07 3.66,1.58 1.17,0.1 2.32,-0.55 3.97,0.93 1.65,0.97 0.72,1.06 0.07,0.72 -0.45,0.52 -0.03,0.55 0.55,0.59 1.86,0.83 0.52,0.62 -0.07,0.69 -1.44,1.44 -0.14,0.69 0.31,0.59 2.7,1.51 0.45,0.72 -0.07,0.76 -0.83,1.17 -0.1,0.76 0.35,0.72 1.89,1.72 0.38,0.69 -0.07,0.76 -1.27,1.86 -0.17,0.79 0.38,0.69 3.69,2.84 0.45,0.69 -0.07,0.76 -2.08,2.8 -0.17,0.72 0.27,0.62 3.04,2.56 0.41,0.69 z"
+              style={{ fill: getEstadoFill("RJ"), opacity: getEstadoOpacity("RJ"), transition: "fill 200ms ease, opacity 200ms ease", cursor: "pointer" }}
+              onMouseEnter={(e) => handleMouseEnter("RJ", e)}
+              onMouseMove={(e) => handleMouseMove("RJ", e)}
+              onMouseLeave={handleMouseLeave}
+              onClick={(e) => handleClick("RJ", e)}
+              onTouchStart={(e) => handleTouch("RJ", e)}
+              role="button" tabIndex={0}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") handleClick("RJ", e as unknown as React.MouseEvent<SVGPathElement>); }}
+            />
+            {/* SP */}
+            <path
+              id="sp"
+              aria-label={NOME_TODOS_ESTADOS["SP"] ?? "São Paulo"}
+              d="m 430.16257,408.49114 -1.37,0.9 -0.27,0.62 0.14,0.72 0.79,0.86 0.07,0.76 -0.38,0.62 -3.04,2.01 -0.31,0.62 0.1,0.72 0.96,1.44 0.03,0.69 -0.48,0.59 -1.89,0.62 -0.58,0.55 -0.14,0.66 0.17,1.37 -0.31,0.62 -0.86,0.52 -0.27,0.62 0.1,0.72 0.72,0.93 0.03,0.79 -0.34,0.72 -2.7,2.7 -0.34,0.79 0.14,0.86 2.25,4.0 0.1,0.83 -0.38,0.69 -1.68,1.1 -0.38,0.79 0.17,0.96 2.46,3.72 0.1,0.83 -0.55,0.72 -4.16,1.93 -0.62,0.69 -0.1,0.72 0.28,1.51 -0.31,0.72 -1.13,0.79 -0.31,0.72 0.24,0.9 1.93,2.7 0.07,0.83 -0.62,0.69 -3.38,1.31 -0.69,0.62 0.03,0.83 0.62,1.48 -0.07,0.76 -0.62,0.72 0.03,0.69 0.69,0.76 2.08,1.03 0.62,-0.03 0.55,-0.41 0.72,0.07 0.72,0.62 0.1,1.03 -0.62,2.39 0.17,1.58 1.17,2.97 3.07,3.89 1.44,1.03 2.49,0.59 0,0 -2.18,1.58 -1.17,2.49 -1.17,4.71 -0.55,0.83 -1.24,0.76 -1.37,-0.03 -0.97,-0.62 -1.06,-0.1 -0.76,0.41 -0.62,1.1 -0.79,0.41 -1.37,-0.34 -5.16,-3.24 -0.9,-0.07 -0.72,0.41 -1.65,1.93 -0.69,0.34 -1.51,-0.07 -3.83,-1.58 -1.86,0.07 -2.84,1.03 -0.69,0.55 -0.14,0.79 0.55,1.17 0.07,0.79 -0.41,0.72 -1.51,1.03 -0.34,0.72 0.1,0.83 0.93,1.17 0.07,0.79 -0.34,0.62 -1.58,0.86 -0.34,0.69 0.14,0.76 0.76,0.72 0.17,0.76 -0.27,0.72 -1.44,1.17 -0.27,0.76 0.17,0.83 1.37,1.37 0.17,0.72 -0.24,0.72 -2.36,2.43 -0.31,0.76 0.17,0.76 1.17,0.96 0.17,0.69 -0.17,0.69 -0.83,0.76 -0.21,0.72 0.17,0.76 1.17,1.03 0.24,0.72 -0.17,0.76 -0.97,0.96 -0.24,0.72 0.1,0.76 1.03,1.24 0.1,0.62 -0.24,0.62 -1.51,1.31 -0.27,0.62 0.1,0.69 0.9,0.83 0.17,0.72 -0.17,0.72 -1.0,0.96 -0.17,0.62 0.17,0.76 1.96,1.72 0.24,0.72 -0.17,0.76 -0.96,0.96 -0.17,0.62 0.1,0.62 0.83,0.72 0.17,0.62 -0.17,0.76 -3.0,3.1 -0.17,0.69 0.1,0.62 0.76,0.62 0.17,0.62 -0.17,0.72 -0.96,0.96 -0.17,0.69 0.1,0.69 1.3,1.17 0.1,0.62 -0.24,0.62 -4.57,4.3 -0.24,0.55 0.03,0.62 0.62,0.55 0.1,0.55 -0.24,0.72 -2.7,3.06 -0.24,0.72 0.1,0.62 0.62,0.48 0.1,0.55 -0.17,0.69 -1.13,1.17 -0.21,0.72 0.1,0.62 0.62,0.48 0.1,0.55 -0.24,0.79 -3.17,3.96 -0.24,0.69 0.07,0.55 0.55,0.41 0.1,0.55 -0.17,0.62 -1.06,1.1 -0.21,0.62 0.03,0.55 0.48,0.41 0.1,0.55 -0.17,0.72 -4.23,5.3 0,0 -4.36,-1.38 -3.32,-2.69 -2.01,-2.8 -1.02,-2.59 0.1,-1.17 0.83,-1.03 0.28,-0.86 -0.41,-1.24 -3.45,-3.72 -0.55,-1.17 0.07,-1.03 3.07,-4.68 0.41,-1.1 -0.07,-0.96 -3.52,-5.3 -0.41,-1.1 0.1,-0.96 2.42,-3.34 0.38,-1.03 -0.1,-0.96 -2.84,-4.27 -0.34,-0.93 0.1,-0.82 2.39,-3.06 0.41,-1.03 -0.1,-0.93 -4.88,-7.24 -0.38,-1.03 0.1,-0.89 3.07,-3.89 0.41,-1.1 -0.1,-0.96 -3.59,-5.61 -0.38,-1.07 0.1,-0.96 3.9,-4.96 0.38,-1.0 -0.07,-0.86 -1.51,-1.82 -0.28,-0.86 0.14,-1.1 2.8,-3.96 0.34,-0.96 -0.03,-0.82 -0.69,-0.83 -0.17,-0.69 0.17,-1.41 2.18,-3.06 0.24,-0.79 -0.03,-0.69 -0.62,-0.69 0,0 0.27,-0.83 -0.27,-0.62 -1.13,-0.82 -0.27,-0.84 0.32,-0.79 0,0 1.13,0.82 0.27,0.62 0,0 4.23,-5.3 0.17,-0.72 -0.1,-0.55 -0.48,-0.41 -0.03,-0.55 0.21,-0.62 1.06,-1.1 0.17,-0.62 -0.07,-0.55 -0.55,-0.41 -0.1,-0.55 0.24,-0.69 3.17,-3.96 0.24,-0.79 -0.1,-0.55 -0.62,-0.48 -0.1,-0.55 0.21,-0.72 1.13,-1.17 0.17,-0.69 -0.1,-0.62 -0.62,-0.48 -0.1,-0.55 0.24,-0.72 2.7,-3.06 0.24,-0.72 -0.1,-0.62 -0.62,-0.55 -0.03,-0.62 0.24,-0.55 4.57,-4.3 0.24,-0.62 -0.1,-0.62 -1.3,-1.17 -0.1,-0.69 0.17,-0.69 0.96,-0.96 0.17,-0.72 -0.1,-0.69 -0.76,-0.62 -0.17,-0.62 0.17,-0.72 3.0,-3.1 0.17,-0.76 -0.1,-0.62 -0.83,-0.72 -0.1,-0.62 0.17,-0.62 0.96,-0.96 0.17,-0.76 -0.24,-0.72 -1.96,-1.72 -0.17,-0.76 0.17,-0.62 1.0,-0.96 0.17,-0.72 -0.17,-0.76 -0.9,-0.83 -0.1,-0.69 0.27,-0.62 1.51,-1.31 0.24,-0.62 -0.1,-0.69 -1.03,-1.24 -0.1,-0.76 0.24,-0.72 0.97,-0.96 0.17,-0.76 -0.24,-0.72 -1.17,-1.03 -0.17,-0.76 0.21,-0.72 0.83,-0.76 0.17,-0.69 -0.17,-0.69 -1.17,-0.96 -0.17,-0.76 0.31,-0.76 2.36,-2.43 0.24,-0.72 -0.17,-0.83 -1.37,-1.37 -0.17,-0.72 0.27,-0.76 1.44,-1.17 0.27,-0.72 -0.17,-0.76 -0.76,-0.72 -0.14,-0.76 0.34,-0.69 1.58,-0.86 0.34,-0.62 -0.07,-0.79 -0.93,-1.17 -0.1,-0.83 0.34,-0.72 1.51,-1.03 0.41,-0.72 -0.07,-0.79 -0.55,-1.17 0.14,-0.79 0.69,-0.55 2.84,-1.03 1.86,-0.07 3.83,1.58 1.51,0.07 0.69,-0.34 1.65,-1.93 0.72,-0.41 0.9,0.07 5.16,3.24 1.37,0.34 0.79,-0.41 0.62,-1.1 0.76,-0.41 1.06,0.1 0.97,0.62 1.37,0.03 1.24,-0.76 0.55,-0.83 1.17,-4.71 0,0 2.18,-1.58 z"
+              style={{ fill: getEstadoFill("SP"), opacity: getEstadoOpacity("SP"), transition: "fill 200ms ease, opacity 200ms ease", cursor: "pointer" }}
+              onMouseEnter={(e) => handleMouseEnter("SP", e)}
+              onMouseMove={(e) => handleMouseMove("SP", e)}
+              onMouseLeave={handleMouseLeave}
+              onClick={(e) => handleClick("SP", e)}
+              onTouchStart={(e) => handleTouch("SP", e)}
+              role="button" tabIndex={0}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") handleClick("SP", e as unknown as React.MouseEvent<SVGPathElement>); }}
+            />
+            {/* MG */}
+            <path
+              id="mg"
+              aria-label={NOME_TODOS_ESTADOS["MG"] ?? "Minas Gerais"}
+              d="m 491.73257,410.68114 -0.41,-0.69 -3.04,-2.56 -0.27,-0.62 0.17,-0.72 2.08,-2.8 0.07,-0.76 -0.45,-0.69 -3.69,-2.84 -0.38,-0.69 0.17,-0.79 1.27,-1.86 0.07,-0.76 -0.35,-0.72 -1.89,-1.72 -0.38,-0.69 0.1,-0.76 0.83,-1.17 0.07,-0.76 -0.45,-0.72 -2.7,-1.51 -0.31,-0.59 0.14,-0.69 1.44,-1.44 0.07,-0.69 -0.52,-0.62 -1.86,-0.83 -0.55,-0.59 0.03,-0.55 0.45,-0.52 -0.07,-0.72 -0.72,-1.06 -1.65,-0.97 -3.97,-0.93 -2.32,0.55 -1.17,-0.1 -3.66,-1.58 -1.37,-0.07 -3.48,1.86 -1.0,0.17 -0.97,-0.27 -1.72,-1.65 -0.93,-0.41 -1.13,0.07 -2.77,0.97 -1.13,0.07 -1.06,-0.27 -4.68,-2.56 -1.72,-0.52 -0.72,0.17 -1.17,1.1 -1.13,0.34 -1.58,-0.31 -0.86,-0.69 -0.59,-1.44 -1.3,-1.03 -3.38,-1.79 -1.58,-1.72 0,0 0.14,-0.62 1.72,-0.93 0.34,-0.76 -0.21,-0.83 -3.55,-5.02 -0.28,-0.9 0.17,-0.72 2.77,-2.97 0.28,-0.79 -0.14,-0.83 -1.93,-2.46 -0.17,-0.86 0.31,-0.72 3.86,-2.77 0.34,-0.72 -0.1,-0.86 -4.5,-7.37 -0.14,-0.83 0.34,-0.72 1.72,-1.0 0.31,-0.65 -0.14,-0.86 -2.18,-3.62 -0.14,-0.79 0.28,-0.72 2.32,-2.15 0.31,-0.72 -0.14,-0.86 -0.97,-1.44 -0.1,-0.79 0.34,-0.72 2.53,-2.07 0.31,-0.72 -0.1,-0.83 -1.72,-2.63 -0.1,-0.79 0.34,-0.72 4.02,-3.17 0.34,-0.76 -0.1,-0.83 -3.07,-5.3 -0.14,-0.83 0.31,-0.72 1.44,-0.93 0.27,-0.69 -0.07,-0.83 -2.32,-3.93 -0.1,-0.79 0.34,-0.72 4.74,-4.16 0.31,-0.72 -0.07,-0.83 -2.25,-3.86 -0.1,-0.79 0.34,-0.72 2.39,-2.15 0.31,-0.72 -0.07,-0.83 -1.17,-2.01 -0.07,-0.79 0.41,-0.79 2.84,-2.42 0.34,-0.72 0.0,-0.83 -0.55,-0.9 -0.03,-0.69 0.41,-0.59 1.44,-0.55 0.38,-0.59 -0.07,-0.76 -1.65,-2.77 -0.07,-0.76 0.38,-0.72 4.36,-3.69 0.38,-0.72 -0.07,-0.83 -2.98,-5.64 -0.07,-0.79 0.38,-0.72 2.94,-2.56 0.34,-0.69 0.0,-0.79 -0.69,-1.1 -0.03,-0.72 0.45,-0.62 2.07,-1.06 0.38,-0.65 -0.07,-0.79 -1.58,-2.87 -0.03,-0.72 0.45,-0.62 1.17,-0.55 0.38,-0.69 -0.07,-0.76 -0.97,-1.65 -0.07,-0.72 0.45,-0.72 2.91,-2.42 0,0 1.44,0.48 3.45,2.32 1.03,0.14 1.65,-0.55 3.07,-2.49 1.03,-0.41 1.1,0.07 4.02,1.72 1.03,0.07 2.25,-0.62 0.83,-0.55 0.41,-0.79 -0.07,-1.03 -0.55,-0.9 0.07,-0.62 0.55,-0.41 5.44,0.69 0.93,0.41 1.72,1.55 0.93,0.21 1.1,-0.34 2.56,-1.93 1.1,-0.21 1.03,0.34 2.07,1.72 1.03,0.21 1.03,-0.21 1.93,-1.17 1.03,-0.14 2.63,0.55 0.9,0.55 0.55,0.9 0.03,0.69 -0.41,0.55 -0.03,0.76 0.55,0.69 2.18,1.17 0.55,0.69 0.0,0.76 -0.48,0.83 0.03,0.72 0.55,0.55 2.84,0.72 0.62,0.55 0.07,0.69 -0.34,0.83 0.03,0.72 0.48,0.55 2.18,0.97 0.55,0.65 0.0,0.76 -0.76,1.51 0.03,0.72 0.55,0.55 1.65,0.48 0.55,0.55 0.07,0.76 -0.41,1.03 0.03,0.72 0.55,0.55 1.65,0.41 0.55,0.55 0.03,0.79 -0.55,1.1 0.03,0.72 0.62,0.55 3.69,0.62 0.62,0.48 0.03,0.69 -0.55,1.03 0.03,0.72 0.76,0.69 1.17,0.21 1.51,-0.41 0.69,0.17 0.55,0.62 0.03,0.76 -0.55,1.1 0.03,0.72 0.62,0.55 1.65,0.34 0.55,0.48 0.03,0.72 -0.55,1.17 0.03,0.79 0.69,0.55 4.29,0.48 0.62,0.48 0.03,0.69 -0.55,1.03 0.03,0.72 0.83,0.62 3.0,0.41 0.62,0.55 0.07,0.72 -0.41,0.9 0.03,0.72 0.69,0.62 1.44,0.28 0.62,0.55 0.03,0.76 -0.48,0.97 0.03,0.72 0.62,0.48 1.17,0.14 0.62,0.55 0.07,0.76 -0.34,0.83 0.03,0.72 0.69,0.55 4.02,0.34 0.62,0.55 0.03,0.72 -0.45,0.9 0.03,0.72 0.76,0.62 0.97,0.14 0.62,0.55 0.03,0.72 -0.55,1.1 0.03,0.72 0.69,0.55 1.03,0.07 0.62,0.48 0.03,0.72 -0.55,1.1 0.03,0.72 0.69,0.55 1.17,0.07 0.62,0.48 0.07,0.76 -0.48,1.03 0.03,0.72 0.62,0.48 1.03,0.14 0.69,0.55 0.03,0.72 -0.41,0.9 0.1,0.83 0.76,0.62 2.7,0.41 0.76,0.55 0.03,0.72 -0.41,0.9 0.03,0.79 0.76,0.62 1.1,0.07 0.69,0.55 0.03,0.79 -0.45,0.97 0.07,0.79 0.76,0.55 3.24,0.34 0.69,0.55 0.03,0.76 -0.34,0.83 0.03,0.72 0.69,0.55 2.84,0.28 0.62,0.48 0.03,0.72 -0.45,0.9 0.03,0.72 0.62,0.48 1.1,0.14 0,0 -1.1,-0.14 -0.62,-0.48 -0.03,-0.72 0.45,-0.9 -0.03,-0.72 -0.62,-0.48 -2.84,-0.28 -0.69,-0.55 -0.03,-0.72 0.34,-0.83 -0.03,-0.76 -0.69,-0.55 -3.24,-0.34 -0.76,-0.55 -0.07,-0.79 0.45,-0.97 -0.03,-0.79 -0.69,-0.55 -1.1,-0.07 -0.76,-0.62 -0.03,-0.79 0.41,-0.9 -0.03,-0.72 -0.76,-0.55 -2.7,-0.41 -0.76,-0.62 -0.1,-0.83 0.41,-0.9 -0.03,-0.72 -0.69,-0.55 -1.03,-0.14 -0.62,-0.48 -0.03,-0.72 0.48,-1.03 -0.07,-0.76 -0.62,-0.48 -1.17,-0.07 -0.69,-0.55 -0.03,-0.72 0.55,-1.1 -0.03,-0.72 -0.62,-0.48 -1.03,-0.07 -0.69,-0.55 -0.03,-0.72 0.55,-1.1 -0.03,-0.72 -0.62,-0.55 -0.97,-0.14 -0.76,-0.62 -0.03,-0.72 0.45,-0.9 -0.03,-0.72 -0.62,-0.55 -4.02,-0.34 -0.69,-0.55 -0.03,-0.72 0.34,-0.83 -0.07,-0.76 -0.62,-0.55 -1.17,-0.14 -0.62,-0.48 -0.03,-0.72 0.48,-0.97 -0.03,-0.76 -0.62,-0.55 -1.44,-0.28 -0.69,-0.62 -0.03,-0.72 0.41,-0.9 -0.07,-0.72 -0.62,-0.55 -3.0,-0.41 -0.83,-0.62 -0.03,-0.72 0.55,-1.03 -0.03,-0.69 -0.62,-0.48 -4.29,-0.48 -0.69,-0.55 -0.03,-0.79 0.55,-1.17 -0.03,-0.72 -0.55,-0.48 -1.65,-0.34 -0.62,-0.55 -0.03,-0.72 0.55,-1.1 -0.03,-0.76 -0.55,-0.62 -0.69,-0.17 -1.51,0.41 -1.17,-0.21 -0.76,-0.69 -0.03,-0.72 0.55,-1.03 -0.03,-0.69 -0.62,-0.48 -3.69,-0.62 -0.62,-0.55 -0.03,-0.72 0.55,-1.1 -0.03,-0.79 -0.55,-0.55 -1.65,-0.41 -0.55,-0.55 -0.03,-0.72 0.41,-1.03 -0.07,-0.76 -0.55,-0.55 -1.65,-0.48 -0.55,-0.55 -0.03,-0.72 0.76,-1.51 0.0,-0.76 -0.55,-0.65 -2.18,-0.97 -0.48,-0.55 -0.03,-0.72 0.34,-0.83 -0.07,-0.69 -0.62,-0.55 -2.84,-0.72 -0.55,-0.55 -0.03,-0.72 0.48,-0.83 0.0,-0.76 -0.55,-0.69 -2.18,-1.17 -0.55,-0.69 0.03,-0.76 0.41,-0.55 -0.03,-0.69 -0.55,-0.9 -0.9,-0.55 -2.63,-0.55 -1.03,0.14 -1.93,1.17 -1.03,0.21 -1.03,-0.21 -2.07,-1.72 -1.03,-0.34 -1.1,0.21 -2.56,1.93 -1.1,0.34 -0.93,-0.21 -1.72,-1.55 -0.93,-0.41 -5.44,-0.69 -0.55,0.41 -0.07,0.62 0.55,0.9 0.07,1.03 -0.41,0.79 -0.83,0.55 -2.25,0.62 -1.03,-0.07 -4.02,-1.72 -1.1,-0.07 -1.03,0.41 -3.07,2.49 -1.65,0.55 -1.03,-0.14 -3.45,-2.32 -1.44,-0.48 0,0 z"
+              style={{ fill: getEstadoFill("MG"), opacity: getEstadoOpacity("MG"), transition: "fill 200ms ease, opacity 200ms ease", cursor: "pointer" }}
+              onMouseEnter={(e) => handleMouseEnter("MG", e)}
+              onMouseMove={(e) => handleMouseMove("MG", e)}
+              onMouseLeave={handleMouseLeave}
+              onClick={(e) => handleClick("MG", e)}
+              onTouchStart={(e) => handleTouch("MG", e)}
+              role="button" tabIndex={0}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") handleClick("MG", e as unknown as React.MouseEvent<SVGPathElement>); }}
+            />
+            {/* ES */}
+            <path
+              id="es"
+              aria-label={NOME_TODOS_ESTADOS["ES"] ?? "Espírito Santo"}
+              d="m 531.55257,368.85114 1.1,0.14 0,0 0.72,0.55 0.55,1.24 -0.14,0.76 -0.93,0.97 -0.14,0.79 0.41,0.83 1.93,1.93 0.41,0.9 -0.14,0.79 -1.03,1.03 -0.07,0.72 0.48,0.72 1.58,1.1 0.41,0.83 -0.14,0.83 -1.65,1.93 -0.14,0.79 0.41,0.83 2.56,2.84 0.34,0.83 -0.14,0.83 -2.39,2.7 -0.14,0.76 0.34,0.76 1.72,1.65 0.34,0.79 -0.1,0.79 -0.9,1.03 -0.14,0.83 0.41,0.83 1.44,1.31 0.41,0.83 -0.07,0.76 -0.97,1.1 -0.14,0.83 0.41,0.83 2.84,2.91 0.34,0.83 -0.14,0.83 -2.01,2.35 0,0 -1.1,-0.14 -0.62,-0.55 -0.03,-0.72 0.34,-0.83 -0.03,-0.76 -0.69,-0.55 -3.24,-0.34 -0.76,-0.55 -0.07,-0.79 0.45,-0.97 -0.03,-0.79 -0.69,-0.55 -1.1,-0.07 -0.76,-0.62 -0.03,-0.79 0.41,-0.9 -0.03,-0.72 -0.76,-0.55 -2.7,-0.41 -0.76,-0.62 -0.1,-0.83 0.41,-0.9 -0.03,-0.72 -0.69,-0.55 -1.03,-0.14 -0.62,-0.48 -0.03,-0.72 0.48,-1.03 -0.07,-0.76 -0.62,-0.48 -1.17,-0.07 -0.69,-0.55 -0.03,-0.72 0.55,-1.1 -0.03,-0.72 -0.62,-0.48 -1.03,-0.07 -0.69,-0.55 -0.03,-0.72 0.55,-1.1 -0.03,-0.72 -0.62,-0.55 -0.97,-0.14 -0.76,-0.62 -0.03,-0.72 0.45,-0.9 -0.03,-0.72 -0.62,-0.55 -4.02,-0.34 -0.69,-0.55 -0.03,-0.72 0.34,-0.83 -0.07,-0.76 -0.62,-0.55 -1.17,-0.14 -0.62,-0.48 -0.03,-0.72 0.48,-0.97 -0.03,-0.76 -0.62,-0.55 -1.44,-0.28 -0.69,-0.62 -0.03,-0.72 0.41,-0.9 -0.07,-0.72 -0.62,-0.55 -3.0,-0.41 -0.83,-0.62 -0.03,-0.72 0.55,-1.03 -0.03,-0.69 -0.62,-0.48 -4.29,-0.48 -0.69,-0.55 -0.03,-0.79 0.55,-1.17 -0.03,-0.72 -0.55,-0.48 -1.65,-0.34 0,0 2.01,-2.35 0.14,-0.83 -0.41,-0.83 -2.84,-2.91 -0.41,-0.83 0.14,-0.83 0.97,-1.1 0.07,-0.76 -0.41,-0.83 -1.44,-1.31 -0.41,-0.83 0.14,-0.83 0.9,-1.03 0.1,-0.79 -0.34,-0.79 -1.72,-1.65 -0.34,-0.76 0.14,-0.76 2.39,-2.7 0.14,-0.83 -0.34,-0.83 -2.56,-2.84 -0.41,-0.83 0.14,-0.79 1.65,-1.93 0.14,-0.83 -0.41,-0.83 -1.58,-1.1 -0.48,-0.72 0.07,-0.72 1.03,-1.03 0.14,-0.79 -0.41,-0.9 -1.93,-1.93 -0.41,-0.83 0.14,-0.79 0.93,-0.97 0.14,-0.76 -0.55,-1.24 -0.72,-0.55 0,0 z"
+              style={{ fill: getEstadoFill("ES"), opacity: getEstadoOpacity("ES"), transition: "fill 200ms ease, opacity 200ms ease", cursor: "pointer" }}
+              onMouseEnter={(e) => handleMouseEnter("ES", e)}
+              onMouseMove={(e) => handleMouseMove("ES", e)}
+              onMouseLeave={handleMouseLeave}
+              onClick={(e) => handleClick("ES", e)}
+              onTouchStart={(e) => handleTouch("ES", e)}
+              role="button" tabIndex={0}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") handleClick("ES", e as unknown as React.MouseEvent<SVGPathElement>); }}
+            />
+          </svg>
