@@ -609,3 +609,33 @@ export function MapaAtuacao() {
               onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") handleClick("ES", e as unknown as React.MouseEvent<SVGPathElement>); }}
             />
           </svg>
+        </div>
+
+        {tooltip && (
+          <div
+            style={{
+              ...getTooltipStyle(),
+              background: "rgba(26,0,0,0.96)",
+              border: "1px solid rgba(128,0,0,0.5)",
+              borderRadius: "0.5rem",
+              padding: "0.75rem 1rem",
+              boxShadow: "0 8px 24px rgba(0,0,0,0.5)",
+              display: "flex",
+              flexDirection: "column",
+            }}
+            role="tooltip"
+            aria-live="polite"
+          >
+            {renderTooltipContent()}
+          </div>
+        )}
+
+        <ul className="grid grid-cols-1 gap-5" aria-label="Atendimento nacional">
+          <li className="list-none col-span-1">
+            <CardBrasil />
+          </li>
+        </ul>
+      </div>
+    </section>
+  );
+}
