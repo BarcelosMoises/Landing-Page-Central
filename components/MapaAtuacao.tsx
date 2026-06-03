@@ -181,7 +181,7 @@ export function MapaAtuacao() {
     return { position: "fixed", left: x, top: y, zIndex: 50, pointerEvents: "none", maxWidth: W, minWidth: 160 };
   };
 
-    return (
+  return (
     <section aria-labelledby="mapa-atuacao-heading" className="bg-[#1a0000] py-16 md:py-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-2xl mb-12">
