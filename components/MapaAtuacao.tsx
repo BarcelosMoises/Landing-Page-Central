@@ -27,7 +27,7 @@ const ESTADO_CONCORRENCIA: Record<string, string> = {
   ES: "Baixa / Média",
 };
 
-const ESTADOS_COMPLETOS = new Set(
+const ESTADOS_COMPLETOS = new Set<string>(
   estadosAtuacao
     .filter((e) => e.cobertura === "completa")
     .map((e) => e.sigla)
