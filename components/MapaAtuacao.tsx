@@ -25,7 +25,12 @@ export function MapaAtuacao() {
   const [hoveredState, setHoveredState] = useState<string | null>(null);
   const [selectedState, setSelectedState] = useState<string | null>(null);
   const [tooltip, setTooltip] = useState<{ sigla: string; nome: string } | null>(null);
+  // Controla se o pulse já terminou (para não reanimar após interação)
+  const [pulseActive, setPulseActive] = useState(true);
   const tooltipRef = useRef<HTMLDivElement>(null);
+
+  // Para o pulse após primeira interação com o mapa
+  const stopPulse = useCallback(() => setPulseActive(false), []);
 
   const getEstadoFill = (sigla: string) => {
     if (selectedState === sigla) return "#800000";
@@ -33,12 +38,23 @@ export function MapaAtuacao() {
     if (hoveredState === sigla) {
       return ESTADOS_COMPLETOS.has(sigla) ? "#800000" : "#4f0101";
     }
+    // Estados completos em neutro: vermelho escuro visualmente distinto
+    if (ESTADOS_COMPLETOS.has(sigla)) return "#5a0a0a";
     return "#3d3d3d";
   };
 
   const getEstadoOpacity = (sigla: string) => {
     if (selectedState !== null && selectedState !== sigla) return 0.4;
     return 1;
+  };
+
+  // Retorna o nome da animação CSS para o path, se aplicável
+  const getPulseAnimation = (sigla: string): string => {
+    if (!pulseActive) return "none";
+    if (hoveredState === sigla || selectedState === sigla) return "none";
+    if (selectedState !== null) return "none";
+    if (ESTADOS_COMPLETOS.has(sigla)) return "mapaPulse 2.4s ease-in-out infinite";
+    return "none";
   };
 
   const positionTooltip = useCallback((clientX: number, clientY: number) => {
@@ -60,6 +76,7 @@ export function MapaAtuacao() {
   );
 
   const handleMouseEnter = (sigla: string, e: React.MouseEvent) => {
+    stopPulse();
     if (!selectedState) {
       setHoveredState(sigla);
       setTooltip({ sigla, nome: NOME_TODOS_ESTADOS[sigla] || sigla });
@@ -68,6 +85,7 @@ export function MapaAtuacao() {
 
   const handleStateClick = (sigla: string, e: React.MouseEvent<SVGPathElement>) => {
     e.stopPropagation();
+    stopPulse();
     if (selectedState === sigla) {
       setSelectedState(null);
       setTooltip(null);
@@ -188,15 +206,33 @@ export function MapaAtuacao() {
               aria-label="Mapa interativo dos estados de atuação da Central de Soluções"
               role="img"
             >
+              {/* Keyframes injetados dentro do SVG — compatível com SVG inline */}
+              <defs>
+                <style>{`
+                  @keyframes mapaPulse {
+                    0%, 100% { fill: #5a0a0a; }
+                    50%       { fill: #800000; }
+                  }
+                  @media (prefers-reduced-motion: reduce) {
+                    .mapa-path { animation: none !important; }
+                  }
+                `}</style>
+              </defs>
+
               {MAPA_PATHS.map((estado) => (
                 <path
                   key={estado.sigla}
+                  className="mapa-path"
                   d={estado.d}
                   fill={getEstadoFill(estado.sigla)}
                   opacity={getEstadoOpacity(estado.sigla)}
                   stroke="#1a0000"
                   strokeWidth="1"
-                  style={{ transition: "fill 200ms ease, opacity 200ms ease", cursor: "pointer" }}
+                  style={{
+                    transition: "fill 200ms ease, opacity 200ms ease",
+                    cursor: "pointer",
+                    animation: getPulseAnimation(estado.sigla),
+                  }}
                   aria-label={NOME_TODOS_ESTADOS[estado.sigla]}
                   role="button"
                   tabIndex={0}
@@ -207,7 +243,10 @@ export function MapaAtuacao() {
                   onClick={(e) => handleStateClick(estado.sigla, e)}
                   onKeyDown={(e) => {
                     if (e.key === "Enter" || e.key === " ")
-                      handleStateClick(estado.sigla, e as unknown as React.MouseEvent<SVGPathElement>);
+                      handleStateClick(
+                        estado.sigla,
+                        e as unknown as React.MouseEvent<SVGPathElement>
+                      );
                   }}
                 />
               ))}
