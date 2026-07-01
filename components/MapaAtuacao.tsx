@@ -29,11 +29,16 @@ export function MapaAtuacao() {
 
   const getEstadoFill = (sigla: string) => {
     if (selectedState === sigla) return "#800000";
-    if (selectedState !== null && selectedState !== sigla) return "rgba(255,255,255,0.05)";
+    if (selectedState !== null && selectedState !== sigla) return "#1a0000";
     if (hoveredState === sigla) {
       return ESTADOS_COMPLETOS.has(sigla) ? "#800000" : "#4f0101";
     }
-    return "#ffffff";
+    return "#3d3d3d";
+  };
+
+  const getEstadoOpacity = (sigla: string) => {
+    if (selectedState !== null && selectedState !== sigla) return 0.4;
+    return 1;
   };
 
   // Função para posicionar o Tooltip
@@ -112,11 +117,12 @@ export function MapaAtuacao() {
                 key={estado.sigla}
                 d={estado.d}
                 fill={getEstadoFill(estado.sigla)}
+                opacity={getEstadoOpacity(estado.sigla)}
                 stroke="#1a0000"
                 strokeWidth="1"
-                style={{ transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)", cursor: "pointer" }}
+                style={{ transition: "fill 200ms ease, opacity 200ms ease", cursor: "pointer" }}
                 onMouseEnter={(e) => handleMouseEnter(estado.sigla, e)}
-                onMouseLeave={() => !selectedState && setTooltip(null)}
+                onMouseLeave={() => !selectedState && (setHoveredState(null), setTooltip(null))}
                 onClick={(e) => handleStateClick(estado.sigla, e)}
               />
             ))}
