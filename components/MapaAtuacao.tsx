@@ -24,10 +24,8 @@ const NOME_TODOS_ESTADOS: Record<string, string> = Object.fromEntries(
 export function MapaAtuacao() {
   const [hoveredState, setHoveredState] = useState<string | null>(null);
   const [selectedState, setSelectedState] = useState<string | null>(null);
-  // Tooltip leve: só durante hover (não ao selecionar)
   const [tooltip, setTooltip] = useState<{ sigla: string; nome: string } | null>(null);
   const [pulseActive, setPulseActive] = useState(true);
-  // Controla animação do painel — mantém o último estado selecionado durante o fade-out
   const [panelVisible, setPanelVisible] = useState(false);
   const [panelData, setPanelData] = useState<{ sigla: string; nome: string } | null>(null);
 
@@ -36,10 +34,8 @@ export function MapaAtuacao() {
 
   const stopPulse = useCallback(() => setPulseActive(false), []);
 
-  // Abre o painel com animação
   const openPanel = useCallback((sigla: string) => {
     setPanelData({ sigla, nome: NOME_TODOS_ESTADOS[sigla] || sigla });
-    // requestAnimationFrame garante que o elemento já está no DOM antes de aplicar opacity
     requestAnimationFrame(() => {
       requestAnimationFrame(() => setPanelVisible(true));
     });
@@ -48,7 +44,6 @@ export function MapaAtuacao() {
     }, 80);
   }, []);
 
-  // Fecha o painel com fade-out antes de limpar os dados
   const closePanel = useCallback(() => {
     setPanelVisible(false);
     setTimeout(() => setPanelData(null), 300);
@@ -100,10 +95,8 @@ export function MapaAtuacao() {
   const handleStateClick = (sigla: string, e: React.MouseEvent<SVGPathElement>) => {
     e.stopPropagation();
     stopPulse();
-    // Fecha tooltip de hover imediatamente
     setHoveredState(null);
     setTooltip(null);
-
     if (selectedState === sigla) {
       setSelectedState(null);
       closePanel();
@@ -133,7 +126,6 @@ export function MapaAtuacao() {
     <section className="relative bg-[#1a0000] py-16 md:py-24 overflow-hidden border-t border-white/5">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
-        {/* Grid 2 colunas */}
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-10 xl:gap-16 items-center">
 
           {/* Coluna esquerda */}
@@ -262,7 +254,7 @@ export function MapaAtuacao() {
           </div>
         </div>
 
-        {/* Tooltip leve — só no hover, nunca quando há estado selecionado */}
+        {/* Tooltip leve — só no hover */}
         {tooltip && !selectedState && (
           <div
             ref={tooltipRef}
@@ -278,15 +270,10 @@ export function MapaAtuacao() {
           </div>
         )}
 
-        {/* Painel de detalhes persistente — aparece ao selecionar estado */}
+        {/* Painel de detalhes — style unificado (sem duplicata) */}
         {panelData && (
           <div
             ref={panelRef}
-            style={{
-              opacity: panelVisible ? 1 : 0,
-              transform: panelVisible ? "translateY(0)" : "translateY(12px)",
-              transition: "opacity 280ms ease, transform 280ms ease",
-            }}
             className="mt-8 rounded-2xl border overflow-hidden"
             style={{
               opacity: panelVisible ? 1 : 0,
@@ -297,7 +284,6 @@ export function MapaAtuacao() {
             onClick={(e) => e.stopPropagation()}
           >
             {isCompleto ? (
-              /* Estado com cobertura completa */
               <div className="bg-gradient-to-br from-[#200000] to-[#110000] p-6 md:p-8">
                 <div className="flex items-start justify-between gap-4 mb-6">
                   <div className="flex items-center gap-3">
@@ -343,7 +329,6 @@ export function MapaAtuacao() {
                 </Link>
               </div>
             ) : (
-              /* Estado sob consulta */
               <div className="bg-[#110000] p-6 md:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
                 <div className="flex items-center gap-3">
                   <button
@@ -387,7 +372,7 @@ export function MapaAtuacao() {
           </div>
         )}
 
-        {/* Card Brasil - SPDA */}
+        {/* Card Brasil - SPDA — sem alterações */}
         <article className="mt-14 bg-gradient-to-br from-[#1a0000] to-[#0a0a0a] border border-white/5 rounded-2xl p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl relative overflow-hidden group">
           <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
             <Globe className="w-32 h-32 text-white" />
