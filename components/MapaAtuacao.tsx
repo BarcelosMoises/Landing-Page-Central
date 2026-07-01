@@ -3,7 +3,7 @@
 
 import { useState, useCallback, useRef, useEffect } from "react";
 import Link from "next/link";
-import { Globe, MessageCircle, MapPin, ArrowRight, X, CheckCircle2 } from "lucide-react";
+import { MessageCircle, MapPin, ArrowRight, X, CheckCircle2 } from "lucide-react";
 import {
   estadosAtuacao,
   getServicosPorEstado,
@@ -270,7 +270,7 @@ export function MapaAtuacao() {
           </div>
         )}
 
-        {/* Painel de detalhes — style unificado (sem duplicata) */}
+        {/* Painel de detalhes persistente */}
         {panelData && (
           <div
             ref={panelRef}
@@ -371,31 +371,6 @@ export function MapaAtuacao() {
             )}
           </div>
         )}
-
-        {/* Card Brasil - SPDA — sem alterações */}
-        <article className="mt-14 bg-gradient-to-br from-[#1a0000] to-[#0a0a0a] border border-white/5 rounded-2xl p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl relative overflow-hidden group">
-          <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
-            <Globe className="w-32 h-32 text-white" />
-          </div>
-          <div className="flex gap-5 items-start relative z-10">
-            <div className="p-4 bg-[#800000]/20 rounded-2xl border border-[#800000]/30">
-              <Globe className="w-8 h-8 text-[#800000]" />
-            </div>
-            <div>
-              <h3 className="font-heading text-2xl font-bold text-white">Sistemas SPDA e Aterramento</h3>
-              <p className="text-white/50 mt-2 max-w-md text-sm">
-                Projetos, laudos e instalações de para-raios com validade em{" "}
-                <span className="text-white">todo o território nacional</span> e emissão de ART.
-              </p>
-            </div>
-          </div>
-          <Link
-            href={getWhatsAppUrl("Olá, gostaria de um orçamento para SPDA.")}
-            className="w-full md:w-auto bg-[#800000] text-white px-10 py-4 rounded-xl font-bold hover:bg-[#a30000] transition-all shadow-lg text-center active:scale-95 relative z-10"
-          >
-            Falar com Especialista
-          </Link>
-        </article>
       </div>
 
       <CrosshairDecor className="opacity-10" />
