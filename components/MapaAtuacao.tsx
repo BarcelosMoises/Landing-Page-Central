@@ -29,27 +29,6 @@ const NOME_TODOS_ESTADOS: Record<string, string> = {
   RJ: "Rio de Janeiro", SP: "São Paulo", MG: "Minas Gerais", ES: "Espírito Santo",
 };
 
-function CardBrasil() {
-  return (
-    <article className="bg-[#800000] border border-[#4f0101] rounded-xl p-6 shadow-sm flex flex-col gap-4 col-span-1 md:col-span-4">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div className="flex flex-col gap-2">
-          <div className="flex items-center gap-2">
-            <Globe className="w-5 h-5 text-white/80" />
-            <span className="font-heading text-2xl font-extrabold text-white">Brasil</span>
-            <span className="text-xs font-semibold uppercase tracking-wide bg-white/20 text-white px-2.5 py-0.5 rounded-full">Cobertura Nacional</span>
-          </div>
-          <h3 className="font-heading text-lg md:text-xl font-bold text-white leading-snug">SPDA e Sistemas de Segurança: Todo o Brasil</h3>
-          <p className="text-white/80 text-sm leading-relaxed max-w-xl">Projeto, laudo e instalação em qualquer estado brasileiro.</p>
-        </div>
-        <Link href="/#servicos" className="flex-shrink-0 inline-flex items-center gap-2 bg-white text-[#800000] hover:bg-neutral-100 font-semibold text-sm px-5 py-3 rounded-lg transition-colors">
-          Ver serviços de SPDA <span>→</span>
-        </Link>
-      </div>
-    </article>
-  );
-}
-
 export function MapaAtuacao() {
   const [hoveredState, setHoveredState] = useState<string | null>(null);
   const [selectedState, setSelectedState] = useState<string | null>(null);
@@ -57,73 +36,105 @@ export function MapaAtuacao() {
   const tooltipRef = useRef<HTMLDivElement>(null);
 
   const getEstadoFill = (sigla: string) => {
-    if (selectedState === sigla) return "#800000";
-    if (selectedState !== null && selectedState !== sigla) return "#1a0000";
-    if (hoveredState === sigla && ESTADOS_COMPLETOS.has(sigla)) return "#800000";
-    if (hoveredState === sigla && !ESTADOS_COMPLETOS.has(sigla)) return "#4f0101";
-    return "#3d3d3d";
+    if (selectedState === sigla) return "#800000"; // Vinho se selecionado
+    if (selectedState !== null && selectedState !== sigla) return "rgba(255,255,255,0.1)"; // Opaco se outro estiver selecionado
+    if (hoveredState === sigla) {
+      return ESTADOS_COMPLETOS.has(sigla) ? "#800000" : "#4f0101";
+    }
+    return "#ffffff"; // BRANCO no estado neutro como você pediu
   };
 
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
     if (!tooltipRef.current) return;
-    const x = Math.max(8, Math.min(e.clientX - 110, window.innerWidth - 230));
-    const y = e.clientY - 140;
+    const x = Math.max(10, Math.min(e.clientX - 100, window.innerWidth - 220));
+    const y = e.clientY - 130;
     tooltipRef.current.style.transform = `translate(${x}px, ${y}px)`;
   }, []);
 
-  const handleMouseEnter = (sigla: string, e: React.MouseEvent) => {
+  const handleMouseEnter = (sigla: string) => {
     setHoveredState(sigla);
     setTooltip({ sigla, nome: NOME_TODOS_ESTADOS[sigla] || sigla });
   };
 
-  const handleMouseLeave = () => { setHoveredState(null); setTooltip(null); };
-
-  const handleClick = (sigla: string) => {
-    setSelectedState(prev => prev === sigla ? null : sigla);
+  const handleMouseLeave = () => {
+    setHoveredState(null);
+    setTooltip(null);
   };
 
   return (
-    <section className="relative bg-[#1a0000] py-16 md:py-24 overflow-hidden">
+    <section className="relative bg-[#1a0000] py-16 md:py-24 overflow-hidden border-t border-white/5">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="max-w-2xl mb-12">
           <p className="text-xs font-semibold uppercase tracking-widest text-[#800000] mb-3">Área de atuação</p>
-          <h2 className="font-heading text-2xl md:text-4xl font-bold text-white mb-4">Atuamos em Todo o Sudeste do Brasil</h2>
-          <p className="text-white/70 text-lg">ES, MG, RJ e SP — com atendimento nacional para SPDA.</p>
+          <h2 className="font-heading text-2xl md:text-4xl font-bold text-white mb-4">Atendimento em Todo o Brasil</h2>
+          <p className="text-white/70 text-lg leading-relaxed">
+            Foco em <span className="text-white font-semibold">ES, MG, RJ e SP</span> com serviços completos e cobertura nacional para SPDA.
+          </p>
         </div>
 
         <div className="w-full flex justify-center mb-10 overflow-visible" onMouseMove={handleMouseMove}>
-          <svg viewBox="0 0 613 639" className="w-full max-w-2xl h-auto select-none touch-auto">
+          <svg
+            viewBox="0 0 613 639"
+            className="w-full max-w-2xl h-auto select-none drop-shadow-2xl"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
             {MAPA_PATHS.map((estado) => (
               <path
                 key={estado.sigla}
                 d={estado.d}
                 fill={getEstadoFill(estado.sigla)}
-                opacity={selectedState && selectedState !== estado.sigla ? 0.4 : 1}
                 stroke="#1a0000"
-                strokeWidth={1.5}
-                style={{ transition: "fill 200ms ease, opacity 200ms ease", cursor: "pointer" }}
-                onMouseEnter={(e) => handleMouseEnter(estado.sigla, e)}
+                strokeWidth="0.8"
+                style={{ transition: "all 0.3s ease", cursor: "pointer" }}
+                onMouseEnter={() => handleMouseEnter(estado.sigla)}
                 onMouseLeave={handleMouseLeave}
-                onClick={() => handleClick(estado.sigla)}
+                onClick={() => setSelectedState(prev => prev === estado.sigla ? null : estado.sigla)}
+                className="hover:filter hover:brightness-90"
               />
             ))}
           </svg>
         </div>
 
         {tooltip && (
-          <div ref={tooltipRef} style={{ position: 'fixed', top: 0, left: 0, pointerEvents: 'none', zIndex: 100 }} className="flex flex-col bg-[#1a0000]/fb border border-[#800000]/50 rounded-lg p-3 shadow-xl backdrop-blur-md min-w-[180px]">
-            <p className="font-bold text-white text-sm">{tooltip.nome}</p>
+          <div
+            ref={tooltipRef}
+            style={{ position: 'fixed', top: 0, left: 0, pointerEvents: 'none', zIndex: 100 }}
+            className="flex flex-col bg-[#1a0000] border border-white/20 rounded-lg p-4 shadow-2xl backdrop-blur-xl min-w-[200px]"
+          >
+            <p className="font-bold text-white text-base">{tooltip.nome}</p>
             {ESTADOS_COMPLETOS.has(tooltip.sigla) ? (
-              <span className="mt-2 text-[10px] bg-white/20 text-white px-2 py-0.5 rounded-full w-fit">✓ Atendimento completo</span>
+              <div className="mt-2">
+                <span className="text-[10px] bg-green-500/20 text-green-400 font-bold px-2 py-1 rounded-full uppercase">✓ Atendimento completo</span>
+                <ul className="mt-2 space-y-1">
+                   {getServicosPorEstado(tooltip.sigla as EstadoSigla).slice(0,3).map(s => (
+                     <li key={s.id} className="text-white/60 text-[11px]">• {s.nomeAbreviado}</li>
+                   ))}
+                </ul>
+              </div>
             ) : (
-              <p className="text-white/60 text-[10px] mt-1">Serviços sob consulta</p>
+              <div className="mt-2">
+                <p className="text-white/50 text-xs italic">Serviços sob consulta</p>
+                <Link href={getWhatsAppUrl()} className="mt-2 inline-block text-[10px] text-[#800000] font-bold underline">Falar com consultor →</Link>
+              </div>
             )}
           </div>
         )}
 
-        <CardBrasil />
+        <div className="grid grid-cols-1 gap-5 mt-10">
+           <article className="bg-[#800000] border border-white/10 rounded-2xl p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl">
+              <div className="flex gap-4 items-start">
+                <div className="p-3 bg-white/10 rounded-xl"><Globe className="w-6 h-6 text-white" /></div>
+                <div>
+                  <h3 className="font-heading text-xl font-bold text-white">Sistemas SPDA e Aterramento</h3>
+                  <p className="text-white/80 text-sm mt-1 max-w-md">Realizamos laudos, projetos e instalações de para-raios com validade nacional e emissão de ART.</p>
+                </div>
+              </div>
+              <Link href="/#servicos" className="w-full md:w-auto bg-white text-[#800000] px-8 py-3 rounded-full font-bold hover:bg-neutral-100 transition-colors text-center">Ver Serviços</Link>
+           </article>
+        </div>
       </div>
-      <CrosshairDecor />
+      <CrosshairDecor className="opacity-20" />
     </section>
   );
 }
