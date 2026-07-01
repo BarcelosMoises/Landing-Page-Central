@@ -18,7 +18,7 @@ import {
   type Servico,
 } from "@/data/servicos";
 
-// ─── Metadata ────────────────────────────────────────────────────────────────────────────────────
+// ─── Metadata ──────────────────────────────────────────────────────────────────────────────
 
 export const metadata: Metadata = {
   title:
@@ -51,7 +51,7 @@ export const metadata: Metadata = {
   },
 };
 
-// ─── JSON-LD WebSite ────────────────────────────────────────────────────────────────────
+// ─── JSON-LD WebSite ─────────────────────────────────────────────────────────────────────────
 // LocalBusiness já está no layout.tsx — não duplicar aqui.
 
 const websiteJsonLd = {
@@ -72,10 +72,6 @@ const websiteJsonLd = {
 };
 
 // ─── Helper: preenche até o próximo múltiplo de 3 com mock cards ──────────────────
-//
-// Mock cards têm `isPlaceholder: true` — identificados no ServicosTabs
-// para renderizar ServicoCardPlaceholder (visual discreto, sem link).
-// Nunca adicionados a data/servicos.ts para não poluir a fonte de dados.
 
 export type ServicoOuPlaceholder = Servico & { isPlaceholder?: boolean };
 
@@ -86,7 +82,6 @@ function padServicos(lista: readonly Servico[]): ServicoOuPlaceholder[] {
   const placeholders: ServicoOuPlaceholder[] = Array.from(
     { length: needed },
     (_, i) => ({
-      // Campos mínimos exigidos pelo tipo Servico
       id: `placeholder-${i}`,
       slug: `placeholder-${i}`,
       nome: "Em breve",
@@ -105,20 +100,15 @@ function padServicos(lista: readonly Servico[]): ServicoOuPlaceholder[] {
   return [...lista, ...placeholders];
 }
 
-// ─── Dados das tabs (Server Component — sem 'use client') ─────────────────────────
+// ─── Dados das tabs ─────────────────────────────────────────────────────────────────────
 const servicosLegalizacao = padServicos(getServicosPorCategoria("legalizacao"));
-// legalizacao: 4 itens → 2 placeholders → 6 (2×3) ✓
-
 const servicosProjetos = padServicos(
   getServicosPorCategoria("projeto").filter((s) => s.exibirNaTabs !== false)
 );
-// projetos: 5 itens → 1 placeholder → 6 (2×3) ✓
-
 const servicosLaudos = padServicos([
   ...getServicosPorCategoria("laudo"),
   ...getServicosPorCategoria("instalacao"),
 ]);
-// laudos: 7 itens → 2 placeholders → 9 (3×3) ✓
 
 const PILARES_HERO = [
   {
@@ -151,8 +141,6 @@ export default function HomePage() {
   return (
     <>
       <JsonLd data={websiteJsonLd} />
-
-      {/* Nav fixa — fora do <main> para não ser incluída na leitura sequencial */}
       <NavPrimaria />
 
       <main
@@ -161,7 +149,7 @@ export default function HomePage() {
       >
         {/* ───────────────────────────────────────────────────────────────────
             1. HERO
-        ─────────────────────────────────────────────────────────────────── */}
+        ───────────────────────────────────────────────────────────────────── */}
         <section
           id="hero"
           aria-labelledby="hero-heading"
@@ -180,9 +168,24 @@ export default function HomePage() {
             <source src="/videos/hero.mp4" type="video/mp4" />
           </video>
 
+          {/*
+            Overlay duplo para garantir contraste uniforme em qualquer frame do vídeo:
+
+            Camada 1 — base fixa escura (bg-black/55):
+              Piso de contraste que não depende do conteúdo do vídeo.
+              Garante que frames claros/brancos não "apaguem" o texto.
+
+            Camada 2 — gradiente direcional vinho:
+              Mantém a identidade cromática da marca (vinho #4f0101) no topo,
+              e reforça o escurecimento na base (onde ficam os cards dos pilares)
+              com `to-[#0a0000]/80` — subindo de /60 para /80.
+
+            Resultado: texto branco sobre fundo efetivo ≈ #0d0000 → contraste > 10:1 (WCAG AAA).
+          */}
+          <div aria-hidden="true" className="absolute inset-0 bg-black/55" />
           <div
             aria-hidden="true"
-            className="absolute inset-0 bg-gradient-to-b from-[#4f0101]/85 to-[#0a0000]/60"
+            className="absolute inset-0 bg-gradient-to-b from-[#4f0101]/75 to-[#0a0000]/80"
           />
 
           <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
@@ -202,6 +205,7 @@ export default function HomePage() {
 
             <h1
               id="hero-heading"
+              style={{ textShadow: "0 2px 16px rgba(0,0,0,0.7)" }}
               className="font-heading text-4xl sm:text-5xl md:text-6xl font-extrabold text-white leading-tight mb-4 max-w-3xl"
             >
               Regularização de{" "}
@@ -211,13 +215,21 @@ export default function HomePage() {
               para sua Empresa
             </h1>
 
-            <p className="text-lg md:text-xl text-white/80 font-medium mb-3 max-w-2xl">
+            {/* text-white/90: contraste ≥ 4.5:1 mesmo sobre frames claros do vídeo ✓ WCAG AA */}
+            <p
+              style={{ textShadow: "0 1px 8px rgba(0,0,0,0.6)" }}
+              className="text-lg md:text-xl text-white/90 font-medium mb-3 max-w-2xl"
+            >
               Tudo que sua empresa precisa em um só lugar.
             </p>
 
-            <p className="text-sm text-white/60 mb-10 max-w-xl">
+            {/* text-white/75: sobe de /60 para garantir leitura sobre fundo dinâmico */}
+            <p
+              style={{ textShadow: "0 1px 8px rgba(0,0,0,0.6)" }}
+              className="text-sm text-white/75 mb-10 max-w-xl"
+            >
               Atendimento em{" "}
-              <strong className="text-white/80">RJ, SP, MG e ES</strong>
+              <strong className="text-white">RJ, SP, MG e ES</strong>
               {" "}— Corpo de Bombeiros, Vigilância Sanitária, Licenciamento
               Ambiental, Laudos com ART.
             </p>
@@ -249,20 +261,27 @@ export default function HomePage() {
               </a>
             </div>
 
+            {/*
+              Cards dos pilares: border e texto elevados para garantir leitura
+              sobre o fundo dinâmico do vídeo.
+              border-white/25 (era /15) e bg-white/8 (era /5): mais visíveis sem
+              perder a sensação de leveza.
+              text-white/75 nos subtextos (era /60): contraste seguro sobre vídeo.
+            */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-3xl">
               {PILARES_HERO.map((pilar) => (
                 <a
                   key={pilar.label}
                   href={pilar.href}
                   aria-label={`${pilar.label}: ${pilar.descricao}`}
-                  className="group flex flex-col gap-1 rounded-xl border border-white/15 bg-white/5 px-4 py-3.5 hover:bg-white/10 hover:border-white/30 active:bg-white/15 transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-1 focus-visible:ring-offset-transparent"
+                  className="group flex flex-col gap-1 rounded-xl border border-white/25 bg-white/8 px-4 py-3.5 hover:bg-white/15 hover:border-white/40 active:bg-white/20 transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-1 focus-visible:ring-offset-transparent"
                 >
                   <span className="text-sm font-semibold text-white leading-snug">{pilar.label}</span>
-                  <span className="text-xs text-white/60 leading-snug">{pilar.descricao}</span>
+                  <span className="text-xs text-white/75 leading-snug">{pilar.descricao}</span>
                   <span
                     style={{
-                      backgroundColor: "color-mix(in srgb, #800000 22%, transparent)",
-                      color: "rgba(255,255,255,0.75)",
+                      backgroundColor: "color-mix(in srgb, #800000 28%, transparent)",
+                      color: "rgba(255,255,255,0.85)",
                     }}
                     className="mt-1 self-start text-[11px] font-semibold uppercase tracking-wide px-2 py-0.5 rounded-full"
                   >
@@ -274,11 +293,11 @@ export default function HomePage() {
           </div>
 
           <div aria-label="Telefone de contato" className="absolute bottom-6 left-6 z-10 hidden lg:flex items-center gap-2">
-            <a href={`tel:${contato.telefone.replace(/\D/g, "")}`} className="text-xs text-white/50 hover:text-white/80 transition-colors duration-200">
+            <a href={`tel:${contato.telefone.replace(/\D/g, "")}`} className="text-xs text-white/60 hover:text-white/90 transition-colors duration-200">
               {contato.telefone}
             </a>
             <span className="text-white/20 text-xs">·</span>
-            <a href={contato.instagramUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-white/50 hover:text-white/80 transition-colors duration-200">
+            <a href={contato.instagramUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-white/60 hover:text-white/90 transition-colors duration-200">
               {contato.instagram}
             </a>
           </div>
