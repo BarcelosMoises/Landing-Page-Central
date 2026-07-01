@@ -3,7 +3,7 @@
 
 import { useState, useCallback, useRef, useEffect } from "react";
 import Link from "next/link";
-import { MessageCircle, MapPin, ArrowRight, X, CheckCircle2 } from "lucide-react";
+import { MessageCircle, MapPin, X, CheckCircle2 } from "lucide-react";
 import {
   estadosAtuacao,
   getServicosPorEstado,
@@ -190,14 +190,6 @@ export function MapaAtuacao() {
                 <span className="text-white/60 text-xs">Sob consulta</span>
               </div>
             </div>
-
-            <Link
-              href={getWhatsAppUrl("Olá! Gostaria de solicitar um orçamento.")}
-              className="inline-flex items-center gap-2 self-start bg-[#800000] hover:bg-[#a30000] active:scale-95 text-white text-sm font-semibold px-5 py-3 rounded-lg transition-all duration-200 shadow-lg"
-            >
-              Solicitar orçamento
-              <ArrowRight className="w-4 h-4" aria-hidden="true" />
-            </Link>
           </div>
 
           {/* Coluna direita: mapa */}
