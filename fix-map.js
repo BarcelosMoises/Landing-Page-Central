@@ -2,61 +2,30 @@ const https = require('https');
 const fs = require('fs');
 const path = require('path');
 
-const geojsonUrl = 'https://raw.githubusercontent.com/codeforamerica/click_that_hood/master/public/data/brazil-states.geojson';
+console.log("Baixando mapa do Brasil OTIMIZADO (leve)...");
 
-console.log("Baixando mapa do Brasil em alta resolução...");
-
-https.get(geojsonUrl, { headers: { 'User-Agent': 'Node.js' } }, (res) => {
+// Busca um pacote de SVG focado 100% em UI/Web (traços simplificados)
+https.get('https://unpkg.com/@svg-maps/brazil@1.0.1/brazil.js', (res) => {
   let data = '';
   res.on('data', chunk => data += chunk);
   res.on('end', () => {
-    const geojson = JSON.parse(data);
 
-    // Projeção Mercator calculada perfeitamente para o Brasil
-    const width = 800, height = 800;
-    const minLon = -74.0, maxLon = -32.0;
-    const minLat = -34.0, maxLat = 5.5;
-    const lonRange = maxLon - minLon;
-
-    function project(lon, lat) {
-      const x = ((lon - minLon) / lonRange) * width;
-      const latRad = lat * Math.PI / 180;
-      const mercN = Math.log(Math.tan((Math.PI / 4) + (latRad / 2)));
-      const minMercN = Math.log(Math.tan((Math.PI / 4) + (minLat * Math.PI / 180 / 2)));
-      const maxMercN = Math.log(Math.tan((Math.PI / 4) + (maxLat * Math.PI / 180 / 2)));
-      const y = height - ((mercN - minMercN) / (maxMercN - minMercN) * height);
-      return [x, y];
-    }
-
+    // Captura apenas os IDs e os caminhos (d) das linhas otimizadas
+    const regex = /id:\s*"([^"]+)",\s*name:\s*"([^"]+)",\s*path:\s*"([^"]+)"/g;
+    let match;
     let paths = '';
 
-    geojson.features.forEach(feature => {
-      const sigla = feature.properties.sigla.toUpperCase();
-      let d = '';
-      const geom = feature.geometry;
-
-      const processPolygon = (ring) => {
-        ring.forEach((coord, i) => {
-          const [x, y] = project(coord[0], coord[1]);
-          if (i === 0) d += `M ${x.toFixed(1)} ${y.toFixed(1)} `;
-          else d += `L ${x.toFixed(1)} ${y.toFixed(1)} `;
-        });
-        d += 'Z ';
-      };
-
-      if (geom.type === 'Polygon') {
-        geom.coordinates.forEach(processPolygon);
-      } else if (geom.type === 'MultiPolygon') {
-        geom.coordinates.forEach(polygon => polygon.forEach(processPolygon));
-      }
+    while ((match = regex.exec(data)) !== null) {
+      const sigla = match[1].toUpperCase();
+      const d = match[3]; // Aqui estão as coordenadas simplificadas
 
       paths += `
             {/* ${sigla} */}
             <path
               id="${sigla.toLowerCase()}"
-              aria-label={NOME_TODOS_ESTADOS["${sigla}"] ?? "${feature.properties.name}"}
-              d="${d.trim()}"
-              style={{ fill: getEstadoFill("${sigla}"), opacity: getEstadoOpacity("${sigla}"), transition: "fill 200ms ease, opacity 200ms ease", cursor: "pointer", stroke: "#1a0000", strokeWidth: 0.5 }}
+              aria-label={NOME_TODOS_ESTADOS["${sigla}"] ?? "${match[2]}"}
+              d="${d}"
+              style={{ fill: getEstadoFill("${sigla}"), opacity: getEstadoOpacity("${sigla}"), transition: "fill 200ms ease, opacity 200ms ease", cursor: "pointer", stroke: "#1a0000", strokeWidth: 1.5 }}
               onMouseEnter={(e) => handleMouseEnter("${sigla}", e)}
               onMouseMove={(e) => handleMouseMove("${sigla}", e)}
               onMouseLeave={handleMouseLeave}
@@ -65,7 +34,7 @@ https.get(geojsonUrl, { headers: { 'User-Agent': 'Node.js' } }, (res) => {
               role="button" tabIndex={0}
               onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") handleClick("${sigla}", e as unknown as React.MouseEvent<SVGPathElement>); }}
             />`;
-    });
+    }
 
     const file = path.join(process.cwd(), 'components', 'MapaAtuacao.tsx');
     if (!fs.existsSync(file)) {
@@ -75,18 +44,18 @@ https.get(geojsonUrl, { headers: { 'User-Agent': 'Node.js' } }, (res) => {
 
     let content = fs.readFileSync(file, 'utf8');
 
-    // 1. Corrige o Erro do TypeScript adicionando <string>
+    // Mantém a correção do TypeScript (caso não tenha sido feita)
     content = content.replace(/new Set\(\s*estadosAtuacao/, 'new Set<string>(\n  estadosAtuacao');
 
-    // 2. Substitui o viewBox antigo e limpa o SVG desenhado incorretamente pela IA anterior
+    // Substitui todo o bloco <svg> ... </svg> pelo SVG leve e com o viewBox correto para este mapa
     content = content.replace(
       /(<svg[^>]*viewBox=")([^"]*)("[^>]*>)([\s\S]*?)(<\/svg>)/,
-      `$10 0 800 800$3${paths}\n          $5`
+      `$10 0 613 639$3${paths}\n          $5`
     );
 
     fs.writeFileSync(file, content);
-    console.log("✅ SVG do Mapa atualizado e erro de compilação da Vercel corrigido com sucesso!");
+    console.log("Mapa LEVE instalado com sucesso! O DOM agora está limpo e rápido.");
   });
 }).on("error", (err) => {
-    console.error("Erro ao baixar os dados geográficos:", err.message);
+    console.error("Erro ao baixar o mapa leve:", err.message);
 });
