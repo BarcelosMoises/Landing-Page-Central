@@ -5,6 +5,7 @@
 // garantindo que NavPrimaria e Footer também herdem a cor do serviço.
 
 import type React from "react"
+import { Footer } from "@/components/Footer"
 
 export default function LayoutRegularizacaoPrefeitura({
   children,
@@ -20,6 +21,7 @@ export default function LayoutRegularizacaoPrefeitura({
       } as React.CSSProperties}
     >
       {children}
+      <Footer />
     </div>
   )
 }
