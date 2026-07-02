@@ -25,6 +25,7 @@ const SERVICOS_FOOTER = [
   "spda",
   "laudos-tecnicos",
   "projetos-tecnicos",
+  "regularizacao-prefeitura",
 ] as const;
 
 const CONHECIMENTOS_JSONLD: Record<string, string[]> = {
