@@ -350,7 +350,6 @@ export default function PageLicenciamentoAmbiental() {
               </div>
 
               <div>
-                <p className="text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-3 font-mono">Setores prioritários</p>
                 <div className="relative w-full aspect-video rounded-xl overflow-hidden bg-neutral-100 border border-neutral-200">
                   <Image
                     src="/images/placeholder-setores.svg"
