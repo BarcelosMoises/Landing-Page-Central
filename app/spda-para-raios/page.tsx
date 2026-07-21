@@ -13,7 +13,6 @@ import {
   estadosAtuacao,
   getWhatsAppUrl,
 } from "@/data/servicos";
-import { equipe } from "@/data/equipe";
 
 // ─── Metadata ────────────────────────────────────────────────────────────────
 
@@ -393,38 +392,6 @@ export default function PageSPDA() {
                 </div>
               </div>
             </div>
-          </div>
-        </section>
-
-        {/* ── EQUIPE TÉCNICA (E-E-A-T) ───────────────────────────────────────────── */}
-        <section aria-labelledby="equipe-titulo" className="bg-neutral-950 py-20 md:py-28 border-t border-white/8">
-          <div className="container-site">
-            <p
-              className="text-xs font-semibold uppercase tracking-wider mb-3 font-mono"
-              style={{ color: "var(--color-service-accent)" }}
-            >
-              Responsabilidade técnica real
-            </p>
-            <h2 id="equipe-titulo" className="font-heading font-bold text-white text-3xl md:text-4xl leading-tight mb-12">
-              Engenheiros que assinam as ARTs
-            </h2>
-            <ul className="grid sm:grid-cols-2 gap-6" aria-label="Equipe técnica responsável">
-              {equipe.map((membro) => (
-                <li key={membro.slug} className="flex flex-col gap-3 p-6 rounded-xl bg-neutral-900 border border-white/10">
-                  <div>
-                    <p className="font-heading font-semibold text-white text-lg">{membro.nome}</p>
-                    <p className="text-sm mt-0.5" style={{ color: "var(--color-service-accent-light)" }}>
-                      {membro.tituloPrincipal}
-                    </p>
-                  </div>
-                  <ul className="flex flex-col gap-1" aria-label={`Especialidades de ${membro.nome}`}>
-                    {membro.especializacoes.map((esp) => (
-                      <li key={esp} className="text-sm text-neutral-400">{esp}</li>
-                    ))}
-                  </ul>
-                </li>
-              ))}
-            </ul>
           </div>
         </section>
 
