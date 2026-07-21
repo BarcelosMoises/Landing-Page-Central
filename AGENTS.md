@@ -279,10 +279,21 @@ export default function LayoutAmbiental({ children }: { children: React.ReactNod
 | Usar `especializacoes` como `especialidades` (nome de campo antigo) | `membro.especializacoes` — campo canônico em `data/equipe.ts` |
 | Usar `formacao` ou `Formação` como campo da equipe | `membro.tituloPrincipal` — campo canônico em `data/equipe.ts` |
 | Acessar membro da equipe sem `slug` | Usar `membro.slug` para links e IDs (ex.: `durval-ribeiro`, `theyllor-estulano`) |
+| Criar componente duplicado de grid de serviços | `ServicosTabs` é o único componente de serviços da homepage — `ServicosGrid` foi removido |
 
 ---
 
 ## Componentes da Homepage
+
+### ServicosTabs
+- **Arquivo:** `components/ServicosTabs.tsx`
+- **Tipo:** Client Component (`"use client"`) — único componente de serviços da homepage
+- **O quê:** Tabs interativas (Legalização · Projetos · Laudos) com grid de cards de serviço
+- **Props:** recebe arrays de `ServicoOuPlaceholder[]` via `app/(homepage)/page.tsx` — nunca importa `servicos` diretamente
+- **Grid:** sempre múltiplo de 3 colunas; placeholders preenchidos pelo `page.tsx`
+- **ARIA:** `role="tablist"` / `role="tab"` / `role="tabpanel"` obrigatórios
+- **SEO:** todos os painéis renderizados no DOM; inativos ocultos com `hidden` (indexável)
+- **`ServicosGrid.tsx` foi removido** (Jul 2026) — era código morto duplicado, nunca importado
 
 ### NavPrimaria
 - **Arquivo:** `components/NavPrimaria.tsx`
