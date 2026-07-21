@@ -307,16 +307,6 @@ export default function PageLicenciamentoAmbiental() {
                   </Link>
                 </div>
               </div>
-
-              <aside aria-label="Órgãos ambientais licenciadores" className="hidden lg:flex flex-col gap-3 min-w-[252px]">
-                <p className="text-xs font-semibold text-neutral-500 uppercase tracking-wider mb-1 font-mono">Órgãos licenciadores</p>
-                {estadosAmbiental.map((e) => (
-                  <div key={e.sigla} className="flex items-center justify-between gap-4 px-4 py-3 rounded-lg bg-neutral-900 border border-white/8">
-                    <span className="text-sm font-semibold text-white font-mono">{e.orgaoAmbiental}</span>
-                    <span className="text-xs text-neutral-400">{e.sigla}</span>
-                  </div>
-                ))}
-              </aside>
             </div>
           </div>
         </section>

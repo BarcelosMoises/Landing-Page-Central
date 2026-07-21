@@ -283,15 +283,6 @@ export default function PageProjetosTecnicos() {
                   </Link>
                 </div>
               </div>
-
-              <aside aria-label="Órgãos responsáveis" className="hidden lg:flex flex-col gap-3 min-w-[220px]">
-                <p className="text-xs font-semibold text-neutral-500 uppercase tracking-wider mb-1">Órgãos / Registros</p>
-                {projetos.orgaos.map((orgao) => (
-                  <div key={orgao} className="flex items-center gap-3 px-4 py-3 rounded-lg bg-neutral-900 border border-white/8">
-                    <span className="text-sm font-semibold text-white font-mono">{orgao}</span>
-                  </div>
-                ))}
-              </aside>
             </div>
           </div>
         </section>

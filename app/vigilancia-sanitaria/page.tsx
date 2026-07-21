@@ -287,22 +287,6 @@ export default function PageVigilanciaSanitaria() {
                   </Link>
                 </div>
               </div>
-
-              <aside aria-label="Órgãos de Vigilância Sanitária atendidos" className="hidden lg:flex flex-col gap-3 min-w-[220px]">
-                <p className="text-xs font-semibold text-neutral-500 uppercase tracking-wider mb-1">Órgãos reguladores</p>
-                {vigilancia.orgaos.map((orgao) => (
-                  <div key={orgao} className="flex items-center justify-between gap-4 px-4 py-3 rounded-lg bg-neutral-900 border border-white/8">
-                    <span className="text-sm font-semibold text-white font-mono">{orgao}</span>
-                  </div>
-                ))}
-                <p className="text-xs font-semibold text-neutral-500 uppercase tracking-wider mt-3 mb-1">Estados atendidos</p>
-                {estadosVigilancia.map((e) => (
-                  <div key={e.sigla} className="flex items-center justify-between gap-4 px-4 py-3 rounded-lg bg-neutral-900 border border-white/8">
-                    <span className="text-sm font-semibold text-white font-mono">{e.sigla}</span>
-                    <span className="text-xs text-neutral-400">{e.nome}</span>
-                  </div>
-                ))}
-              </aside>
             </div>
           </div>
         </section>

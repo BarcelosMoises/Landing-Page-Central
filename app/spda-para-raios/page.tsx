@@ -295,32 +295,6 @@ export default function PageSPDA() {
                   </Link>
                 </div>
               </div>
-
-              <aside aria-label="Órgão regulador e cobertura" className="hidden lg:flex flex-col gap-3 min-w-[220px]">
-                <p className="text-xs font-semibold text-neutral-500 uppercase tracking-wider mb-1">Órgão regulador</p>
-                <div className="flex items-center justify-between gap-4 px-4 py-3 rounded-lg bg-neutral-900 border border-white/8">
-                  <span className="text-sm font-semibold text-white font-mono">{spda.orgaos[0]}</span>
-                  <span className="text-xs text-neutral-400">Conselho Regional</span>
-                </div>
-                <p className="text-xs font-semibold text-neutral-500 uppercase tracking-wider mt-3 mb-1">Norma técnica</p>
-                <div className="flex items-center gap-4 px-4 py-3 rounded-lg bg-neutral-900 border border-white/8">
-                  <span className="text-sm font-semibold font-mono" style={{ color: "var(--color-service-accent-light)" }}>
-                    {spda.normaBase![0]}
-                  </span>
-                </div>
-                <p className="text-xs font-semibold text-neutral-500 uppercase tracking-wider mt-3 mb-1">Cobertura</p>
-                <div
-                  className="flex items-center gap-4 px-4 py-3 rounded-lg border"
-                  style={{
-                    backgroundColor: "color-mix(in srgb, var(--color-service-accent) 12%, transparent)",
-                    borderColor: "color-mix(in srgb, var(--color-service-accent) 28%, transparent)",
-                  }}
-                >
-                  <span className="text-sm font-semibold font-mono" style={{ color: "var(--color-service-accent-light)" }}>
-                    Todo o Brasil
-                  </span>
-                </div>
-              </aside>
             </div>
           </div>
         </section>
