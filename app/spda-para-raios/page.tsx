@@ -3,6 +3,7 @@
 // Server Component puro — sem "use client".
 
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { NavPrimaria } from "@/components/NavPrimaria";
 import { FaqItem } from "@/components/FaqItem";
@@ -354,14 +355,14 @@ export default function PageSPDA() {
 
               <div>
                 <p className="text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-3 font-mono">Setores prioritários</p>
-                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2" aria-label="Setores atendidos">
-                  {spda.setoresPrioritarios?.map((setor) => (
-                    <li key={setor} className="flex items-center gap-3 px-4 py-3 rounded-lg bg-neutral-50 border border-neutral-200 text-sm text-neutral-700">
-                      <IconeChevron />
-                      {setor}
-                    </li>
-                  ))}
-                </ul>
+                <div className="relative w-full aspect-video rounded-xl overflow-hidden bg-neutral-100 border border-neutral-200">
+                  <Image
+                    src="/images/placeholder-setores.svg"
+                    alt="Setores atendidos pela Central de Soluções — SPDA"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
 
                 {spda.normaBase && (
                   <div className="mt-8 p-5 rounded-xl bg-neutral-900 border border-white/10">

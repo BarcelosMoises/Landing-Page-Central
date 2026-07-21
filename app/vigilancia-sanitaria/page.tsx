@@ -4,6 +4,7 @@
 // Accent: #0d7377 (teal) — cor primária do serviço.
 
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { NavPrimaria } from "@/components/NavPrimaria";
 import { FaqItem } from "@/components/FaqItem";
@@ -336,14 +337,14 @@ export default function PageVigilanciaSanitaria() {
 
               <div>
                 <p className="text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-3 font-mono">Setores prioritários</p>
-                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-8" aria-label="Setores atendidos">
-                  {vigilancia.setoresPrioritarios?.map((setor) => (
-                    <li key={setor} className="flex items-center gap-3 px-4 py-3 rounded-lg bg-neutral-50 border border-neutral-200 text-sm text-neutral-700">
-                      <IconeChevron />
-                      {setor}
-                    </li>
-                  ))}
-                </ul>
+                <div className="relative w-full aspect-video rounded-xl overflow-hidden bg-neutral-100 border border-neutral-200">
+                  <Image
+                    src="/images/placeholder-setores.svg"
+                    alt="Setores atendidos pela Central de Soluções — Vigilância Sanitária"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
 
                 {vigilancia.normaBase && (
                   <div className="p-5 rounded-xl bg-neutral-900 border border-white/10">
