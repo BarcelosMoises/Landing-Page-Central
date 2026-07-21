@@ -4,6 +4,7 @@
 // Accent: #1a3a6b (azul marinho) — cor primária do serviço.
 
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { NavPrimaria } from "@/components/NavPrimaria";
 import { FaqItem } from "@/components/FaqItem";
@@ -424,34 +425,16 @@ export default function PageRegularizacaoPrefeitura() {
               </div>
 
               <div>
-                <p className="text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-3 font-mono">
-                  Tipos de imóvel atendidos
-                </p>
-                <ul
-                  className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-8"
-                  aria-label="Tipos de imóvel atendidos"
-                >
-                  {[
-                    "Residências e sobrados",
-                    "Galpões industriais",
-                    "Estabelecimentos comerciais",
-                    "Edifícios multifamiliares",
-                    "Imóveis rurais",
-                    "Condomínios",
-                    "Lotes urbanos",
-                    "Obras de infraestrutura",
-                  ].map((tipo) => (
-                    <li
-                      key={tipo}
-                      className="flex items-center gap-3 px-4 py-3 rounded-lg bg-neutral-50 border border-neutral-200 text-sm text-neutral-700"
-                    >
-                      <IconeChevron />
-                      {tipo}
-                    </li>
-                  ))}
-                </ul>
+                <div className="relative w-full aspect-video rounded-xl overflow-hidden bg-neutral-100 border border-neutral-200">
+                  <Image
+                    src="/images/placeholder-setores.svg"
+                    alt="Tipos de imóveis atendidos pela Central de Soluções — Regularização Prefeitura"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
 
-                <div className="p-5 rounded-xl bg-neutral-900 border border-white/10">
+                <div className="mt-8 p-5 rounded-xl bg-neutral-900 border border-white/10">
                   <p className="text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-3 font-mono">
                     Base normativa
                   </p>
