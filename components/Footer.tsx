@@ -13,7 +13,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { servicos, contato, equipe } from "@/data/servicos";
+import { servicos, contato } from "@/data/servicos";
+import { equipe } from "@/data/equipe";
 import { JsonLd } from "@/components/JsonLd";
 
 const ANO_ATUAL = new Date().getFullYear();
@@ -50,13 +51,13 @@ const pessoasJsonLd = equipe.map((membro) => ({
   "@context": "https://schema.org",
   "@type": "Person",
   name: membro.nome,
-  jobTitle: membro.formacao,
+  jobTitle: membro.tituloPrincipal,
   worksFor: {
     "@type": "Organization",
     name: "Central de Soluções Engenharia",
     url: "https://www.centraldesolucoes.eng.br",
   },
-  knowsAbout: CONHECIMENTOS_JSONLD[membro.id] ?? [...membro.especialidades],
+  knowsAbout: CONHECIMENTOS_JSONLD[membro.slug] ?? [...membro.especializacoes],
 }));
 
 export function Footer() {
@@ -183,10 +184,10 @@ export function Footer() {
               <h2 className="font-heading text-sm font-semibold text-white uppercase tracking-wider mb-4">Equipe Técnica</h2>
               <ul className="flex flex-col gap-4" aria-label="Responsáveis técnicos">
                 {equipe.map((membro) => (
-                  <li key={membro.id} className="flex flex-col gap-0.5">
+                  <li key={membro.slug} className="flex flex-col gap-0.5">
                     <span className="text-sm font-semibold text-white">{membro.nome}</span>
-                    <span className="text-xs" style={{ color: textMuted }}>{membro.formacao}</span>
-                    {membro.especialidades.map((esp) => (
+                    <span className="text-xs" style={{ color: textMuted }}>{membro.tituloPrincipal}</span>
+                    {membro.especializacoes.map((esp) => (
                       <span key={esp} className="text-xs" style={{ color: textSubtitle }}>{esp}</span>
                     ))}
                   </li>

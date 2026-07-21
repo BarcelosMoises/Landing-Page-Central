@@ -14,7 +14,7 @@ const FAQ_ITEMS: readonly FaqItemData[] = [
   {
     pergunta: "O que é AVCB e quem precisa ter?",
     resposta:
-      "O AVCB (Auto de Vistoria do Corpo de Bombeiros) é o documento emitido pelo Corpo de Bombeiros estadual que certifica que uma edificação atende às normas de prevenção e combate a incêndio. É obrigatório para indúستrias, galpões logísticos, comércios, escolas, igrejas, hospitais e qualquer edificação de uso coletivo ou com atividade de risco. Sem o AVCB, a empresa pode ser autuada, multada ou ter suas atividades interrompidas pelos órgãos de fiscalização.",
+      "O AVCB (Auto de Vistoria do Corpo de Bombeiros) é o documento emitido pelo Corpo de Bombeiros estadual que certifica que uma edificação atende às normas de prevenção e combate a incêndio. É obrigatório para indústrias, galpões logísticos, comércios, escolas, igrejas, hospitais e qualquer edificação de uso coletivo ou com atividade de risco. Sem o AVCB, a empresa pode ser autuada, multada ou ter suas atividades interrompidas pelos órgãos de fiscalização.",
   },
   {
     pergunta: "O que é SPDA e quando é obrigatório?",
@@ -29,12 +29,12 @@ const FAQ_ITEMS: readonly FaqItemData[] = [
   {
     pergunta: "Qual a diferença entre AVCB e CLCB?",
     resposta:
-      "O AVCB (Auto de Vistoria do Corpo de Bombeiros) e o CLCB (Certificado de Licença do Corpo de Bombeiros) são documentos equivalentes, mas aplicados a situações distintas. O AVCB é exigido para edificações de médio e alto risco, como indúستrias e grandes galpões, passando por vistoria presencial do Corpo de Bombeiros. Já o CLCB é utilizado em edificações de baixo risco, principalmente em São Paulo (CBPMESP), com processo simplificado e sem necessidade de vistoria presencial. A classificação de risco depende do tipo de ocupação, área e carga de incêndio da edificação.",
+      "O AVCB (Auto de Vistoria do Corpo de Bombeiros) e o CLCB (Certificado de Licença do Corpo de Bombeiros) são documentos equivalentes, mas aplicados a situações distintas. O AVCB é exigido para edificações de médio e alto risco, como indústrias e grandes galpões, passando por vistoria presencial do Corpo de Bombeiros. Já o CLCB é utilizado em edificações de baixo risco, principalmente em São Paulo (CBPMESP), com processo simplificado e sem necessidade de vistoria presencial. A classificação de risco depende do tipo de ocupação, área e carga de incêndio da edificação.",
   },
   {
     pergunta: "O que é licenciamento ambiental e quais empresas precisam?",
     resposta:
-      "O licenciamento ambiental é o procedimento pelo qual os órgãos ambientais estaduais (INEA no RJ, CETESB em SP, SUPRAM/SEMAD em MG e IEMA no ES) avaliam, controlam e autorizam o funcionamento de atividades que causam impacto ao meio ambiente. Empresas dos setores de indúستria, agroindúستria, mineração, postos de combustível, telecomunicações e energia precisam obter as licenças LP (Licença Prévia), LI (Licença de Instalação) e LO (Licença de Operação), conforme a Resolução CONAMA 237/1997. Operar sem a licença ambiental adequada sujeita a empresa a multas, interdições e responsabilidade civil e penal dos sócios.",
+      "O licenciamento ambiental é o procedimento pelo qual os órgãos ambientais estaduais (INEA no RJ, CETESB em SP, SUPRAM/SEMAD em MG e IEMA no ES) avaliam, controlam e autorizam o funcionamento de atividades que causam impacto ao meio ambiente. Empresas dos setores de indústria, agroindústria, mineração, postos de combustível, telecomunicações e energia precisam obter as licenças LP (Licença Prévia), LI (Licença de Instalação) e LO (Licença de Operação), conforme a Resolução CONAMA 237/1997. Operar sem a licença ambiental adequada sujeita a empresa a multas, interdições e responsabilidade civil e penal dos sócios.",
   },
   {
     pergunta: "O que é PGRS e quando uma empresa precisa elaborar?",
