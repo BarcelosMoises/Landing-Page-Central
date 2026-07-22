@@ -152,19 +152,6 @@ const whatsappUrl = getWhatsAppUrl(
 
 // ─── Componentes internos ────────────────────────────────────────────────────────────────
 
-function BadgeEstado({ sigla, nome }: { sigla: string; nome: string }) {
-  return (
-    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-neutral-800 border border-white/10 text-xs font-semibold text-neutral-200 font-mono tracking-wide">
-      <span
-        className="w-1.5 h-1.5 rounded-full"
-        style={{ backgroundColor: "var(--color-service-accent)" }}
-        aria-hidden="true"
-      />
-      {sigla} · {nome}
-    </span>
-  );
-}
-
 function IconeShield() {
   return (
     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -280,12 +267,6 @@ export default function PageAVCB() {
                 <p className="text-neutral-300 text-lg leading-relaxed mb-8 max-w-xl">
                   {avcb.descricao}
                 </p>
-
-                <div className="flex flex-wrap gap-2 mb-10" aria-label="Estados atendidos">
-                  {estadosAVCB.map((e) => (
-                    <BadgeEstado key={e.sigla} sigla={e.sigla} nome={e.nome} />
-                  ))}
-                </div>
 
                 <div className="flex flex-col sm:flex-row gap-3">
                   <a

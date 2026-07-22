@@ -12,7 +12,6 @@ import { CrosshairDecor } from "@/components/CrosshairDecor";
 import {
   servicos,
   contato,
-  estadosAtuacao,
   getWhatsAppUrl,
 } from "@/data/servicos";
 
@@ -135,27 +134,11 @@ const faqJsonLd = {
 // ─── Dados locais ─────────────────────────────────────────────────────────────────
 
 const vigilancia = servicos.find((s) => s.id === "vigilancia-sanitaria")!;
-const estadosVigilancia = estadosAtuacao.filter((e) =>
-  vigilancia.estados.includes(e.sigla)
-);
 const whatsappUrl = getWhatsAppUrl(
   "Olá! Tenho interesse no serviço de Alvará Sanitário / Vigilância Sanitária. Pode me passar mais informações?"
 );
 
 // ─── Componentes internos ────────────────────────────────────────────────────────────────
-
-function BadgeEstado({ sigla, nome }: { sigla: string; nome: string }) {
-  return (
-    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-neutral-800 border border-white/10 text-xs font-semibold text-neutral-200 font-mono tracking-wide">
-      <span
-        className="w-1.5 h-1.5 rounded-full"
-        style={{ backgroundColor: "var(--color-service-accent)" }}
-        aria-hidden="true"
-      />
-      {sigla} · {nome}
-    </span>
-  );
-}
 
 function IconeClipboard() {
   return (
@@ -256,12 +239,6 @@ export default function PageVigilanciaSanitaria() {
                 <p className="text-neutral-300 text-lg leading-relaxed mb-8 max-w-xl">
                   {vigilancia.descricao}
                 </p>
-
-                <div className="flex flex-wrap gap-2 mb-10" aria-label="Estados atendidos">
-                  {estadosVigilancia.map((e) => (
-                    <BadgeEstado key={e.sigla} sigla={e.sigla} nome={e.nome} />
-                  ))}
-                </div>
 
                 <div className="flex flex-col sm:flex-row gap-3">
                   <a

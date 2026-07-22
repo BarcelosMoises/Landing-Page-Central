@@ -243,22 +243,6 @@ export default function PageProjetosTecnicos() {
                   {projetos.descricao}
                 </p>
 
-                <div className="flex flex-wrap gap-2 mb-10" aria-label="Estados atendidos">
-                  {["RJ", "SP", "MG", "ES"].map((sigla) => (
-                    <span
-                      key={sigla}
-                      className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-neutral-800 border border-white/10 text-xs font-semibold text-neutral-200 font-mono tracking-wide"
-                    >
-                      <span
-                        className="w-1.5 h-1.5 rounded-full"
-                        style={{ backgroundColor: "var(--color-service-accent-light)" }}
-                        aria-hidden="true"
-                      />
-                      {sigla}
-                    </span>
-                  ))}
-                </div>
-
                 <div className="flex flex-col sm:flex-row gap-3">
                   <a
                     href={whatsappUrl}

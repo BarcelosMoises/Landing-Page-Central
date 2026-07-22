@@ -12,7 +12,6 @@ import { CrosshairDecor } from "@/components/CrosshairDecor";
 import {
   servicos,
   contato,
-  estadosAtuacao,
   getWhatsAppUrl,
 } from "@/data/servicos";
 
@@ -137,27 +136,11 @@ const faqJsonLd = {
 // ─── Dados locais ─────────────────────────────────────────────────
 
 const prefeitura = servicos.find((s) => s.id === "regularizacao-prefeitura")!;
-const estadosPrefeitura = estadosAtuacao.filter((e) =>
-  prefeitura.estados.includes(e.sigla)
-);
 const whatsappUrl = getWhatsAppUrl(
   "Olá! Tenho interesse no serviço de Regularização junto à Prefeitura. Pode me passar mais informações?"
 );
 
 // ─── Componentes internos ───────────────────────────────────────────
-
-function BadgeEstado({ sigla, nome }: { sigla: string; nome: string }) {
-  return (
-    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-neutral-800 border border-white/10 text-xs font-semibold text-neutral-200 font-mono tracking-wide">
-      <span
-        className="w-1.5 h-1.5 rounded-full"
-        style={{ backgroundColor: "var(--color-service-accent)" }}
-        aria-hidden="true"
-      />
-      {sigla} · {nome}
-    </span>
-  );
-}
 
 function IconeBuilding() {
   return (
@@ -346,15 +329,6 @@ export default function PageRegularizacaoPrefeitura() {
                 <p className="text-neutral-300 text-lg leading-relaxed mb-8 max-w-xl">
                   {prefeitura.descricao}
                 </p>
-
-                <div
-                  className="flex flex-wrap gap-2 mb-10"
-                  aria-label="Estados atendidos"
-                >
-                  {estadosPrefeitura.map((e) => (
-                    <BadgeEstado key={e.sigla} sigla={e.sigla} nome={e.nome} />
-                  ))}
-                </div>
 
                 <div className="flex flex-col sm:flex-row gap-3">
                   <a

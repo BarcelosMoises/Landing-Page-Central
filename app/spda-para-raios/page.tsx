@@ -10,7 +10,6 @@ import { FaqItem } from "@/components/FaqItem";
 import {
   servicos,
   contato,
-  estadosAtuacao,
   getWhatsAppUrl,
 } from "@/data/servicos";
 
@@ -129,47 +128,11 @@ const faqJsonLd = {
 // ─── Dados locais ─────────────────────────────────────────────────────────────────
 
 const spda = servicos.find((s) => s.id === "spda")!;
-const estadosSPDA = estadosAtuacao.filter((e) =>
-  ["RJ", "SP", "MG", "ES"].includes(e.sigla)
-);
 const whatsappUrl = getWhatsAppUrl(
   "Olá! Tenho interesse no serviço de SPDA / Para-raios. Pode me passar mais informações?"
 );
 
 // ─── Componentes internos ────────────────────────────────────────────────────────────────
-
-function BadgeEstado({ sigla, nome }: { sigla: string; nome: string }) {
-  return (
-    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-neutral-800 border border-white/10 text-xs font-semibold text-neutral-200 font-mono tracking-wide">
-      <span
-        className="w-1.5 h-1.5 rounded-full"
-        style={{ backgroundColor: "var(--color-service-accent)" }}
-        aria-hidden="true"
-      />
-      {sigla} · {nome}
-    </span>
-  );
-}
-
-function BadgeNacional() {
-  return (
-    <span
-      className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border text-xs font-semibold font-mono tracking-wide"
-      style={{
-        backgroundColor: "color-mix(in srgb, var(--color-service-accent) 15%, transparent)",
-        borderColor: "color-mix(in srgb, var(--color-service-accent) 35%, transparent)",
-        color: "var(--color-service-accent-light)",
-      }}
-    >
-      <span
-        className="w-1.5 h-1.5 rounded-full"
-        style={{ backgroundColor: "var(--color-service-accent-light)" }}
-        aria-hidden="true"
-      />
-      BR · Cobertura nacional
-    </span>
-  );
-}
 
 function IconeZap() {
   return (
@@ -263,13 +226,6 @@ export default function PageSPDA() {
                 <p className="text-neutral-300 text-lg leading-relaxed mb-8 max-w-xl">
                   {spda.descricao}
                 </p>
-
-                <div className="flex flex-wrap gap-2 mb-10" aria-label="Estados atendidos e cobertura">
-                  {estadosSPDA.map((e) => (
-                    <BadgeEstado key={e.sigla} sigla={e.sigla} nome={e.nome} />
-                  ))}
-                  <BadgeNacional />
-                </div>
 
                 <div className="flex flex-col sm:flex-row gap-3">
                   <a
