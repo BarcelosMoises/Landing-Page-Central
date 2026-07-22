@@ -15,7 +15,6 @@ import {
   getServicosPorCategoria,
   getWhatsAppUrl,
   contato,
-  type Servico,
 } from "@/data/servicos";
 
 // ─── Metadata ──────────────────────────────────────────────────────────────────────────────
@@ -71,44 +70,13 @@ const websiteJsonLd = {
   },
 };
 
-// ─── Helper: preenche até o próximo múltiplo de 3 com mock cards ──────────────────
-
-export type ServicoOuPlaceholder = Servico & { isPlaceholder?: boolean };
-
-function padServicos(lista: readonly Servico[]): ServicoOuPlaceholder[] {
-  const remainder = lista.length % 3;
-  if (remainder === 0) return [...lista];
-  const needed = 3 - remainder;
-  const placeholders: ServicoOuPlaceholder[] = Array.from(
-    { length: needed },
-    (_, i) => ({
-      id: `placeholder-${i}`,
-      slug: `placeholder-${i}`,
-      nome: "Em breve",
-      nomeAbreviado: "Em breve",
-      categoria: "legalizacao" as const,
-      descricao: "Novo serviço em desenvolvimento. Entre em contato para mais informações.",
-      orgaos: [],
-      estados: [],
-      coberturaNacional: false,
-      itens: [],
-      iconeLucide: "Clock",
-      pathRota: "/",
-      isPlaceholder: true,
-    })
-  );
-  return [...lista, ...placeholders];
-}
-
 // ─── Dados das tabs ─────────────────────────────────────────────────────────────────────
-const servicosLegalizacao = padServicos(getServicosPorCategoria("legalizacao"));
-const servicosProjetos = padServicos(
-  getServicosPorCategoria("projeto").filter((s) => s.exibirNaTabs !== false)
-);
-const servicosLaudos = padServicos([
+const servicosLegalizacao = getServicosPorCategoria("legalizacao");
+const servicosProjetos = getServicosPorCategoria("projeto").filter((s) => s.exibirNaTabs !== false);
+const servicosLaudos = [
   ...getServicosPorCategoria("laudo"),
   ...getServicosPorCategoria("instalacao"),
-]);
+];
 
 const PILARES_HERO = [
   {

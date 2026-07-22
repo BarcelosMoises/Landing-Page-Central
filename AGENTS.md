@@ -289,11 +289,12 @@ export default function LayoutAmbiental({ children }: { children: React.ReactNod
 - **Arquivo:** `components/ServicosTabs.tsx`
 - **Tipo:** Client Component (`"use client"`) — único componente de serviços da homepage
 - **O quê:** Tabs interativas (Legalização · Projetos · Laudos) com grid de cards de serviço
-- **Props:** recebe arrays de `ServicoOuPlaceholder[]` via `app/(homepage)/page.tsx` — nunca importa `servicos` diretamente
-- **Grid:** sempre múltiplo de 3 colunas; placeholders preenchidos pelo `page.tsx`
+- **Props:** recebe arrays de `Servico[]` via `app/(homepage)/page.tsx` — nunca importa `servicos` diretamente
+- **Grid:** colunas responsivas (1/2/3); sem placeholders
 - **ARIA:** `role="tablist"` / `role="tab"` / `role="tabpanel"` obrigatórios
 - **SEO:** todos os painéis renderizados no DOM; inativos ocultos com `hidden` (indexável)
 - **`ServicosGrid.tsx` foi removido** (Jul 2026) — era código morto duplicado, nunca importado
+- **Placeholders "Em breve" foram removidos** (Jul 2026) — `padServicos` e `ServicoOuPlaceholder` eliminados
 
 ### NavPrimaria
 - **Arquivo:** `components/NavPrimaria.tsx`
