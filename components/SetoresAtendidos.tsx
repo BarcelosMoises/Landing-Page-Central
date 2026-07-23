@@ -71,29 +71,21 @@ function SetorCard({ setorId, nome }: SetorCardProps) {
   return (
     <article
       aria-label={`Setor atendido: ${nome}`}
-      // h-full: ocupa 100% da altura do <motion.li> (que é flex e estica para
-      // preencher a célula do grid) — garante que todos os cards da mesma
-      // linha do grid fiquem com a mesma altura.
-      className="bg-white/5 border border-white/10 rounded-xl p-5 hover:bg-white/10 transition-colors duration-200 flex flex-col gap-4 h-full"
+      className="bg-white/5 border border-white/10 rounded-xl p-5 hover:bg-white/10 transition-colors duration-200 flex items-center gap-3 h-full"
     >
-      {/* Ícone + nome */}
-      <div className="flex items-center gap-3">
-        {/*
-          Opacity aumentada de /30→/50 e borda de /40→/60 para manter
-          visibilidade do ícone sobre o fundo vinho escuro (#1a0000).
-        */}
-        <div
-          className="w-9 h-9 bg-[#800000]/50 border border-[#800000]/60 rounded-lg flex items-center justify-center flex-shrink-0"
-          aria-hidden="true"
-        >
-          <Icon className="w-4 h-4 text-white/70" aria-hidden="true" />
-        </div>
-        <h3 className="font-heading text-base font-bold text-white leading-snug">
-          {nome}
-        </h3>
+      {/*
+        Opacity aumentada de /30→/50 e borda de /40→/60 para manter
+        visibilidade do ícone sobre o fundo vinho escuro (#1a0000).
+      */}
+      <div
+        className="w-9 h-9 bg-[#800000]/50 border border-[#800000]/60 rounded-lg flex items-center justify-center flex-shrink-0"
+        aria-hidden="true"
+      >
+        <Icon className="w-4 h-4 text-white/70" aria-hidden="true" />
       </div>
-
-
+      <h3 className="font-heading text-sm font-bold text-white leading-snug">
+        {nome}
+      </h3>
     </article>
   );
 }
