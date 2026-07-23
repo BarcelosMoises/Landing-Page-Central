@@ -16,7 +16,7 @@ import {
   Layers,
   type LucideProps,
 } from "lucide-react";
-import { setores, getServicosPorSetor } from "@/data/servicos";
+import { setores } from "@/data/servicos";
 
 // ─── Mapa de ícones por setor ────────────────────────────────────────────────────
 
@@ -67,7 +67,6 @@ interface SetorCardProps {
 
 function SetorCard({ setorId, nome }: SetorCardProps) {
   const Icon = SETOR_ICON_MAP[setorId] ?? Factory;
-  const servicosDemandados = getServicosPorSetor(setorId);
 
   return (
     <article
@@ -94,18 +93,7 @@ function SetorCard({ setorId, nome }: SetorCardProps) {
         </h3>
       </div>
 
-      {/* Serviços mais demandados — lista inline */}
-      {servicosDemandados.length > 0 && (
-        <p
-          className="text-sm leading-relaxed"
-          style={{ color: "#c4a8a8" }}
-          aria-label={`Serviços demandados por ${nome}`}
-        >
-          {servicosDemandados
-            .map((s) => s.nomeAbreviado)
-            .join(" · ")}
-        </p>
-      )}
+
     </article>
   );
 }

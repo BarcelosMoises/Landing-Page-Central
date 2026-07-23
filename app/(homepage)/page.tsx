@@ -83,19 +83,16 @@ const PILARES_HERO = [
     label: "Legalizações",
     descricao: "AVCB, Alvará Sanitário, Licenciamento Ambiental",
     href: "#servicos",
-    badge: "RJ · SP · MG · ES",
   },
   {
     label: "Projetos Técnicos",
-    descricao: "Incêndio e Pânico, Acessibilidade, PGRS/PGRSS",
+    descricao: "Incêndio, VISA, Hidráulico, Acessibilidade, PGRS",
     href: "#servicos",
-    badge: "RJ · SP · MG · ES",
   },
   {
     label: "Laudos Técnicos",
-    descricao: "SPDA, Aterramento, Teste de Continuidade",
+    descricao: "SPDA, Aterramento, Continuidade, Exigências",
     href: "#servicos",
-    badge: "Todo o Brasil",
   },
 ] as const;
 
@@ -167,7 +164,7 @@ export default function HomePage() {
                 }}
                 className="text-xs font-semibold uppercase tracking-widest px-3 py-1.5 rounded-full border"
               >
-                AVCB · Alvará Sanitário · SPDA · Licenciamento Ambiental
+                CORPO DE BOMBEIROS · VIGILÂNCIA SANITÁRIA · PREFEITURAS · ÓRGÃOS AMBIENTAIS
               </span>
             </p>
 
@@ -246,15 +243,6 @@ export default function HomePage() {
                 >
                   <span className="text-sm font-semibold text-white leading-snug">{pilar.label}</span>
                   <span className="text-xs text-white/75 leading-snug">{pilar.descricao}</span>
-                  <span
-                    style={{
-                      backgroundColor: "color-mix(in srgb, #800000 28%, transparent)",
-                      color: "rgba(255,255,255,0.85)",
-                    }}
-                    className="mt-1 self-start text-[11px] font-semibold uppercase tracking-wide px-2 py-0.5 rounded-full"
-                  >
-                    {pilar.badge}
-                  </span>
                 </a>
               ))}
             </div>

@@ -138,20 +138,17 @@ export function MapaAtuacao() {
                 Presença em Todo o Brasil
               </h2>
               <p className="text-white/70 text-base leading-relaxed">
-                Atendimento completo no{" "}
+                Atuamos em todo o Brasil, especialmente no{" "}
                 <span className="text-white font-semibold">Sudeste</span>.
-                SPDA e aterramento elétrico em qualquer estado.
-                Clique em um estado para ver detalhes.
               </p>
             </div>
 
             <div>
               <p className="text-[11px] font-semibold uppercase tracking-widest text-white/40 mb-3">
-                Atendimento completo
+                CLIQUE NOS ESTADOS PARA INTERAGIR
               </p>
               <ul className="flex flex-col gap-2">
                 {estadosAtuacao.map((estado) => {
-                  const svcs = getServicosPorEstado(estado.sigla);
                   const isActive = selectedState === estado.sigla || hoveredState === estado.sigla;
                   return (
                     <li
@@ -170,9 +167,6 @@ export function MapaAtuacao() {
                       />
                       <div className="min-w-0">
                         <p className="text-white text-sm font-semibold leading-snug">{estado.nome}</p>
-                        <p className="text-white/50 text-[11px] mt-0.5 leading-snug">
-                          {svcs.map((s) => s.nomeAbreviado).join(" · ")}
-                        </p>
                       </div>
                     </li>
                   );

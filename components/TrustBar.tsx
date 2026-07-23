@@ -8,12 +8,10 @@ export interface OrgaoReguladorBadge {
 }
 
 const ORGAOS_REGULADORES: readonly OrgaoReguladorBadge[] = [
-  { label: "CBMERJ · RJ",   href: "https://www.cbmerj.rj.gov.br",                title: "Corpo de Bombeiros Militar do Estado do Rio de Janeiro" },
-  { label: "CBPMESP · SP",  href: "https://www.corpodebombeiros.sp.gov.br",      title: "Corpo de Bombeiros da Polícia Militar do Estado de São Paulo" },
-  { label: "CBMMG · MG",    href: "https://www.bombeiros.mg.gov.br",             title: "Corpo de Bombeiros Militar de Minas Gerais" },
-  { label: "CBMES · ES",    href: "https://www.cbmes.es.gov.br",                 title: "Corpo de Bombeiros Militar do Espírito Santo" },
-  { label: "INEA · RJ",     href: "https://inea.rj.gov.br",                      title: "Instituto Estadual do Ambiente do Rio de Janeiro" },
-  { label: "ANVISA",        href: "https://www.gov.br/anvisa",                   title: "Agência Nacional de Vigilância Sanitária" },
+  { label: "CORPO DE BOMBEIROS", href: "#", title: "Corpos de Bombeiros estaduais" },
+  { label: "VIGILÂNCIA SANITÁRIA", href: "#", title: "Órgãos de Vigilância Sanitária" },
+  { label: "PREFEITURAS", href: "#", title: "Prefeituras municipais" },
+  { label: "ÓRGÃOS AMBIENTAIS", href: "#", title: "Órgãos ambientais licenciadores" },
 ] as const;
 
 // Tamanho default (+50% vs base 187x62): 281x93px  — logo 1.png (Claro)

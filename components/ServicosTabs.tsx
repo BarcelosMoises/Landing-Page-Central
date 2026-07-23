@@ -113,10 +113,6 @@ const itemVariants = {
 function ServicoCard({ servico }: { servico: Servico }) {
   const Icon = ICON_MAP[servico.iconeLucide] ?? ShieldAlert;
 
-  const cobertura = servico.coberturaNacional
-    ? "Todo o Brasil"
-    : servico.estados.filter((e) => e !== "BR").join(" · ");
-
   // nomeCurto é usado exclusivamente no título do card da tab.
   // nomeAbreviado permanece inalterado para todos os outros usos do site.
   const tituloCard = servico.nomeCurto ?? servico.nomeAbreviado;
@@ -152,16 +148,6 @@ function ServicoCard({ servico }: { servico: Servico }) {
       </div>
 
       <div className="flex flex-wrap items-center justify-between gap-3 mt-auto pt-2 border-t border-neutral-100">
-        <span
-          style={{
-            backgroundColor:
-              "color-mix(in srgb, var(--color-service-accent, #800000) 10%, transparent)",
-            color: "var(--color-service-accent, #800000)",
-          }}
-          className="inline-flex items-center text-xs font-semibold uppercase tracking-wide px-2.5 py-1 rounded-full"
-        >
-          {cobertura}
-        </span>
 
         <Link
           href={servico.pathRota}
