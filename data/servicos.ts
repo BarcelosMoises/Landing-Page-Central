@@ -152,7 +152,7 @@ export const servicos: readonly Servico[] = [
     id: "avcb",
     slug: "avcb-corpo-de-bombeiros",
     nome: "Legalização junto ao Corpo de Bombeiros (AVCB / CLCB)",
-    nomeAbreviado: "AVCB / CLCB",
+    nomeAbreviado: "Corpo de Bombeiros",
     nomeCurto: "Corpo de Bombeiros",
     categoria: "legalizacao",
     descricao:

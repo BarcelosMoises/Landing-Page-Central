@@ -9,7 +9,7 @@ const MENSAGEM_WHATSAPP =
 const TRUST_SIGNALS = [
   {
     id: "art",
-    label: "Engenheiros com ART",
+    label: "Engenheiros credenciados",
     // Ícone: arquivo/certificado — coerente com responsabilidade técnica
     icon: (
       <svg
@@ -33,7 +33,7 @@ const TRUST_SIGNALS = [
   },
   {
     id: "estados",
-    label: "4 estados atendidos",
+    label: "Atendemos em todos os estados",
     // Ícone: mapa/localização
     icon: (
       <svg
@@ -111,8 +111,7 @@ export function FormularioContato() {
             Nunca usar text-neutral-400 (#9ca3af) sobre #1a0000 — disssonância de temperatura.
           */}
           <p className="text-lg leading-relaxed -mt-2" style={{ color: "#c4a8a8" }}>
-            Atendemos indústrias, galpões logísticos, empresas de telecom e
-            energia solar em ES, MG, RJ e SP. Retorno em até 1 dia útil.
+            Retorno com proposta personalizada no mesmo dia!
           </p>
 
           {/* Botão CTA primário — WhatsApp */}

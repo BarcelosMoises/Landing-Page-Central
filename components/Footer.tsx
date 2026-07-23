@@ -23,7 +23,6 @@ const SERVICOS_FOOTER = [
   "avcb",
   "vigilancia-sanitaria",
   "licenciamento-ambiental",
-  "spda",
   "laudos-tecnicos",
   "projetos-tecnicos",
   "regularizacao-prefeitura",
@@ -107,7 +106,7 @@ export function Footer() {
 
               <p className="text-sm leading-relaxed max-w-xs" style={{ color: textMuted }}>
                 Engenharia de regularização para indústrias, galpões e telecom.
-                Atendemos RJ, SP, MG e ES com responsabilidade técnica real.
+                Atendemos RJ, SP, MG e ES (demais estados sob consulta) com responsabilidade técnica real.
               </p>
 
               <ul className="flex flex-col gap-2" aria-label="Dados de contato">
@@ -174,7 +173,7 @@ export function Footer() {
                 <li className="text-sm" style={{ color: textMuted }}>Minas Gerais (MG)</li>
                 <li className="text-sm" style={{ color: textMuted }}>Espírito Santo (ES)</li>
                 <li className="text-sm mt-1" style={{ color: textMuted }}>
-                  <span className="font-semibold" style={{ color: "var(--color-service-accent, #800000)" }}>SPDA e Aterramento:</span>{" "}todo o Brasil
+                  <span className="font-semibold" style={{ color: "var(--color-service-accent, #800000)" }}>Demais sob consulta</span>
                 </li>
               </ul>
             </div>
