@@ -71,7 +71,7 @@ function SetorCard({ setorId, nome }: SetorCardProps) {
   return (
     <article
       aria-label={`Setor atendido: ${nome}`}
-      className="bg-white/5 border border-white/10 rounded-xl p-5 hover:bg-white/10 transition-colors duration-200 flex items-center gap-3 min-h-[72px]"
+      className="bg-white/5 border border-white/10 rounded-xl p-5 hover:bg-white/10 transition-colors duration-200 flex items-center gap-3 min-h-[72px] w-full"
     >
       {/*
         Opacity aumentada de /30→/50 e borda de /40→/60 para manter
