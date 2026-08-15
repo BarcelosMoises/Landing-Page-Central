@@ -307,11 +307,22 @@ export default function PageVigilanciaSanitaria() {
                 </div>
 
                 {vigilancia.normaBase && (
-                  <div className="p-5 rounded-xl bg-neutral-900 border border-white/10">
-                    <p className="text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-3 font-mono">Base normativa</p>
+                  <div
+                    className="p-5 rounded-xl border-l-4"
+                    style={{
+                      backgroundColor: "color-mix(in srgb, var(--color-service-accent, #800000) 8%, #1a0000)",
+                      borderLeftColor: "var(--color-service-accent, #800000)",
+                    }}
+                  >
+                    <p
+                      className="text-xs font-semibold uppercase tracking-wider mb-3 font-mono"
+                      style={{ color: "#e0c8c8" }}
+                    >
+                      Base normativa
+                    </p>
                     <ul className="flex flex-col gap-2">
                       {vigilancia.normaBase.map((norma) => (
-                        <li key={norma} className="text-sm text-neutral-200 font-mono">{norma}</li>
+                        <li key={norma} className="text-sm font-mono tabular-nums" style={{ color: "#c4a8a8" }}>{norma}</li>
                       ))}
                     </ul>
                   </div>

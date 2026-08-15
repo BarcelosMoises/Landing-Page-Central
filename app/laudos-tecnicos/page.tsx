@@ -299,13 +299,24 @@ export default function PageLaudosTecnicos() {
                   </ul>
                 )}
 
-                <div className="mt-8 p-5 rounded-xl bg-neutral-900 border border-white/10">
-                  <p className="text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-3 font-mono">Corpos de Bombeiros atendidos</p>
+                <div
+                  className="mt-8 p-5 rounded-xl border-l-4"
+                  style={{
+                    backgroundColor: "color-mix(in srgb, var(--color-service-accent, #800000) 8%, #1a0000)",
+                    borderLeftColor: "var(--color-service-accent, #800000)",
+                  }}
+                >
+                  <p
+                    className="text-xs font-semibold uppercase tracking-wider mb-3 font-mono"
+                    style={{ color: "#e0c8c8" }}
+                  >
+                    Corpos de Bombeiros atendidos
+                  </p>
                   <ul className="flex flex-col gap-2">
                     {estadosLaudos.map((e) => (
                       <li key={e.sigla} className="flex items-center justify-between">
-                        <span className="text-sm text-neutral-200 font-mono">{e.siglaCB}</span>
-                        <span className="text-xs text-neutral-500">{e.nome}</span>
+                        <span className="text-sm font-mono tabular-nums" style={{ color: "#c4a8a8" }}>{e.siglaCB}</span>
+                        <span className="text-xs" style={{ color: "#c4a8a8" }}>{e.nome}</span>
                       </li>
                     ))}
                   </ul>

@@ -302,10 +302,14 @@ export default function PageAVCB() {
                 {estadosAVCB.map((e) => (
                   <div
                     key={e.sigla}
-                    className="flex items-center justify-between gap-4 px-4 py-3 rounded-lg bg-neutral-900 border border-white/8"
+                    className="flex items-center justify-between gap-4 px-4 py-3 rounded-lg border-l-4"
+                    style={{
+                      backgroundColor: "color-mix(in srgb, var(--color-service-accent, #800000) 8%, #1a0000)",
+                      borderLeftColor: "var(--color-service-accent, #800000)",
+                    }}
                   >
                     <span className="text-sm font-semibold text-white font-mono">{e.siglaCB}</span>
-                    <span className="text-xs text-neutral-400">{e.nome}</span>
+                    <span className="text-xs" style={{ color: "#c4a8a8" }}>{e.nome}</span>
                   </div>
                 ))}
                 <p className="text-xs text-neutral-500 italic mt-2">Demais estados sob consulta</p>
@@ -358,11 +362,22 @@ export default function PageAVCB() {
                 </div>
 
                 {avcb.normaBase && (
-                  <div className="mt-8 p-5 rounded-xl bg-neutral-900 border border-white/10">
-                    <p className="text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-3 font-mono">Base normativa</p>
+                  <div
+                    className="mt-8 p-5 rounded-xl border-l-4"
+                    style={{
+                      backgroundColor: "color-mix(in srgb, var(--color-service-accent, #800000) 8%, #1a0000)",
+                      borderLeftColor: "var(--color-service-accent, #800000)",
+                    }}
+                  >
+                    <p
+                      className="text-xs font-semibold uppercase tracking-wider mb-3 font-mono"
+                      style={{ color: "#e0c8c8" }}
+                    >
+                      Base normativa
+                    </p>
                     <ul className="flex flex-col gap-2">
                       {avcb.normaBase.map((norma) => (
-                        <li key={norma} className="text-sm text-neutral-200 font-mono">
+                        <li key={norma} className="text-sm font-mono tabular-nums" style={{ color: "#c4a8a8" }}>
                           {norma}
                         </li>
                       ))}

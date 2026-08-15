@@ -409,8 +409,17 @@ export default function PageRegularizacaoPrefeitura() {
                   />
                 </div>
 
-                <div className="mt-8 p-5 rounded-xl bg-neutral-900 border border-white/10">
-                  <p className="text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-3 font-mono">
+                <div
+                  className="mt-8 p-5 rounded-xl border-l-4"
+                  style={{
+                    backgroundColor: "color-mix(in srgb, var(--color-service-accent, #800000) 8%, #1a0000)",
+                    borderLeftColor: "var(--color-service-accent, #800000)",
+                  }}
+                >
+                  <p
+                    className="text-xs font-semibold uppercase tracking-wider mb-3 font-mono"
+                    style={{ color: "#e0c8c8" }}
+                  >
                     Base normativa
                   </p>
                   <ul className="flex flex-col gap-2">
@@ -421,7 +430,7 @@ export default function PageRegularizacaoPrefeitura() {
                       "Lei Federal 6.766/1979 (Loteamento Urbano)",
                       "ABNT NBR 6492 — Representação de projetos",
                     ].map((norma) => (
-                      <li key={norma} className="text-sm text-neutral-200 font-mono">
+                      <li key={norma} className="text-sm font-mono tabular-nums" style={{ color: "#c4a8a8" }}>
                         {norma}
                       </li>
                     ))}

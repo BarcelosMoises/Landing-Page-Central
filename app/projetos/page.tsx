@@ -332,8 +332,19 @@ export default function PageProjetosTecnicos() {
                   ))}
                 </ul>
               </div>
-              <div className="p-6 rounded-xl bg-neutral-900 border border-white/10 flex flex-col gap-4">
-                <p className="text-xs font-semibold text-neutral-400 uppercase tracking-wider font-mono">Base normativa</p>
+              <div
+                className="p-6 rounded-xl border-l-4 flex flex-col gap-4"
+                style={{
+                  backgroundColor: "color-mix(in srgb, var(--color-service-accent, #800000) 8%, #1a0000)",
+                  borderLeftColor: "var(--color-service-accent, #800000)",
+                }}
+              >
+                <p
+                  className="text-xs font-semibold uppercase tracking-wider font-mono"
+                  style={{ color: "#e0c8c8" }}
+                >
+                  Base normativa
+                </p>
                 <ul className="flex flex-col gap-2">
                   {[
                     "Instruções Técnicas do Corpo de Bombeiros estadual",
@@ -342,7 +353,7 @@ export default function PageProjetosTecnicos() {
                     "RDC ANVISA 222/2018 (PGRSS)",
                     "ABNT NBR 13714 / NBR 10897 (Hidrantes / Sprinklers)",
                   ].map((norma) => (
-                    <li key={norma} className="text-sm text-neutral-300 font-mono">{norma}</li>
+                    <li key={norma} className="text-sm font-mono tabular-nums" style={{ color: "#c4a8a8" }}>{norma}</li>
                   ))}
                 </ul>
               </div>
