@@ -378,5 +378,6 @@ export default function LayoutAmbiental({ children }: { children: React.ReactNod
 |---|---|---|
 | `gerar-mapa.js` | Gera os dados/geometria do `MapaAtuacao` | Ao alterar estados ou órgãos exibidos |
 | `fix-map.js` | Corrige/normaliza a saída do `gerar-mapa.js` | Após cada execução do `gerar-mapa.js` |
+| `audit-paleta.sh` | Auditoria de cores proibidas (task #34) — gera relatório Markdown | A cada fase do TASKS.md e antes de deploy |
 
 > Scripts de manutenção local — **nunca** executar em build/CI nem importar em componentes.
