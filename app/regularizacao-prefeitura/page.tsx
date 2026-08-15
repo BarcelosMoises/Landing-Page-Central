@@ -4,12 +4,12 @@
 // Accent: #1a3a6b (azul marinho) — cor primária do serviço.
 
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { NavPrimaria } from "@/components/NavPrimaria";
 import { FaqItem } from "@/components/FaqItem";
 import { CrosshairDecor } from "@/components/CrosshairDecor";
 import { CtaFinal } from "@/components/CtaFinal";
+import { PlaceholderImage } from "@/components/PlaceholderImage";
 import {
   servicos,
   contato,
@@ -187,25 +187,6 @@ function IconeCheck() {
   );
 }
 
-function IconeChevron() {
-  return (
-    <svg
-      width="20"
-      height="20"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-      className="shrink-0 text-neutral-400"
-    >
-      <path d="m9 18 6-6-6-6" />
-    </svg>
-  );
-}
-
 // ─── Diferenciais do setor pública municipal ────────────────────────
 
 const diferencialPrefeitura = [
@@ -273,7 +254,7 @@ export default function PageRegularizacaoPrefeitura() {
         {/* ── HERO ───────────────────────────────────────────── */}
         <section
           aria-labelledby="hero-titulo"
-          className="relative bg-neutral-950 overflow-hidden"
+          className="relative bg-[#0a0a0a] overflow-hidden"
         >
           <div
             className="absolute inset-0 pointer-events-none"
@@ -337,7 +318,7 @@ export default function PageRegularizacaoPrefeitura() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label="Solicitar orçamento via WhatsApp para Regularização junto à Prefeitura"
-                    className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-lg text-white font-semibold text-sm transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950"
+                    className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-lg text-white font-semibold text-sm transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
                     style={{
                       backgroundColor: "var(--color-service-accent)",
                       ["--tw-ring-color" as string]: "var(--color-service-accent)",
@@ -400,14 +381,7 @@ export default function PageRegularizacaoPrefeitura() {
               </div>
 
               <div>
-                <div className="relative w-full aspect-video rounded-xl overflow-hidden bg-neutral-100 border border-neutral-200">
-                  <Image
-                    src="/images/placeholder-setores.svg"
-                    alt="Tipos de imóveis atendidos pela Central de Soluções — Regularização Prefeitura"
-                    fill
-                    className="object-cover"
-                  />
-                </div>
+                <PlaceholderImage label="Escopo Regularização Prefeitura — imagem 16:9" />
 
                 <div
                   className="mt-8 p-5 rounded-xl border-l-4"

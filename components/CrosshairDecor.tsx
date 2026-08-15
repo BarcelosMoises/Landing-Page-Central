@@ -1,7 +1,7 @@
 // components/CrosshairDecor.tsx
 // SVG decorativo da retícula de engenharia — assinatura visual do cliente.
 // Presente em todos os posts do Instagram da Central de Soluções.
-// Usar em seções com fundo escuro (bg-neutral-900, bg-ink, hero).
+// Usar em seções com fundo escuro (bg-[#1a0000], bg-[#0a0a0a], hero).
 // Nunca recolorir ou escalar manualmente — usar as props fornecidas.
 
 import type { CSSProperties } from "react";
@@ -43,7 +43,7 @@ const CORNER_STYLE: Record<CrosshairCorner, CSSProperties> = {
  * A seção pai deve ter `position: relative` (ou `className="relative"`).
  *
  * @example
- * <section className="relative bg-neutral-900 py-24">
+ * <section className="relative bg-[#1a0000] py-24">
  *   <CrosshairDecor />
  *   ...
  * </section>

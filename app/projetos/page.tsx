@@ -199,7 +199,7 @@ export default function PageProjetosTecnicos() {
       <main data-service="projetos">
 
         {/* ── HERO ──────────────────────────────────────────────────────── */}
-        <section aria-labelledby="hero-titulo" className="relative bg-neutral-950 overflow-hidden">
+        <section aria-labelledby="hero-titulo" className="relative bg-[#0a0a0a] overflow-hidden">
           <div
             className="absolute inset-0 pointer-events-none"
             style={{ background: "radial-gradient(ellipse 70% 60% at 60% 40%, rgba(128,0,0,0.20) 0%, transparent 70%)" }}
@@ -249,7 +249,7 @@ export default function PageProjetosTecnicos() {
                     href={whatsappUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-lg text-white font-semibold text-sm transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950"
+                    className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-lg text-white font-semibold text-sm transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
                     style={{
                       backgroundColor: "var(--color-service-accent)",
                       ["--tw-ring-color" as string]: "var(--color-service-accent)",

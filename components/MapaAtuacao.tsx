@@ -1,4 +1,11 @@
 /* eslint-disable react/no-unknown-property */
+// components/MapaAtuacao.tsx
+// Seção visual dos 4 estados de atuação (RJ/SP/MG/ES) com badges de órgãos reguladores.
+//
+// RESTRIÇÃO DE REUSO (task #59, TASKS.md): componente homepage-only. Os hex da marca
+// (#800000, #4f0101, #a30000) estão hardcoded aqui de propósito — a homepage não usa
+// var(--color-service-accent). NÃO reutilizar este componente em subpáginas de serviço,
+// que devem herdar o accent via CSS variable.
 "use client";
 
 import { useState, useCallback, useRef, useEffect } from "react";
@@ -131,7 +138,7 @@ export function MapaAtuacao() {
           {/* Coluna esquerda */}
           <div className="flex flex-col gap-8 lg:max-w-md xl:max-w-lg">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-widest text-[#cc2200] mb-3">
+              <p className="text-xs font-semibold uppercase tracking-widest text-[#a30000] mb-3">
                 Área de atuação
               </p>
               <h2 className="font-heading text-2xl md:text-4xl font-bold text-white mb-4 leading-tight">
@@ -161,7 +168,7 @@ export function MapaAtuacao() {
                     >
                       <MapPin
                         className={`w-4 h-4 mt-0.5 flex-shrink-0 transition-colors duration-200 ${
-                          isActive ? "text-[#cc2200]" : "text-[#800000]"
+                          isActive ? "text-[#a30000]" : "text-[#800000]"
                         }`}
                         aria-hidden="true"
                       />
@@ -274,10 +281,10 @@ export function MapaAtuacao() {
                 <div className="flex items-start justify-between gap-4 mb-6">
                   <div className="flex items-center gap-3">
                     <div className="p-2.5 bg-[#800000]/20 rounded-xl border border-[#800000]/30">
-                      <MapPin className="w-5 h-5 text-[#cc2200]" aria-hidden="true" />
+                      <MapPin className="w-5 h-5 text-[#a30000]" aria-hidden="true" />
                     </div>
                     <div>
-                      <p className="text-[10px] font-semibold uppercase tracking-widest text-[#cc2200] mb-0.5">
+                      <p className="text-[10px] font-semibold uppercase tracking-widest text-[#a30000] mb-0.5">
                         Atendimento completo
                       </p>
                       <h3 className="font-heading text-xl md:text-2xl font-bold text-white leading-tight">
