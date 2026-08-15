@@ -18,16 +18,16 @@
 |---|---|---|---|---|---|
 | 34 | ✅ | `app/` + `components/` | Auditoria de cores proibidas concluída | AGENTS.md | 🔴 |
 | 35 | ✅ | `components/CtaFinal.tsx` | CtaFinal criado e adotado nas 7 rotas | AGENTS.md | 🔴 |
-| 36 | ✅ | `components/CrosshairDecor.tsx` + `components/CtaFinal.tsx` | Fundo da CTA sem base vinho e comentários corrigidos | DESIGN.md | 🔴 |
-| 37 | ✅ | `components/CtaFinal.tsx` + subpáginas | Tokens corrigidos e ícones mortos removidos | DESIGN.md | 🔴 |
+| 36 | ✅ | `components/CrosshairDecor.tsx` + `components/CtaFinal.tsx` | CTA em base neutra quente com accent na borda/faixa; comentários corrigidos | DESIGN.md | 🔴 |
+| 37 | ✅ | `components/CtaFinal.tsx` + subpáginas | Contraste da CTA corrigido; ícones mortos removidos | DESIGN.md | 🔴 |
 | 38 | ✅ | `components/CtaFinal.tsx` + subpáginas | Botão e borda derivados do accent | AGENTS.md | 🔴 |
 | 39 | ✅ | Subpáginas | Cards normativos integrados ao accent | DESIGN.md | 🔴 |
 | 40 | ✅ | Todas as subpáginas | CtaFinal adotado nas 7 rotas | AGENTS.md | 🔴 |
-| 41 | ⬜ | Todas as subpáginas | Verificar contraste dos accents | AGENTS.md | 🟡 |
+| 41 | 🟦 | Todas as subpáginas | Verificar contraste dos accents e pill badges em desktop/mobile | AGENTS.md | 🟡 |
 | 58 | ✅ | Subpáginas | Heroes corrigidos para `#0a0a0a` | DESIGN.md | 🔴 |
 | 59 | ✅ | `components/MapaAtuacao.tsx` | `#cc2200` substituído por `#a30000` | DESIGN.md | 🟡 |
 
-> **Correção visual adicional (Ago 2026):** a CTA usava `color-mix` com base `#1a0000`. Essa combinação contaminava accents verdes e azuis, produzindo marrom-avermelhado. A base foi alterada para `#0a0a0a` e a contribuição do accent aumentada para 24%, preservando a temperatura de cada serviço.
+> **Correção visual (Ago 2026):** CTA agora usa base neutra `#0a0a0a`, accent apenas em borda/faixa e botão. Isso evita que verde, teal, azul e dourado produzam marrom-avermelhado quando misturados com o fundo vinho.
 
 ---
 
