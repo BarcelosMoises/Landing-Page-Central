@@ -51,7 +51,7 @@ app/
 │   ├── layout.tsx              # Define --color-service-accent: #0d7377
 │   └── page.tsx                # keyword: "alvará sanitário [estado] consultoria"
 ├── spda-para-raios/
-│   ├── layout.tsx              # Define --color-service-accent: #92610a
+│   ├── layout.tsx              # Define --color-service-accent: #b7791f
 │   └── page.tsx                # keyword: "laudo spda com art [estado]"
 ├── laudos-tecnicos/
 │   ├── layout.tsx              # Define --color-service-accent: #92610a
@@ -60,7 +60,7 @@ app/
 │   ├── layout.tsx              # Define --color-service-accent: #2d6a2d
 │   └── page.tsx                # keyword: "licenciamento ambiental [estado]"
 ├── regularizacao-prefeitura/
-│   ├── layout.tsx              # Define --color-service-accent: #800000
+│   ├── layout.tsx              # Define --color-service-accent: #6b21a8
 │   └── page.tsx                # keyword: "regularização prefeitura alvará [estado]"
 └── projetos/
     ├── layout.tsx              # Define --color-service-accent: #1e40af
@@ -91,12 +91,13 @@ app/
 | AVCB | `/avcb-corpo-de-bombeiros` | `#800000` | `#4f0101` |
 | Vigilância Sanitária | `/vigilancia-sanitaria` | `#0d7377` | `#095e62` |
 | Licenciamento Ambiental | `/licenciamento-ambiental` | `#2d6a2d` | `#1e4d1e` |
-| Laudos / SPDA | `/laudos-tecnicos`, `/spda-para-raios` | `#92610a` | `#6e4908` |
+| Laudos Técnicos | `/laudos-tecnicos` | `#92610a` | `#6e4908` |
+| SPDA | `/spda-para-raios` | `#b7791f` | `#8a5a12` |
 | Projetos Técnicos | `/projetos` | `#1e40af` | `#1e3a8a` |
-| Prefeitura / Legalização municipal | `/regularizacao-prefeitura` | `#800000` | `#4f0101` |
+| Prefeitura / Legalização municipal | `/regularizacao-prefeitura` | `#6b21a8` | `#561a86` |
 
-> **Prefeitura (Ago 2026):** usa o vinho da marca por pertencer à categoria Legalização (mesma família do AVCB).
-> Decisão pendente de confirmação com o cliente — ver TASKS.md #55. Se mudar, atualizar `layout.tsx`,
+> **Prefeitura (Ago 2026):** accent próprio roxo `#6b21a8` — não reutiliza o vinho da marca.
+> Decisão pendente de confirmação com o cliente — ver TASKS.md #56. Se mudar, atualizar `layout.tsx`,
 > `globals.css` (seletor `data-service`), esta tabela e `docs/DESIGN.md`.
 
 ### Regra de Layout por Subpágina
@@ -357,6 +358,14 @@ export default function LayoutAmbiental({ children }: { children: React.ReactNod
   - Botão primário: `backgroundColor: "var(--color-service-accent, #800000)"`
   - Botão ghost de e-mail: `mailto:` com borda `white/20` e texto `#e0c8c8`
   - `border-t-4` no accent do serviço como transição vinda da seção clara anterior (FAQ)
+
+### Pill badges de hero
+
+- Todo pill de hero deve usar `--color-service-accent` da rota — nunca hardcodar a cor no componente.
+- Texto principal sempre em branco (`#ffffff`) ou token equivalente com contraste AA (≥ 4.5:1).
+- Fundo sempre visível sobre imagens: `color-mix(in srgb, var(--color-service-accent, #800000) 32%, #0a0a0a)` + borda `color-mix(in srgb, var(--color-service-accent, #800000) 60%, #ffffff 40%)`.
+- Não usar `text-neutral-400`, `text-white/30`, `bg-transparent` ou `border-white/10` como estilo principal do pill.
+- O pill deve permanecer legível em desktop e mobile: `max-w-full flex-wrap`, tracking reduzido no mobile, sem quebra de texto nem overflow.
 
 ### PlaceholderImage
 - **Arquivo:** `components/PlaceholderImage.tsx`
