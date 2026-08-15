@@ -6,7 +6,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { NavPrimaria } from "@/components/NavPrimaria";
 import { FaqItem } from "@/components/FaqItem";
-import { CrosshairDecor } from "@/components/CrosshairDecor";
 import { CtaFinal } from "@/components/CtaFinal";
 import {
   servicos,
@@ -205,8 +204,6 @@ export default function PageProjetosTecnicos() {
             style={{ background: "radial-gradient(ellipse 70% 60% at 60% 40%, rgba(128,0,0,0.20) 0%, transparent 70%)" }}
             aria-hidden="true"
           />
-          <CrosshairDecor corner="top-right" size="lg" variant="light" />
-          <CrosshairDecor corner="bottom-left" size="sm" variant="light" />
 
           <div className="container-site relative z-10 pt-24 pb-20 md:pt-32 md:pb-28">
             <nav aria-label="Localização na página" className="mb-8">

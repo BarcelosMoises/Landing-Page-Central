@@ -3,7 +3,6 @@ import Link from "next/link";
 
 import { JsonLd } from "@/components/JsonLd";
 import { NavPrimaria } from "@/components/NavPrimaria";
-import { CrosshairDecor } from "@/components/CrosshairDecor";
 import { ServicosTabs } from "@/components/ServicosTabs";
 import { MetricasEmpresa } from "@/components/MetricasEmpresa";
 import { TrustBar } from "@/components/TrustBar";
@@ -257,8 +256,6 @@ export default function HomePage() {
               {contato.instagram}
             </a>
           </div>
-
-          <CrosshairDecor variant="light" size="lg" corner="bottom-right" />
         </section>
 
         {/* 2. MÉTRICAS */}

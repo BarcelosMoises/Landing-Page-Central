@@ -1,5 +1,4 @@
 import { getWhatsAppUrl, contato } from "@/data/servicos";
-import { CrosshairDecor } from "@/components/CrosshairDecor";
 
 // ─── Mensagem pré-preenchida para o WhatsApp ──────────────────────────────────
 const MENSAGEM_WHATSAPP =
@@ -224,9 +223,6 @@ export function FormularioContato() {
           </div>
         </div>
       </div>
-
-      {/* Assinatura visual do cliente — obrigatório em fundos #1a0000 (DESIGN.md) */}
-      <CrosshairDecor />
     </section>
   );
 }

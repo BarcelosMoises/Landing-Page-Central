@@ -18,7 +18,6 @@ import {
   type EstadoSigla,
 } from "@/data/servicos";
 import { MAPA_PATHS } from "@/data/mapa-paths";
-import { CrosshairDecor } from "@/components/CrosshairDecor";
 
 const ESTADOS_COMPLETOS = new Set<string>(
   estadosAtuacao.filter((e) => e.cobertura === "completa").map((e) => e.sigla)
@@ -365,8 +364,6 @@ export function MapaAtuacao() {
           </div>
         )}
       </div>
-
-      <CrosshairDecor className="opacity-10" />
     </section>
   );
 }

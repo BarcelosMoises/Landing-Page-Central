@@ -6,7 +6,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { NavPrimaria } from "@/components/NavPrimaria";
 import { FaqItem } from "@/components/FaqItem";
-import { CrosshairDecor } from "@/components/CrosshairDecor";
 import { CtaFinal } from "@/components/CtaFinal";
 import { PlaceholderImage } from "@/components/PlaceholderImage";
 import {
@@ -215,8 +214,6 @@ export default function PageLicenciamentoAmbiental() {
           >
             <source src="/videos/ambiental.mp4" type="video/mp4" />
           </video>
-          <CrosshairDecor corner="top-right" size="lg" variant="light" />
-          <CrosshairDecor corner="bottom-left" size="sm" variant="light" />
 
           <div className="container-site relative z-10 pt-24 pb-20 md:pt-32 md:pb-28">
             <nav aria-label="Localização na página" className="mb-8">

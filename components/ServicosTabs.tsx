@@ -37,7 +37,6 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { type Servico } from "@/data/servicos";
-import { CrosshairDecor } from "@/components/CrosshairDecor";
 
 // ─── Tipos ───────────────────────────────────────────────────────────────────────────────
 
@@ -104,7 +103,7 @@ const itemVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.42, ease: [0.16, 1, 0.3, 1] },
+    transition: { duration: 0.42, ease: [0.16, 1, 0.3, 1] as const },
   },
 };
 
@@ -235,7 +234,7 @@ export function ServicosTabs({
           className="max-w-2xl mb-10"
           initial={{ opacity: 0, y: 16 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] as const }}
         >
           <p
             style={{ color: "var(--color-service-accent, #800000)" }}
@@ -260,7 +259,7 @@ export function ServicosTabs({
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.4, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.4, delay: 0.1, ease: [0.16, 1, 0.3, 1] as const }}
         >
           <div
             role="tablist"
@@ -317,8 +316,6 @@ export function ServicosTabs({
         ))}
 
       </div>
-
-      <CrosshairDecor variant="dark" size="lg" />
     </section>
   );
 }

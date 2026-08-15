@@ -54,7 +54,7 @@ const itemVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] },
+    transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] as const },
   },
 };
 
@@ -109,7 +109,7 @@ export function SetoresAtendidos() {
           className="max-w-2xl mb-12"
           initial={{ opacity: 0, y: 16 }}
           animate={emVista ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] as const }}
         >
           <p className="text-xs font-semibold uppercase tracking-widest text-white/70 mb-3">
             Segmentos de atuação
