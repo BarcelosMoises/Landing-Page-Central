@@ -100,6 +100,14 @@
   --color-service-accent: #92610a;
   --color-service-accent-hover: #6e4908;
 }
+[data-service="spda"] {
+  --color-service-accent: #b7791f;
+  --color-service-accent-hover: #8a5a12;
+}
+[data-service="prefeitura"] {
+  --color-service-accent: #6b21a8;
+  --color-service-accent-hover: #561a86;
+}
 
 @layer utilities {
   .font-heading {

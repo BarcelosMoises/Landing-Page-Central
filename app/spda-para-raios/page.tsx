@@ -137,7 +137,19 @@ const whatsappUrl = getWhatsAppUrl(
 
 function IconeZap() {
   return (
-    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      className="h-4 w-4 shrink-0"
+      style={{ color: "#ffffff" }}
+    >
       <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
     </svg>
   );
@@ -173,13 +185,13 @@ export default function PageSPDA() {
 
       <NavPrimaria />
 
-      <main data-service="laudos">
+      <main data-service="spda">
 
         {/* ── HERO ──────────────────────────────────────────────────────── */}
         <section aria-labelledby="hero-titulo" className="relative bg-[#0a0a0a] overflow-hidden">
           <div
             className="absolute inset-0 pointer-events-none"
-            style={{ background: "radial-gradient(ellipse 70% 60% at 60% 40%, rgba(146,97,10,0.22) 0%, transparent 70%)" }}
+            style={{ background: "radial-gradient(ellipse 70% 60% at 60% 40%, rgba(183,121,31,0.22) 0%, transparent 70%)" }}
             aria-hidden="true"
           />
 
@@ -194,15 +206,16 @@ export default function PageSPDA() {
 
             <div className="mb-5">
               <span
-                className="inline-flex items-center gap-2 px-3 py-1 rounded-full border text-xs font-semibold uppercase tracking-wider"
+                className="inline-flex max-w-full flex-wrap items-center gap-2 rounded-full border px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.08em] sm:px-4 sm:py-2 sm:text-xs sm:tracking-[0.12em]"
                 style={{
-                  borderColor: "color-mix(in srgb, var(--color-service-accent) 40%, transparent)",
-                  backgroundColor: "color-mix(in srgb, var(--color-service-accent) 10%, transparent)",
-                  color: "var(--color-service-accent-light)",
+                  borderColor: "color-mix(in srgb, var(--color-service-accent, #800000) 60%, #ffffff 40%)",
+                  backgroundColor: "color-mix(in srgb, var(--color-service-accent, #800000) 32%, #0a0a0a)",
+                  color: "#ffffff",
+                  boxShadow: "inset 0 1px 0 rgb(255 255 255 / 0.12), 0 2px 12px rgb(0 0 0 / 0.24)",
                 }}
               >
                 <IconeZap />
-                Instalação · Proteção Atmosférica
+                <span>Instalação · Proteção Atmosférica</span>
               </span>
             </div>
 

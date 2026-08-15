@@ -142,7 +142,19 @@ const whatsappUrl = getWhatsAppUrl(
 
 function IconeClipboard() {
   return (
-    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      className="h-4 w-4 shrink-0"
+      style={{ color: "#ffffff" }}
+    >
       <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2" />
       <rect x="9" y="3" width="6" height="4" rx="1" />
       <path d="m9 12 2 2 4-4" />
@@ -204,15 +216,16 @@ export default function PageVigilanciaSanitaria() {
 
             <div className="mb-5">
               <span
-                className="inline-flex items-center gap-2 px-3 py-1 rounded-full border text-xs font-semibold uppercase tracking-wider"
+                className="inline-flex max-w-full flex-wrap items-center gap-2 rounded-full border px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.08em] sm:px-4 sm:py-2 sm:text-xs sm:tracking-[0.12em]"
                 style={{
-                  borderColor: "color-mix(in srgb, var(--color-service-accent) 40%, transparent)",
-                  backgroundColor: "color-mix(in srgb, var(--color-service-accent) 10%, transparent)",
-                  color: "var(--color-service-accent-light)",
+                  borderColor: "color-mix(in srgb, var(--color-service-accent, #800000) 60%, #ffffff 40%)",
+                  backgroundColor: "color-mix(in srgb, var(--color-service-accent, #800000) 32%, #0a0a0a)",
+                  color: "#ffffff",
+                  boxShadow: "inset 0 1px 0 rgb(255 255 255 / 0.12), 0 2px 12px rgb(0 0 0 / 0.24)",
                 }}
               >
                 <IconeClipboard />
-                Legalização · Vigilância Sanitária
+                <span>Legalização · Vigilância Sanitária</span>
               </span>
             </div>
 

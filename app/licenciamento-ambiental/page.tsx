@@ -149,7 +149,19 @@ const whatsappUrl = getWhatsAppUrl(
 
 function IconeLeaf() {
   return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      className="h-4 w-4 shrink-0"
+      style={{ color: "#ffffff" }}
+    >
       <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z" />
       <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" />
     </svg>
@@ -226,15 +238,16 @@ export default function PageLicenciamentoAmbiental() {
 
             <div className="mb-5">
               <span
-                className="inline-flex items-center gap-2 px-3 py-1 rounded-full border text-xs font-semibold uppercase tracking-wider"
+                className="inline-flex max-w-full flex-wrap items-center gap-2 rounded-full border px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.08em] sm:px-4 sm:py-2 sm:text-xs sm:tracking-[0.12em]"
                 style={{
-                  borderColor: "color-mix(in srgb, var(--color-service-accent) 40%, transparent)",
-                  backgroundColor: "color-mix(in srgb, var(--color-service-accent) 10%, transparent)",
-                  color: "var(--color-service-accent-light)",
+                  borderColor: "color-mix(in srgb, var(--color-service-accent, #800000) 60%, #ffffff 40%)",
+                  backgroundColor: "color-mix(in srgb, var(--color-service-accent, #800000) 32%, #0a0a0a)",
+                  color: "#ffffff",
+                  boxShadow: "inset 0 1px 0 rgb(255 255 255 / 0.12), 0 2px 12px rgb(0 0 0 / 0.24)",
                 }}
               >
                 <IconeLeaf />
-                Legalização · Licenciamento Ambiental
+                <span>Legalização · Licenciamento Ambiental</span>
               </span>
             </div>
 

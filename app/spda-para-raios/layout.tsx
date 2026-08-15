@@ -7,15 +7,15 @@ import { Footer } from "@/components/Footer";
  * Define --color-service-accent no <div> wrapper para que NavPrimaria
  * e Footer herdem a cor do serviço via CSS custom property.
  *
- * Cor: amarelo/dourado #92610a — paleta SPDA conforme briefing do cliente.
- * Hover: #6e4908
+ * Cor: dourado #b7791f — paleta SPDA (tabela TASKS.md).
+ * Hover: #8a5a12
  */
 export default function LayoutSpda({ children }: { children: React.ReactNode }) {
   return (
     <div
       style={{
-        "--color-service-accent": "#92610a",
-        "--color-service-accent-hover": "#6e4908",
+        "--color-service-accent": "#b7791f",
+        "--color-service-accent-hover": "#8a5a12",
       } as React.CSSProperties}
     >
       {children}

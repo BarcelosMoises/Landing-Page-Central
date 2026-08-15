@@ -1,11 +1,12 @@
 // app/regularizacao-prefeitura/layout.tsx
 // Layout da subpágina: Regularização junto à Prefeitura
 // Server Component puro — sem "use client".
-// Define --color-service-accent (vinho #800000) no <div> wrapper,
+// Define --color-service-accent (roxo #6b21a8) no <div> wrapper,
 // garantindo que NavPrimaria e Footer também herdem a cor do serviço.
 //
-// COR: vinho #800000 — família Legalização (mesma do AVCB). Decisão registrada
-// em AGENTS.md → Mapa de cores e TASKS.md #56 (provisória, aguardando cliente).
+// COR: roxo #6b21a8 — paleta própria da rota (tabela TASKS.md / checklist
+// da task #61). Decisão registrada na tarefa de pills; atualizar AGENTS.md e
+// docs/DESIGN.md se a paleta mudar.
 
 import type React from "react"
 import { Footer } from "@/components/Footer"
@@ -18,8 +19,8 @@ export default function LayoutRegularizacaoPrefeitura({
   return (
     <div
       style={{
-        "--color-service-accent": "#800000",
-        "--color-service-accent-hover": "#4f0101",
+        "--color-service-accent": "#6b21a8",
+        "--color-service-accent-hover": "#561a86",
       } as React.CSSProperties}
     >
       {children}
