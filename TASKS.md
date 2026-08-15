@@ -20,14 +20,25 @@
 
 | # | Status | Componente/Arquivo | Tarefa | Referência | Prioridade |
 |---|---|---|---|---|---|
-| 34 | ⬜ | `app/` + `components/` | Auditoria de cores proibidas: rodar `grep -rn --include="*.tsx" --include="*.css" -E "#111827\|neutral-900\|neutral-950\|bg-black\|text-neutral-400\|text-gray-" app components` e listar ocorrências num comentário nesta task. Critério de aceite: lista completa das violações mapeada por arquivo | AGENTS.md → Proibições Explícitas | 🔴 |
+| 34 | ✅ | `app/` + `components/` | Auditoria de cores proibidas: rodar `grep -rn --include="*.tsx" --include="*.css" -E "#111827\|neutral-900\|neutral-950\|bg-black\|text-neutral-400\|text-gray-" app components` e listar ocorrências num comentário nesta task. Critério de aceite: lista completa das violações mapeada por arquivo | AGENTS.md → Proibições Explícitas | 🔴 |
 | 35 | ⬜ | `components/CtaFinal.tsx` | Criar o componente compartilhado `CtaFinal` (Server Component) com props `titulo`, `subtitulo`, `whatsappUrl`, `email`, absorvendo a marcação hoje duplicada nas subpáginas. Critério de aceite: componente existe e renderiza idêntico ao layout aprovado | AGENTS.md → Componentes Compartilhados | 🔴 |
-| 36 | ⬜ | `components/CtaFinal.tsx` | Fundo da seção em `bg-[#1a0000]` (remover `#0a0a0a`/`bg-black`/neutro) + `<CrosshairDecor />` no canto inferior direito. Aceite: seção na temperatura quente correta, retícula visível a 8% de opacidade | DESIGN.md → Hierarquia dos Fundos Escuros | 🔴 |
-| 37 | ⬜ | `components/CtaFinal.tsx` | Tokens de texto: heading `text-white`, subtítulo `#c4a8a8` via `style=`, botão ghost de e-mail como `mailto:` com borda `white/20` e texto `#e0c8c8`. Aceite: nenhum `text-neutral-400` na seção; contraste ≥ 4.5:1 | DESIGN.md → Tokens sobre `#1a0000` | 🔴 |
+| 36 | ⬜ | `components/CtaFinal.tsx` | Fundo da seção em `bg-[#1a0000]` (remover `#0a0a0a`/`bg-black`/neutro) + `<CrosshairDecor />` no canto inferior direito. Aproveitar e limpar os comentários desatualizados de `CrosshairDecor.tsx` (linhas 4 e 46 citam `bg-neutral-900`). Aceite: seção na temperatura quente correta, retícula visível a 8% de opacidade | DESIGN.md → Hierarquia dos Fundos Escuros | 🔴 |
+| 37 | ⬜ | `components/CtaFinal.tsx` | Tokens de texto: heading `text-white`, subtítulo `#c4a8a8` via `style=`, botão ghost de e-mail como `mailto:` com borda `white/20` e texto `#e0c8c8`. Verificar o contexto dos 5 ícones SVG com `text-neutral-400` (avcb:186, spda:167, vigilancia:175, ambiental:181, prefeitura:201) — manter apenas se estiverem sobre fundo claro. Aceite: nenhum `text-neutral-400` sobre fundo escuro; contraste ≥ 4.5:1 | DESIGN.md → Tokens sobre `#1a0000` | 🔴 |
 | 38 | ⬜ | `components/CtaFinal.tsx` + subpáginas | Botão primário com `backgroundColor: "var(--color-service-accent, #800000)"` e `border-t-4` no accent como transição vinda do FAQ. Aceite: teal em `/vigilancia-sanitaria`, verde em `/licenciamento-ambiental`, vinho nas demais — sem hex hardcoded | AGENTS.md → Sistema de Cores | 🔴 |
-| 39 | ⬜ | Subpáginas (card "Base Normativa") | Fundo do card em `color-mix(in srgb, var(--color-service-accent) 8%, #1a0000)` com `border-l-4` no accent e códigos de norma em `tabular-nums`. Aceite: card integrado à identidade da categoria, sem fundo navy/neutro | DESIGN.md → Paleta por Serviço | 🔴 |
+| 39 | ⬜ | Subpáginas (card "Base Normativa") | Fundo do card em `color-mix(in srgb, var(--color-service-accent) 8%, #1a0000)` com `border-l-4` no accent e códigos de norma em `tabular-nums`. São 8 ocorrências de `bg-neutral-900` (AVCB tem 2 cards). Aceite: card integrado à identidade da categoria, sem fundo navy/neutro | DESIGN.md → Paleta por Serviço | 🔴 |
 | 40 | ⬜ | Todas as subpáginas | Substituir a seção CTA inline por `<CtaFinal ... />` nas 7 rotas (`avcb-corpo-de-bombeiros`, `vigilancia-sanitaria`, `spda-para-raios`, `laudos-tecnicos`, `licenciamento-ambiental`, `regularizacao-prefeitura`, `projetos`). Aceite: `grep -rn "Precisa de" app` retorna apenas `CtaFinal.tsx` e as props nas páginas | AGENTS.md → Proibições Explícitas | 🔴 |
 | 41 | ⬜ | Todas as subpáginas | Verificar contraste dos accents em texto pequeno (teal `#0d7377`, verde `#2d6a2d`, dourado `#92610a` sobre branco) com WebAIM Contrast Checker; onde falhar, usar o accent apenas em elementos grandes/ícones e texto em `neutral-700`. Aceite: 4.5:1 em todo texto de corpo | AGENTS.md → Acessibilidade | 🟡 |
+| 58 | ⬜ | Subpáginas (hero) | Fundo dos heroes de `bg-neutral-950` (#030712, preto azulado — 7 ocorrências) para `bg-[#0a0a0a]`, único preto permitido no hero; ajustar os `focus-visible:ring-offset-neutral-950` dos botões do hero para `ring-offset-[#0a0a0a]`. Aceite: zero `neutral-950` nos heroes; temperatura quente mantida | DESIGN.md → Hierarquia dos Fundos Escuros | 🔴 |
+| 59 | ⬜ | `components/MapaAtuacao.tsx` | Substituir `text-[#cc2200]` (linha 164 — vermelho vivo fora da paleta) por `text-[#a30000]` (`primary-light`); revisar os demais hardcodes `#800000`/`#4f0101` do componente — aceitos por ser homepage-only, registrar restrição de reuso em comentário no topo do arquivo. Aceite: zero cores fora da paleta | DESIGN.md → Paleta de Cores | 🟡 |
+
+> **Auditoria #34 (15/08/2026, commit 257e802) — 149 ocorrências mapeadas via `audit-paleta.sh`:**
+> - `bg-neutral-950` ×14 — 7 heroes (task #58) + 7 seções CTA (tasks #35–#38), uma de cada por subpágina
+> - `bg-neutral-900` ×8 — cards "Base Normativa" (task #39); AVCB tem 2 cards
+> - `text-neutral-400` sobre fundo escuro ×~15 — subtítulos da CTA, labels "Base Normativa" e 1 item de estado no card do AVCB (task #37); demais `neutral-400`/`neutral-900` estão sobre fundo claro (permitido)
+> - `focus-visible:ring-offset-neutral-950` ×14 — botões de hero e CTA; acompanham os novos fundos (tasks #36–#37, #58)
+> - `#800000` hardcoded ×56 — maioria legítima (fallbacks de `var(--color-service-accent, #800000)`, homepage, `layout.tsx` do AVCB); exceções tratadas na task #59
+> - Falsos positivos: comentários em `FormularioContato.tsx`, `SetoresAtendidos.tsx`, `CrosshairDecor.tsx` (limpeza na #36)
+> - Observação menor: overlays `bg-black/50`–`55` do hero da homepage são permitidos (hero aceita preto); alinhar para `#0a0000` quando o `HeroFullscreen` for tocado
 
 ---
 
@@ -74,6 +85,9 @@
 ## Verificação rápida (rodar a cada fase)
 
 ```bash
+# Auditoria completa (gera relatório Markdown)
+bash audit-paleta.sh
+
 # Cores proibidas (Fase 1)
 grep -rn --include="*.tsx" --include="*.css" -E "#111827|neutral-900|neutral-950|bg-black|text-neutral-400|text-gray-" app components
 
