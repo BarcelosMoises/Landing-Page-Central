@@ -5,7 +5,9 @@
 // Server Component puro — não adicionar "use client" (sem interatividade client-side).
 //
 // Regras de cor (não violar — drift identificado em Ago 2026, auditoria #34):
-//   - Fundo bg-[#1a0000] — nunca #0a0a0a, bg-black ou neutral-950 (#0a0a0a é exclusivo do hero)
+//   - Fundo TINGIDO pelo accent do serviço: color-mix 12% accent + #1a0000 — mesmo padrão
+//     do Footer. Vinho #1a0000 puro só aparece na homepage (fallback #800000 ≈ vinho).
+//     Nunca #0a0a0a, bg-black ou neutral-950 (#0a0a0a é exclusivo do hero)
 //   - Subtítulo #c4a8a8 · ghost #e0c8c8 — nunca text-neutral-400 sobre este fundo
 //   - Botão primário e border-top via var(--color-service-accent) — proibido hardcodar #800000
 //   - <CrosshairDecor /> obrigatório (seção escura) — chamada sem props usa o padrão
@@ -29,8 +31,13 @@ export function CtaFinal({ titulo, subtitulo, whatsappUrl, email }: CtaFinalProp
   return (
     <section
       aria-labelledby="cta-titulo"
-      className="relative bg-[#1a0000] py-20 md:py-28 border-t-4"
-      style={{ borderTopColor: "var(--color-service-accent, #800000)" } as React.CSSProperties}
+      className="relative py-20 md:py-28 border-t-4"
+      style={
+        {
+          backgroundColor: "color-mix(in srgb, var(--color-service-accent, #800000) 12%, #1a0000)",
+          borderTopColor: "var(--color-service-accent, #800000)",
+        } as React.CSSProperties
+      }
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h2
