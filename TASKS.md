@@ -76,7 +76,7 @@
 | # | Status | Componente/Arquivo | Tarefa | Referência | Prioridade |
 |---|---|---|---|---|---|
 | 54 | ✅ | `AGENTS.md` + `TASKS.md` | Atualizar AGENTS.md (rota `/regularizacao-prefeitura`, política de placeholders, `CtaFinal`, `PlaceholderImage`, `MapaAtuacao`, scripts) e criar este TASKS.md — commit `docs:` de Ago 2026 | AGENTS.md | — |
-| 55 | ⬜ | `CLAUDE.md` | Reduzir `CLAUDE.md` a um ponteiro para `AGENTS.md` ("ler AGENTS.md") para eliminar divergência entre arquivos de contexto. Aceite: conteúdo único, sem duplicação | AGENTS.md → cabeçalho | 🟢 |
+| 55 | ✅ | `CLAUDE.md` | Reduzir `CLAUDE.md` a um ponteiro para `AGENTS.md` ("ler AGENTS.md") para eliminar divergência entre arquivos de contexto. **Concluída (Ago 2026):** arquivo reescrito como ponteiro com ordem de leitura dos docs | AGENTS.md → cabeçalho | 🟢 |
 | 56 | ⬜ | Cliente + `AGENTS.md`/`DESIGN.md` | Confirmar com o cliente o accent de `/regularizacao-prefeitura` (provisório: `#800000`, família Legalização). Se mudar: atualizar `layout.tsx`, seletor `data-service` em `globals.css`, mapa de cores do AGENTS.md e tabela do DESIGN.md. Aceite: decisão registrada nos dois docs | AGENTS.md → Mapa de cores | 🟡 |
 | 57 | ⬜ | `docs/SEO.md` | Validar a keyword primária de `/regularizacao-prefeitura` (provisória: "regularização prefeitura alvará [estado]") e registrá-la na tabela de rotas do SEO.md. Aceite: keyword definida e metadata da página alinhada | SEO.md → Tabela de rotas | 🟡 |
 
