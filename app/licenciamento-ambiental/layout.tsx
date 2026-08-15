@@ -1,4 +1,5 @@
-import type React from "react"
+import type React from "react";
+import { Footer } from "@/components/Footer";
 
 export default function LayoutAmbiental({ children }: { children: React.ReactNode }) {
   return (
@@ -13,6 +14,7 @@ export default function LayoutAmbiental({ children }: { children: React.ReactNod
       }
     >
       {children}
+      <Footer />
     </div>
   )
 }
