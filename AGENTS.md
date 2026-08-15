@@ -219,7 +219,8 @@ export default function LayoutAmbiental({ children }: { children: React.ReactNod
 - **Cor primária global:** `#800000` (vinho) — homepage, nav, footer
 - **Fundo da nav ao scroll:** `#1a0000` (vinho escuro cinemático) — `bg-[#1a0000]/95`
 - **Fundo do menu mobile:** `#1a0000` (vinho escuro cinemático) — `bg-[#1a0000]/98`
-- **Fundo de seções escuras de conteúdo:** `#1a0000` — SetoresAtendidos, FormularioContato, Footer, Glossário/Normas, CtaFinal
+- **Fundo de seções escuras de conteúdo:** `#1a0000` — SetoresAtendidos, FormularioContato, Glossário/Normas
+- **Footer e CtaFinal são tingidos pelo accent da categoria:** `color-mix(in srgb, var(--color-service-accent, #800000) 12%, #1a0000)` — verde em ambiental, teal em VISA, dourado em laudos/SPDA, azul em projetos; na homepage (fallback vinho) o resultado ≈ `#1a0000`
 - **Token de texto sobre `#1a0000` (secundário):** `#c4a8a8` — cinza rosado quente, contraste ≈ 6.5:1 ✓ WCAG AA
 - **Token de texto sobre `#1a0000` (primário suave):** `#e0c8c8` — bege rosado, contraste ≈ 11:1 ✓ WCAG AAA
 - **Accent por serviço:** ver tabela acima — sempre via CSS variable
@@ -232,12 +233,13 @@ export default function LayoutAmbiental({ children }: { children: React.ReactNod
 
 > Regra de temperatura de cor: todos os fundos escuros do site são **quentes** (família vinho/preto-quente).
 > O cinza azulado `#111827` (Tailwind `neutral-900`) nunca deve aparecer como fundo de seção ou nav.
-> `#0a0a0a` é **exclusivo do hero** — seções escuras de conteúdo (incluindo a CTA final) usam `#1a0000`.
+> `#0a0a0a` é **exclusivo do hero** — seções escuras de conteúdo usam `#1a0000` (puro ou tingido pelo accent).
 
 | Papel | Valor | Componentes |
 |---|---|---|
 | Fundo hero / mais escuro | `#0a0a0a` | Hero section, seções cinemáticas de impacto máximo |
-| Fundo padrão de seções escuras | `#1a0000` | SetoresAtendidos, FormularioContato, Footer, Glossário/Normas, CtaFinal |
+| Fundo padrão de seções escuras | `#1a0000` | SetoresAtendidos, FormularioContato, Glossário/Normas |
+| Fundo escuro tingido pela categoria | `color-mix(in srgb, var(--color-service-accent, #800000) 12%, #1a0000)` | Footer, CtaFinal |
 | Nav ao scroll (95% opacidade) | `bg-[#1a0000]/95` + `backdrop-blur` | NavPrimaria (estado scrolled) |
 | Nav menu mobile (98% opacidade) | `bg-[#1a0000]/98` | NavPrimaria (dropdown mobile) |
 | Overlay de hero sobre foto | `from-[#4f0101]/85 to-[#0a0000]/60` | Hero section gradient |
@@ -301,6 +303,7 @@ export default function LayoutAmbiental({ children }: { children: React.ReactNod
 | `bg-[#111827]` / `bg-neutral-900` como fundo de seção de conteúdo | `bg-[#1a0000]` — único fundo escuro de seção do site |
 | `bg-[#111827]/95` ou `bg-neutral-900/95` como fundo da nav ao scroll | `bg-[#1a0000]/95 backdrop-blur-sm` — vinho escuro cinemático |
 | `bg-[#0a0a0a]` ou `bg-black` em seção escura de conteúdo (CTA final, cards) | `bg-[#1a0000]` — `#0a0a0a` é exclusivo do hero |
+| `bg-[#1a0000]` puro no Footer ou na CTA final de subpágina | `color-mix(in srgb, var(--color-service-accent, #800000) 12%, #1a0000)` — fundo tingido pelo accent da categoria |
 | `text-neutral-400` sobre fundo `#1a0000` | `style={{ color: "#c4a8a8" }}` — cinza rosado quente, contraste ≈ 6.5:1 |
 | Item em `NAV_ITENS` sem `id` declarado na seção correspondente em `app/page.tsx` | Declarar `id` na seção antes de adicionar o item na nav |
 | Categorias de serviço (`legalizacao`, `projetos`, `laudos`) como itens diretos de nav | Âncoras de seção estrutural: `servicos` · `setores` · `equipe` · `contato` |
@@ -357,7 +360,8 @@ export default function LayoutAmbiental({ children }: { children: React.ReactNod
 - **O quê:** seção CTA escura imediatamente acima do footer em **todas** as subpáginas de serviço ("Precisa de X?")
 - **Props:** `titulo` · `subtitulo` · `whatsappUrl` · `email`
 - **Regras de cor (não violar — drift identificado em Ago 2026):**
-  - Fundo `bg-[#1a0000]` (nunca `#0a0a0a`, `bg-black` ou neutro) + `<CrosshairDecor />`
+  - Fundo **tingido pelo accent da categoria**: `color-mix(in srgb, var(--color-service-accent, #800000) 12%, #1a0000)` — mesmo padrão do Footer. Verde em ambiental, teal em VISA, dourado em laudos/SPDA, azul em projetos; `#1a0000` puro só na prática da homepage (fallback vinho). Nunca `#0a0a0a`, `bg-black` ou neutro
+  - `<CrosshairDecor />` obrigatório
   - Heading `text-white`; subtítulo `style={{ color: "#c4a8a8" }}`
   - Botão primário: `backgroundColor: "var(--color-service-accent, #800000)"`
   - Botão ghost de e-mail: `mailto:` com borda `white/20` e texto `#e0c8c8`
