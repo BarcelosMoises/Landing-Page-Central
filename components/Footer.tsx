@@ -5,7 +5,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { CrosshairDecor } from "./CrosshairDecor"
 
-export default function Footer() {
+export function Footer() {
   return (
     <footer
       className="relative border-t"
@@ -67,3 +67,5 @@ export default function Footer() {
     </footer>
   )
 }
+
+export default Footer
