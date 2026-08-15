@@ -48,6 +48,12 @@
 > - `text-neutral-400` sobre fundo escuro ×0 confirmadas — restam 5 ícones SVG a verificar contexto (task #37) + usos legítimos sobre fundo claro (projetos ×3, laudos ×1, TrustBar ×2 — permitidos)
 > - `#800000` ×77 — o aumento (56→77) vem dos fallbacks `var(--color-service-accent, #800000)` nos novos cards da #39 e no `CtaFinal` — **todos legítimos**; exceção real continua sendo `text-[#cc2200]` no MapaAtuacao (task #59)
 > - Novos falsos positivos: comentários do próprio `CtaFinal.tsx` (×2 em cada grep) — esperado, não tratar
+>
+> **Verificação visual da CTA (15/08/2026, navegador via `getComputedStyle`):**
+> - **Causa raiz investigada:** suspeita de fallback vinho `#800000` no `color-mix` do `CtaFinal` — **descartada**. O `color-mix` resolve corretamente o accent em todas as rotas; o fallback só atua na homepage (sem layout de serviço), onde o vinho é o correto.
+> - **Bug real encontrado:** `app/regularizacao-prefeitura/layout.tsx` definia `--color-service-accent: #1a3a6b` (azul marinho) — fora do mapa de cores do AGENTS.md, que exige vinho `#800000` (família Legalização, mesma do AVCB). Corrigido para `#800000`/`#4f0101`.
+> - **Resultado pós-correção (todas as 7 rotas testadas no navegador):** CTA, Footer, botão primário e `border-t-4` corretos — ambiental `#2d6a2d`, VISA `#0d7377`, laudos/SPDA `#92610a`, projetos `#1e40af`, prefeitura/AVCB `#800000`.
+> - **Observação:** `--color-service-accent-light` só era definido no layout da prefeitura (removido junto); as demais rotas usam `var(--color-service-accent-light)` sem defini-lo → hero span cai para branco. Comportamento pré-existente, fora do escopo desta correção (verificar na task #49/#50 se necessário).
 
 ---
 
