@@ -6,6 +6,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { NavPrimaria } from "@/components/NavPrimaria";
 import { FaqItem } from "@/components/FaqItem";
+import { CtaFinal } from "@/components/CtaFinal";
 import {
   servicos,
   contato,
@@ -340,36 +341,12 @@ export default function PageLaudosTecnicos() {
         </section>
 
         {/* ── CTA FINAL ──────────────────────────────────────────────────────── */}
-        <section aria-labelledby="cta-titulo" className="bg-neutral-950 py-20 md:py-28 border-t border-white/8">
-          <div className="container-site text-center max-w-2xl">
-            <h2 id="cta-titulo" className="font-heading font-extrabold text-white text-3xl md:text-4xl leading-tight mb-4">
-              Precisa de um laudo técnico de engenharia?
-            </h2>
-            <p className="text-neutral-400 text-lg mb-10">
-              Fale com nossos engenheiros e receba um diagnóstico gratuito sobre as exigências do Corpo de Bombeiros para o seu imóvel em RJ, SP, MG ou ES.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <a
-                href={whatsappUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-lg text-white font-semibold text-base transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950"
-                style={{
-                  backgroundColor: "var(--color-service-accent)",
-                  ["--tw-ring-color" as string]: "var(--color-service-accent)",
-                }}
-              >
-                Solicitar diagnóstico gratuito
-              </a>
-              <a
-                href={`mailto:${contato.email}`}
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-lg border border-white/15 text-neutral-200 hover:border-white/30 hover:text-white font-semibold text-base transition-colors duration-150"
-              >
-                {contato.email}
-              </a>
-            </div>
-          </div>
-        </section>
+        <CtaFinal
+          titulo="Precisa de um laudo técnico de engenharia?"
+          subtitulo="Fale com nossos engenheiros e receba um diagnóstico gratuito sobre as exigências do Corpo de Bombeiros para o seu imóvel em RJ, SP, MG ou ES."
+          whatsappUrl={whatsappUrl}
+          email="centralsolu@outlook.com"
+        />
 
       </main>
     </>
