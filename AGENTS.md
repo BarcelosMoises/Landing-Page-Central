@@ -1,7 +1,12 @@
 # AGENTS.md — Central de Soluções Landing Page
-> Arquivo de contexto global. Lido automaticamente por Claude Code, Gemini CLI e demais agentes.
+> Arquivo de contexto global. Lido automaticamente por Claude Code, Gemini CLI, DeepSeek e demais agentes.
 > Atualizar este arquivo sempre que houver mudança de stack, escopo ou decisão arquitetural.
-> Última atualização: Maio 2026
+> Última atualização: Agosto 2026
+
+> **Arquivos relacionados:**
+> - `TASKS.md` — plano de tarefas ativo (numeração contínua dos CSVs de planejamento)
+> - `CLAUDE.md` — apenas um ponteiro para este arquivo; **não duplicar conteúdo nele**
+> - `docs/DESIGN.md` · `docs/SEO.md` · `docs/SERVICOS.md` — referências de domínio
 
 ---
 
@@ -54,6 +59,9 @@ app/
 ├── licenciamento-ambiental/
 │   ├── layout.tsx              # Define --color-service-accent: #2d6a2d
 │   └── page.tsx                # keyword: "licenciamento ambiental [estado]"
+├── regularizacao-prefeitura/
+│   ├── layout.tsx              # Define --color-service-accent: #800000
+│   └── page.tsx                # keyword: "regularização prefeitura alvará [estado]"
 └── projetos/
     ├── layout.tsx              # Define --color-service-accent: #1e40af
     └── page.tsx                # keyword: "projeto combate incêndio pânico"
@@ -85,6 +93,11 @@ app/
 | Licenciamento Ambiental | `/licenciamento-ambiental` | `#2d6a2d` | `#1e4d1e` |
 | Laudos / SPDA | `/laudos-tecnicos`, `/spda-para-raios` | `#92610a` | `#6e4908` |
 | Projetos Técnicos | `/projetos` | `#1e40af` | `#1e3a8a` |
+| Prefeitura / Legalização municipal | `/regularizacao-prefeitura` | `#800000` | `#4f0101` |
+
+> **Prefeitura (Ago 2026):** usa o vinho da marca por pertencer à categoria Legalização (mesma família do AVCB).
+> Decisão pendente de confirmação com o cliente — ver TASKS.md #55. Se mudar, atualizar `layout.tsx`,
+> `globals.css` (seletor `data-service`), esta tabela e `docs/DESIGN.md`.
 
 ### Regra de Layout por Subpágina
 
@@ -138,7 +151,7 @@ export default function LayoutAmbiental({ children }: { children: React.ReactNod
 - **Arquivo:** `components/CrosshairDecor.tsx`
 - **O quê:** SVG inline da retícula de engenharia presente em todos os posts do Instagram do cliente
 - **Quando usar:** em toda `<section className="relative">` com fundo escuro (`bg-[#1a0000]`, `bg-[#0a0a0a]`, hero)
-- **Fundos escuros que recebem CrosshairDecor:** `bg-[#1a0000]` (nav, SetoresAtendidos, FormularioContato, Footer, Glossário/Normas) · `bg-[#0a0a0a]` (hero) · qualquer seção com overlay escuro
+- **Fundos escuros que recebem CrosshairDecor:** `bg-[#1a0000]` (nav, SetoresAtendidos, FormularioContato, Footer, Glossário/Normas, CtaFinal) · `bg-[#0a0a0a]` (hero) · qualquer seção com overlay escuro
 - **Props:** `corner` (bottom-right | bottom-left | top-right | top-left), `variant` (light | dark), `size` (sm | md | lg)
 - **Padrão:** `<CrosshairDecor />` — já posicionado no canto inferior direito
 - **Nunca** escalar ou colorir manualmente — usar as props fornecidas
@@ -147,6 +160,19 @@ export default function LayoutAmbiental({ children }: { children: React.ReactNod
 - Localização: `/public/images/portfolio/` e `/public/images/equipe/`
 - **Nunca usar stock photos** enquanto houver fotos reais disponíveis
 - Mapeamento completo de foto por seção/rota: ver `docs/DESIGN.md`
+
+### Placeholders temporários (dev-only)
+
+> O placeholder vermelho atual das subpáginas é **temporário** — o design foi aprovado pelo cliente
+> e os slots de imagem devem receber fotos reais do portfólio (ver TASKS.md Fase 2).
+
+- Todo placeholder de imagem usa o componente `components/PlaceholderImage.tsx` com `data-todo="placeholder"`
+- **Proibido mergear para produção com placeholder** — verificação obrigatória antes de deploy:
+  `grep -rn 'data-todo="placeholder"' app components` deve retornar vazio
+- Substituição: foto real de `/public/images/portfolio/` conforme mapeamento do `docs/DESIGN.md`;
+  se não houver foto real adequada ao serviço, usar card visual de documento/norma — **nunca stock photo**
+- Imagens abaixo da dobra: `next/image` com `aspect-video`, `rounded-lg`, `sizes` responsivo, **sem** `priority`,
+  `alt` técnico descritivo (regra de SEO #6)
 
 ---
 
@@ -159,6 +185,7 @@ export default function LayoutAmbiental({ children }: { children: React.ReactNod
 5. **Conteúdo indexável na página** — textos de laudos, decretos, siglas e explicações técnicas devem estar no DOM, nunca apenas em modais ou tooltips.
 6. **Alt text obrigatório** em todas as imagens — descrever o conteúdo técnico real, não "imagem1.jpg".
 7. **URLs amigáveis sem parâmetros** — `/avcb-corpo-de-bombeiros`, nunca `/servicos?id=1`.
+8. **`BreadcrumbList` JSON-LD** nas subpáginas que exibem breadcrumb visual ("Início / Serviço"), com `aria-label="breadcrumb"` no `<nav>`.
 
 ---
 
@@ -192,7 +219,7 @@ export default function LayoutAmbiental({ children }: { children: React.ReactNod
 - **Cor primária global:** `#800000` (vinho) — homepage, nav, footer
 - **Fundo da nav ao scroll:** `#1a0000` (vinho escuro cinemático) — `bg-[#1a0000]/95`
 - **Fundo do menu mobile:** `#1a0000` (vinho escuro cinemático) — `bg-[#1a0000]/98`
-- **Fundo de seções escuras de conteúdo:** `#1a0000` — SetoresAtendidos, FormularioContato, Footer, Glossário/Normas
+- **Fundo de seções escuras de conteúdo:** `#1a0000` — SetoresAtendidos, FormularioContato, Footer, Glossário/Normas, CtaFinal
 - **Token de texto sobre `#1a0000` (secundário):** `#c4a8a8` — cinza rosado quente, contraste ≈ 6.5:1 ✓ WCAG AA
 - **Token de texto sobre `#1a0000` (primário suave):** `#e0c8c8` — bege rosado, contraste ≈ 11:1 ✓ WCAG AAA
 - **Accent por serviço:** ver tabela acima — sempre via CSS variable
@@ -205,11 +232,12 @@ export default function LayoutAmbiental({ children }: { children: React.ReactNod
 
 > Regra de temperatura de cor: todos os fundos escuros do site são **quentes** (família vinho/preto-quente).
 > O cinza azulado `#111827` (Tailwind `neutral-900`) nunca deve aparecer como fundo de seção ou nav.
+> `#0a0a0a` é **exclusivo do hero** — seções escuras de conteúdo (incluindo a CTA final) usam `#1a0000`.
 
 | Papel | Valor | Componentes |
 |---|---|---|
 | Fundo hero / mais escuro | `#0a0a0a` | Hero section, seções cinemáticas de impacto máximo |
-| Fundo padrão de seções escuras | `#1a0000` | SetoresAtendidos, FormularioContato, Footer, Glossário/Normas |
+| Fundo padrão de seções escuras | `#1a0000` | SetoresAtendidos, FormularioContato, Footer, Glossário/Normas, CtaFinal |
 | Nav ao scroll (95% opacidade) | `bg-[#1a0000]/95` + `backdrop-blur` | NavPrimaria (estado scrolled) |
 | Nav menu mobile (98% opacidade) | `bg-[#1a0000]/98` | NavPrimaria (dropdown mobile) |
 | Overlay de hero sobre foto | `from-[#4f0101]/85 to-[#0a0000]/60` | Hero section gradient |
@@ -272,6 +300,7 @@ export default function LayoutAmbiental({ children }: { children: React.ReactNod
 | `bg-neutral-900` / `#111827` como fundo da nav | `bg-[#1a0000]` — vinho escuro da marca |
 | `bg-[#111827]` / `bg-neutral-900` como fundo de seção de conteúdo | `bg-[#1a0000]` — único fundo escuro de seção do site |
 | `bg-[#111827]/95` ou `bg-neutral-900/95` como fundo da nav ao scroll | `bg-[#1a0000]/95 backdrop-blur-sm` — vinho escuro cinemático |
+| `bg-[#0a0a0a]` ou `bg-black` em seção escura de conteúdo (CTA final, cards) | `bg-[#1a0000]` — `#0a0a0a` é exclusivo do hero |
 | `text-neutral-400` sobre fundo `#1a0000` | `style={{ color: "#c4a8a8" }}` — cinza rosado quente, contraste ≈ 6.5:1 |
 | Item em `NAV_ITENS` sem `id` declarado na seção correspondente em `app/page.tsx` | Declarar `id` na seção antes de adicionar o item na nav |
 | Categorias de serviço (`legalizacao`, `projetos`, `laudos`) como itens diretos de nav | Âncoras de seção estrutural: `servicos` · `setores` · `equipe` · `contato` |
@@ -280,6 +309,10 @@ export default function LayoutAmbiental({ children }: { children: React.ReactNod
 | Usar `formacao` ou `Formação` como campo da equipe | `membro.tituloPrincipal` — campo canônico em `data/equipe.ts` |
 | Acessar membro da equipe sem `slug` | Usar `membro.slug` para links e IDs (ex.: `durval-ribeiro`, `theyllor-estulano`) |
 | Criar componente duplicado de grid de serviços | `ServicosTabs` é o único componente de serviços da homepage — `ServicosGrid` foi removido |
+| Seção CTA final duplicada/copiada entre subpáginas | `components/CtaFinal.tsx` — único componente de CTA das subpáginas |
+| Placeholder de imagem em commit destinado a produção | `PlaceholderImage` com `data-todo="placeholder"` — removido antes do deploy (TASKS.md Fase 2) |
+| Stock photo em slot de imagem de subpágina | Foto real de `/public/images/portfolio/` ou card visual de documento/norma |
+| Fundo neutro (navy/cinza) no card "Base Normativa" | `color-mix(in srgb, var(--color-service-accent) 8%, #1a0000)` + `border-l-4` no accent |
 
 ---
 
@@ -307,3 +340,43 @@ export default function LayoutAmbiental({ children }: { children: React.ReactNod
 - **Comportamento em subpáginas:** `isHomepage === false` → itens renderizam como `<Link href="/#id">` em vez de `<button onClick={scroll}>`
 - **Cores nas subpáginas:** NavPrimaria herda `--color-service-accent` do `<div>` wrapper do `layout.tsx` da subpágina — o CTA e o indicador de seção ativa mudam automaticamente
 - **Estado de scroll:** transparente → `bg-[#1a0000]/95 backdrop-blur-sm` ao rolar
+
+### MapaAtuacao
+- **Arquivo:** `components/MapaAtuacao.tsx`
+- **O quê:** seção visual dos 4 estados de atuação (RJ/SP/MG/ES) com badges de órgãos reguladores
+- **Referência de conteúdo:** `docs/SEO.md` → tabela de estados
+- **Scripts utilitários:** `gerar-mapa.js` e `fix-map.js` (raiz do repo) geram/corrigem os dados do mapa — rodar localmente, nunca em build
+
+---
+
+## Componentes Compartilhados das Subpáginas
+
+### CtaFinal
+- **Arquivo:** `components/CtaFinal.tsx`
+- **Tipo:** Server Component (sem `"use client"`) — sem interatividade client-side
+- **O quê:** seção CTA escura imediatamente acima do footer em **todas** as subpáginas de serviço ("Precisa de X?")
+- **Props:** `titulo` · `subtitulo` · `whatsappUrl` · `email`
+- **Regras de cor (não violar — drift identificado em Ago 2026):**
+  - Fundo `bg-[#1a0000]` (nunca `#0a0a0a`, `bg-black` ou neutro) + `<CrosshairDecor />`
+  - Heading `text-white`; subtítulo `style={{ color: "#c4a8a8" }}`
+  - Botão primário: `backgroundColor: "var(--color-service-accent, #800000)"`
+  - Botão ghost de e-mail: `mailto:` com borda `white/20` e texto `#e0c8c8`
+  - `border-t-4` no accent do serviço como transição vinda da seção clara anterior (FAQ)
+
+### PlaceholderImage
+- **Arquivo:** `components/PlaceholderImage.tsx`
+- **O quê:** placeholder temporário de imagem para slots ainda sem foto real — **dev-only**
+- **Marcação:** `data-todo="placeholder"` obrigatório + label descritivo do slot (ex.: "Escopo VISA — imagem 16:9")
+- **Formato:** `aspect-video`, `rounded-lg`, fundo `#4f0101` (vinho escuro da marca — nunca vermelho puro)
+- **Ciclo de vida:** criado em desenvolvimento → substituído por foto real → removido antes do deploy
+
+---
+
+## Scripts Utilitários (raiz do repo)
+
+| Script | Função | Quando rodar |
+|---|---|---|
+| `gerar-mapa.js` | Gera os dados/geometria do `MapaAtuacao` | Ao alterar estados ou órgãos exibidos |
+| `fix-map.js` | Corrige/normaliza a saída do `gerar-mapa.js` | Após cada execução do `gerar-mapa.js` |
+
+> Scripts de manutenção local — **nunca** executar em build/CI nem importar em componentes.
