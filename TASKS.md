@@ -1,33 +1,32 @@
 # TASKS.md — Central de Soluções Landing Page
-> Plano de trabalho ativo. A numeração continua dos CSVs de planejamento (que terminam na task #33).
+> Plano de trabalho ativo. A numeração continua dos CSVs de planejamento que terminam na task #33.
 > Última atualização: Agosto 2026
 
 ## Convenções
 
-- **Status:** ⬜ Pendente · 🟦 Em andamento · ✅ Concluída
-- **Prioridade:** 🔴 Alta · 🟡 Média · 🟢 Baixa
-- **1 task = 1 commit** — mensagem no padrão `tipo(escopo): descrição`
-- **Referências:** `AGENTS.md` · `docs/DESIGN.md` · `docs/SEO.md` · `docs/SERVICOS.md`
-- Ao concluir uma task, atualizar o status aqui no mesmo commit
+- **Status:** ⬜ Pendente, 🟦 Em andamento, ✅ Concluída.
+- **Prioridade:** 🔴 Alta, 🟡 Média, 🟢 Baixa.
+- **1 task = 1 commit.**
+- **Referências:** `AGENTS.md`, `docs/DESIGN.md`, `docs/SEO.md`, `docs/SERVICOS.md`.
 
-## Fase 1 — Correção de paleta nas subpáginas
+## Fase 1. Correção de paleta nas subpáginas
 
-| # | Status | Componente/Arquivo | Tarefa | Referência | Prioridade |
-|---|---|---|---|---|---|
-| 34 | ✅ | `app/` + `components/` | Auditoria de cores proibidas concluída | AGENTS.md | 🔴 |
-| 35 | ✅ | `components/CtaFinal.tsx` | CtaFinal criado e adotado nas 7 rotas | AGENTS.md | 🔴 |
-| 36 | ✅ | `components/CrosshairDecor.tsx` + `components/CtaFinal.tsx` | CTA em base neutra quente com accent na borda/faixa; comentários corrigidos | DESIGN.md | 🔴 |
-| 37 | ✅ | `components/CtaFinal.tsx` + subpáginas | Contraste corrigido e ícones mortos removidos | DESIGN.md | 🔴 |
-| 38 | ✅ | `components/CtaFinal.tsx` + subpáginas | Botão e borda derivados do accent | AGENTS.md | 🔴 |
-| 39 | ✅ | Subpáginas | Cards normativos integrados ao accent | DESIGN.md | 🔴 |
-| 40 | ✅ | Todas as subpáginas | CtaFinal adotado nas 7 rotas | AGENTS.md | 🔴 |
-| 41 | 🟦 | Todas as subpáginas | Validar que as 7 rotas têm cores únicas; garantir contraste dos pills e consistência entre header, CTA e footer | AGENTS.md | 🔴 |
-| 58 | ✅ | Subpáginas | Heroes corrigidos para `#0a0a0a` | DESIGN.md | 🔴 |
-| 59 | ✅ | `components/MapaAtuacao.tsx` | `#cc2200` substituído por `#a30000` | DESIGN.md | 🟡 |
+| # | Status | Componente/Arquivo | Tarefa | Prioridade |
+|---|---|---|---|---|
+| 34 | ✅ | `app/` e `components/` | Auditoria de cores proibidas concluída | 🔴 |
+| 35 | ✅ | `components/CtaFinal.tsx` | CtaFinal criado e adotado nas 7 rotas | 🔴 |
+| 36 | ✅ | `components/CrosshairDecor.tsx` e `components/CtaFinal.tsx` | CTA sem decoração redundante e com superfície própria | 🔴 |
+| 37 | ✅ | `components/CtaFinal.tsx` e subpáginas | Contraste corrigido e ícones mortos removidos | 🔴 |
+| 38 | ✅ | `components/CtaFinal.tsx` e subpáginas | Botão derivado do accent | 🔴 |
+| 39 | ✅ | Subpáginas | Cards normativos integrados ao accent | 🔴 |
+| 40 | ✅ | Todas as subpáginas | CtaFinal adotado nas 7 rotas | 🔴 |
+| 41 | 🟦 | Todas as subpáginas | Validar cores únicas, pills, CTA e Footer nas 7 rotas | 🔴 |
+| 58 | ✅ | Subpáginas | Heroes corrigidos para `#0a0a0a` | 🔴 |
+| 59 | ✅ | `components/MapaAtuacao.tsx` | Accent fora da paleta corrigido | 🟡 |
 
-> **Regra de identidade (Ago 2026):** cada subpágina deve possuir um trio exclusivo de tokens `accent`, `surface` e `footer`. Nenhuma rota pode reutilizar o trio de outra rota. Header, CTA, Footer, botões, bordas, pills e cards devem derivar desses tokens; não misturar com a base vinho global.
+### Tokens exclusivos
 
-## Mapa exclusivo de tokens
+Cada rota deve definir um trio próprio. Nenhuma rota pode reutilizar o trio de outra rota.
 
 | Rota | Accent | Surface CTA | Footer |
 |---|---|---|---|
@@ -39,19 +38,19 @@
 | `/regularizacao-prefeitura` | `#6b21a8` | `#1a0c26` | `#110719` |
 | `/projetos` | `#1e40af` | `#080f24` | `#050a19` |
 
-## Fase 2 — Imagens reais
+## Fase 2. Imagens reais
 
-| # | Status | Componente/Arquivo | Tarefa | Referência | Prioridade |
-|---|---|---|---|---|---|
-| 42 | 🟦 | `components/PlaceholderImage.tsx` | Placeholder usa accent dinâmico; substituir por imagens reais | AGENTS.md | 🔴 |
-| 43 | ⬜ | `public/images/portfolio/` | Extrair fotos reais dos PDFs | DESIGN.md | 🔴 |
-| 44 | ⬜ | `app/vigilancia-sanitaria/page.tsx` | Substituir slot por foto real/card documental | DESIGN.md | 🔴 |
-| 45 | ⬜ | `app/licenciamento-ambiental/page.tsx` | Substituir slot por foto solar/telecom | DESIGN.md | 🔴 |
-| 46 | ⬜ | `app/vigilancia-sanitaria/page.tsx` | Adicionar foto ao hero | DESIGN.md | 🔴 |
-| 47 | ⬜ | `app/` | Auditar alt text | AGENTS.md | 🔴 |
-| 48 | ⬜ | `app/` + `components/` | Remover placeholders antes do deploy | AGENTS.md | 🔴 |
+| # | Status | Componente/Arquivo | Tarefa | Prioridade |
+|---|---|---|---|---|
+| 42 | 🟦 | `components/PlaceholderImage.tsx` | Placeholder usa accent dinâmico. Substituir por imagens reais antes do deploy | 🔴 |
+| 43 | ⬜ | `public/images/portfolio/` | Extrair fotos reais dos PDFs | 🔴 |
+| 44 | ⬜ | `app/vigilancia-sanitaria/page.tsx` | Substituir slot por foto real ou card documental | 🔴 |
+| 45 | ⬜ | `app/licenciamento-ambiental/page.tsx` | Substituir slot por foto solar ou telecom | 🔴 |
+| 46 | ⬜ | `app/vigilancia-sanitaria/page.tsx` | Adicionar foto ao hero | 🔴 |
+| 47 | ⬜ | `app/` | Auditar alt text | 🔴 |
+| 48 | ⬜ | `app/` e `components/` | Remover placeholders antes do deploy | 🔴 |
 
-## Fase 3 — Melhorias de design
+## Fase 3. Melhorias de design
 
 | # | Status | Componente/Arquivo | Tarefa | Prioridade |
 |---|---|---|---|---|
@@ -61,13 +60,13 @@
 | 52 | ⬜ | Subpáginas | Motion reduzido no FAQ | 🟡 |
 | 53 | ⬜ | Subpáginas | Revisar ritmo vertical | 🟡 |
 
-## Fase 4 — Governança
+## Fase 4. Governança
 
 | # | Status | Componente/Arquivo | Tarefa | Prioridade |
 |---|---|---|---|---|
-| 54 | ✅ | `AGENTS.md` + `TASKS.md` | Documentação criada | — |
+| 54 | ✅ | `AGENTS.md` e `TASKS.md` | Documentação criada | — |
 | 55 | ✅ | `CLAUDE.md` | Ponteiro para AGENTS.md | 🟢 |
-| 56 | ⬜ | Cliente + docs | Confirmar accent da Prefeitura | 🟡 |
+| 56 | ⬜ | Cliente e docs | Confirmar accent da Prefeitura | 🟡 |
 | 57 | ⬜ | `docs/SEO.md` | Validar keyword da Prefeitura | 🟡 |
 
 ## Verificação rápida
