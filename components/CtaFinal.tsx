@@ -1,5 +1,5 @@
 // components/CtaFinal.tsx
-// CTA final das subpáginas — contraste e accent da categoria preservados.
+// Superfície final derivada exclusivamente dos tokens da subpágina.
 // Server Component puro; não adicionar "use client".
 
 import type React from "react"
@@ -19,19 +19,14 @@ export function CtaFinal({ titulo, subtitulo, whatsappUrl, email }: CtaFinalProp
       className="relative py-20 md:py-28 border-t-4"
       style={
         {
-          // Base neutra: a categoria aparece no botão, borda e faixa superior,
-          // sem contaminar a seção com marrom quando o accent é verde/teal/azul.
-          backgroundColor: "#0a0a0a",
+          backgroundColor: "var(--color-service-surface, #0a0a0a)",
           borderTopColor: "var(--color-service-accent, #800000)",
         } as React.CSSProperties
       }
     >
       <div className="absolute inset-x-0 top-0 h-1" style={{ backgroundColor: "var(--color-service-accent, #800000)" }} />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h2
-          id="cta-titulo"
-          className="font-heading font-bold text-white text-3xl md:text-4xl leading-tight mb-6"
-        >
+        <h2 id="cta-titulo" className="font-heading font-bold text-white text-3xl md:text-4xl leading-tight mb-6">
           {titulo}
         </h2>
         <p className="text-lg mb-10 max-w-2xl mx-auto" style={{ color: "#e0c8c8" }}>
