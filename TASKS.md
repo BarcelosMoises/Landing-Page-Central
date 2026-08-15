@@ -52,7 +52,9 @@
 > **Verificação visual da CTA (15/08/2026, navegador via `getComputedStyle`):**
 > - **Causa raiz investigada:** suspeita de fallback vinho `#800000` no `color-mix` do `CtaFinal` — **descartada**. O `color-mix` resolve corretamente o accent em todas as rotas; o fallback só atua na homepage (sem layout de serviço), onde o vinho é o correto.
 > - **Bug real encontrado:** `app/regularizacao-prefeitura/layout.tsx` definia `--color-service-accent: #1a3a6b` (azul marinho) — fora do mapa de cores do AGENTS.md, que exige vinho `#800000` (família Legalização, mesma do AVCB). Corrigido para `#800000`/`#4f0101`.
-> - **Resultado pós-correção (todas as 7 rotas testadas no navegador):** CTA, Footer, botão primário e `border-t-4` corretos — ambiental `#2d6a2d`, VISA `#0d7377`, laudos/SPDA `#92610a`, projetos `#1e40af`, prefeitura/AVCB `#800000`.
+> - **Re-verificação (15/08/2026, 2ª rodada — todas as 7 rotas no navegador):** CTA, botão primário, `border-t-4`, Footer e NavPrimaria corretos em todas as rotas — ambiental `#2d6a2d`, VISA `#0d7377`, laudos/SPDA `#92610a`, projetos `#1e40af`, prefeitura/AVCB `#800000`. `getComputedStyle(main)` confirma o accent em cada rota.
+> - **Confirmação do tingimento verde em `/licenciamento-ambiental`:** CTA `#1c0d05` = rgb(28,13,5) e Footer `#0e0d05` = rgb(14,13,5) — canal G elevado (13/5 vs 0 do vinho puro), provando o `color-mix` 12% `#2d6a2d` + `#1a0000`/`#0a0000`. Botão e borda `rgb(45,106,45)` = `#2d6a2d`. **Não é vermelho.**
+> - **Estrutura do `CtaFinal` confirmada:** `color-mix(in srgb, var(--color-service-accent, #800000) 12%, #1a0000)` no fundo e `var(--color-service-accent, #800000)` na borda/botão — sem `#800000` fixo (fallback legítimo). Cada `layout.tsx` envolve toda a árvore (children + Footer) com a CSS var.
 > - **Observação:** `--color-service-accent-light` só era definido no layout da prefeitura (removido junto); as demais rotas usam `var(--color-service-accent-light)` sem defini-lo → hero span cai para branco. Comportamento pré-existente, fora do escopo desta correção (verificar na task #49/#50 se necessário).
 
 ---
