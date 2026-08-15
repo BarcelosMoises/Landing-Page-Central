@@ -319,45 +319,6 @@ O `<Link>` da nav envolve símbolo + texto num `flex items-center gap-2`:
 </Link>
 ```
 
-### Elemento Crosshair / Retícula
-
-- **O quê:** grid de linhas finas com ponto de cruzamento (retícula de engenharia)
-  que aparece **no canto inferior direito** de todos os posts de Instagram do cliente
-- **Função:** assinatura visual técnica — conecta o site ao material já reconhecido
-- **Implementação no site:**
-
-```tsx
-// Componente CrosshairDecor.tsx — SVG decorativo inline
-// Inserir no canto inferior direito de seções escuras (hero, CTA, glossário)
-export function CrosshairDecor({ className = "" }: { className?: string }) {
-  return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 80 80"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className={`absolute bottom-6 right-6 w-16 h-16 opacity-[0.08] pointer-events-none select-none ${className}`}
-    >
-      {/* Linhas horizontais */}
-      <line x1="0" y1="20" x2="80" y2="20" stroke="currentColor" strokeWidth="1" />
-      <line x1="0" y1="40" x2="80" y2="40" stroke="currentColor" strokeWidth="1" />
-      <line x1="0" y1="60" x2="80" y2="60" stroke="currentColor" strokeWidth="1" />
-      {/* Linhas verticais */}
-      <line x1="20" y1="0" x2="20" y2="80" stroke="currentColor" strokeWidth="1" />
-      <line x1="40" y1="0" x2="40" y2="80" stroke="currentColor" strokeWidth="1" />
-      <line x1="60" y1="0" x2="60" y2="80" stroke="currentColor" strokeWidth="1" />
-      {/* Ponto de cruzamento central */}
-      <circle cx="40" cy="40" r="2.5" fill="currentColor" />
-      <circle cx="40" cy="40" r="6" stroke="currentColor" strokeWidth="1" fill="none" />
-    </svg>
-  );
-}
-```
-
-- **Uso:** `<CrosshairDecor />` dentro de qualquer `<section className="relative">` com fundo escuro (`bg-[#1a0000]`, `bg-[#0a0a0a]`, hero)
-- **Opacidade:** `0.08` sobre fundo escuro | `0.05` sobre fundo branco
-- **Cor:** `text-white` sobre escuro | `text-neutral-900` sobre claro
-
 ---
 
 ## Imagens Reais do Portfólio
@@ -484,7 +445,6 @@ Border radius padrão: rounded-lg (8px) | rounded-xl (12px) para cards
 - **Altura:** `min-h-[90vh]`
 - **Layout:** centralizado verticalmente, texto à esquerda em desktop
 - **Vídeo (opcional):** carregar apenas em `(prefers-reduced-motion: no-preference)` + conexão rápida via `navigator.connection`; sempre com fallback de imagem estática
-- **Crosshair:** inserir `<CrosshairDecor />` no canto inferior direito (ver seção Identidade Visual)
 
 ```tsx
 // Estrutura do Hero
@@ -506,8 +466,6 @@ Border radius padrão: rounded-lg (8px) | rounded-xl (12px) para cards
     </h1>
     {/* CTA */}
   </div>
-  {/* Crosshair — assinatura visual do cliente */}
-  <CrosshairDecor />
 </section>
 ```
 
@@ -650,7 +608,6 @@ Border radius padrão: rounded-lg (8px) | rounded-xl (12px) para cards
 - **Background:** `bg-[#1a0000]` (vinho escuro da marca)
 - **Texto secundário:** `style={{ color: "#c4a8a8" }}` — nunca `text-neutral-400` sobre `#1a0000`
 - **Layout:** grid 2 ou 3 colunas em desktop
-- **Crosshair:** inserir `<CrosshairDecor />` no canto inferior direito da seção
 - **Nunca:** glassmorphism — texto deve estar no DOM com contraste mínimo 4.5:1
 
 ### Formulário B2B
@@ -751,7 +708,6 @@ const animation = prefersReduced ? {} : { opacity: [0, 1], transform: ["translat
 - [ ] Imagens com `width` e `height` explícitos (evitar CLS)
 - [ ] Nenhum texto em cima de imagem sem overlay de contraste suficiente
 - [ ] Cor de accent correta para cada subpágina (ver tabela Paleta por Serviço)
-- [ ] `<CrosshairDecor />` presente em todas as seções escuras
 - [ ] Fotos reais do portfólio usadas (sem stock photos genéricos)
 - [ ] Dados da equipe técnica completos (nome completo + especializacoes exatas) — importar de `data/equipe.ts`
 - [ ] Componentes de equipe usam `membro.slug`, `membro.tituloPrincipal` e `membro.especializacoes` (campos canônicos)

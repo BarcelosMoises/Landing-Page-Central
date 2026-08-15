@@ -15,7 +15,7 @@
 |---|---|---|---|---|
 | 34 | ✅ | `app/` e `components/` | Auditoria de cores proibidas concluída | 🔴 |
 | 35 | ✅ | `components/CtaFinal.tsx` | CtaFinal criado e adotado nas 7 rotas | 🔴 |
-| 36 | ✅ | `components/CrosshairDecor.tsx` e `components/CtaFinal.tsx` | CTA sem decoração redundante e com superfície própria | 🔴 |
+| 36 | ✅ | `components/CrosshairDecor.tsx` e `components/CtaFinal.tsx` | CTA sem decoração redundante e com superfície própria. **Nota (Ago 2026):** componente `CrosshairDecor` desde então **removido do projeto** (task #60) | 🔴 |
 | 37 | ✅ | `components/CtaFinal.tsx` e subpáginas | Contraste corrigido e ícones mortos removidos | 🔴 |
 | 38 | ✅ | `components/CtaFinal.tsx` e subpáginas | Botão derivado do accent | 🔴 |
 | 39 | ✅ | Subpáginas | Cards normativos integrados ao accent | 🔴 |
@@ -68,6 +68,9 @@ Cada rota deve definir um trio próprio. Nenhuma rota pode reutilizar o trio de 
 | 55 | ✅ | `CLAUDE.md` | Ponteiro para AGENTS.md | 🟢 |
 | 56 | ⬜ | Cliente e docs | Confirmar accent da Prefeitura | 🟡 |
 | 57 | ⬜ | `docs/SEO.md` | Validar keyword da Prefeitura | 🟡 |
+| 60 | ✅ | Site inteiro | Retícula decorativa removida de todas as páginas e componentes | 🟡 |
+
+> A retícula decorativa foi removida globalmente para simplificar a linguagem visual e eliminar elementos ornamentais que não organizam conteúdo real.
 
 ## Verificação rápida
 

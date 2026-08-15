@@ -147,15 +147,6 @@ export default function LayoutAmbiental({ children }: { children: React.ReactNod
 
 ## Identidade Visual — Elementos Gráficos
 
-### CrosshairDecor
-- **Arquivo:** `components/CrosshairDecor.tsx`
-- **O quê:** SVG inline da retícula de engenharia presente em todos os posts do Instagram do cliente
-- **Quando usar:** em toda `<section className="relative">` com fundo escuro (`bg-[#1a0000]`, `bg-[#0a0a0a]`, hero)
-- **Fundos escuros que recebem CrosshairDecor:** `bg-[#1a0000]` (nav, SetoresAtendidos, FormularioContato, Footer, Glossário/Normas, CtaFinal) · `bg-[#0a0a0a]` (hero) · qualquer seção com overlay escuro
-- **Props:** `corner` (bottom-right | bottom-left | top-right | top-left), `variant` (light | dark), `size` (sm | md | lg)
-- **Padrão:** `<CrosshairDecor />` — já posicionado no canto inferior direito
-- **Nunca** escalar ou colorir manualmente — usar as props fornecidas
-
 ### Fotos reais do portfólio
 - Localização: `/public/images/portfolio/` e `/public/images/equipe/`
 - **Nunca usar stock photos** enquanto houver fotos reais disponíveis
@@ -316,6 +307,7 @@ export default function LayoutAmbiental({ children }: { children: React.ReactNod
 | Placeholder de imagem em commit destinado a produção | `PlaceholderImage` com `data-todo="placeholder"` — removido antes do deploy (TASKS.md Fase 2) |
 | Stock photo em slot de imagem de subpágina | Foto real de `/public/images/portfolio/` ou card visual de documento/norma |
 | Fundo neutro (navy/cinza) no card "Base Normativa" | `color-mix(in srgb, var(--color-service-accent) 8%, #1a0000)` + `border-l-4` no accent |
+| Retícula/crosshair decorativa | Não usar SVG ornamental de retícula no site |
 
 ---
 
@@ -361,7 +353,6 @@ export default function LayoutAmbiental({ children }: { children: React.ReactNod
 - **Props:** `titulo` · `subtitulo` · `whatsappUrl` · `email`
 - **Regras de cor (não violar — drift identificado em Ago 2026):**
   - Fundo **tingido pelo accent da categoria**: `color-mix(in srgb, var(--color-service-accent, #800000) 12%, #1a0000)` — mesmo padrão do Footer. Verde em ambiental, teal em VISA, dourado em laudos/SPDA, azul em projetos; `#1a0000` puro só na prática da homepage (fallback vinho). Nunca `#0a0a0a`, `bg-black` ou neutro
-  - `<CrosshairDecor />` obrigatório
   - Heading `text-white`; subtítulo `style={{ color: "#c4a8a8" }}`
   - Botão primário: `backgroundColor: "var(--color-service-accent, #800000)"`
   - Botão ghost de e-mail: `mailto:` com borda `white/20` e texto `#e0c8c8`
