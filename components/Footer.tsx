@@ -1,5 +1,6 @@
 // components/Footer.tsx
-// Footer compartilhado. A superfície é definida pelo layout da subpágina.
+// Footer compartilhado. O fundo é tingido pelo accent da categoria via
+// color-mix sobre #1a0000 — mesmo padrão do CtaFinal (ver AGENTS.md).
 
 import Image from "next/image"
 import Link from "next/link"
@@ -8,7 +9,10 @@ export function Footer() {
   return (
     <footer
       className="relative"
-      style={{ backgroundColor: "var(--color-service-footer, #11110d)" }}
+      style={{
+        backgroundColor:
+          "color-mix(in srgb, var(--color-service-accent, #800000) 12%, #1a0000)",
+      }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 md:py-16">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10 md:gap-8">

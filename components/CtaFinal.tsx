@@ -15,7 +15,10 @@ export function CtaFinal({ titulo, subtitulo, whatsappUrl, email }: CtaFinalProp
     <section
       aria-labelledby="cta-titulo"
       className="relative py-20 md:py-28"
-      style={{ backgroundColor: "var(--color-service-surface, #0a0a0a)" } as React.CSSProperties}
+      style={{
+        backgroundColor:
+          "color-mix(in srgb, var(--color-service-accent, #800000) 12%, #1a0000)",
+      } as React.CSSProperties}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h2 id="cta-titulo" className="font-heading font-bold text-white text-3xl md:text-4xl leading-tight mb-6">
