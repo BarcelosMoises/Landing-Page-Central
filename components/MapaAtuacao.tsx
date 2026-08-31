@@ -35,9 +35,25 @@ export function MapaAtuacao() {
   const [panelVisible, setPanelVisible] = useState(false);
   const [contentVisible, setContentVisible] = useState(false);
   const [panelData, setPanelData] = useState<{ sigla: string; nome: string } | null>(null);
+  // Altura do wrapper animada em px (medida via scrollHeight) — sincronizada com o fade.
+  // "auto" após a abertura para acompanhar resize; fixada em px durante abrir/fechar/trocar.
+  const [panelHeight, setPanelHeight] = useState<string>("0px");
 
   const tooltipRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
+  const measureRef = useRef<HTMLDivElement>(null);
+  const timersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
+
+  const PANEL_DURATION = 400;
+
+  const schedule = useCallback((fn: () => void, ms: number) => {
+    timersRef.current.push(setTimeout(fn, ms));
+  }, []);
+
+  const clearTimers = useCallback(() => {
+    timersRef.current.forEach(clearTimeout);
+    timersRef.current = [];
+  }, []);
 
   const stopPulse = useCallback(() => setPulseActive(false), []);
 
@@ -45,20 +61,32 @@ export function MapaAtuacao() {
     setPanelData({ sigla, nome: NOME_TODOS_ESTADOS[sigla] || sigla });
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
+        const h = measureRef.current?.scrollHeight ?? 0;
+        setPanelHeight(`${h}px`);
         setPanelVisible(true);
         setContentVisible(true);
+        schedule(() => setPanelHeight("auto"), PANEL_DURATION + 50);
       });
     });
-    setTimeout(() => {
+    schedule(() => {
       panelRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
     }, 120);
-  }, []);
+  }, [schedule]);
 
   const closePanel = useCallback(() => {
-    setPanelVisible(false);
-    setContentVisible(false);
-    setTimeout(() => setPanelData(null), 420);
-  }, []);
+    clearTimers();
+    // Fixa a altura atual (pode estar "auto") antes de animar para 0
+    const h = measureRef.current?.scrollHeight ?? 0;
+    setPanelHeight(`${h}px`);
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        setPanelHeight("0px");
+        setPanelVisible(false);
+        setContentVisible(false);
+      });
+    });
+    schedule(() => setPanelData(null), PANEL_DURATION + 50);
+  }, [clearTimers, schedule]);
 
   const getEstadoFill = (sigla: string) => {
     if (selectedState === sigla) return "#800000";
@@ -112,13 +140,21 @@ export function MapaAtuacao() {
       setSelectedState(null);
       closePanel();
     } else if (selectedState !== null) {
-      // Painel já aberto: crossfade do conteúdo antes de trocar os dados
+      // Painel já aberto: fade-out → troca dados com altura fixa → fade-in
+      clearTimers();
       setSelectedState(sigla);
       setContentVisible(false);
-      setTimeout(() => {
+      schedule(() => {
+        const h = measureRef.current?.scrollHeight ?? 0;
+        setPanelHeight(`${h}px`);
         setPanelData({ sigla, nome: NOME_TODOS_ESTADOS[sigla] || sigla });
         requestAnimationFrame(() => {
-          requestAnimationFrame(() => setContentVisible(true));
+          requestAnimationFrame(() => {
+            setContentVisible(true);
+            const newH = measureRef.current?.scrollHeight ?? 0;
+            setPanelHeight(`${newH}px`);
+            schedule(() => setPanelHeight("auto"), PANEL_DURATION + 50);
+          });
         });
       }, 160);
     } else {
@@ -137,6 +173,9 @@ export function MapaAtuacao() {
     window.addEventListener("click", handleOutside);
     return () => window.removeEventListener("click", handleOutside);
   }, [handleDeselect]);
+
+  // Limpa timers pendentes ao desmontar
+  useEffect(() => () => clearTimers(), [clearTimers]);
 
   const isCompleto = panelData ? ESTADOS_COMPLETOS.has(panelData.sigla) : false;
   const servicos = isCompleto && panelData
@@ -277,16 +316,22 @@ export function MapaAtuacao() {
           </div>
         )}
 
-        {/* Painel de detalhes persistente — altura animada via grid-rows (sem layout shift brusco) */}
+        {/* Painel de detalhes — altura animada em px (medida), sincronizada com o fade */}
         <div
-          className="grid transition-[grid-template-rows] duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none"
-          style={{ gridTemplateRows: panelData ? "1fr" : "0fr" }}
+          className="overflow-hidden motion-reduce:transition-none"
+          style={{
+            height: panelHeight,
+            transition: `height ${PANEL_DURATION}ms cubic-bezier(0.16, 1, 0.3, 1)`,
+          }}
         >
-          <div className="overflow-hidden min-h-0">
+          <div ref={measureRef} className="min-h-0">
+            {/* pt-8 dentro do wrapper medido — substitui o mt-8 do painel,
+                que ficava fora da altura animada e colapsava de forma brusca */}
+            {panelData && <div aria-hidden="true" className={panelVisible ? "pt-8" : ""} />}
             {panelData && (
               <div
                 ref={panelRef}
-                className="mt-8 rounded-2xl border overflow-hidden"
+                className="rounded-2xl border overflow-hidden"
                 style={{
                   opacity: panelVisible ? 1 : 0,
                   transform: panelVisible ? "translateY(0)" : "translateY(12px)",
