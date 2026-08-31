@@ -33,6 +33,7 @@ export function MapaAtuacao() {
   const [tooltip, setTooltip] = useState<{ sigla: string; nome: string } | null>(null);
   const [pulseActive, setPulseActive] = useState(true);
   const [panelVisible, setPanelVisible] = useState(false);
+  const [contentVisible, setContentVisible] = useState(false);
   const [panelData, setPanelData] = useState<{ sigla: string; nome: string } | null>(null);
 
   const tooltipRef = useRef<HTMLDivElement>(null);
@@ -43,16 +44,20 @@ export function MapaAtuacao() {
   const openPanel = useCallback((sigla: string) => {
     setPanelData({ sigla, nome: NOME_TODOS_ESTADOS[sigla] || sigla });
     requestAnimationFrame(() => {
-      requestAnimationFrame(() => setPanelVisible(true));
+      requestAnimationFrame(() => {
+        setPanelVisible(true);
+        setContentVisible(true);
+      });
     });
     setTimeout(() => {
       panelRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
-    }, 80);
+    }, 120);
   }, []);
 
   const closePanel = useCallback(() => {
     setPanelVisible(false);
-    setTimeout(() => setPanelData(null), 300);
+    setContentVisible(false);
+    setTimeout(() => setPanelData(null), 420);
   }, []);
 
   const getEstadoFill = (sigla: string) => {
@@ -106,6 +111,16 @@ export function MapaAtuacao() {
     if (selectedState === sigla) {
       setSelectedState(null);
       closePanel();
+    } else if (selectedState !== null) {
+      // Painel já aberto: crossfade do conteúdo antes de trocar os dados
+      setSelectedState(sigla);
+      setContentVisible(false);
+      setTimeout(() => {
+        setPanelData({ sigla, nome: NOME_TODOS_ESTADOS[sigla] || sigla });
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => setContentVisible(true));
+        });
+      }, 160);
     } else {
       setSelectedState(sigla);
       openPanel(sigla);
@@ -226,7 +241,7 @@ export function MapaAtuacao() {
                   stroke="#1a0000"
                   strokeWidth="1"
                   style={{
-                    transition: "fill 200ms ease, opacity 200ms ease",
+                    transition: "fill 350ms cubic-bezier(0.16, 1, 0.3, 1), opacity 350ms cubic-bezier(0.16, 1, 0.3, 1)",
                     cursor: "pointer",
                     animation: getPulseAnimation(estado.sigla),
                   }}
@@ -262,19 +277,30 @@ export function MapaAtuacao() {
           </div>
         )}
 
-        {/* Painel de detalhes persistente */}
-        {panelData && (
-          <div
-            ref={panelRef}
-            className="mt-8 rounded-2xl border overflow-hidden"
-            style={{
-              opacity: panelVisible ? 1 : 0,
-              transform: panelVisible ? "translateY(0)" : "translateY(12px)",
-              transition: "opacity 280ms ease, transform 280ms ease",
-              borderColor: isCompleto ? "rgba(128,0,0,0.4)" : "rgba(255,255,255,0.08)",
-            }}
-            onClick={(e) => e.stopPropagation()}
-          >
+        {/* Painel de detalhes persistente — altura animada via grid-rows (sem layout shift brusco) */}
+        <div
+          className="grid transition-[grid-template-rows] duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none"
+          style={{ gridTemplateRows: panelData ? "1fr" : "0fr" }}
+        >
+          <div className="overflow-hidden min-h-0">
+            {panelData && (
+              <div
+                ref={panelRef}
+                className="mt-8 rounded-2xl border overflow-hidden"
+                style={{
+                  opacity: panelVisible ? 1 : 0,
+                  transform: panelVisible ? "translateY(0)" : "translateY(12px)",
+                  transition: "opacity 350ms cubic-bezier(0.16, 1, 0.3, 1), transform 350ms cubic-bezier(0.16, 1, 0.3, 1)",
+                  borderColor: isCompleto ? "rgba(128,0,0,0.4)" : "rgba(255,255,255,0.08)",
+                }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div
+                  style={{
+                    opacity: contentVisible ? 1 : 0,
+                    transition: "opacity 160ms ease",
+                  }}
+                >
             {isCompleto ? (
               <div className="bg-gradient-to-br from-[#200000] to-[#110000] p-6 md:p-8">
                 <div className="flex items-start justify-between gap-4 mb-6">
@@ -301,10 +327,15 @@ export function MapaAtuacao() {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-6">
-                  {servicos.map((s) => (
+                  {servicos.map((s, i) => (
                     <div
                       key={s.id}
                       className="flex items-start gap-2.5 p-3 bg-white/[0.04] border border-white/[0.07] rounded-xl"
+                      style={{
+                        opacity: contentVisible ? 1 : 0,
+                        transform: contentVisible ? "translateY(0)" : "translateY(8px)",
+                        transition: `opacity 300ms cubic-bezier(0.16, 1, 0.3, 1) ${i * 40}ms, transform 300ms cubic-bezier(0.16, 1, 0.3, 1) ${i * 40}ms`,
+                      }}
                     >
                       <CheckCircle2 className="w-4 h-4 text-[#800000] flex-shrink-0 mt-0.5" aria-hidden="true" />
                       <span className="text-white/80 text-sm leading-snug">{s.nomeAbreviado}</span>
@@ -361,8 +392,11 @@ export function MapaAtuacao() {
                 </div>
               </div>
             )}
+                </div>
+              </div>
+            )}
           </div>
-        )}
+        </div>
       </div>
     </section>
   );
