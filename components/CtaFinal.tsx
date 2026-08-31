@@ -17,7 +17,7 @@ export function CtaFinal({ titulo, subtitulo, whatsappUrl, email }: CtaFinalProp
       className="relative py-20 md:py-28"
       style={{
         backgroundColor:
-          "color-mix(in srgb, var(--color-service-accent, #800000) 20%, #1a0000)",
+          "var(--color-service-cta-bg, color-mix(in srgb, var(--color-service-accent, #800000) 12%, #0a0a0a))",
       } as React.CSSProperties}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">

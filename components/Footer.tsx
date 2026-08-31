@@ -1,6 +1,7 @@
 // components/Footer.tsx
-// Footer compartilhado. O fundo é tingido pelo accent da categoria via
-// color-mix sobre #1a0000 — mesmo padrão do CtaFinal (ver AGENTS.md).
+// Footer compartilhado. O fundo é idêntico ao da nav ao scroll:
+// color-mix(accent 18%, #0a0a0a). A subpágina AVCB sobrescreve via
+// --color-service-footer-bg no seu layout.tsx (mantém base #1a0000).
 
 import Image from "next/image"
 import Link from "next/link"
@@ -11,7 +12,7 @@ export function Footer() {
       className="relative"
       style={{
         backgroundColor:
-          "color-mix(in srgb, var(--color-service-accent, #800000) 20%, #1a0000)",
+          "var(--color-service-footer-bg, color-mix(in srgb, var(--color-service-accent, #800000) 18%, #0a0a0a))",
       }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 md:py-16">

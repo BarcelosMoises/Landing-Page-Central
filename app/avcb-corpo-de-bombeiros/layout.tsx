@@ -9,6 +9,10 @@ import { Footer } from "@/components/Footer";
  *
  * Cor: vermelho #800000 — paleta AVCB conforme briefing do cliente.
  * Hover: #4f0101
+ *
+ * Exceção de superfície (Ago 2026): esta rota mantém Footer e CtaFinal
+ * na base vinho #1a0000 (20% accent), enquanto as demais subpáginas
+ * usam a base neutra #0a0a0a alinhada à nav.
  */
 export default function LayoutAvcb({ children }: { children: React.ReactNode }) {
   return (
@@ -16,6 +20,10 @@ export default function LayoutAvcb({ children }: { children: React.ReactNode }) 
       style={{
         "--color-service-accent": "#800000",
         "--color-service-accent-hover": "#4f0101",
+        "--color-service-footer-bg":
+          "color-mix(in srgb, #800000 20%, #1a0000)",
+        "--color-service-cta-bg":
+          "color-mix(in srgb, #800000 20%, #1a0000)",
       } as React.CSSProperties}
     >
       {children}
