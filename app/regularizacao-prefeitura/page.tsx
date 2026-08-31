@@ -8,7 +8,7 @@ import Link from "next/link";
 import { NavPrimaria } from "@/components/NavPrimaria";
 import { FaqItem } from "@/components/FaqItem";
 import { CtaFinal } from "@/components/CtaFinal";
-import { PlaceholderImage } from "@/components/PlaceholderImage";
+import { DocumentCard } from "@/components/DocumentCard";
 import {
   servicos,
   contato,
@@ -266,6 +266,18 @@ export default function PageRegularizacaoPrefeitura() {
             aria-hidden="true"
           />
 
+          {/* Vídeo de fundo */}
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            aria-hidden="true"
+            className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none"
+          >
+            <source src="/videos/hero.mp4" type="video/mp4" />
+          </video>
+
           <div className="container-site relative z-10 pt-24 pb-20 md:pt-32 md:pb-28">
             <nav aria-label="Localização na página" className="mb-8">
               <ol className="flex items-center gap-2 text-xs text-neutral-500 font-mono">
@@ -381,7 +393,10 @@ export default function PageRegularizacaoPrefeitura() {
               </div>
 
               <div>
-                <PlaceholderImage label="Escopo Regularização Prefeitura — imagem 16:9" />
+                <DocumentCard
+                  titulo="Projeto Legal · Habite-se"
+                  descricao="Documentos emitidos pela Secretaria Municipal: aprovação de projeto legal, Habite-se, desmembramento e remembramento de lotes."
+                />
 
                 <div
                   className="mt-8 p-5 rounded-xl border-l-4"

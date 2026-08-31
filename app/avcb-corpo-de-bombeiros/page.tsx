@@ -8,7 +8,7 @@ import Link from "next/link";
 import { NavPrimaria } from "@/components/NavPrimaria";
 import { FaqItem } from "@/components/FaqItem";
 import { CtaFinal } from "@/components/CtaFinal";
-import { PlaceholderImage } from "@/components/PlaceholderImage";
+import { DocumentCard } from "@/components/DocumentCard";
 import {
   servicos,
   contato,
@@ -353,7 +353,10 @@ export default function PageAVCB() {
               </div>
 
               <div>
-                <PlaceholderImage label="Escopo AVCB — imagem 16:9" />
+                <DocumentCard
+                  titulo="AVCB / CLCB"
+                  descricao="Auto de Vistoria ou Certificado de Licença do Corpo de Bombeiros — documento que certifica a regularidade do imóvel quanto à segurança contra incêndio e pânico."
+                />
 
                 {avcb.normaBase && (
                   <div

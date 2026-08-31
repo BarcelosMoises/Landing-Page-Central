@@ -206,6 +206,18 @@ export default function PageLaudosTecnicos() {
             aria-hidden="true"
           />
 
+          {/* Vídeo de fundo */}
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            aria-hidden="true"
+            className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none"
+          >
+            <source src="/videos/hero.mp4" type="video/mp4" />
+          </video>
+
           <div className="container-site relative z-10 pt-24 pb-20 md:pt-32 md:pb-28">
             <nav aria-label="Localização na página" className="mb-8">
               <ol className="flex items-center gap-2 text-xs text-neutral-500 font-mono">

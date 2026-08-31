@@ -7,7 +7,7 @@ import Link from "next/link";
 import { NavPrimaria } from "@/components/NavPrimaria";
 import { FaqItem } from "@/components/FaqItem";
 import { CtaFinal } from "@/components/CtaFinal";
-import { PlaceholderImage } from "@/components/PlaceholderImage";
+import { DocumentCard } from "@/components/DocumentCard";
 import {
   servicos,
   contato,
@@ -319,7 +319,10 @@ export default function PageLicenciamentoAmbiental() {
               </div>
 
               <div>
-                <PlaceholderImage label="Escopo Licenciamento Ambiental — imagem 16:9" />
+                <DocumentCard
+                  titulo="LP · LI · LO · LAS"
+                  descricao="Licenças ambientais (Prévia, Instalação, Operação e Simplificada) emitidas pelos órgãos licenciadores — INEA, CETESB, SUPRAM/SEMAD e IEMA."
+                />
 
                 {ambiental.normaBase && (
                   <div
