@@ -11,7 +11,7 @@ export function Footer() {
       className="relative"
       style={{
         backgroundColor:
-          "color-mix(in srgb, var(--color-service-accent, #800000) 12%, #1a0000)",
+          "color-mix(in srgb, var(--color-service-accent, #800000) 20%, #1a0000)",
       }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 md:py-16">
