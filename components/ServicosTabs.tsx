@@ -131,7 +131,7 @@ function ServicoCard({ servico }: { servico: Servico }) {
       className="flex flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm"
     >
       {temGaleria && servico.imagens ? (
-        <GaleriaBento imagens={servico.imagens} />
+        <GaleriaBento imagens={servico.imagens} icon={Icon} nome={servico.nome} />
       ) : null}
 
       <div className="flex flex-1 flex-col gap-3 p-6">
