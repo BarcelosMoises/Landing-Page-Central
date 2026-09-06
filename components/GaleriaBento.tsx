@@ -1,111 +1,90 @@
-"use client";
-
 /**
- * GaleriaBento — carrossel de imagens em bento grid para os cards de serviço.
+ * GaleriaBento — galeria estática em bento grid para o topo dos cards de serviço.
  *
- * Client Component. Recebe as imagens via props (nunca importa dados).
- * Estrutura:
- *   - Imagem ativa grande (col-span-2 row-span-2) com transição animada (motion).
- *   - Miniaturas clicáveis no bento grid (as 4 imagens seguintes à ativa).
- *   - Botões prev/next + contador, acessíveis via aria-label.
+ * Server-compatible (sem estado, sem interação, sem client-only libs): renderiza
+ * sempre a mesma composição — 1 foto grande à esquerda + 2 fotos empilhadas à
+ * direita — replicando o padrão visual aprovado pelo cliente.
  *
- * Animações: spring physics (stiffness/damping) — motion/react respeita
- * prefers-reduced-motion automaticamente.
+ * Quando o serviço ainda não possui fotos reais (`imagens` vazio/ausente),
+ * renderiza um preenchimento visual on-brand (ícone do serviço sobre fundo
+ * tintado), nunca um estado de "TODO"/"Em breve"/PlaceholderImage.
  */
-
-import { useState } from "react";
 import Image from "next/image";
-import { motion, AnimatePresence } from "motion/react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import type { ImagemServico } from "@/data/servicos";
 
 interface GaleriaBentoProps {
+  /** Fotos reais do serviço. Vazio/ausente → usa preenchimento com ícone. */
   imagens: readonly ImagemServico[];
+  /** Ícone do serviço (mesmo usado no cabeçalho do card), para o fallback. */
+  icon: LucideIcon;
+  /** Nome do serviço, usado apenas no aria-label do grupo de imagens reais. */
+  nome: string;
 }
 
-export function GaleriaBento({ imagens }: GaleriaBentoProps) {
-  const [indice, setIndice] = useState(0);
-  const total = imagens.length;
-  const ativa = imagens[indice];
-
-  const anterior = () => setIndice((i) => (i - 1 + total) % total);
-  const proxima = () => setIndice((i) => (i + 1) % total);
-
-  // Miniaturas: as 4 imagens seguintes à ativa (cíclico) — preenchem o bento grid.
-  const miniaturas = Array.from({ length: Math.min(4, total - 1) }, (_, k) =>
-    imagens[(indice + 1 + k) % total]
+function TileIcone({ icon: Icon }: { icon: LucideIcon }) {
+  return (
+    <div className="flex h-full w-full items-center justify-center bg-red-50">
+      <Icon
+        className="h-8 w-8"
+        style={{ color: "var(--color-service-accent, #800000)" }}
+        strokeWidth={1.5}
+        aria-hidden="true"
+      />
+    </div>
   );
+}
+
+export function GaleriaBento({ imagens, icon, nome }: GaleriaBentoProps) {
+  const temFotos = imagens.length > 0;
+  const destaque = temFotos ? imagens.find((img) => img.destaque) ?? imagens[0] : null;
+  const outras = temFotos ? imagens.filter((img) => img !== destaque) : [];
+  const secundarias: (ImagemServico | null)[] = temFotos
+    ? [outras[0] ?? null, outras[1] ?? null]
+    : [null, null];
 
   return (
-    <div className="flex flex-col gap-3">
-      {/* Bento grid: imagem ativa grande + miniaturas */}
-      <div className="grid grid-cols-3 grid-rows-2 gap-2">
-        {/* Imagem ativa (carrossel) — ocupa 2x2 */}
-        <div className="relative col-span-2 row-span-2 aspect-video rounded-xl overflow-hidden bg-neutral-100">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={ativa.src}
-              initial={{ opacity: 0, scale: 1.04 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.98 }}
-              transition={{ type: "spring", stiffness: 260, damping: 24 }}
-              className="absolute inset-0"
-            >
-              <Image
-                src={ativa.src}
-                alt={ativa.alt}
-                fill
-                sizes="(max-width: 768px) 100vw, 50vw"
-                className="object-cover"
-              />
-            </motion.div>
-          </AnimatePresence>
-
-          {/* Overlay gradiente para legibilidade dos controles */}
-          <div
-            aria-hidden="true"
-            className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"
+    <div
+      className="grid h-48 grid-cols-[1.6fr_1fr] gap-1.5 overflow-hidden rounded-t-2xl sm:h-56"
+      role="group"
+      aria-label={temFotos ? `Galeria de fotos: ${nome}` : undefined}
+    >
+      <div className="relative overflow-hidden rounded-lg">
+        {destaque ? (
+          <Image
+            src={destaque.src}
+            alt={destaque.alt}
+            fill
+            sizes="(min-width: 768px) 30vw, 60vw"
+            className="object-cover"
           />
-
-          {/* Botões prev/next */}
-          <button
-            onClick={anterior}
-            aria-label="Foto anterior"
-            className="absolute left-2 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-black/50 hover:bg-black/70 text-white flex items-center justify-center transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
-          >
-            <ChevronLeft className="w-5 h-5" aria-hidden="true" />
-          </button>
-          <button
-            onClick={proxima}
-            aria-label="Próxima foto"
-            className="absolute right-2 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-black/50 hover:bg-black/70 text-white flex items-center justify-center transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
-          >
-            <ChevronRight className="w-5 h-5" aria-hidden="true" />
-          </button>
-
-          {/* Contador */}
-          <span className="absolute bottom-2 right-2 z-10 text-xs font-mono tabular-nums text-white bg-black/50 rounded-full px-2.5 py-1">
-            {indice + 1} / {total}
-          </span>
-        </div>
-
-        {/* Miniaturas */}
-        {miniaturas.map((img) => (
-          <button
-            key={img.src}
-            onClick={() => setIndice(imagens.indexOf(img))}
-            aria-label={`Ver foto: ${img.alt}`}
-            className="relative h-full w-full rounded-lg overflow-hidden bg-neutral-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#800000] focus-visible:ring-offset-2"
-          >
-            <Image src={img.src} alt="" fill sizes="120px" className="object-cover" />
-          </button>
-        ))}
+        ) : (
+          <TileIcone icon={icon} />
+        )}
       </div>
 
-      {/* Legenda da imagem ativa */}
-      <p className="text-xs leading-relaxed" style={{ color: "#c4a8a8" }}>
-        {ativa.alt}
-      </p>
+      <div className="grid grid-rows-2 gap-1.5">
+        {secundarias.map((img, i) =>
+          img ? (
+            <div key={img.src} className="relative overflow-hidden rounded-lg">
+              <Image
+                src={img.src}
+                alt={img.alt}
+                fill
+                sizes="(min-width: 768px) 20vw, 40vw"
+                className="object-cover"
+              />
+            </div>
+          ) : (
+            <div
+              key={`galeria-fallback-${i}`}
+              className="relative overflow-hidden rounded-lg"
+            >
+              <TileIcone icon={icon} />
+            </div>
+          )
+        )}
+      </div>
     </div>
   );
 }
