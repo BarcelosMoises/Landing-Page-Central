@@ -10,18 +10,23 @@
  * Nunca importar `servicos` diretamente aqui — receber sempre via props.
  *
  * Estrutura das tabs:
- *   Legalização   → categoria "legalizacao"  (AVCB, Alvará, Ambiental, Prefeitura)
- *   Projetos      → categoria "projeto"      (Projetos Técnicos + sub-serviços)
- *   Laudos        → categorias "laudo" + "instalacao" (Laudos, SPDA, Aterramento, Continuidade)
+ * Legalização → categoria "legalizacao" (AVCB, Alvará, Ambiental, Prefeitura)
+ * Projetos → categoria "projeto" (Projetos Técnicos + sub-serviços)
+ * Laudos → categorias "laudo" + "instalacao" (Laudos, SPDA, Aterramento, Continuidade)
  *
  * SEO: todos os painéis renderizam no DOM; painéis inativos ocultados com
  * `hidden` (Tailwind → display:none via CSS, indexado pelo Googlebot).
  *
- * Grid: colunas responsivas (1/2/3); sem placeholders.
+ * Cada card exibe a galeria bento (GaleriaBento) fixa no topo, sempre visível,
+ * quando o serviço possui `imagens` reais em data/servicos.ts. Sem toggle,
+ * sem carrossel e sem placeholder: serviços ainda sem fotos reais exibem
+ * apenas ícone, título, descrição e CTA — nunca um bloco vazio ou "Em breve".
+ *
+ * Grid: 2 colunas fixas no desktop (md:grid-cols-2), 1 coluna no mobile.
  */
 
 import { useState, useRef } from "react";
-import { motion, useInView, AnimatePresence } from "motion/react";
+import { motion, useInView } from "motion/react";
 import {
   ShieldAlert,
   ClipboardCheck,
@@ -33,13 +38,11 @@ import {
   Radio,
   FileText,
   Ruler,
-  ChevronDown,
   type LucideProps,
 } from "lucide-react";
 import Link from "next/link";
 import { type Servico } from "@/data/servicos";
 import { GaleriaBento } from "@/components/GaleriaBento";
-import { PlaceholderImage } from "@/components/PlaceholderImage";
 
 // ─── Tipos ───────────────────────────────────────────────────────────────────────────────
 
@@ -74,7 +77,8 @@ const TABS: { id: TabId; label: string; ariaLabel: string }[] = [
   {
     id: "legalizacao",
     label: "Legalização",
-    ariaLabel: "Serviços de legalização: AVCB, Vigilância Sanitária, Licenciamento Ambiental e Regularização Municipal",
+    ariaLabel:
+      "Serviços de legalização: AVCB, Vigilância Sanitária, Licenciamento Ambiental e Regularização Municipal",
   },
   {
     id: "projetos",
@@ -84,7 +88,8 @@ const TABS: { id: TabId; label: string; ariaLabel: string }[] = [
   {
     id: "laudos",
     label: "Laudos Técnicos",
-    ariaLabel: "Laudos técnicos, SPDA, aterramento elétrico e testes de continuidade",
+    ariaLabel:
+      "Laudos técnicos, SPDA, aterramento elétrico e testes de continuidade",
   },
 ];
 
@@ -114,101 +119,51 @@ const itemVariants = {
 
 function ServicoCard({ servico }: { servico: Servico }) {
   const Icon = ICON_MAP[servico.iconeLucide] ?? ShieldAlert;
-  const [expandido, setExpandido] = useState(false);
 
   // nomeCurto é usado exclusivamente no título do card da tab.
   // nomeAbreviado permanece inalterado para todos os outros usos do site.
   const tituloCard = servico.nomeCurto ?? servico.nomeAbreviado;
+  const temGaleria = Boolean(servico.imagens && servico.imagens.length > 0);
 
   return (
     <motion.article
-      layout
-      aria-label={`Serviço: ${servico.nomeAbreviado}`}
-      className="bg-white border border-neutral-200/70 rounded-xl p-6 hover:shadow-lg transition-shadow duration-200 flex flex-col gap-4 h-full"
+      variants={itemVariants}
+      className="flex flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm"
     >
-      <div
-        style={{
-          backgroundColor:
-            "color-mix(in srgb, var(--color-service-accent, #800000) 10%, transparent)",
-        }}
-        className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
-        aria-hidden="true"
-      >
-        <Icon
-          style={{ color: "var(--color-service-accent, #800000)" }}
-          className="w-5 h-5"
-          strokeWidth={1.5}
-          aria-hidden="true"
-        />
-      </div>
+      {temGaleria && servico.imagens ? (
+        <GaleriaBento imagens={servico.imagens} />
+      ) : null}
 
-      <div className="flex flex-col gap-2 flex-1">
-        <h3 className="font-heading text-xl font-bold text-neutral-900 leading-snug">
-          {tituloCard}
-        </h3>
-        <p className="text-neutral-700 text-base leading-relaxed">
+      <div className="flex flex-1 flex-col gap-3 p-6">
+        <div className="flex items-center gap-3">
+          <span
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg"
+            style={{
+              backgroundColor:
+                "color-mix(in srgb, var(--color-service-accent, #800000) 10%, transparent)",
+              color: "var(--color-service-accent, #800000)",
+            }}
+            aria-hidden="true"
+          >
+            <Icon className="h-5 w-5" />
+          </span>
+          <h3 className="text-lg font-semibold text-neutral-900">
+            {tituloCard}
+          </h3>
+        </div>
+
+        <p className="flex-1 text-sm leading-relaxed text-neutral-600">
           {servico.descricao}
         </p>
-      </div>
 
-      <div className="flex flex-wrap items-center justify-between gap-3 mt-auto pt-2 border-t border-neutral-100">
         <Link
           href={servico.pathRota}
           style={{ color: "var(--color-service-accent, #800000)" }}
-          className="text-sm font-semibold hover:underline underline-offset-2 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#800000] focus-visible:ring-offset-2"
-          aria-label={`Saiba mais sobre ${servico.nome}`}
+          className="mt-1 inline-flex items-center gap-1.5 text-sm font-semibold hover:underline underline-offset-2 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#800000] focus-visible:ring-offset-2"
         >
           Saiba mais →
         </Link>
-
-        <button
-          onClick={() => setExpandido((v) => !v)}
-          aria-expanded={expandido}
-          aria-controls={`galeria-${servico.id}`}
-          aria-label={
-            expandido
-              ? `Ocultar galeria de ${servico.nome}`
-              : `Ver galeria de ${servico.nome}`
-          }
-          style={{ color: "var(--color-service-accent, #800000)" }}
-          className="inline-flex items-center gap-1.5 text-sm font-semibold hover:underline underline-offset-2 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#800000] focus-visible:ring-offset-2"
-        >
-          {expandido ? "Ocultar galeria" : "Ver galeria"}
-          <motion.span
-            animate={{ rotate: expandido ? 180 : 0 }}
-            transition={{ type: "spring", stiffness: 260, damping: 24 }}
-            aria-hidden="true"
-          >
-            <ChevronDown className="w-4 h-4" />
-          </motion.span>
-        </button>
       </div>
-
-      {/* Painel expansível — conteúdo sempre no DOM (SEO #5) */}
-      <AnimatePresence initial={false}>
-        {expandido && (
-          <motion.div
-            id={`galeria-${servico.id}`}
-            role="region"
-            aria-label={`Galeria de ${servico.nome}`}
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ type: "spring", stiffness: 260, damping: 24 }}
-            className="overflow-hidden"
-          >
-            <div className="pt-4 border-t border-neutral-100">
-              {servico.imagens && servico.imagens.length > 0 ? (
-                <GaleriaBento imagens={servico.imagens} />
-              ) : (
-                <PlaceholderImage
-                  label={`Galeria de ${servico.nomeAbreviado} — em breve`}
-                />
-              )}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </motion.article>
   );
 }
@@ -227,31 +182,18 @@ function TabPanel({
   inView: boolean;
 }) {
   return (
-    <div
-      role="tabpanel"
-      id={`tabpanel-${id}`}
-      aria-labelledby={`tab-${id}`}
-      className={isActive ? "" : "hidden"}
+    <motion.div
+      hidden={!isActive}
+      variants={containerVariants}
+      initial="hidden"
+      animate={inView ? "visible" : "hidden"}
+      className="grid grid-cols-1 gap-6 md:grid-cols-2"
+      data-tab-panel={id}
     >
-      <motion.ul
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
-        aria-label={`Serviços: ${id}`}
-        variants={containerVariants}
-        initial="hidden"
-        animate={isActive && inView ? "visible" : "hidden"}
-        key={id}
-      >
-        {servicos.map((servico) => (
-          <motion.li
-            key={servico.id}
-            className="list-none"
-            variants={itemVariants}
-          >
-            <ServicoCard servico={servico} />
-          </motion.li>
-        ))}
-      </motion.ul>
-    </div>
+      {servicos.map((servico) => (
+        <ServicoCard key={servico.id} servico={servico} />
+      ))}
+    </motion.div>
   );
 }
 
@@ -274,100 +216,75 @@ export function ServicosTabs({
 
   return (
     <section
-      ref={secaoRef}
       id="servicos"
-      aria-labelledby="servicos-tabs-heading"
-      className="relative bg-white py-16 md:py-24"
+      ref={secaoRef}
+      className="mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:px-8"
     >
-      <div className="container-site">
-
-        {/* Cabeçalho da seção */}
-        <motion.div
-          className="max-w-2xl mb-10"
-          initial={{ opacity: 0, y: 16 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] as const }}
+      {/* Cabeçalho da seção */}
+      <div className="mx-auto mb-12 max-w-2xl text-center">
+        <span
+          className="text-sm font-semibold uppercase tracking-wide"
+          style={{ color: "var(--color-service-accent, #800000)" }}
         >
-          <p
-            style={{ color: "var(--color-service-accent, #800000)" }}
-            className="text-xs font-semibold uppercase tracking-widest mb-3"
-          >
-            O que fazemos
-          </p>
-          <h2
-            id="servicos-tabs-heading"
-            className="font-heading text-2xl md:text-4xl font-bold text-neutral-900 leading-tight mb-4"
-          >
-            Nossos Serviços
-          </h2>
-          <p className="text-neutral-700 text-lg leading-relaxed">
-            Regularização completa de engenharia civil — AVCB, SPDA,
-            Licenciamento Ambiental, Vigilância Sanitária e Projetos Técnicos
-            com responsáveis técnicos que assinam as ARTs diretamente.
-          </p>
-        </motion.div>
-
-        {/* ── Barra de tabs ── */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.4, delay: 0.1, ease: [0.16, 1, 0.3, 1] as const }}
-        >
-          <div
-            role="tablist"
-            aria-label="Categorias de serviço"
-            className="flex flex-wrap border-b border-neutral-200 mb-10"
-          >
-            {TABS.map((tab) => {
-              const isActive = tab.id === tabAtiva;
-              return (
-                <button
-                  key={tab.id}
-                  role="tab"
-                  id={`tab-${tab.id}`}
-                  aria-selected={isActive}
-                  aria-controls={`tabpanel-${tab.id}`}
-                  aria-label={tab.ariaLabel}
-                  onClick={() => setTabAtiva(tab.id)}
-                  style={
-                    isActive
-                      ? {
-                          color: "var(--color-service-accent, #800000)",
-                          borderBottomColor:
-                            "var(--color-service-accent, #800000)",
-                        }
-                      : undefined
-                  }
-                  className={[
-                    "relative px-6 py-4 text-base font-semibold whitespace-nowrap",
-                    "border-b-2 -mb-px transition-colors duration-200",
-                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#800000] focus-visible:ring-offset-1",
-                    isActive
-                      ? ""
-                      : "border-transparent text-neutral-500 hover:text-neutral-800 hover:border-neutral-300",
-                  ]
-                    .join(" ")
-                    .trim()}
-                >
-                  {tab.label}
-                </button>
-              );
-            })}
-          </div>
-        </motion.div>
-
-        {/* ── Painéis de conteúdo ── */}
-        {TABS.map((tab) => (
-          <TabPanel
-            key={tab.id}
-            id={tab.id}
-            servicos={paineis[tab.id]}
-            isActive={tab.id === tabAtiva}
-            inView={inView}
-          />
-        ))}
-
+          O que fazemos
+        </span>
+        <h2 className="mt-2 text-3xl font-bold text-neutral-900 sm:text-4xl">
+          Nossos Serviços
+        </h2>
+        <p className="mt-4 text-base text-neutral-600">
+          Regularização completa de engenharia civil — AVCB, SPDA,
+          Licenciamento Ambiental, Vigilância Sanitária e Projetos Técnicos
+          com responsáveis técnicos que assinam as ARTs diretamente.
+        </p>
       </div>
+
+      {/* Barra de tabs */}
+      <div className="mb-10 flex justify-center border-b border-neutral-200">
+        {TABS.map((tab) => {
+          const isActive = tab.id === tabAtiva;
+          return (
+            <button
+              key={tab.id}
+              type="button"
+              aria-label={tab.ariaLabel}
+              aria-pressed={isActive}
+              onClick={() => setTabAtiva(tab.id)}
+              style={
+                isActive
+                  ? {
+                      color: "var(--color-service-accent, #800000)",
+                      borderBottomColor:
+                        "var(--color-service-accent, #800000)",
+                    }
+                  : undefined
+              }
+              className={[
+                "relative px-6 py-4 text-base font-semibold whitespace-nowrap",
+                "border-b-2 -mb-px transition-colors duration-200",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#800000] focus-visible:ring-offset-1",
+                isActive
+                  ? ""
+                  : "border-transparent text-neutral-500 hover:text-neutral-800 hover:border-neutral-300",
+              ]
+                .join(" ")
+                .trim()}
+            >
+              {tab.label}
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Painéis de conteúdo */}
+      {TABS.map((tab) => (
+        <TabPanel
+          key={tab.id}
+          id={tab.id}
+          servicos={paineis[tab.id]}
+          isActive={tab.id === tabAtiva}
+          inView={inView}
+        />
+      ))}
     </section>
   );
 }
