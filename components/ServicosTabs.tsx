@@ -21,11 +21,10 @@
  * (user-agent stylesheet), então o className precisa alternar entre os dois
  * estados em vez de somar classes conflitantes.
  *
- * Cada card exibe ícone, título, descrição e CTA sempre visíveis. Quando o
- * serviço possui `imagens` reais em data/servicos.ts, um botão "Ver fotos"
- * expande um painel com o carrossel bento animado (GaleriaCarrossel). Sem
- * fotos reais, o botão simplesmente não aparece — nunca um placeholder ou
- * bloco vazio.
+ * Cards com fotos reais exibem um bento grid como prévia fixa no topo. Ao
+ * clicar no bento ou em "Ver fotos", o card expande inline e revela um
+ * carrossel horizontal animado. Serviços sem fotos não renderizam galeria,
+ * placeholder ou espaço vazio.
  *
  * Grid: 2 colunas fixas no desktop (md:grid-cols-2), 1 coluna no mobile.
  */
@@ -48,7 +47,8 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { type Servico } from "@/data/servicos";
-import { GaleriaCarrossel } from "@/components/GaleriaCarrossel";
+import { GaleriaBentoPreview } from "@/components/GaleriaBentoPreview";
+import { GaleriaCarrosselHorizontal } from "@/components/GaleriaCarrosselHorizontal";
 
 // ─── Tipos ───────────────────────────────────────────────────────────────────────────────
 
@@ -111,11 +111,11 @@ const containerVariants = {
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 8 },
+  hidden: { opacity: 0, y: 18 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1] as const },
+    transition: { duration: 0.42, ease: [0.16, 1, 0.3, 1] as const },
   },
 };
 
@@ -129,12 +129,23 @@ function ServicoCard({ servico }: { servico: Servico }) {
   // nomeAbreviado permanece inalterado para todos os outros usos do site.
   const tituloCard = servico.nomeCurto ?? servico.nomeAbreviado;
   const temGaleria = Boolean(servico.imagens && servico.imagens.length > 0);
+  const alternarGaleria = () => setExpandido((valor) => !valor);
+  const abrirGaleria = () => setExpandido(true);
 
   return (
     <motion.article
+      layout
       variants={itemVariants}
       className="flex flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm"
     >
+      {temGaleria && servico.imagens ? (
+        <GaleriaBentoPreview
+          imagens={servico.imagens}
+          nome={servico.nome}
+          onOpen={abrirGaleria}
+        />
+      ) : null}
+
       <div className="flex flex-1 flex-col gap-3 p-6">
         <div className="flex items-center gap-3">
           <span
@@ -169,7 +180,7 @@ function ServicoCard({ servico }: { servico: Servico }) {
           {temGaleria ? (
             <button
               type="button"
-              onClick={() => setExpandido((v) => !v)}
+              onClick={alternarGaleria}
               aria-expanded={expandido}
               aria-controls={`galeria-${servico.id}`}
               aria-label={
@@ -202,7 +213,10 @@ function ServicoCard({ servico }: { servico: Servico }) {
             transition={{ type: "spring", stiffness: 300, damping: 32 }}
             className="overflow-hidden border-t border-neutral-100"
           >
-            <GaleriaCarrossel imagens={servico.imagens} nome={servico.nome} />
+            <GaleriaCarrosselHorizontal
+              imagens={servico.imagens}
+              nome={servico.nome}
+            />
           </motion.div>
         ) : null}
       </AnimatePresence>
