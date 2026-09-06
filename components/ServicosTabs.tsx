@@ -111,11 +111,11 @@ const containerVariants = {
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 18 },
+  hidden: { opacity: 0, y: 8 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.42, ease: [0.16, 1, 0.3, 1] as const },
+    transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1] as const },
   },
 };
 
@@ -132,7 +132,6 @@ function ServicoCard({ servico }: { servico: Servico }) {
 
   return (
     <motion.article
-      layout
       variants={itemVariants}
       className="flex flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm"
     >
