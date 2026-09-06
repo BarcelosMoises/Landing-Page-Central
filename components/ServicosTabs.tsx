@@ -21,16 +21,17 @@
  * (user-agent stylesheet), então o className precisa alternar entre os dois
  * estados em vez de somar classes conflitantes.
  *
- * Cada card exibe a galeria bento (GaleriaBento) fixa no topo, sempre visível,
- * quando o serviço possui `imagens` reais em data/servicos.ts. Sem toggle,
- * sem carrossel e sem placeholder: serviços ainda sem fotos reais exibem
- * apenas ícone, título, descrição e CTA — nunca um bloco vazio ou "Em breve".
+ * Cada card exibe ícone, título, descrição e CTA sempre visíveis. Quando o
+ * serviço possui `imagens` reais em data/servicos.ts, um botão "Ver fotos"
+ * expande um painel com o carrossel bento animado (GaleriaCarrossel). Sem
+ * fotos reais, o botão simplesmente não aparece — nunca um placeholder ou
+ * bloco vazio.
  *
  * Grid: 2 colunas fixas no desktop (md:grid-cols-2), 1 coluna no mobile.
  */
 
 import { useState, useRef } from "react";
-import { motion, useInView } from "motion/react";
+import { motion, AnimatePresence, useInView } from "motion/react";
 import {
   ShieldAlert,
   ClipboardCheck,
@@ -42,11 +43,12 @@ import {
   Radio,
   FileText,
   Ruler,
+  ChevronDown,
   type LucideIcon,
 } from "lucide-react";
 import Link from "next/link";
 import { type Servico } from "@/data/servicos";
-import { GaleriaBento } from "@/components/GaleriaBento";
+import { GaleriaCarrossel } from "@/components/GaleriaCarrossel";
 
 // ─── Tipos ───────────────────────────────────────────────────────────────────────────────
 
@@ -121,6 +123,7 @@ const itemVariants = {
 
 function ServicoCard({ servico }: { servico: Servico }) {
   const Icon = ICON_MAP[servico.iconeLucide] ?? ShieldAlert;
+  const [expandido, setExpandido] = useState(false);
 
   // nomeCurto é usado exclusivamente no título do card da tab.
   // nomeAbreviado permanece inalterado para todos os outros usos do site.
@@ -129,13 +132,10 @@ function ServicoCard({ servico }: { servico: Servico }) {
 
   return (
     <motion.article
+      layout
       variants={itemVariants}
       className="flex flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm"
     >
-      {temGaleria && servico.imagens ? (
-        <GaleriaBento imagens={servico.imagens} icon={Icon} nome={servico.nome} />
-      ) : null}
-
       <div className="flex flex-1 flex-col gap-3 p-6">
         <div className="flex items-center gap-3">
           <span
@@ -158,14 +158,55 @@ function ServicoCard({ servico }: { servico: Servico }) {
           {servico.descricao}
         </p>
 
-        <Link
-          href={servico.pathRota}
-          style={{ color: "var(--color-service-accent, #800000)" }}
-          className="mt-1 inline-flex items-center gap-1.5 text-sm font-semibold hover:underline underline-offset-2 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#800000] focus-visible:ring-offset-2"
-        >
-          Saiba mais →
-        </Link>
+        <div className="mt-1 flex items-center justify-between gap-3">
+          <Link
+            href={servico.pathRota}
+            style={{ color: "var(--color-service-accent, #800000)" }}
+            className="inline-flex items-center gap-1.5 text-sm font-semibold hover:underline underline-offset-2 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#800000] focus-visible:ring-offset-2"
+          >
+            Saiba mais →
+          </Link>
+
+          {temGaleria ? (
+            <button
+              type="button"
+              onClick={() => setExpandido((v) => !v)}
+              aria-expanded={expandido}
+              aria-controls={`galeria-${servico.id}`}
+              aria-label={
+                expandido
+                  ? `Ocultar galeria de fotos de ${servico.nome}`
+                  : `Ver galeria de fotos de ${servico.nome}`
+              }
+              className="inline-flex items-center gap-1 text-sm font-medium text-neutral-500 transition-colors duration-150 hover:text-neutral-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#800000] focus-visible:ring-offset-2"
+            >
+              {expandido ? "Ocultar fotos" : "Ver fotos"}
+              <ChevronDown
+                className={
+                  "h-4 w-4 transition-transform duration-200" +
+                  (expandido ? " rotate-180" : "")
+                }
+              />
+            </button>
+          ) : null}
+        </div>
       </div>
+
+      <AnimatePresence initial={false}>
+        {expandido && temGaleria && servico.imagens ? (
+          <motion.div
+            key="galeria"
+            id={`galeria-${servico.id}`}
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ type: "spring", stiffness: 300, damping: 32 }}
+            className="overflow-hidden border-t border-neutral-100"
+          >
+            <GaleriaCarrossel imagens={servico.imagens} nome={servico.nome} />
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
     </motion.article>
   );
 }
