@@ -22,15 +22,15 @@
  * estados em vez de somar classes conflitantes.
  *
  * Cards com fotos reais exibem um bento grid como prévia fixa no topo. Ao
- * clicar no bento ou em "Ver fotos", o card expande inline e revela um
- * carrossel horizontal animado. Serviços sem fotos não renderizam galeria,
- * placeholder ou espaço vazio.
+ * clicar no bento ou em "Ver fotos", um dialog modal acessível abre o
+ * carrossel horizontal, preservando a altura e a composição da grade.
+ * Serviços sem fotos não renderizam galeria, placeholder ou espaço vazio.
  *
  * Grid: 2 colunas fixas no desktop (md:grid-cols-2), 1 coluna no mobile.
  */
 
 import { useState, useRef } from "react";
-import { motion, AnimatePresence, useInView } from "motion/react";
+import { motion, useInView } from "motion/react";
 import {
   ShieldAlert,
   ClipboardCheck,
@@ -42,13 +42,12 @@ import {
   Radio,
   FileText,
   Ruler,
-  ChevronDown,
   type LucideIcon,
 } from "lucide-react";
 import Link from "next/link";
 import { type Servico } from "@/data/servicos";
 import { GaleriaBentoPreview } from "@/components/GaleriaBentoPreview";
-import { GaleriaCarrosselHorizontal } from "@/components/GaleriaCarrosselHorizontal";
+import { GaleriaModal } from "@/components/GaleriaModal";
 
 // ─── Tipos ───────────────────────────────────────────────────────────────────────────────
 
@@ -123,18 +122,17 @@ const itemVariants = {
 
 function ServicoCard({ servico }: { servico: Servico }) {
   const Icon = ICON_MAP[servico.iconeLucide] ?? ShieldAlert;
-  const [expandido, setExpandido] = useState(false);
+  const [galeriaAberta, setGaleriaAberta] = useState(false);
 
   // nomeCurto é usado exclusivamente no título do card da tab.
   // nomeAbreviado permanece inalterado para todos os outros usos do site.
   const tituloCard = servico.nomeCurto ?? servico.nomeAbreviado;
   const temGaleria = Boolean(servico.imagens && servico.imagens.length > 0);
-  const alternarGaleria = () => setExpandido((valor) => !valor);
-  const abrirGaleria = () => setExpandido(true);
+  const abrirGaleria = () => setGaleriaAberta(true);
+  const fecharGaleria = () => setGaleriaAberta(false);
 
   return (
     <motion.article
-      layout
       variants={itemVariants}
       className="flex flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm"
     >
@@ -180,46 +178,25 @@ function ServicoCard({ servico }: { servico: Servico }) {
           {temGaleria ? (
             <button
               type="button"
-              onClick={alternarGaleria}
-              aria-expanded={expandido}
-              aria-controls={`galeria-${servico.id}`}
-              aria-label={
-                expandido
-                  ? `Ocultar galeria de fotos de ${servico.nome}`
-                  : `Ver galeria de fotos de ${servico.nome}`
-              }
+              onClick={abrirGaleria}
+              aria-haspopup="dialog"
+              aria-label={`Ver galeria de fotos de ${servico.nome}`}
               className="inline-flex items-center gap-1 text-sm font-medium text-neutral-500 transition-colors duration-150 hover:text-neutral-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#800000] focus-visible:ring-offset-2"
             >
-              {expandido ? "Ocultar fotos" : "Ver fotos"}
-              <ChevronDown
-                className={
-                  "h-4 w-4 transition-transform duration-200" +
-                  (expandido ? " rotate-180" : "")
-                }
-              />
+              Ver fotos
             </button>
           ) : null}
         </div>
       </div>
 
-      <AnimatePresence initial={false}>
-        {expandido && temGaleria && servico.imagens ? (
-          <motion.div
-            key="galeria"
-            id={`galeria-${servico.id}`}
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ type: "spring", stiffness: 300, damping: 32 }}
-            className="overflow-hidden border-t border-neutral-100"
-          >
-            <GaleriaCarrosselHorizontal
-              imagens={servico.imagens}
-              nome={servico.nome}
-            />
-          </motion.div>
-        ) : null}
-      </AnimatePresence>
+      {temGaleria && servico.imagens ? (
+        <GaleriaModal
+          aberta={galeriaAberta}
+          imagens={servico.imagens}
+          nome={servico.nome}
+          onClose={fecharGaleria}
+        />
+      ) : null}
     </motion.article>
   );
 }
