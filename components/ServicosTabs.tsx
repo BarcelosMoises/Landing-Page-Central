@@ -21,7 +21,7 @@
  */
 
 import { useState, useRef } from "react";
-import { motion, useInView } from "motion/react";
+import { motion, useInView, AnimatePresence } from "motion/react";
 import {
   ShieldAlert,
   ClipboardCheck,
@@ -33,10 +33,13 @@ import {
   Radio,
   FileText,
   Ruler,
+  ChevronDown,
   type LucideProps,
 } from "lucide-react";
 import Link from "next/link";
 import { type Servico } from "@/data/servicos";
+import { GaleriaBento } from "@/components/GaleriaBento";
+import { PlaceholderImage } from "@/components/PlaceholderImage";
 
 // ─── Tipos ───────────────────────────────────────────────────────────────────────────────
 
@@ -111,13 +114,15 @@ const itemVariants = {
 
 function ServicoCard({ servico }: { servico: Servico }) {
   const Icon = ICON_MAP[servico.iconeLucide] ?? ShieldAlert;
+  const [expandido, setExpandido] = useState(false);
 
   // nomeCurto é usado exclusivamente no título do card da tab.
   // nomeAbreviado permanece inalterado para todos os outros usos do site.
   const tituloCard = servico.nomeCurto ?? servico.nomeAbreviado;
 
   return (
-    <article
+    <motion.article
+      layout
       aria-label={`Serviço: ${servico.nomeAbreviado}`}
       className="bg-white border border-neutral-200/70 rounded-xl p-6 hover:shadow-lg transition-shadow duration-200 flex flex-col gap-4 h-full"
     >
@@ -147,7 +152,6 @@ function ServicoCard({ servico }: { servico: Servico }) {
       </div>
 
       <div className="flex flex-wrap items-center justify-between gap-3 mt-auto pt-2 border-t border-neutral-100">
-
         <Link
           href={servico.pathRota}
           style={{ color: "var(--color-service-accent, #800000)" }}
@@ -156,8 +160,56 @@ function ServicoCard({ servico }: { servico: Servico }) {
         >
           Saiba mais →
         </Link>
+
+        <button
+          onClick={() => setExpandido((v) => !v)}
+          aria-expanded={expandido}
+          aria-controls={`galeria-${servico.id}`}
+          aria-label={
+            expandido
+              ? `Ocultar galeria de ${servico.nome}`
+              : `Ver galeria de ${servico.nome}`
+          }
+          style={{ color: "var(--color-service-accent, #800000)" }}
+          className="inline-flex items-center gap-1.5 text-sm font-semibold hover:underline underline-offset-2 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#800000] focus-visible:ring-offset-2"
+        >
+          {expandido ? "Ocultar galeria" : "Ver galeria"}
+          <motion.span
+            animate={{ rotate: expandido ? 180 : 0 }}
+            transition={{ type: "spring", stiffness: 260, damping: 24 }}
+            aria-hidden="true"
+          >
+            <ChevronDown className="w-4 h-4" />
+          </motion.span>
+        </button>
       </div>
-    </article>
+
+      {/* Painel expansível — conteúdo sempre no DOM (SEO #5) */}
+      <AnimatePresence initial={false}>
+        {expandido && (
+          <motion.div
+            id={`galeria-${servico.id}`}
+            role="region"
+            aria-label={`Galeria de ${servico.nome}`}
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ type: "spring", stiffness: 260, damping: 24 }}
+            className="overflow-hidden"
+          >
+            <div className="pt-4 border-t border-neutral-100">
+              {servico.imagens && servico.imagens.length > 0 ? (
+                <GaleriaBento imagens={servico.imagens} titulo={servico.nome} />
+              ) : (
+                <PlaceholderImage
+                  label={`Galeria de ${servico.nomeAbreviado} — em breve`}
+                />
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.article>
   );
 }
 

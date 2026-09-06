@@ -597,6 +597,76 @@ Border radius padrão: rounded-lg (8px) | rounded-xl (12px) para cards
 </div>
 ```
 
+### Cards Expansíveis com Galeria Bento (Set 2026)
+
+> **Proposta do cliente:** os cards de serviço da homepage ganham fotos reais e, ao clicar,
+> expandem para exibir um **carrossel de imagens em bento grid** com animações.
+
+#### Estrutura
+
+- **Card (`ServicoCard`)** — `motion.article` com `layout`, botão "Ver galeria" com `aria-expanded`/`aria-controls`.
+- **Painel expansível** — `AnimatePresence` + `motion.div` com `height: 0 → auto` (spring), conteúdo **sempre no DOM** (SEO #5).
+- **Galeria (`GaleriaBento`)** — Client Component que recebe `imagens` via props (nunca importa dados).
+
+#### Dados — campo `imagens` em `Servico`
+
+```ts
+interface ImagemServico {
+  readonly src: string;      // ex.: "/images/card-bombeiro/img1.jpeg"
+  readonly alt: string;      // alt técnico descritivo (regra SEO #6)
+  readonly destaque?: boolean; // foto grande no bento grid (2x2)
+}
+
+interface Servico {
+  // ...campos existentes
+  readonly imagens?: readonly ImagemServico[];
+}
+```
+
+> **Regra:** componentes nunca hardcodam imagens — sempre via `servico.imagens`.
+> Quando `imagens` está ausente, o card usa `PlaceholderImage` (dev-only, `data-todo="placeholder"`).
+
+#### Bento grid (assimétrico — evita as "3 colunas iguais" do padrão genérico de IA)
+
+```tsx
+<div className="grid grid-cols-3 grid-rows-2 gap-2">
+  {/* Imagem ativa (carrossel) — ocupa 2x2 */}
+  <div className="relative col-span-2 row-span-2 aspect-video rounded-xl overflow-hidden">
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={ativa.src}
+        initial={{ opacity: 0, scale: 1.04 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.98 }}
+        transition={{ type: "spring", stiffness: 260, damping: 24 }}
+        className="absolute inset-0"
+      >
+        <Image src={ativa.src} alt={ativa.alt} fill sizes="50vw" className="object-cover" />
+      </motion.div>
+    </AnimatePresence>
+  </div>
+  {/* Miniaturas clicáveis (4 seguintes à ativa) */}
+  {miniaturas.map((img) => (
+    <button onClick={() => setIndice(imagens.indexOf(img))} aria-label={`Ver foto: ${img.alt}`}>
+      <Image src={img.src} alt="" fill sizes="120px" className="object-cover" />
+    </button>
+  ))}
+</div>
+```
+
+#### Regras de implementação
+
+- **Animações:** spring physics (`stiffness: 260, damping: 24`) no expandir/colapsar e na troca de imagem — nunca `width`/`height`/`top`/`left` (usar `transform`/`opacity`).
+- **`prefers-reduced-motion`:** `motion/react` respeita automaticamente (AGENTS.md exige).
+- **Acessibilidade (WCAG AA):**
+  - Botão do card: `aria-expanded`, `aria-controls`, `aria-label` descritivo.
+  - Painel: `role="region"` + `aria-label`.
+  - Carrossel: botões prev/next com `aria-label` ("Foto anterior"/"Próxima foto"), contador `1 / N`.
+  - `focus-visible:ring-[#800000]` em todos os controles.
+- **SEO:** conteúdo do painel sempre no DOM; `alt` técnico descritivo em cada foto.
+- **Ícones:** `lucide-react` (padrão do projeto) — `ChevronDown` no botão, `ChevronLeft`/`ChevronRight` no carrossel.
+- **Placeholder:** `PlaceholderImage` com `data-todo="placeholder"` — removido antes do deploy (gate: `grep -rn 'data-todo="placeholder"' app components` deve retornar vazio).
+
 ### Barra de Confiança (Trust Bar)
 
 ```tsx

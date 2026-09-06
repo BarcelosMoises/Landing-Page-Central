@@ -33,6 +33,15 @@ export interface SubServico {
   readonly entregavel?: string;
 }
 
+export interface ImagemServico {
+  /** Caminho da imagem em /public, ex.: "/images/card-bombeiro/img1.jpeg" */
+  readonly src: string;
+  /** Alt técnico descritivo (regra SEO #6) — descreve o conteúdo real da foto */
+  readonly alt: string;
+  /** Foto de destaque no bento grid (ocupa 2x2) */
+  readonly destaque?: boolean;
+}
+
 export interface Servico {
   readonly id: string;
   readonly slug: string;
@@ -56,6 +65,11 @@ export interface Servico {
   readonly normaBase?: readonly string[];
   readonly iconeLucide: string;
   readonly pathRota: string;
+  /**
+   * Galeria de imagens do serviço exibida no card expansível da homepage.
+   * Quando ausente, o card usa um placeholder (dev-only) até haver fotos reais.
+   */
+  readonly imagens?: readonly ImagemServico[];
   /**
    * Controla se o serviço aparece como card nas ServicosTabs da homepage.
    * `undefined` ou `true`  → exibir (padrão para todos os serviços novos).
@@ -182,6 +196,37 @@ export const servicos: readonly Servico[] = [
     ],
     iconeLucide: "ShieldAlert",
     pathRota: "/avcb-corpo-de-bombeiros",
+    imagens: [
+      {
+        src: "/images/card-bombeiro/img1.jpeg",
+        alt: "Técnico com capacete branco e óculos de proteção inspecionando hidrante de incêndio em galpão industrial",
+        destaque: true,
+      },
+      {
+        src: "/images/card-bombeiro/img2.jpeg",
+        alt: "Central de gás de combate a incêndio com cilindros vermelhos e tubulação em galpão logístico",
+      },
+      {
+        src: "/images/card-bombeiro/img3.jpeg",
+        alt: "Galpão industrial com centenas de extintores de incêndio armazenados para manutenção e recarga",
+      },
+      {
+        src: "/images/card-bombeiro/img4.jpeg",
+        alt: "Estoque de extintores de incêndio e cilindros de gás em galpão de manutenção",
+      },
+      {
+        src: "/images/card-bombeiro/img5.jpeg",
+        alt: "Conjunto motor-bomba de incêndio Branco BD 815E XS com tubulação vermelha e registros",
+      },
+      {
+        src: "/images/card-bombeiro/img6.jpeg",
+        alt: "Casa de bombas de incêndio com reservatórios pressurizados e tubulação vermelha",
+      },
+      {
+        src: "/images/card-bombeiro/img7.jpeg",
+        alt: "Hidrante de incêndio com tubulação vermelha e abrigo de mangueiras em área industrial",
+      },
+    ],
   },
   {
     id: "vigilancia-sanitaria",
