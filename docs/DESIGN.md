@@ -1,7 +1,7 @@
 # DESIGN.md — Central de Soluções Landing Page
 > Sistema de design completo para uso pelos agentes de IA e desenvolvedores.
 > Estilo: Cinemático Industrial — sóbrio, técnico, confiável, premium B2B.
-> Última atualização: Maio 2026
+> Última atualização: Setembro 2026
 
 ---
 
@@ -445,6 +445,8 @@ Border radius padrão: rounded-lg (8px) | rounded-xl (12px) para cards
 - **Altura:** `min-h-[90vh]`
 - **Layout:** centralizado verticalmente, texto à esquerda em desktop
 - **Vídeo (opcional):** carregar apenas em `(prefers-reduced-motion: no-preference)` + conexão rápida via `navigator.connection`; sempre com fallback de imagem estática
+- **Copy do H1 (Set 2026):** "Soluções para *legalizar* sua empresa." — verbo "legalizar" destacado em `primary-light` (`#a30000`) com `italic`
+- **Pilares do hero:** fila horizontal de ícones (`lucide-react`) + label com **separadores verticais** (`h-10 w-px bg-white/25`) — sem cards. Cada item é um link âncora com `aria-label` descritivo
 
 ```tsx
 // Estrutura do Hero
@@ -462,12 +464,35 @@ Border radius padrão: rounded-lg (8px) | rounded-xl (12px) para cards
   {/* Conteúdo */}
   <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <h1 className="font-heading text-4xl md:text-6xl font-extrabold text-white leading-tight">
-      ...
+      Soluções para{" "}
+      <span style={{ color: "#a30000" }} className="italic">
+        legalizar
+      </span>{" "}
+      sua empresa.
     </h1>
     {/* CTA */}
   </div>
 </section>
 ```
+
+#### Pilares do Hero (ícones + separadores)
+
+> **Proposta do cliente (Set 2026):** substituir os 3 cards por uma linha de ícones
+> (escudo · documento com caneta · documento com check) com separadores verticais.
+
+| Ícone (`lucide-react`) | Label | Descrição (aria-label) |
+|---|---|---|
+| `ShieldCheck` | Legalização | AVCB, Alvará Sanitário, Licenciamento Ambiental |
+| `FilePenLine` | Projetos Técnicos | Incêndio, VISA, Hidráulico, Acessibilidade, PGRS |
+| `FileCheck2` | Laudos Técnicos | SPDA, Aterramento, Continuidade, Exigências |
+
+**Regras:**
+- Ícones `w-6 h-6 text-white shrink-0` — herdados de `lucide-react` (padrão do projeto em `ServicosTabs`, `SetoresAtendidos`, `MapaAtuacao`).
+- Labels em `uppercase tracking-wide text-sm font-semibold text-white`.
+- Separadores verticais: `h-10 w-px bg-white/25`, `aria-hidden="true"`, ocultos em mobile (`hidden sm:inline-block`).
+- Cada item é um link âncora (`href="#servicos"`) com `aria-label` descritivo e `focus-visible:ring-white`.
+- **Responsivo:** `flex flex-wrap` — em mobile os itens quebram em linha sem overflow; os separadores somem para evitar ruído.
+- Labels vêm de `PILARES_HERO` em `app/(homepage)/page.tsx` — nunca hardcodar texto de serviço em componentes.
 
 ### ServicosTabs
 

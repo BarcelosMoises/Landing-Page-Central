@@ -4,6 +4,7 @@
 // Accent: #800000 (vinho) — cor primária da marca.
 
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { NavPrimaria } from "@/components/NavPrimaria";
 import { FaqItem } from "@/components/FaqItem";
@@ -220,17 +221,16 @@ export default function PageAVCB() {
             aria-hidden="true"
           />
 
-          {/* Vídeo de fundo */}
-          <video
-            autoPlay
-            muted
-            loop
-            playsInline
-            aria-hidden="true"
-            className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none"
-          >
-            <source src="/videos/sirene.mp4" type="video/mp4" />
-          </video>
+          {/* Imagem de fundo */}
+          <Image
+            src="/images/hero-bombeiros.png"
+            alt="Edificio industrial con sistema de seguridad contra incendios — AVCB"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-center opacity-20"
+            quality={85}
+          />
 
           <div className="container-site relative z-10 pt-24 pb-20 md:pt-32 md:pb-28">
             <nav aria-label="Localização na página" className="mb-8">

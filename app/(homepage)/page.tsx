@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ShieldCheck, FilePenLine, FileCheck2 } from "lucide-react";
 
 import { JsonLd } from "@/components/JsonLd";
 import { NavPrimaria } from "@/components/NavPrimaria";
@@ -79,19 +80,22 @@ const servicosLaudos = [
 
 const PILARES_HERO = [
   {
-    label: "Legalizações",
+    label: "Legalização",
     descricao: "AVCB, Alvará Sanitário, Licenciamento Ambiental",
     href: "#servicos",
+    Icone: ShieldCheck,
   },
   {
     label: "Projetos Técnicos",
     descricao: "Incêndio, VISA, Hidráulico, Acessibilidade, PGRS",
     href: "#servicos",
+    Icone: FilePenLine,
   },
   {
     label: "Laudos Técnicos",
     descricao: "SPDA, Aterramento, Continuidade, Exigências",
     href: "#servicos",
+    Icone: FileCheck2,
   },
 ] as const;
 
@@ -172,11 +176,11 @@ export default function HomePage() {
               style={{ textShadow: "0 2px 16px rgba(0,0,0,0.7)" }}
               className="font-heading text-4xl sm:text-5xl md:text-6xl font-extrabold text-white leading-tight mb-4 max-w-3xl"
             >
-              Regularização de{" "}
+              Soluções para{" "}
               <span style={{ color: "#a30000" }} className="italic">
-                Engenharia
+                legalizar
               </span>{" "}
-              para sua Empresa
+              sua empresa.
             </h1>
 
             {/* text-white/90: contraste ≥ 4.5:1 mesmo sobre frames claros do vídeo ✓ WCAG AA */}
@@ -226,23 +230,33 @@ export default function HomePage() {
             </div>
 
             {/*
-              Cards dos pilares: border e texto elevados para garantir leitura
-              sobre o fundo dinâmico do vídeo.
-              border-white/25 (era /15) e bg-white/8 (era /5): mais visíveis sem
-              perder a sensação de leveza.
-              text-white/75 nos subtextos (era /60): contraste seguro sobre vídeo.
+              Pilares do hero: fila de ícones + label com separadores verticais.
+              Segue a proposta do cliente (escudo · documento · check) sem cards,
+              com divisores verticais e acessíveis via aria-label.
             */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-3xl">
-              {PILARES_HERO.map((pilar) => (
-                <a
-                  key={pilar.label}
-                  href={pilar.href}
-                  aria-label={`${pilar.label}: ${pilar.descricao}`}
-                  className="group flex flex-col gap-1 rounded-xl border border-white/25 bg-white/8 px-4 py-3.5 hover:bg-white/15 hover:border-white/40 active:bg-white/20 transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-1 focus-visible:ring-offset-transparent"
-                >
-                  <span className="text-sm font-semibold text-white leading-snug">{pilar.label}</span>
-                  <span className="text-xs text-white/75 leading-snug">{pilar.descricao}</span>
-                </a>
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-4 max-w-3xl">
+              {PILARES_HERO.map((pilar, index) => (
+                <div key={pilar.label} className="flex items-center gap-3">
+                  {index > 0 && (
+                    <span
+                      aria-hidden="true"
+                      className="hidden sm:inline-block h-10 w-px bg-white/25"
+                    />
+                  )}
+                  <a
+                    href={pilar.href}
+                    aria-label={`${pilar.label}: ${pilar.descricao}`}
+                    className="group flex items-center gap-3 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
+                  >
+                    <pilar.Icone
+                      className="w-6 h-6 text-white shrink-0 group-hover:opacity-80 transition-opacity duration-200"
+                      aria-hidden="true"
+                    />
+                    <span className="text-sm font-semibold text-white uppercase tracking-wide leading-snug">
+                      {pilar.label}
+                    </span>
+                  </a>
+                </div>
               ))}
             </div>
           </div>

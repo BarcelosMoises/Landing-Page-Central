@@ -36,3 +36,7 @@ next-env.d.ts
 # os
 .DS_Store
 Thumbs.db
+urls.txt
+seo_landing_audit_batch.py
+seo_audit_summary.csv
+seo_audit_report.json
