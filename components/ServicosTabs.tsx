@@ -15,7 +15,11 @@
  * Laudos → categorias "laudo" + "instalacao" (Laudos, SPDA, Aterramento, Continuidade)
  *
  * SEO: todos os painéis renderizam no DOM; painéis inativos ocultados com
- * `hidden` (Tailwind → display:none via CSS, indexado pelo Googlebot).
+ * a classe Tailwind `hidden` (display:none via CSS de autor, indexado pelo
+ * Googlebot). Importante: nunca combinar a classe `hidden` com `grid`/`flex`
+ * no mesmo elemento — CSS de autor sempre vence o atributo HTML `hidden`
+ * (user-agent stylesheet), então o className precisa alternar entre os dois
+ * estados em vez de somar classes conflitantes.
  *
  * Cada card exibe a galeria bento (GaleriaBento) fixa no topo, sempre visível,
  * quando o serviço possui `imagens` reais em data/servicos.ts. Sem toggle,
@@ -181,11 +185,12 @@ function TabPanel({
 }) {
   return (
     <motion.div
-      hidden={!isActive}
       variants={containerVariants}
       initial="hidden"
       animate={inView ? "visible" : "hidden"}
-      className="grid grid-cols-1 gap-6 md:grid-cols-2"
+      className={
+        isActive ? "grid grid-cols-1 gap-6 md:grid-cols-2" : "hidden"
+      }
       data-tab-panel={id}
     >
       {servicos.map((servico) => (
