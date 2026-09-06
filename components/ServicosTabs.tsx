@@ -38,7 +38,7 @@ import {
   Radio,
   FileText,
   Ruler,
-  type LucideProps,
+  type LucideIcon,
 } from "lucide-react";
 import Link from "next/link";
 import { type Servico } from "@/data/servicos";
@@ -56,9 +56,7 @@ export interface ServicosTabsProps {
 
 // ─── Mapa de ícones ──────────────────────────────────────────────────────────────────────────
 
-type IconComponent = React.ComponentType<LucideProps>;
-
-const ICON_MAP: Record<string, IconComponent> = {
+const ICON_MAP: Record<string, LucideIcon> = {
   ShieldAlert,
   ClipboardCheck,
   Leaf,
