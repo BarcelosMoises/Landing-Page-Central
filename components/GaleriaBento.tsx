@@ -21,10 +21,9 @@ import type { ImagemServico } from "@/data/servicos";
 
 interface GaleriaBentoProps {
   imagens: readonly ImagemServico[];
-  titulo: string;
 }
 
-export function GaleriaBento({ imagens, titulo }: GaleriaBentoProps) {
+export function GaleriaBento({ imagens }: GaleriaBentoProps) {
   const [indice, setIndice] = useState(0);
   const total = imagens.length;
   const ativa = imagens[indice];

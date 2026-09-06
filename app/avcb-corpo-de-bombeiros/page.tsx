@@ -12,7 +12,6 @@ import { CtaFinal } from "@/components/CtaFinal";
 import { DocumentCard } from "@/components/DocumentCard";
 import {
   servicos,
-  contato,
   estadosAtuacao,
   getWhatsAppUrl,
 } from "@/data/servicos";

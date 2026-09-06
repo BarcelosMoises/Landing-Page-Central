@@ -199,7 +199,7 @@ function ServicoCard({ servico }: { servico: Servico }) {
           >
             <div className="pt-4 border-t border-neutral-100">
               {servico.imagens && servico.imagens.length > 0 ? (
-                <GaleriaBento imagens={servico.imagens} titulo={servico.nome} />
+                <GaleriaBento imagens={servico.imagens} />
               ) : (
                 <PlaceholderImage
                   label={`Galeria de ${servico.nomeAbreviado} — em breve`}
@@ -241,7 +241,7 @@ function TabPanel({
         animate={isActive && inView ? "visible" : "hidden"}
         key={id}
       >
-        {servicos.map((servico, index) => (
+        {servicos.map((servico) => (
           <motion.li
             key={servico.id}
             className="list-none"

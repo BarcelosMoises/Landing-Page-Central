@@ -9,7 +9,6 @@ import { FaqItem } from "@/components/FaqItem";
 import { CtaFinal } from "@/components/CtaFinal";
 import {
   servicos,
-  contato,
   getWhatsAppUrl,
 } from "@/data/servicos";
 

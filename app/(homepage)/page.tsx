@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { ShieldCheck, FilePenLine, FileCheck2 } from "lucide-react";
 
 import { JsonLd } from "@/components/JsonLd";
