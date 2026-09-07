@@ -31,6 +31,13 @@ const CTA_WHATSAPP = getWhatsAppUrl(
 
 const menuTransition = { type: "spring", stiffness: 320, damping: 30 } as const;
 
+// Fundo do dropdown: mistura o accent do serviço (herdado via --color-service-accent
+// do layout.tsx da subpágina) com o vinho escuro cinemtico da marca (#1a0000).
+// Na homepage, --color-service-accent não é definido e o fallback #800000 mantém o
+// vinho global, então o gradiente permanece igual ao atual.
+const dropdownBg =
+  "linear-gradient(180deg, color-mix(in srgb, var(--color-service-accent, #800000) 55%, #1a0000) 0%, #1a0000 100%)";
+
 export function NavPrimaria() {
   const pathname = usePathname();
   const isHomepage = pathname === "/";
@@ -119,7 +126,7 @@ export function NavPrimaria() {
     const isAtiva = isHomepage && ativa === id;
     const baseClasses = [
       "w-full rounded-lg px-4 py-3 text-left text-sm font-medium transition-colors duration-200",
-      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#800000]",
+      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-service-accent,#800000)]",
       isAtiva ? "text-white" : "text-white/80 hover:bg-white/10 hover:text-white",
     ].join(" ");
     if (isHomepage) {
@@ -141,7 +148,14 @@ export function NavPrimaria() {
         </Link>
 
         <nav ref={menuRef} aria-label="Menu principal" className="relative">
-          <button type="button" aria-label={menuAberto ? "Fechar menu" : "Abrir menu"} aria-expanded={menuAberto} aria-controls="menu-principal" onClick={() => setMenuAberto((v) => !v)} className="flex h-11 w-11 items-center justify-center rounded-lg text-white transition-colors duration-200 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-transparent">
+          <button
+            type="button"
+            aria-label={menuAberto ? "Fechar menu" : "Abrir menu"}
+            aria-expanded={menuAberto}
+            aria-controls="menu-principal"
+            onClick={() => setMenuAberto((v) => !v)}
+            className="flex h-11 w-11 items-center justify-center rounded-lg text-white transition-colors duration-200 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
+          >
             <span aria-hidden="true" className="relative flex h-6 w-6 items-center justify-center">
               <motion.span animate={{ rotate: menuAberto ? 45 : 0, y: menuAberto ? 0 : -7 }} transition={menuTransition} className="absolute h-0.5 w-6 bg-current" />
               <motion.span animate={{ opacity: menuAberto ? 0 : 1, scaleX: menuAberto ? 0 : 1 }} transition={menuTransition} className="absolute h-0.5 w-6 bg-current" />
@@ -157,9 +171,19 @@ export function NavPrimaria() {
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: -8, scale: 0.98 }}
                 transition={menuTransition}
-                className="absolute right-0 top-full z-50 mt-3 w-max min-w-64 max-w-[calc(100vw-2rem)] rounded-xl border border-white/15 bg-gradient-to-b from-[#4f0101]/95 to-[#1a0000]/98 p-3 shadow-xl backdrop-blur-sm md:min-w-72"
+                className="absolute right-0 top-full z-50 mt-3 w-max min-w-64 max-w-[calc(100vw-2rem)] rounded-xl border p-3 shadow-xl backdrop-blur-sm md:min-w-72"
+                style={{
+                  background: dropdownBg,
+                  borderColor: "color-mix(in srgb, var(--color-service-accent, #800000) 35%, white 15%)",
+                }}
               >
-                <button type="button" onClick={abrirServicos} aria-expanded={servicosAberto} aria-controls="menu-servicos" className="flex w-full items-center justify-between rounded-lg px-4 py-3 text-left text-sm font-medium text-white/90 transition-colors duration-200 hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#800000]">
+                <button
+                  type="button"
+                  onClick={abrirServicos}
+                  aria-expanded={servicosAberto}
+                  aria-controls="menu-servicos"
+                  className="flex w-full items-center justify-between rounded-lg px-4 py-3 text-left text-sm font-medium text-white/90 transition-colors duration-200 hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-service-accent,#800000)]"
+                >
                   Serviços
                   <ChevronDown className={"h-4 w-4 transition-transform duration-200" + (servicosAberto ? " rotate-180" : "")} aria-hidden="true" />
                 </button>
@@ -170,7 +194,7 @@ export function NavPrimaria() {
                       <ul className="ml-4 border-l border-white/20 py-1">
                         {SERVICOS_MENU.map((servico, index) => (
                           <motion.li key={servico.href} initial={{ opacity: 0, x: -6 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.03 * index, duration: 0.18 }}>
-                            <Link href={servico.href} onClick={fecharMenu} className="block rounded-md px-4 py-2 text-sm text-white/85 transition-colors duration-150 hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#800000]">{servico.label}</Link>
+                            <Link href={servico.href} onClick={fecharMenu} className="block rounded-md px-4 py-2 text-sm text-white/85 transition-colors duration-150 hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-service-accent,#800000)]">{servico.label}</Link>
                           </motion.li>
                         ))}
                       </ul>
@@ -183,7 +207,19 @@ export function NavPrimaria() {
                     <NavItem {...item} />
                   </motion.div>
                 ))}
-                <motion.a href={CTA_WHATSAPP} target="_blank" rel="noopener noreferrer" onClick={fecharMenu} initial={{ opacity: 0, x: -6 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.14, duration: 0.18 }} className="mt-3 flex w-full items-center justify-center rounded-lg px-4 py-3 text-sm font-semibold text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#1a0000]" style={{ backgroundColor: "var(--color-service-accent, #800000)" }}>Solicitar Orçamento</motion.a>
+                <motion.a
+                  href={CTA_WHATSAPP}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={fecharMenu}
+                  initial={{ opacity: 0, x: -6 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.14, duration: 0.18 }}
+                  className="mt-3 flex w-full items-center justify-center rounded-lg px-4 py-3 text-sm font-semibold text-white transition-opacity duration-200 hover:opacity-90 active:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#1a0000]"
+                  style={{ backgroundColor: "var(--color-service-accent, #800000)" }}
+                >
+                  Solicitar Orçamento
+                </motion.a>
               </motion.div>
             )}
           </AnimatePresence>
