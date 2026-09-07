@@ -32,6 +32,8 @@ export function GaleriaBentoPreview({
     return null;
   }
 
+  const temSecundarias = secundarias.length > 0;
+
   return (
     <button
       type="button"
@@ -39,38 +41,50 @@ export function GaleriaBentoPreview({
       aria-label={`Ver galeria com ${imagens.length} fotos de ${nome}`}
       className="group relative block w-full overflow-hidden border-b border-neutral-100 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#800000] focus-visible:ring-inset"
     >
-      <span className="grid aspect-[16/9] grid-cols-[2fr_1fr] gap-1.5 p-1.5">
+      <span
+        className={[
+          temSecundarias
+            ? "grid aspect-[16/9] grid-cols-[2fr_1fr] gap-1.5 p-1.5"
+            : "grid aspect-[16/9] grid-cols-1 p-1.5",
+        ].join(" ")}
+      >
         <span className="relative overflow-hidden rounded-lg bg-neutral-100">
           <Image
             src={destaque.src}
             alt={destaque.alt}
             fill
-            sizes="(min-width: 768px) 380px, 92vw"
+            sizes={
+              temSecundarias
+                ? "(min-width: 768px) 380px, 92vw"
+                : "(min-width: 768px) 620px, 92vw"
+            }
             className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
           />
         </span>
 
-        <span className="grid grid-rows-2 gap-1.5">
-          {secundarias.map((imagem) => (
-            <span
-              key={imagem.src}
-              className="relative overflow-hidden rounded-md bg-neutral-100"
-            >
-              <Image
-                src={imagem.src}
-                alt={imagem.alt}
-                fill
-                sizes="160px"
-                className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
-              />
-            </span>
-          ))}
-        </span>
+        {temSecundarias ? (
+          <span className="grid grid-rows-2 gap-1.5">
+            {secundarias.map((imagem) => (
+              <span
+                key={imagem.src}
+                className="relative overflow-hidden rounded-md bg-neutral-100"
+              >
+                <Image
+                  src={imagem.src}
+                  alt={""}
+                  fill
+                  sizes="160px"
+                  className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+                />
+              </span>
+            ))}
+          </span>
+        ) : null}
       </span>
 
       <span className="absolute bottom-3 right-3 inline-flex items-center gap-1.5 rounded-full bg-black/70 px-2.5 py-1 text-xs font-semibold text-white opacity-100 transition-transform duration-200 group-hover:scale-105">
         <Images className="h-3.5 w-3.5" aria-hidden="true" />
-        Ver {imagens.length} fotos
+        Ver {imagens.length} {imagens.length === 1 ? "foto" : "fotos"}
       </span>
     </button>
   );

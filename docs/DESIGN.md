@@ -612,7 +612,7 @@ Border radius padrão: rounded-lg (8px) | rounded-xl (12px) para cards
 
 ```ts
 interface ImagemServico {
-  readonly src: string;      // ex.: "/images/card-bombeiro/img1.jpeg"
+  readonly src: string;      // ex.: "/images/cards/corpo-de-bombeiros/img1.jpeg"
   readonly alt: string;      // alt técnico descritivo (regra SEO #6)
   readonly destaque?: boolean; // foto grande no bento grid (2x2)
 }

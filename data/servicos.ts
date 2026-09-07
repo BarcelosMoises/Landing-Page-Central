@@ -34,7 +34,7 @@ export interface SubServico {
 }
 
 export interface ImagemServico {
-  /** Caminho da imagem em /public, ex.: "/images/card-bombeiro/img1.jpeg" */
+  /** Caminho da imagem em /public, ex.: "/images/cards/corpo-de-bombeiros/img1.jpeg" */
   readonly src: string;
   /** Alt técnico descritivo (regra SEO #6) — descreve o conteúdo real da foto */
   readonly alt: string;
@@ -198,32 +198,32 @@ export const servicos: readonly Servico[] = [
     pathRota: "/avcb-corpo-de-bombeiros",
     imagens: [
       {
-        src: "/images/card-bombeiro/img1.jpeg",
+        src: "/images/cards/corpo-de-bombeiros/img1.jpeg",
         alt: "Técnico com capacete branco e óculos de proteção inspecionando hidrante de incêndio em galpão industrial",
         destaque: true,
       },
       {
-        src: "/images/card-bombeiro/img2.jpeg",
+        src: "/images/cards/corpo-de-bombeiros/img2.jpeg",
         alt: "Central de gás de combate a incêndio com cilindros vermelhos e tubulação em galpão logístico",
       },
       {
-        src: "/images/card-bombeiro/img3.jpeg",
+        src: "/images/cards/corpo-de-bombeiros/img3.jpeg",
         alt: "Galpão industrial com centenas de extintores de incêndio armazenados para manutenção e recarga",
       },
       {
-        src: "/images/card-bombeiro/img4.jpeg",
+        src: "/images/cards/corpo-de-bombeiros/img4.jpeg",
         alt: "Estoque de extintores de incêndio e cilindros de gás em galpão de manutenção",
       },
       {
-        src: "/images/card-bombeiro/img5.jpeg",
+        src: "/images/cards/corpo-de-bombeiros/img5.jpeg",
         alt: "Conjunto motor-bomba de incêndio Branco BD 815E XS com tubulação vermelha e registros",
       },
       {
-        src: "/images/card-bombeiro/img6.jpeg",
+        src: "/images/cards/corpo-de-bombeiros/img6.jpeg",
         alt: "Casa de bombas de incêndio com reservatórios pressurizados e tubulação vermelha",
       },
       {
-        src: "/images/card-bombeiro/img7.jpeg",
+        src: "/images/cards/corpo-de-bombeiros/img7.jpeg",
         alt: "Hidrante de incêndio com tubulação vermelha e abrigo de mangueiras em área industrial",
       },
     ],
@@ -259,6 +259,49 @@ export const servicos: readonly Servico[] = [
     ],
     iconeLucide: "ClipboardCheck",
     pathRota: "/vigilancia-sanitaria",
+    imagens: [
+      {
+        src: "/images/cards/vigilancia-sanitaria/20241210-215311.jpg",
+        alt: "Ambiente interno de estabelecimento inspecionado para alvará sanitário com bancadas e superfícies higienizáveis",
+        destaque: true,
+      },
+      {
+        src: "/images/cards/vigilancia-sanitaria/20260129-152818.jpg",
+        alt: "Área de manipulação de alimentos com equipamentos em aço inox durante vistoria da vigilância sanitária",
+      },
+      {
+        src: "/images/cards/vigilancia-sanitaria/20260129-155054.jpg",
+        alt: "Registro fotográfico de inspeção sanitária em cozinha industrial com pias e chapas de aquecimento",
+      },
+      {
+        src: "/images/cards/vigilancia-sanitaria/20260427-120344.jpg",
+        alt: "Sala técnica de estabelecimento de saúde pronta para avaliação de conformidade sanitária",
+      },
+      {
+        src: "/images/cards/vigilancia-sanitaria/img-0578.jpg",
+        alt: "Interior de estabelecimento comercial com equipamentos de manipulação e armazenamento de alimentos",
+      },
+      {
+        src: "/images/cards/vigilancia-sanitaria/img-20220713-175228.jpg",
+        alt: "Vistoria de regularização sanitária em área de processamento com utensílios e bancadas",
+      },
+      {
+        src: "/images/cards/vigilancia-sanitaria/whatsapp-image-2026-09-07-at-16-51-58.jpeg",
+        alt: "Ambiente de atendimento de estabelecimento comercial em processo de alvará sanitário",
+      },
+      {
+        src: "/images/cards/vigilancia-sanitaria/whatsapp-image-2026-09-07-at-16-52-02-1.jpeg",
+        alt: "Equipamentos de cozinha industrial durante levantamento para alvará sanitário",
+      },
+      {
+        src: "/images/cards/vigilancia-sanitaria/whatsapp-image-2026-09-07-at-16-52-03-1.jpeg",
+        alt: "Detalhe de bancada em aço inox e utensílios em estabelecimento inspecionado",
+      },
+      {
+        src: "/images/cards/vigilancia-sanitaria/whatsapp-image-2026-09-07-at-16-52-03.jpeg",
+        alt: "Área de armazenamento de insumos avaliada em vistoria sanitária",
+      },
+    ],
   },
   {
     id: "licenciamento-ambiental",
@@ -291,6 +334,49 @@ export const servicos: readonly Servico[] = [
     ],
     iconeLucide: "Leaf",
     pathRota: "/licenciamento-ambiental",
+    imagens: [
+      {
+        src: "/images/cards/meio-ambiente/20230624-101553.jpeg",
+        alt: "Área de vegetação em vistoria de licenciamento ambiental junto a usina ou empreendimento",
+        destaque: true,
+      },
+      {
+        src: "/images/cards/meio-ambiente/20231024-150833.jpeg",
+        alt: "Campo com usina solar fotovoltaica com painéis dispostos em fileiras durante licenciamento ambiental",
+      },
+      {
+        src: "/images/cards/meio-ambiente/20231024-151144.jpeg",
+        alt: "Instalação de usina fotovoltaica com painéis solares e estrutura de fixação no solo",
+      },
+      {
+        src: "/images/cards/meio-ambiente/20231024-155709.jpeg",
+        alt: "Vista aérea de empreendimento com painéis fotovoltaicos em área rural",
+      },
+      {
+        src: "/images/cards/meio-ambiente/20231024-161647.jpeg",
+        alt: "Central fotovoltaica em operação com fileiras de módulos solares sob o sol",
+      },
+      {
+        src: "/images/cards/meio-ambiente/20231214-152634.jpg",
+        alt: "Área externa de empreendimento licenciado com vegetação e estrutura industrial",
+      },
+      {
+        src: "/images/cards/meio-ambiente/20260826-101648.jpg",
+        alt: "Técnico em campo realizando levantamento para licenciamento ambiental",
+      },
+      {
+        src: "/images/cards/meio-ambiente/whatsapp-image-2026-08-31-at-10-57-14-1.jpeg",
+        alt: "Documentação e pranchetas de vistoria de campo em licenciamento ambiental",
+      },
+      {
+        src: "/images/cards/meio-ambiente/whatsapp-image-2026-09-07-at-16-52-05-1.jpeg",
+        alt: "Registro de atividade de campo em área de empreendimento para licenciamento ambiental",
+      },
+      {
+        src: "/images/cards/meio-ambiente/whatsapp-image-2026-09-07-at-16-52-06.jpeg",
+        alt: "Vistoria técnica de licenciamento ambiental em área externa de instalação",
+      },
+    ],
   },
   {
     id: "regularizacao-prefeitura",
@@ -311,6 +397,13 @@ export const servicos: readonly Servico[] = [
     ],
     iconeLucide: "Building2",
     pathRota: "/regularizacao-prefeitura",
+    imagens: [
+      {
+        src: "/images/cards/prefeitura/whatsapp-image-2026-09-07-at-16-52-07.jpeg",
+        alt: "Documentação técnica para regularização de imóvel junto à prefeitura municipal",
+        destaque: true,
+      },
+    ],
   },
 
   // ── INSTALAÇÃO ────────────────────────────────────────────────────────────
@@ -368,6 +461,7 @@ export const servicos: readonly Servico[] = [
     ],
     iconeLucide: "FlameKindling",
     pathRota: "/sistemas-combate-incendio",
+    exibirNaTabs: false,
   },
   {
     id: "aterramento",
@@ -388,6 +482,7 @@ export const servicos: readonly Servico[] = [
     ],
     normaBase: ["NR-10", "ABNT NBR 5410"],
     iconeLucide: "Activity",
+    exibirNaTabs: false,
     pathRota: "/aterramento",
   },
 
@@ -413,6 +508,7 @@ export const servicos: readonly Servico[] = [
     normaBase: ["ABNT NBR 5419", "NR-10"],
     iconeLucide: "Radio",
     pathRota: "/teste-continuidade",
+    exibirNaTabs: false,
   },
   {
     id: "laudos-tecnicos",
@@ -434,6 +530,29 @@ export const servicos: readonly Servico[] = [
     ],
     iconeLucide: "FileText",
     pathRota: "/laudos-tecnicos",
+    imagens: [
+      {
+        src: "/images/cards/laudo-combate-ao-incendio/20240423-140501-1.jpg",
+        alt: "Sistema de hidrantes e tubulação de combate a incêndio instalado em galpão industrial",
+        destaque: true,
+      },
+      {
+        src: "/images/cards/laudo-combate-ao-incendio/whatsapp-image-2026-09-07-at-16-52-04.jpeg",
+        alt: "Registro de laudo técnico de combate ao incêndio com extintores e sinalização",
+      },
+      {
+        src: "/images/cards/laudo-combate-ao-incendio/whatsapp-image-2026-09-07-at-16-59-53.jpeg",
+        alt: "Inspeção de sistema de combate a incêndio e pânico em edificação comercial",
+      },
+      {
+        src: "/images/cards/laudo-combate-ao-incendio/whatsapp-image-2026-09-07-at-16-59-54-1.jpeg",
+        alt: "Hidrante de parede com mangueira e esguicho em vistoria de laudo técnico",
+      },
+      {
+        src: "/images/cards/laudo-combate-ao-incendio/whatsapp-image-2026-09-07-at-17-01-35.jpeg",
+        alt: "Sistema de detecção e alarme de incêndio inspecionado durante elaboração de laudo",
+      },
+    ],
   },
   {
     id: "laudo-spda",
@@ -465,7 +584,67 @@ export const servicos: readonly Servico[] = [
       "NR-10 — Segurança em instalações elétricas",
     ],
     iconeLucide: "ShieldCheck",
+    exibirNaTabs: false,
     pathRota: "/laudo-spda",
+    imagens: [
+      {
+        src: "/images/cards/laudo-spda/20220224-080825.jpeg",
+        alt: "Sistema de captação de SPDA com cabo de cobre e haste instalada em cobertura de edificação",
+        destaque: true,
+      },
+      {
+        src: "/images/cards/laudo-spda/20240911-164026.jpeg",
+        alt: "Cordoalha de cobre e conectores de descida do SPDA instalados em fachada industrial",
+      },
+      {
+        src: "/images/cards/laudo-spda/d8d9.jpeg",
+        alt: "Detalhe de conector de descida e fixação de cabo em sistema de para-raios",
+      },
+      {
+        src: "/images/cards/laudo-spda/img-20220210-172321.jpg",
+        alt: "Torre de telecomunicações com sistema de proteção contra descargas atmosféricas instalado",
+      },
+      {
+        src: "/images/cards/laudo-spda/t1m1.jpeg",
+        alt: "Caixa de inspeção de aterramento elétrico do SPDA aberta para medição",
+      },
+      {
+        src: "/images/cards/laudo-spda/whatsapp-image-2022-03-03-at-15-04-39-1.jpeg",
+        alt: "Inspeção de sistema de para-raios em subestação elétrica com estruturas metálicas",
+      },
+      {
+        src: "/images/cards/laudo-spda/whatsapp-image-2026-09-07-at-15-29-23.jpeg",
+        alt: "Técnico realizando inspeção de continuidade em sistema SPDA instalado",
+      },
+      {
+        src: "/images/cards/laudo-spda/whatsapp-image-2026-09-07-at-16-52-09.jpeg",
+        alt: "Estrutura metálica com captor tipo Franklin e cabo de descida do para-raios",
+      },
+      {
+        src: "/images/cards/laudo-spda/whatsapp-image-2026-09-07-at-16-52-10.jpeg",
+        alt: "Cordoalha de cobre de aterramento e descida do SPDA em área externa",
+      },
+      {
+        src: "/images/cards/laudo-spda/whatsapp-image-2026-09-07-at-16-52-13-1.jpeg",
+        alt: "Registro fotográfico de laudo técnico SPDA em telhado metálico industrial",
+      },
+      {
+        src: "/images/cards/laudo-spda/whatsapp-image-2026-09-07-at-16-52-13.jpeg",
+        alt: "Descida de SPDA com cabo isolado e suportes de fixação em parede",
+      },
+      {
+        src: "/images/cards/laudo-spda/whatsapp-image-2026-09-07-at-16-52-15.jpeg",
+        alt: "Vistoria de sistema de proteção contra descargas atmosféricas em instalação fotovoltaica",
+      },
+      {
+        src: "/images/cards/laudo-spda/whatsapp-image-2026-09-07-at-16-52-16.jpeg",
+        alt: "Conectores e garras de cabo do SPDA em inspeção de laudo técnico",
+      },
+      {
+        src: "/images/cards/laudo-spda/whatsapp-image-2026-09-07-at-16-52-18.jpeg",
+        alt: "Medição de resistência de aterramento em sistema SPDA durante vistoria",
+      },
+    ],
   },
   {
     id: "estanqueidade-glp-gn",
@@ -497,6 +676,37 @@ export const servicos: readonly Servico[] = [
     ],
     iconeLucide: "Gauge",
     pathRota: "/estanqueidade-glp-gn",
+    imagens: [
+      {
+        src: "/images/cards/gas/20260129-153857.jpg",
+        alt: "Central de GLP com cilindros e rede de distribuição de gás durante teste de estanqueidade",
+        destaque: true,
+      },
+      {
+        src: "/images/cards/gas/20260427-120517.jpg",
+        alt: "Rede de tubulação de gás com registros e manômetros para ensaio de pressão",
+      },
+      {
+        src: "/images/cards/gas/20260701-151751.jpg",
+        alt: "Bateria de cilindros de GLP em central de gás inspecionada para laudo de estanqueidade",
+      },
+      {
+        src: "/images/cards/gas/whatsapp-image-2026-09-07-at-16-51-32-1.jpeg",
+        alt: "Manômetro e conjunto de ensaio de pressão em rede de gás GLP/GN",
+      },
+      {
+        src: "/images/cards/gas/whatsapp-image-2026-09-07-at-16-51-32-2.jpeg",
+        alt: "Registro fotográfico de teste de estanqueidade em instalação de gás",
+      },
+      {
+        src: "/images/cards/gas/whatsapp-image-2026-09-07-at-16-51-33.jpeg",
+        alt: "Conexões e tubulação de rede de gás GLP em vistoria técnica",
+      },
+      {
+        src: "/images/cards/gas/whatsapp-image-2026-09-07-at-16-52-06-1.jpeg",
+        alt: "Central de gás com reguladores de pressão e cilindros de GLP",
+      },
+    ],
   },
 
   // ── PROJETOS (5 serviços independentes) ───────────────────────────────────
@@ -625,6 +835,7 @@ export const servicos: readonly Servico[] = [
     ],
     iconeLucide: "CloudLightning",
     pathRota: "/projeto-spda",
+    exibirNaTabs: false,
   },
   {
     id: "estruturas-metalicas",
@@ -657,6 +868,7 @@ export const servicos: readonly Servico[] = [
     ],
     iconeLucide: "Construction",
     pathRota: "/estruturas-metalicas",
+    exibirNaTabs: false,
   },
 
   // ── PROJETOS legado (mantém compatibilidade com setores[] existentes) ──────

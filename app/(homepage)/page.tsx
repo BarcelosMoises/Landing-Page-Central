@@ -70,7 +70,7 @@ const servicosProjetos = getServicosPorCategoria("projeto").filter(
 const servicosLaudos = [
   ...getServicosPorCategoria("laudo"),
   ...getServicosPorCategoria("instalacao"),
-];
+].filter((servico) => servico.exibirNaTabs !== false);
 
 const PILARES_HERO = [
   {
