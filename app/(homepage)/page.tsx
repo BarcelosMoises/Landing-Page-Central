@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-import { ShieldCheck, FilePenLine, FileCheck2 } from "lucide-react";
-
-import { JsonLd } from "@/components/JsonLd";
+import { ShieldCheck, FilePenLine, FileCheck2, ArrowDown, ArrowRight } from "lucide-react";
+import JsonLd from "@/components/JsonLd";
 import { NavPrimaria } from "@/components/NavPrimaria";
 import { ServicosTabs } from "@/components/ServicosTabs";
 import { MetricasEmpresa } from "@/components/MetricasEmpresa";
@@ -16,28 +15,26 @@ import {
   contato,
 } from "@/data/servicos";
 
-// ─── Metadata ──────────────────────────────────────────────────────────────────────────────
-
 export const metadata: Metadata = {
-  title:
-    "Central de Soluções — AVCB, SPDA, Laudos e Licenciamento | RJ, SP, MG, ES",
+  title: "Central de Soluções | AVCB, SPDA, Laudos e Licenciamento RJ, SP, MG e ES",
   description:
-    "Empresa de engenharia civil especializada em regularização: AVCB, SPDA, Vigilância Sanitária e Licenciamento Ambiental em RJ, SP, MG e ES. Engenheiros com ART. Clientes: Claro, Ambev, Mercado Livre.",
+    "Empresa de engenharia civil especializada em regularização AVCB, SPDA, Vigilância Sanitária e Licenciamento Ambiental em RJ, SP, MG e ES. Engenheiros com ART. Clientes Claro, Ambev, Mercado Livre.",
   keywords: [
     "regularização engenharia civil",
     "empresa de engenharia civil RJ SP MG ES",
     "AVCB SPDA laudo técnico licenciamento ambiental",
   ],
-  alternates: { canonical: "/" },
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     type: "website",
     locale: "pt_BR",
     url: "/",
     siteName: "Central de Soluções",
-    title:
-      "Central de Soluções — AVCB, SPDA, Laudos e Licenciamento | RJ, SP, MG, ES",
+    title: "Central de Soluções | AVCB, SPDA, Laudos e Licenciamento RJ, SP, MG e ES",
     description:
-      "Empresa de engenharia civil especializada em regularização: AVCB, SPDA, Vigilância Sanitária e Licenciamento Ambiental em RJ, SP, MG e ES. Engenheiros com ART. Clientes: Claro, Ambev, Mercado Livre.",
+      "Empresa de engenharia civil especializada em regularização AVCB, SPDA, Vigilância Sanitária e Licenciamento Ambiental em RJ, SP, MG e ES.",
     images: [
       {
         url: "/og-image.jpg",
@@ -48,9 +45,6 @@ export const metadata: Metadata = {
     ],
   },
 };
-
-// ─── JSON-LD WebSite ─────────────────────────────────────────────────────────────────────────
-// LocalBusiness já está no layout.tsx — não duplicar aqui.
 
 const websiteJsonLd = {
   "@context": "https://schema.org",
@@ -69,9 +63,10 @@ const websiteJsonLd = {
   },
 };
 
-// ─── Dados das tabs ─────────────────────────────────────────────────────────────────────
 const servicosLegalizacao = getServicosPorCategoria("legalizacao");
-const servicosProjetos = getServicosPorCategoria("projeto").filter((s) => s.exibirNaTabs !== false);
+const servicosProjetos = getServicosPorCategoria("projeto").filter(
+  (servico) => servico.exibirNaTabs !== false
+);
 const servicosLaudos = [
   ...getServicosPorCategoria("laudo"),
   ...getServicosPorCategoria("instalacao"),
@@ -102,27 +97,18 @@ const whatsappHero = getWhatsAppUrl(
   "Olá! Vim pelo site da Central de Soluções e gostaria de um orçamento."
 );
 
-// ─── Page ───────────────────────────────────────────────────────────────────────────────────────
-
 export default function HomePage() {
   return (
     <>
       <JsonLd data={websiteJsonLd} />
       <NavPrimaria />
 
-      <main
-        id="conteudo-principal"
-        aria-label="Página inicial da Central de Soluções"
-      >
-        {/* ───────────────────────────────────────────────────────────────────
-            1. HERO
-        ───────────────────────────────────────────────────────────────────── */}
+      <main id="conteudo-principal" aria-label="Página inicial da Central de Soluções">
         <section
           id="hero"
           aria-labelledby="hero-heading"
-          className="relative min-h-[90vh] flex items-center"
+          className="relative min-h-[100dvh] overflow-hidden sm:min-h-[90vh]"
         >
-          {/* Vídeo de fundo */}
           <video
             autoPlay
             muted
@@ -130,154 +116,124 @@ export default function HomePage() {
             playsInline
             aria-hidden="true"
             poster="/images/portfolio/hero-industrial.jpg"
-            className="absolute inset-0 w-full h-full object-cover object-center"
+            className="absolute inset-0 h-full w-full object-cover object-center"
           >
             <source src="/videos/hero.mp4" type="video/mp4" />
           </video>
 
-          {/*
-            Overlay duplo para garantir contraste uniforme em qualquer frame do vídeo:
-
-            Camada 1 — base fixa escura (bg-black/55):
-              Piso de contraste que não depende do conteúdo do vídeo.
-              Garante que frames claros/brancos não "apaguem" o texto.
-
-            Camada 2 — gradiente direcional vinho:
-              Mantém a identidade cromática da marca (vinho #4f0101) no topo,
-              e reforça o escurecimento na base (onde ficam os cards dos pilares)
-              com `to-[#0a0000]/80` — subindo de /60 para /80.
-
-            Resultado: texto branco sobre fundo efetivo ≈ #0d0000 → contraste > 10:1 (WCAG AAA).
-          */}
-          <div aria-hidden="true" className="absolute inset-0 bg-black/55" />
+          {/* Base de contraste sobre o vídeo, mais leve no centro para preservar a imagem industrial. */}
+          <div aria-hidden="true" className="absolute inset-0 bg-black/35" />
           <div
             aria-hidden="true"
-            className="absolute inset-0 bg-gradient-to-b from-[#4f0101]/75 to-[#0a0000]/80"
+            className="absolute inset-0 bg-gradient-to-b from-[#4f0101]/75 via-[#4f0101]/55 to-[#0a0000]/75"
           />
 
-          <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+          <div className="relative z-10 flex min-h-[100dvh] items-start sm:min-h-[90vh] sm:items-center">
+            <div className="mx-auto w-full max-w-7xl px-6 pb-12 pt-32 sm:px-6 sm:py-24 lg:px-8">
+              <div className="max-w-3xl">
+                <p
+                  className="mx-auto mb-8 max-w-[calc(100%-1rem)] rounded-full border px-4 py-2.5 text-center text-[11px] font-semibold uppercase leading-tight tracking-[0.12em] text-white sm:mx-0 sm:mb-6 sm:max-w-xl sm:text-left sm:text-xs"
+                  style={{
+                    backgroundColor:
+                      "color-mix(in srgb, #800000 18%, transparent)",
+                    borderColor: "rgba(255, 255, 255, 0.25)",
+                  }}
+                >
+                  Corpo de Bombeiros · Vigilância Sanitária · Prefeituras · Órgãos Ambientais
+                </p>
 
-            <p className="inline-flex items-center gap-2 mb-6">
-              <span
-                style={{
-                  backgroundColor: "color-mix(in srgb, #800000 18%, transparent)",
-                  color: "#ffffff",
-                  borderColor: "rgba(255,255,255,0.2)",
-                }}
-                className="text-xs font-semibold uppercase tracking-widest px-3 py-1.5 rounded-full border"
-              >
-                CORPO DE BOMBEIROS · VIGILÂNCIA SANITÁRIA · PREFEITURAS · ÓRGÃOS AMBIENTAIS
-              </span>
-            </p>
+                <h1
+                  id="hero-heading"
+                  className="max-w-[350px] text-5xl font-extrabold leading-[0.98] tracking-[-0.04em] text-white sm:max-w-3xl sm:text-5xl md:text-6xl"
+                  style={{ textShadow: "0 2px 16px rgba(0,0,0,0.7)" }}
+                >
+                  Soluções para <span className="block italic sm:inline" style={{ color: "#a30000" }}>legalizar</span>{" "}
+                  sua empresa.
+                </h1>
 
-            <h1
-              id="hero-heading"
-              style={{ textShadow: "0 2px 16px rgba(0,0,0,0.7)" }}
-              className="font-heading text-4xl sm:text-5xl md:text-6xl font-extrabold text-white leading-tight mb-4 max-w-3xl"
-            >
-              Soluções para{" "}
-              <span style={{ color: "#a30000" }} className="italic">
-                legalizar
-              </span>{" "}
-              sua empresa.
-            </h1>
+                <p
+                  className="mt-6 max-w-md text-xl font-medium leading-relaxed text-white/90 sm:mt-4 sm:text-lg md:text-xl"
+                  style={{ textShadow: "0 1px 8px rgba(0,0,0,0.6)" }}
+                >
+                  Tudo que sua empresa precisa em um só lugar.
+                </p>
 
-            {/* text-white/90: contraste ≥ 4.5:1 mesmo sobre frames claros do vídeo ✓ WCAG AA */}
-            <p
-              style={{ textShadow: "0 1px 8px rgba(0,0,0,0.6)" }}
-              className="text-lg md:text-xl text-white/90 font-medium mb-3 max-w-2xl"
-            >
-              Tudo que sua empresa precisa em um só lugar.
-            </p>
+                <p
+                  className="mt-5 max-w-xl text-base leading-relaxed text-white/80 sm:mt-3 sm:text-sm"
+                  style={{ textShadow: "0 1px 8px rgba(0,0,0,0.6)" }}
+                >
+                  Atendimento em <strong className="text-white">RJ, SP, MG e ES</strong> — Corpo de Bombeiros, Vigilância Sanitária, Licenciamento Ambiental, Laudos com ART.
+                </p>
 
-            {/* text-white/75: sobe de /60 para garantir leitura sobre fundo dinâmico */}
-            <p
-              style={{ textShadow: "0 1px 8px rgba(0,0,0,0.6)" }}
-              className="text-sm text-white/75 mb-10 max-w-xl"
-            >
-              Atendimento em{" "}
-              <strong className="text-white">RJ, SP, MG e ES</strong>
-              {" "}— Corpo de Bombeiros, Vigilância Sanitária, Licenciamento
-              Ambiental, Laudos com ART.
-            </p>
+                {/* Mobile: três pilares em linha, ícone + label. Desktop: links em linha com descrições em aria-label. */}
+                <div className="mt-10 grid max-w-sm grid-cols-3 divide-x divide-white/30 sm:mt-12 sm:flex sm:max-w-3xl sm:divide-x-0">
+                  {PILARES_HERO.map((pilar, index) => (
+                    <div key={pilar.label} className="min-w-0 sm:flex sm:items-center sm:gap-3">
+                      {index > 0 ? (
+                        <span aria-hidden="true" className="hidden h-10 w-px bg-white/25 sm:inline-block" />
+                      ) : null}
+                      <a
+                        href={pilar.href}
+                        aria-label={`${pilar.label}: ${pilar.descricao}`}
+                        className="group flex min-w-0 flex-col items-center px-2 text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#4f0101] sm:flex-row sm:px-0 sm:text-left"
+                      >
+                        <pilar.Icone className="h-8 w-8 shrink-0 text-white transition-opacity duration-200 group-hover:opacity-80 sm:h-6 sm:w-6" aria-hidden="true" />
+                        <span className="mt-2 text-[10px] font-semibold uppercase leading-snug tracking-wide text-white sm:mt-0 sm:text-sm">
+                          {pilar.label}
+                        </span>
+                      </a>
+                    </div>
+                  ))}
+                </div>
 
-            <div className="flex flex-wrap gap-4 mb-16">
-              <a
-                href={whatsappHero}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Solicitar orçamento via WhatsApp — Central de Soluções"
-                style={{ backgroundColor: "#800000" }}
-                className="inline-flex items-center gap-2 text-white font-semibold px-7 py-3.5 rounded-lg hover:opacity-90 active:opacity-80 transition-opacity duration-200 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 shrink-0" aria-hidden="true">
-                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-                </svg>
-                Solicitar Orçamento
-              </a>
-
-              <a
-                href="#servicos"
-                aria-label="Ver todos os serviços da Central de Soluções"
-                className="inline-flex items-center gap-2 border border-white/40 text-white font-semibold px-7 py-3.5 rounded-lg hover:border-white hover:bg-white/10 active:bg-white/20 transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
-              >
-                Ver Serviços
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 shrink-0" aria-hidden="true">
-                  <path d="M12 5v14M5 12l7 7 7-7" />
-                </svg>
-              </a>
-            </div>
-
-            {/*
-              Pilares do hero: fila de ícones + label com separadores verticais.
-              Segue a proposta do cliente (escudo · documento · check) sem cards,
-              com divisores verticais e acessíveis via aria-label.
-            */}
-            <div className="flex flex-wrap items-center gap-x-6 gap-y-4 max-w-3xl">
-              {PILARES_HERO.map((pilar, index) => (
-                <div key={pilar.label} className="flex items-center gap-3">
-                  {index > 0 && (
-                    <span
-                      aria-hidden="true"
-                      className="hidden sm:inline-block h-10 w-px bg-white/25"
-                    />
-                  )}
+                <div className="mt-10 flex flex-col items-start gap-4 sm:mt-10 sm:flex-row sm:flex-wrap">
                   <a
-                    href={pilar.href}
-                    aria-label={`${pilar.label}: ${pilar.descricao}`}
-                    className="group flex items-center gap-3 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
+                    href={whatsappHero}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Solicitar orçamento via WhatsApp à Central de Soluções"
+                    className="relative inline-flex w-full items-center justify-center gap-2 rounded-lg bg-[#800000] px-7 py-4 text-base font-semibold text-white transition-all duration-200 hover:bg-[#4f0101] hover:scale-[1.01] active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-transparent sm:w-auto sm:py-3.5"
                   >
-                    <pilar.Icone
-                      className="w-6 h-6 text-white shrink-0 group-hover:opacity-80 transition-opacity duration-200"
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      className="h-5 w-5 shrink-0"
                       aria-hidden="true"
-                    />
-                    <span className="text-sm font-semibold text-white uppercase tracking-wide leading-snug">
-                      {pilar.label}
-                    </span>
+                    >
+                      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                    </svg>
+                    <span>Solicitar Orçamento</span>
+                    <ArrowRight className="absolute right-5 h-5 w-5" aria-hidden="true" />
+                  </a>
+
+                  <a
+                    href="#servicos"
+                    aria-label="Ver todos os serviços da Central de Soluções"
+                    className="inline-flex w-auto items-center justify-center gap-2 rounded-lg border border-white/50 px-7 py-3.5 text-base font-semibold text-white transition-colors duration-200 hover:border-white hover:bg-white/10 active:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
+                  >
+                    Ver Serviços
+                    <ArrowDown className="h-5 w-5 shrink-0" aria-hidden="true" />
                   </a>
                 </div>
-              ))}
+              </div>
             </div>
           </div>
 
-          <div aria-label="Telefone de contato" className="absolute bottom-6 left-6 z-10 hidden lg:flex items-center gap-2">
-            <a href={`tel:${contato.telefone.replace(/\D/g, "")}`} className="text-xs text-white/60 hover:text-white/90 transition-colors duration-200">
+          <div aria-label="Telefone de contato" className="absolute bottom-6 left-6 z-10 hidden items-center gap-2 lg:flex">
+            <a href={`tel:${contato.telefone.replace(/\D/g, "")}`} className="text-xs text-white/60 transition-colors duration-200 hover:text-white/90">
               {contato.telefone}
             </a>
-            <span className="text-white/20 text-xs">·</span>
-            <a href={contato.instagramUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-white/60 hover:text-white/90 transition-colors duration-200">
+            <span className="text-xs text-white/20">•</span>
+            <a href={contato.instagramUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-white/60 transition-colors duration-200 hover:text-white/90">
               {contato.instagram}
             </a>
           </div>
         </section>
 
-        {/* 2. MÉTRICAS */}
         <MetricasEmpresa />
-
-        {/* 3. TRUST BAR */}
         <TrustBar />
 
-        {/* 4. TABS DE SERVIÇOS */}
         <section id="servicos" aria-label="Serviços da Central de Soluções">
           <ServicosTabs
             legalizacao={servicosLegalizacao}
@@ -286,18 +242,12 @@ export default function HomePage() {
           />
         </section>
 
-        {/* 5. SETORES */}
         <section id="setores" aria-label="Setores atendidos pela Central de Soluções">
           <SetoresAtendidos />
         </section>
 
-        {/* 6. MAPA */}
         <MapaAtuacao />
-
-        {/* 7. GLOSSÁRIO */}
         <Glossario />
-
-        {/* 8. FORMULÁRIO / CTA */}
         <FormularioContato />
       </main>
     </>
