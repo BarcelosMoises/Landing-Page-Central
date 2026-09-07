@@ -22,8 +22,6 @@ export function NavPrimaria() {
   const pathname = usePathname();
   const isHomepage = pathname === "/";
 
-  // A anotação preserva a união "servicos" | "setores" | "contato".
-  // Sem ela, TypeScript infere somente o literal do primeiro item ("servicos").
   const [ativa, setAtiva] = useState<NavItemId>(NAV_ITENS[0].id);
   const [scrolled, setScrolled] = useState(false);
   const [menuAberto, setMenuAberto] = useState(false);
@@ -117,15 +115,11 @@ export function NavPrimaria() {
     <header className={["fixed inset-x-0 top-0 z-50 transition-colors duration-300", scrolled ? "backdrop-blur-sm" : "bg-transparent"].join(" ")} style={scrolled ? { backgroundColor: scrolledBg } : undefined}>
       <div className="mx-auto flex h-[76px] max-w-7xl items-center justify-between px-4 sm:h-20 sm:px-6 lg:px-8">
         <Link href="/" aria-label="Central de Soluções — ir para o topo" className="flex shrink-0 items-center gap-2">
-          <Image src="/images/logo.png" alt="Símbolo da Central de Soluções" width={54} height={54} priority className="h-[54px] w-[54px] shrink-0 object-contain" />
-          <span className="hidden items-center gap-0.5 font-heading text-lg font-bold leading-none tracking-tight sm:flex">
-            <span className="text-white">Central de</span>
-            <span style={{ color: "var(--color-service-accent, #800000)" }}> Soluções</span>
-          </span>
-          <span className="flex flex-col leading-none sm:hidden">
-            <span className="text-[14px] font-semibold tracking-[0.12em] text-white">CENTRAL DE</span>
-            <span className="mt-0.5 text-[19px] font-bold tracking-[0.06em] text-white">SOLUÇÕES</span>
-            <span className="mt-1 whitespace-nowrap text-[7px] font-medium tracking-[0.08em] text-white/80">LEGALIZAÇÃO | PROJETOS | LAUDOS</span>
+          <Image src="/images/logo.png" alt="Símbolo da Central de Soluções" width={58} height={58} priority className="h-[54px] w-[54px] shrink-0 object-contain sm:h-[58px] sm:w-[58px]" />
+          <span className="flex flex-col leading-none">
+            <span className="font-heading text-[14px] font-semibold tracking-[0.12em] text-white sm:text-[15px]">CENTRAL DE</span>
+            <span className="mt-0.5 font-heading text-[19px] font-bold tracking-[0.06em] text-white sm:text-[21px]">SOLUÇÕES</span>
+            <span className="mt-1 whitespace-nowrap text-[7px] font-medium tracking-[0.08em] text-white/80 sm:text-[8px]">LEGALIZAÇÃO | PROJETOS | LAUDOS</span>
           </span>
         </Link>
 
