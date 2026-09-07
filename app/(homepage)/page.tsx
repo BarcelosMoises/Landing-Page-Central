@@ -8,7 +8,6 @@ import { TrustBar } from "@/components/TrustBar";
 import { SetoresAtendidos } from "@/components/SetoresAtendidos";
 import { MapaAtuacao } from "@/components/MapaAtuacao";
 import { Glossario } from "@/components/Glossario";
-import { FormularioContato } from "@/components/FormularioContato";
 import { FormularioOrcamento } from "@/components/FormularioOrcamento";
 import { getServicosPorCategoria, getWhatsAppUrl, contato } from "@/data/servicos";
 
@@ -95,7 +94,6 @@ export default function HomePage() {
         <section id="setores" aria-label="Setores atendidos pela Central de Soluções"><SetoresAtendidos /></section>
         <MapaAtuacao />
         <Glossario />
-        <FormularioContato />
         <FormularioOrcamento />
       </main>
     </>

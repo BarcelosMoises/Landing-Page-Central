@@ -80,26 +80,26 @@ export function FormularioOrcamento() {
   }
 
   const campoBase =
-    "mt-1.5 w-full rounded-lg border bg-white px-3 py-3 text-sm text-neutral-900 outline-none transition-colors duration-200 placeholder:text-neutral-400 focus:border-transparent focus:ring-2 focus:ring-white";
+    "mt-2 min-h-12 w-full rounded-lg border bg-white px-4 py-3 text-base text-neutral-900 outline-none transition-colors duration-200 placeholder:text-neutral-400 focus:border-transparent focus:ring-2 focus:ring-white";
 
   return (
-    <section id="contato" aria-labelledby="orcamento-heading" className="bg-[#1a0000] py-16 sm:py-20">
+    <section id="contato" aria-labelledby="orcamento-heading" className="bg-[#1a0000] py-24 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-3xl text-center">
           <p className="text-xs font-semibold uppercase tracking-[0.16em] text-white/70">
             Solicite seu orçamento
           </p>
-          <h2 id="orcamento-heading" className="mt-3 font-heading text-3xl font-bold tracking-tight text-white sm:text-4xl">
+          <h2 id="orcamento-heading" className="mt-3 font-heading text-4xl font-bold tracking-tight text-white sm:text-5xl">
             Precisa regularizar sua empresa?
           </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed" style={{ color: "#c4a8a8" }}>
+          <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed sm:text-lg" style={{ color: "#c4a8a8" }}>
             Conte o que sua empresa precisa. Nossa equipe orienta os próximos passos para AVCB, vigilância sanitária, licenciamento ambiental, prefeitura, projetos e laudos técnicos.
           </p>
         </div>
 
-        <div className="mt-10 grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(280px,0.72fr)] lg:items-center lg:gap-14">
-          <form noValidate onSubmit={handleSubmit} className="rounded-xl border border-white/15 bg-white/5 p-5 sm:p-7" aria-describedby="orcamento-privacidade">
-            <div className="grid gap-5 sm:grid-cols-2">
+        <div className="mx-auto mt-12 grid max-w-6xl gap-12 lg:grid-cols-[minmax(0,1.35fr)_minmax(300px,0.65fr)] lg:items-center lg:gap-16">
+          <form noValidate onSubmit={handleSubmit} className="rounded-2xl border border-white/20 bg-white/[0.08] p-6 shadow-xl shadow-black/20 sm:p-8" aria-describedby="orcamento-privacidade">
+            <div className="grid gap-6 sm:grid-cols-2">
               <div className="sm:col-span-2">
                 <label htmlFor="orcamento-nome" className="text-sm font-medium text-white">
                   Nome ou razão social <span aria-hidden="true">*</span>
@@ -131,28 +131,28 @@ export function FormularioOrcamento() {
                 <label htmlFor="orcamento-solicitacao" className="text-sm font-medium text-white">
                   Descreva sua solicitação <span aria-hidden="true">*</span>
                 </label>
-                <textarea id="orcamento-solicitacao" name="solicitacao" rows={5} maxLength={1000} value={solicitacao} onChange={(event) => { setSolicitacao(event.target.value); limparErro("solicitacao"); }} aria-required="true" aria-invalid={Boolean(erros.solicitacao)} aria-describedby={erros.solicitacao ? "orcamento-erro-solicitacao" : undefined} className={`${campoBase} resize-y ${erros.solicitacao ? "border-red-300" : "border-transparent"}`} placeholder="Ex.: preciso regularizar o AVCB de um galpão industrial." />
+                <textarea id="orcamento-solicitacao" name="solicitacao" rows={7} maxLength={1000} value={solicitacao} onChange={(event) => { setSolicitacao(event.target.value); limparErro("solicitacao"); }} aria-required="true" aria-invalid={Boolean(erros.solicitacao)} aria-describedby={erros.solicitacao ? "orcamento-erro-solicitacao" : undefined} className={`${campoBase} resize-y ${erros.solicitacao ? "border-red-300" : "border-transparent"}`} placeholder="Ex.: preciso regularizar o AVCB de um galpão industrial." />
                 {erros.solicitacao ? <p id="orcamento-erro-solicitacao" role="alert" className="mt-1.5 text-xs text-red-200">{erros.solicitacao}</p> : null}
               </div>
             </div>
 
-            <p id="orcamento-privacidade" className="mt-5 text-xs leading-relaxed" style={{ color: "#c4a8a8" }}>
+            <p id="orcamento-privacidade" className="mt-6 text-xs leading-relaxed" style={{ color: "#c4a8a8" }}>
               Ao continuar, seus dados serão encaminhados ao WhatsApp da Central de Soluções para atendimento. Não armazenamos as informações neste site.
             </p>
 
-            <button type="submit" className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-lg px-6 py-3.5 text-sm font-semibold text-white transition-all duration-200 hover:opacity-90 active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#1a0000]" style={{ backgroundColor: "var(--color-service-accent, #800000)" }}>
+            <button type="submit" className="mt-7 inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-lg px-6 text-base font-semibold text-white transition-all duration-200 hover:opacity-90 active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#1a0000]" style={{ backgroundColor: "var(--color-service-accent, #800000)" }}>
               <MessageCircle className="h-5 w-5" aria-hidden="true" />
               Solicitar orçamento pelo WhatsApp
             </button>
           </form>
 
-          <aside className="border-t border-white/15 pt-8 lg:border-l lg:border-t-0 lg:pl-14 lg:pt-0" aria-label="Canais de atendimento">
-            <CheckCircle2 className="h-8 w-8" style={{ color: "var(--color-service-accent, #800000)" }} aria-hidden="true" />
-            <h3 className="mt-4 font-heading text-2xl font-bold text-white">Atendimento técnico direto</h3>
-            <p className="mt-3 text-base leading-relaxed" style={{ color: "#c4a8a8" }}>
+          <aside className="border-t border-white/20 pt-10 lg:border-l lg:border-t-0 lg:pl-16 lg:pt-0" aria-label="Canais de atendimento">
+            <CheckCircle2 className="h-10 w-10" style={{ color: "var(--color-service-accent, #800000)" }} aria-hidden="true" />
+            <h3 className="mt-5 font-heading text-3xl font-bold tracking-tight text-white">Atendimento técnico direto</h3>
+            <p className="mt-4 text-base leading-relaxed sm:text-lg" style={{ color: "#c4a8a8" }}>
               Receba uma orientação inicial da nossa equipe e avance com segurança na regularização da sua empresa.
             </p>
-            <a href={getWhatsAppUrl("Olá! Vim pelo site e gostaria de falar com a Central de Soluções.")} target="_blank" rel="noopener noreferrer" className="mt-6 inline-flex rounded-lg border border-white/40 px-5 py-3 text-sm font-semibold text-white transition-colors duration-200 hover:border-white hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#1a0000]">
+            <a href={getWhatsAppUrl("Olá! Vim pelo site e gostaria de falar com a Central de Soluções.")} target="_blank" rel="noopener noreferrer" className="mt-7 inline-flex rounded-lg border border-white/40 px-5 py-3 text-sm font-semibold text-white transition-colors duration-200 hover:border-white hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#1a0000]">
               Falar pelo WhatsApp
             </a>
           </aside>
