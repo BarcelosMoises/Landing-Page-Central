@@ -9,7 +9,6 @@
  */
 
 import Image from "next/image";
-import { Images } from "lucide-react";
 import type { ImagemServico } from "@/data/servicos";
 
 interface GaleriaBentoPreviewProps {
@@ -80,11 +79,6 @@ export function GaleriaBentoPreview({
             ))}
           </span>
         ) : null}
-      </span>
-
-      <span className="absolute bottom-3 right-3 inline-flex items-center gap-1.5 rounded-full bg-black/70 px-2.5 py-1 text-xs font-semibold text-white opacity-100 transition-transform duration-200 group-hover:scale-105">
-        <Images className="h-3.5 w-3.5" aria-hidden="true" />
-        Ver {imagens.length} {imagens.length === 1 ? "foto" : "fotos"}
       </span>
     </button>
   );
