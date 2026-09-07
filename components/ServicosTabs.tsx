@@ -21,6 +21,13 @@
  * (user-agent stylesheet), então o className precisa alternar entre os dois
  * estados em vez de somar classes conflitantes.
  *
+ * Barra de tabs: no mobile os 3 labels não cabem lado a lado com
+ * whitespace-nowrap + justify-center — isso cria overflow horizontal na
+ * PÁGINA INTEIRA (o navegador rola o body, não só a barra), cortando texto
+ * à esquerda e deixando espaço em branco à direita. Por isso a barra tem seu
+ * próprio scroll container (overflow-x-auto, alinhada ao início) no mobile e
+ * volta a centralizar no desktop, onde os 3 labels cabem sem overflow.
+ *
  * Cards com fotos reais exibem um bento grid como prévia fixa no topo. Ao
  * clicar no bento ou em "Ver fotos", um dialog modal acessível abre o
  * carrossel horizontal, preservando a altura e a composição da grade.
@@ -252,7 +259,7 @@ export function ServicosTabs({
     <section
       id="servicos"
       ref={secaoRef}
-      className="mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:px-8"
+      className="mx-auto max-w-6xl overflow-x-hidden px-4 py-20 sm:px-6 lg:px-8"
     >
       {/* Cabeçalho da seção */}
       <div className="mx-auto mb-12 max-w-2xl text-center">
@@ -272,41 +279,43 @@ export function ServicosTabs({
         </p>
       </div>
 
-      {/* Barra de tabs */}
-      <div className="mb-10 flex justify-center border-b border-neutral-200">
-        {TABS.map((tab) => {
-          const isActive = tab.id === tabAtiva;
-          return (
-            <button
-              key={tab.id}
-              type="button"
-              aria-label={tab.ariaLabel}
-              aria-pressed={isActive}
-              onClick={() => setTabAtiva(tab.id)}
-              style={
-                isActive
-                  ? {
-                      color: "var(--color-service-accent, #800000)",
-                      borderBottomColor:
-                        "var(--color-service-accent, #800000)",
-                    }
-                  : undefined
-              }
-              className={[
-                "relative px-6 py-4 text-base font-semibold whitespace-nowrap",
-                "border-b-2 -mb-px transition-colors duration-200",
-                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#800000] focus-visible:ring-offset-1",
-                isActive
-                  ? ""
-                  : "border-transparent text-neutral-500 hover:text-neutral-800 hover:border-neutral-300",
-              ]
-                .join(" ")
-                .trim()}
-            >
-              {tab.label}
-            </button>
-          );
-        })}
+      {/* Barra de tabs — rolável dentro dela mesma no mobile, centralizada no desktop */}
+      <div className="mb-10 -mx-4 overflow-x-auto px-4 sm:mx-0 sm:overflow-visible sm:px-0">
+        <div className="flex justify-start border-b border-neutral-200 sm:justify-center">
+          {TABS.map((tab) => {
+            const isActive = tab.id === tabAtiva;
+            return (
+              <button
+                key={tab.id}
+                type="button"
+                aria-label={tab.ariaLabel}
+                aria-pressed={isActive}
+                onClick={() => setTabAtiva(tab.id)}
+                style={
+                  isActive
+                    ? {
+                        color: "var(--color-service-accent, #800000)",
+                        borderBottomColor:
+                          "var(--color-service-accent, #800000)",
+                      }
+                    : undefined
+                }
+                className={[
+                  "relative shrink-0 whitespace-nowrap px-4 py-4 text-sm font-semibold sm:px-6 sm:text-base",
+                  "border-b-2 -mb-px transition-colors duration-200",
+                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#800000] focus-visible:ring-offset-1",
+                  isActive
+                    ? ""
+                    : "border-transparent text-neutral-500 hover:text-neutral-800 hover:border-neutral-300",
+                ]
+                  .join(" ")
+                  .trim()}
+              >
+                {tab.label}
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       {/* Painéis de conteúdo */}
