@@ -7,9 +7,9 @@ import { usePathname } from "next/navigation";
 import { getWhatsAppUrl } from "@/data/servicos";
 
 const NAV_ITENS = [
-  { id: "servicos", label: "Serviços",        href: "/#servicos" },
-  { id: "setores",  label: "Área de Atuação", href: "/#setores"  },
-  { id: "contato",  label: "Contato",         href: "/#contato"  },
+  { id: "servicos", label: "Serviços", href: "/#servicos" },
+  { id: "setores", label: "Área de Atuação", href: "/#setores" },
+  { id: "contato", label: "Contato", href: "/#contato" },
 ] as const;
 
 const CTA_WHATSAPP = getWhatsAppUrl(
@@ -20,8 +20,8 @@ export function NavPrimaria() {
   const pathname = usePathname();
   const isHomepage = pathname === "/";
 
-  const [ativa, setAtiva]           = useState<string>(NAV_ITENS[0].id);
-  const [scrolled, setScrolled]     = useState(false);
+  const [ativa, setAtiva] = useState(NAV_ITENS[0].id);
+  const [scrolled, setScrolled] = useState(false);
   const [menuAberto, setMenuAberto] = useState(false);
   const observersRef = useRef<IntersectionObserver[]>([]);
 
@@ -68,22 +68,22 @@ export function NavPrimaria() {
   function NavItem({ id, label, href }: { id: string; label: string; href: string }) {
     const isAtiva = isHomepage && ativa === id;
     const baseClasses = [
-      "relative px-4 py-2 text-sm font-medium rounded-md transition-colors duration-200",
+      "relative rounded-md px-4 py-2 text-sm font-medium transition-colors duration-200",
       "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#800000]",
       isAtiva ? "text-white" : "text-white/70 hover:text-white",
     ].join(" ");
     if (isHomepage) {
       return (
-        <button onClick={() => scrollParaSecao(id)} aria-current={isAtiva ? "true" : undefined} className={baseClasses}>
+        <button type="button" onClick={() => scrollParaSecao(id)} aria-current={isAtiva ? "true" : undefined} className={baseClasses}>
           {label}
-          {isAtiva && <span aria-hidden="true" className="absolute bottom-0 left-3 right-3 h-0.5 rounded-full" style={{ backgroundColor: "var(--color-service-accent, #800000)" }} />}
+          {isAtiva && <span aria-hidden="true" className="absolute inset-x-3 -bottom-1 h-0.5 rounded-full bg-[var(--color-service-accent,#800000)]" />}
         </button>
       );
     }
     return (
       <Link href={href} className={baseClasses}>
         {label}
-        {isAtiva && <span aria-hidden="true" className="absolute bottom-0 left-3 right-3 h-0.5 rounded-full" style={{ backgroundColor: "var(--color-service-accent, #800000)" }} />}
+        {isAtiva && <span aria-hidden="true" className="absolute inset-x-3 -bottom-1 h-0.5 rounded-full bg-[var(--color-service-accent,#800000)]" />}
       </Link>
     );
   }
@@ -91,126 +91,61 @@ export function NavPrimaria() {
   function NavItemMobile({ id, label, href }: { id: string; label: string; href: string }) {
     const isAtiva = isHomepage && ativa === id;
     const baseClasses = [
-      "w-full text-left px-4 py-3 rounded-lg text-sm font-medium transition-colors duration-200",
+      "w-full rounded-lg px-4 py-3 text-left text-sm font-medium transition-colors duration-200",
       "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#800000]",
       isAtiva ? "text-white" : "text-neutral-300 hover:bg-white/10 hover:text-white",
     ].join(" ");
     if (isHomepage) {
       return (
-        <button
-          onClick={() => scrollParaSecao(id)}
-          aria-current={isAtiva ? "true" : undefined}
-          className={baseClasses}
-          style={isAtiva ? { backgroundColor: "color-mix(in srgb, var(--color-service-accent, #800000) 20%, transparent)" } : undefined}
-        >
+        <button type="button" onClick={() => scrollParaSecao(id)} aria-current={isAtiva ? "true" : undefined} className={baseClasses} style={isAtiva ? { backgroundColor: "color-mix(in srgb, var(--color-service-accent, #800000) 20%, transparent)" } : undefined}>
           {label}
         </button>
       );
     }
     return (
-      <Link
-        href={href}
-        onClick={() => setMenuAberto(false)}
-        className={baseClasses}
-        style={isAtiva ? { backgroundColor: "color-mix(in srgb, var(--color-service-accent, #800000) 20%, transparent)" } : undefined}
-      >
+      <Link href={href} onClick={() => setMenuAberto(false)} className={baseClasses} style={isAtiva ? { backgroundColor: "color-mix(in srgb, var(--color-service-accent, #800000) 20%, transparent)" } : undefined}>
         {label}
       </Link>
     );
   }
 
   return (
-    <header
-      role="banner"
-      className="fixed top-0 inset-x-0 z-50 transition-colors duration-300"
-      style={scrolled ? {
-        backgroundColor: scrolledBg,
-        backdropFilter: "blur(8px)",
-        WebkitBackdropFilter: "blur(8px)",
-        boxShadow: "0 4px 24px rgba(0,0,0,0.4)",
-      } : undefined}
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-6">
-
-        {/* Logo + Nome da empresa */}
-        <Link
-          href="/"
-          aria-label="Central de Soluções — ir para o topo"
-          className="flex-shrink-0 flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#800000] focus-visible:rounded"
-        >
-          <Image
-            src="/images/logo.png"
-            alt=""
-            width={54}
-            height={54}
-            className="h-[54px] w-auto"
-            priority
-          />
-          <span className="font-heading font-bold text-white text-lg leading-none tracking-tight">
-            Central de{" "}
-            <span style={{ color: "var(--color-service-accent, #800000)" }}>Soluções</span>
+    <header className={["fixed inset-x-0 top-0 z-50 transition-colors duration-300", scrolled ? "backdrop-blur-sm" : "bg-transparent"].join(" ")} style={scrolled ? { backgroundColor: scrolledBg } : undefined}>
+      <div className="mx-auto flex h-[76px] max-w-7xl items-center justify-between px-4 sm:h-20 sm:px-6 lg:px-8">
+        <Link href="/" aria-label="Central de Soluções — ir para o topo" className="flex shrink-0 items-center gap-2">
+          <Image src="/images/logo.png" alt="Símbolo da Central de Soluções" width={54} height={54} priority className="h-[54px] w-[54px] shrink-0 object-contain" />
+          <span className="hidden items-center gap-0.5 font-heading text-lg font-bold leading-none tracking-tight sm:flex">
+            <span className="text-white">Central de</span>
+            <span style={{ color: "var(--color-service-accent, #800000)" }}> Soluções</span>
+          </span>
+          <span className="flex flex-col leading-none sm:hidden">
+            <span className="text-[14px] font-semibold tracking-[0.12em] text-white">CENTRAL DE</span>
+            <span className="mt-0.5 text-[19px] font-bold tracking-[0.06em] text-white">SOLUÇÕES</span>
+            <span className="mt-1 whitespace-nowrap text-[7px] font-medium tracking-[0.08em] text-white/80">LEGALIZAÇÃO | PROJETOS | LAUDOS</span>
           </span>
         </Link>
 
-        {/* Nav desktop */}
-        <nav aria-label="Menu principal" className="hidden md:flex items-center gap-1">
+        <nav aria-label="Navegação principal" className="hidden items-center gap-1 md:flex">
           {NAV_ITENS.map((item) => <NavItem key={item.id} {...item} />)}
+          <a href={CTA_WHATSAPP} target="_blank" rel="noopener noreferrer" aria-label="Solicitar orçamento via WhatsApp" className="ml-6 inline-flex items-center rounded-lg px-5 py-2.5 text-sm font-semibold text-white transition-opacity duration-200 hover:opacity-90 active:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-transparent" style={{ backgroundColor: "var(--color-service-accent, #800000)" }}>Solicitar Orçamento</a>
         </nav>
 
-        {/* CTA desktop */}
-        <a
-          href={CTA_WHATSAPP}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Solicitar orçamento via WhatsApp"
-          className="hidden md:inline-flex items-center gap-2 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 flex-shrink-0"
-          style={{ backgroundColor: "var(--color-service-accent, #800000)" }}
-          onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.backgroundColor = "var(--color-service-accent-hover, #4f0101)"; }}
-          onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.backgroundColor = "var(--color-service-accent, #800000)"; }}
-        >
-          Solicitar Orçamento
-        </a>
-
-        {/* Botão hambúrguer — mobile */}
-        <button
-          onClick={() => setMenuAberto((v) => !v)}
-          aria-expanded={menuAberto}
-          aria-controls="menu-mobile"
-          aria-label={menuAberto ? "Fechar menu" : "Abrir menu"}
-          className="md:hidden p-2 rounded-md text-white hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#800000]"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            {menuAberto ? (
-              <><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></>
-            ) : (
-              <><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" /></>
-            )}
-          </svg>
+        <button type="button" aria-label={menuAberto ? "Fechar menu" : "Abrir menu"} aria-expanded={menuAberto} onClick={() => setMenuAberto((v) => !v)} className="flex h-11 w-11 items-center justify-center rounded-lg text-white transition-colors duration-200 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-transparent md:hidden">
+          <span aria-hidden="true" className="flex w-6 flex-col gap-1.5">
+            <span className="h-0.5 w-full bg-current" />
+            <span className="h-0.5 w-full bg-current" />
+            <span className="h-0.5 w-full bg-current" />
+          </span>
         </button>
       </div>
 
-      {/* Menu mobile dropdown */}
       {menuAberto && (
-        <nav
-          id="menu-mobile"
-          aria-label="Menu mobile"
-          className="md:hidden backdrop-blur-sm border-t border-white/10 px-4 py-4 flex flex-col gap-1"
-          style={{ backgroundColor: scrolledBg }}
-        >
-          {NAV_ITENS.map((item) => <NavItemMobile key={item.id} {...item} />)}
-          <a
-            href={CTA_WHATSAPP}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => setMenuAberto(false)}
-            className="mt-2 w-full text-center text-white text-sm font-semibold px-4 py-3 rounded-lg transition-colors duration-200"
-            style={{ backgroundColor: "var(--color-service-accent, #800000)" }}
-            onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.backgroundColor = "var(--color-service-accent-hover, #4f0101)"; }}
-            onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.backgroundColor = "var(--color-service-accent, #800000)"; }}
-          >
-            Solicitar Orçamento
-          </a>
-        </nav>
+        <div className="border-t border-white/10 bg-[#1a0000]/98 px-4 pb-5 pt-3 backdrop-blur-sm md:hidden">
+          <nav aria-label="Menu mobile" className="mx-auto flex max-w-7xl flex-col gap-1">
+            {NAV_ITENS.map((item) => <NavItemMobile key={item.id} {...item} />)}
+            <a href={CTA_WHATSAPP} target="_blank" rel="noopener noreferrer" onClick={() => setMenuAberto(false)} className="mt-3 inline-flex items-center justify-center rounded-lg px-4 py-3 text-sm font-semibold text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#1a0000]" style={{ backgroundColor: "var(--color-service-accent, #800000)" }}>Solicitar Orçamento</a>
+          </nav>
+        </div>
       )}
     </header>
   );
