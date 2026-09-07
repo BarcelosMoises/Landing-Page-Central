@@ -12,6 +12,8 @@ const NAV_ITENS = [
   { id: "contato", label: "Contato", href: "/#contato" },
 ] as const;
 
+type NavItemId = (typeof NAV_ITENS)[number]["id"];
+
 const CTA_WHATSAPP = getWhatsAppUrl(
   "Olá! Vim pelo site da Central de Soluções e gostaria de solicitar um orçamento."
 );
@@ -20,7 +22,9 @@ export function NavPrimaria() {
   const pathname = usePathname();
   const isHomepage = pathname === "/";
 
-  const [ativa, setAtiva] = useState(NAV_ITENS[0].id);
+  // A anotação preserva a união "servicos" | "setores" | "contato".
+  // Sem ela, TypeScript infere somente o literal do primeiro item ("servicos").
+  const [ativa, setAtiva] = useState<NavItemId>(NAV_ITENS[0].id);
   const [scrolled, setScrolled] = useState(false);
   const [menuAberto, setMenuAberto] = useState(false);
   const observersRef = useRef<IntersectionObserver[]>([]);
