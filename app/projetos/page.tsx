@@ -1,4 +1,4 @@
-Atendimento em RJ, SP, MG e ES — Corpo de Bombeiros, Vigilância Sanitária, Licenciamento Ambiental, Laudos com ART.// app/projetos/page.tsx
+// app/projetos/page.tsx
 // Página de serviço: Projetos Técnicos de Engenharia
 // Server Component puro — sem "use client".
 
