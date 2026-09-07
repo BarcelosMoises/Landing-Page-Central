@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { ShieldCheck, FilePenLine, FileCheck2, ArrowDown, ArrowRight } from "lucide-react";
-import JsonLd from "@/components/JsonLd";
+import {JsonLd} from "@/components/JsonLd";
 import { NavPrimaria } from "@/components/NavPrimaria";
 import { ServicosTabs } from "@/components/ServicosTabs";
 import { MetricasEmpresa } from "@/components/MetricasEmpresa";
