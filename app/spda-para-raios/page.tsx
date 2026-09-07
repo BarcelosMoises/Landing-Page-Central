@@ -7,7 +7,7 @@ import Link from "next/link";
 import { NavPrimaria } from "@/components/NavPrimaria";
 import { FaqItem } from "@/components/FaqItem";
 import { CtaFinal } from "@/components/CtaFinal";
-import { DocumentCard } from "@/components/DocumentCard";
+import { CarrosselAuto } from "@/components/CarrosselAuto";
 import {
   servicos,
   getWhatsAppUrl,
@@ -300,9 +300,9 @@ export default function PageSPDA() {
               </div>
 
               <div>
-                <DocumentCard
-                  titulo="Laudo SPDA + ART"
-                  descricao="Laudo técnico do Sistema de Proteção contra Descargas Atmosféricas conforme ABNT NBR 5419, com ART assinada por responsável técnico."
+                <CarrosselAuto
+                  imagens={spda.imagens ?? []}
+                  nome="SPDA — Para-raios"
                 />
 
                 {spda.normaBase && (

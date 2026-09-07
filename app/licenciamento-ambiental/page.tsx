@@ -7,7 +7,7 @@ import Link from "next/link";
 import { NavPrimaria } from "@/components/NavPrimaria";
 import { FaqItem } from "@/components/FaqItem";
 import { CtaFinal } from "@/components/CtaFinal";
-import { DocumentCard } from "@/components/DocumentCard";
+import { CarrosselAuto } from "@/components/CarrosselAuto";
 import {
   servicos,
   getWhatsAppUrl,
@@ -318,9 +318,9 @@ export default function PageLicenciamentoAmbiental() {
               </div>
 
               <div>
-                <DocumentCard
-                  titulo="LP · LI · LO · LAS"
-                  descricao="Licenças ambientais (Prévia, Instalação, Operação e Simplificada) emitidas pelos órgãos licenciadores — INEA, CETESB, SUPRAM/SEMAD e IEMA."
+                <CarrosselAuto
+                  imagens={ambiental.imagens ?? []}
+                  nome="Licenciamento Ambiental"
                 />
 
                 {ambiental.normaBase && (

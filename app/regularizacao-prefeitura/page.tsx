@@ -8,7 +8,7 @@ import Link from "next/link";
 import { NavPrimaria } from "@/components/NavPrimaria";
 import { FaqItem } from "@/components/FaqItem";
 import { CtaFinal } from "@/components/CtaFinal";
-import { DocumentCard } from "@/components/DocumentCard";
+import { CarrosselAuto } from "@/components/CarrosselAuto";
 import {
   servicos,
   getWhatsAppUrl,
@@ -392,9 +392,9 @@ export default function PageRegularizacaoPrefeitura() {
               </div>
 
               <div>
-                <DocumentCard
-                  titulo="Projeto Legal · Habite-se"
-                  descricao="Documentos emitidos pela Secretaria Municipal: aprovação de projeto legal, Habite-se, desmembramento e remembramento de lotes."
+                <CarrosselAuto
+                  imagens={prefeitura.imagens ?? []}
+                  nome="Regularização junto à Prefeitura"
                 />
 
                 <div

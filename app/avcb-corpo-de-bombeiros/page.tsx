@@ -9,7 +9,7 @@ import Link from "next/link";
 import { NavPrimaria } from "@/components/NavPrimaria";
 import { FaqItem } from "@/components/FaqItem";
 import { CtaFinal } from "@/components/CtaFinal";
-import { DocumentCard } from "@/components/DocumentCard";
+import { CarrosselAuto } from "@/components/CarrosselAuto";
 import {
   servicos,
   estadosAtuacao,
@@ -352,9 +352,9 @@ export default function PageAVCB() {
               </div>
 
               <div>
-                <DocumentCard
-                  titulo="AVCB / CLCB"
-                  descricao="Auto de Vistoria ou Certificado de Licença do Corpo de Bombeiros — documento que certifica a regularidade do imóvel quanto à segurança contra incêndio e pânico."
+                <CarrosselAuto
+                  imagens={avcb.imagens ?? []}
+                  nome="AVCB / CLCB — Corpo de Bombeiros"
                 />
 
                 {avcb.normaBase && (

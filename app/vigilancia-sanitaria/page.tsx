@@ -9,7 +9,7 @@ import Link from "next/link";
 import { NavPrimaria } from "@/components/NavPrimaria";
 import { FaqItem } from "@/components/FaqItem";
 import { CtaFinal } from "@/components/CtaFinal";
-import { DocumentCard } from "@/components/DocumentCard";
+import { CarrosselAuto } from "@/components/CarrosselAuto";
 import {
   servicos,
   getWhatsAppUrl,
@@ -310,9 +310,9 @@ export default function PageVigilanciaSanitaria() {
               </div>
 
               <div>
-                <DocumentCard
-                  titulo="Alvará Sanitário"
-                  descricao="Licença emitida pela Vigilância Sanitária municipal que autoriza o funcionamento de estabelecimentos sujeitos ao controle sanitário."
+                <CarrosselAuto
+                  imagens={vigilancia.imagens ?? []}
+                  nome="Vigilância Sanitária"
                 />
 
                 {vigilancia.normaBase && (
