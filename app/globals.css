@@ -170,9 +170,12 @@
   animation-iteration-count: infinite;
 }
 
-/* Pausa no hover: permite que o usuário leia o nome de uma empresa */
-.trustbar-track:hover {
-  animation-play-state: paused;
+/* Pausa no hover (apenas em dispositivos com hover real — desktop):
+   no mobile o :hover é "grudento" após o toque e travava o loop. */
+@media (hover: hover) {
+  .trustbar-track:hover {
+    animation-play-state: paused;
+  }
 }
 
 /* prefers-reduced-motion: usa seletor de classe (confiável em todos os browsers) */
