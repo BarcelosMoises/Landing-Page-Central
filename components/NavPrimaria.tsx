@@ -5,12 +5,22 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
+import { ChevronDown } from "lucide-react";
 import { getWhatsAppUrl } from "@/data/servicos";
 
 const NAV_ITENS = [
   { id: "servicos", label: "Serviços", href: "/#servicos" },
   { id: "setores", label: "Área de Atuação", href: "/#setores" },
   { id: "contato", label: "Contato", href: "/#contato" },
+] as const;
+
+const SERVICOS_MENU = [
+  { label: "Corpo de Bombeiros", href: "/avcb-corpo-de-bombeiros" },
+  { label: "Vigilância Sanitária", href: "/vigilancia-sanitaria" },
+  { label: "Meio Ambiente", href: "/licenciamento-ambiental" },
+  { label: "Prefeitura", href: "/regularizacao-prefeitura" },
+  { label: "Laudos Técnicos", href: "/laudos-tecnicos" },
+  { label: "Projetos Técnicos", href: "/projetos" },
 ] as const;
 
 type NavItemId = (typeof NAV_ITENS)[number]["id"];
@@ -28,6 +38,7 @@ export function NavPrimaria() {
   const [ativa, setAtiva] = useState<NavItemId>(NAV_ITENS[0].id);
   const [scrolled, setScrolled] = useState(false);
   const [menuAberto, setMenuAberto] = useState(false);
+  const [servicosAberto, setServicosAberto] = useState(false);
   const observersRef = useRef<IntersectionObserver[]>([]);
 
   useEffect(() => {
@@ -55,17 +66,36 @@ export function NavPrimaria() {
   }, []);
 
   useEffect(() => {
-    const handler = () => { if (window.innerWidth >= 768) setMenuAberto(false); };
+    const handler = () => {
+      if (window.innerWidth >= 768) {
+        setMenuAberto(false);
+        setServicosAberto(false);
+      }
+    };
     window.addEventListener("resize", handler);
     return () => window.removeEventListener("resize", handler);
   }, []);
 
-  function scrollParaSecao(id: string) {
+  function fecharMenu() {
     setMenuAberto(false);
+    setServicosAberto(false);
+  }
+
+  function scrollParaSecao(id: string) {
+    fecharMenu();
     const el = document.getElementById(id);
     if (!el) return;
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     el.scrollIntoView({ behavior: prefersReduced ? "instant" : "smooth", block: "start" });
+  }
+
+  function abrirServicosMobile() {
+    setServicosAberto((aberto) => !aberto);
+    if (isHomepage) {
+      const el = document.getElementById("servicos");
+      const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      el?.scrollIntoView({ behavior: prefersReduced ? "instant" : "smooth", block: "start" });
+    }
   }
 
   const scrolledBg = "color-mix(in srgb, var(--color-service-accent, #800000) 18%, #0a0a0a 82%)";
@@ -108,7 +138,7 @@ export function NavPrimaria() {
       );
     }
     return (
-      <Link href={href} onClick={() => setMenuAberto(false)} className={baseClasses} style={isAtiva ? { backgroundColor: "color-mix(in srgb, var(--color-service-accent, #800000) 20%, transparent)" } : undefined}>
+      <Link href={href} onClick={fecharMenu} className={baseClasses} style={isAtiva ? { backgroundColor: "color-mix(in srgb, var(--color-service-accent, #800000) 20%, transparent)" } : undefined}>
         {label}
       </Link>
     );
@@ -150,12 +180,48 @@ export function NavPrimaria() {
             className="overflow-hidden border-t border-white/10 bg-[#1a0000]/98 backdrop-blur-sm md:hidden"
           >
             <nav aria-label="Menu mobile" className="mx-auto flex max-w-7xl flex-col gap-1 px-4 pb-5 pt-3">
-              {NAV_ITENS.map((item, index) => (
-                <motion.div key={item.id} initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -8 }} transition={{ delay: 0.04 * index, duration: 0.2 }}>
+              <motion.div initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -8 }} transition={{ duration: 0.2 }}>
+                <button
+                  type="button"
+                  onClick={abrirServicosMobile}
+                  aria-expanded={servicosAberto}
+                  aria-controls="menu-mobile-servicos"
+                  className="flex w-full items-center justify-between rounded-lg px-4 py-3 text-left text-sm font-medium text-neutral-300 transition-colors duration-200 hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#800000]"
+                >
+                  Serviços
+                  <ChevronDown className={"h-4 w-4 transition-transform duration-200" + (servicosAberto ? " rotate-180" : "")} aria-hidden="true" />
+                </button>
+
+                <AnimatePresence initial={false}>
+                  {servicosAberto && (
+                    <motion.div
+                      id="menu-mobile-servicos"
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={menuTransition}
+                      className="overflow-hidden"
+                    >
+                      <ul className="ml-4 border-l border-white/15 py-1">
+                        {SERVICOS_MENU.map((servico, index) => (
+                          <motion.li key={servico.href} initial={{ opacity: 0, x: -6 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -6 }} transition={{ delay: 0.03 * index, duration: 0.18 }}>
+                            <Link href={servico.href} onClick={fecharMenu} className="block rounded-md px-4 py-2 text-sm text-white/80 transition-colors duration-150 hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#800000]">
+                              {servico.label}
+                            </Link>
+                          </motion.li>
+                        ))}
+                      </ul>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+
+              {NAV_ITENS.filter((item) => item.id !== "servicos").map((item, index) => (
+                <motion.div key={item.id} initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -8 }} transition={{ delay: 0.04 * (index + 1), duration: 0.2 }}>
                   <NavItemMobile {...item} />
                 </motion.div>
               ))}
-              <motion.a href={CTA_WHATSAPP} target="_blank" rel="noopener noreferrer" onClick={() => setMenuAberto(false)} initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -8 }} transition={{ delay: 0.16, duration: 0.2 }} className="mt-3 inline-flex items-center justify-center rounded-lg px-4 py-3 text-sm font-semibold text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#1a0000]" style={{ backgroundColor: "var(--color-service-accent, #800000)" }}>Solicitar Orçamento</motion.a>
+              <motion.a href={CTA_WHATSAPP} target="_blank" rel="noopener noreferrer" onClick={fecharMenu} initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -8 }} transition={{ delay: 0.16, duration: 0.2 }} className="mt-3 inline-flex items-center justify-center rounded-lg px-4 py-3 text-sm font-semibold text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#1a0000]" style={{ backgroundColor: "var(--color-service-accent, #800000)" }}>Solicitar Orçamento</motion.a>
             </nav>
           </motion.div>
         )}
