@@ -170,13 +170,7 @@
   animation-iteration-count: infinite;
 }
 
-/* Pausa no hover (apenas em dispositivos com hover real — desktop):
-   no mobile o :hover é "grudento" após o toque e travava o loop. */
-@media (hover: hover) {
-  .trustbar-track:hover {
-    animation-play-state: paused;
-  }
-}
+/* A animação não pausa no hover — o loop roda continuamente. */
 
 /* prefers-reduced-motion: usa seletor de classe (confiável em todos os browsers) */
 @media (prefers-reduced-motion: reduce) {
