@@ -435,6 +435,65 @@ export const servicos: readonly Servico[] = [
     normaBase: ["ABNT NBR 5419"],
     iconeLucide: "Zap",
     pathRota: "/spda-para-raios",
+    imagens: [
+      {
+        src: "/images/cards/laudo-spda/20220224-080825.jpeg",
+        alt: "Sistema de captação de SPDA com cabo de cobre e haste instalada em cobertura de edificação",
+        destaque: true,
+      },
+      {
+        src: "/images/cards/laudo-spda/20240911-164026.jpeg",
+        alt: "Cordoalha de cobre e conectores de descida do SPDA instalados em fachada industrial",
+      },
+      {
+        src: "/images/cards/laudo-spda/d8d9.jpeg",
+        alt: "Detalhe de conector de descida e fixação de cabo em sistema de para-raios",
+      },
+      {
+        src: "/images/cards/laudo-spda/img-20220210-172321.jpg",
+        alt: "Torre de telecomunicações com sistema de proteção contra descargas atmosféricas instalado",
+      },
+      {
+        src: "/images/cards/laudo-spda/t1m1.jpeg",
+        alt: "Caixa de inspeção de aterramento elétrico do SPDA aberta para medição",
+      },
+      {
+        src: "/images/cards/laudo-spda/whatsapp-image-2022-03-03-at-15-04-39-1.jpeg",
+        alt: "Inspeção de sistema de para-raios em subestação elétrica com estruturas metálicas",
+      },
+      {
+        src: "/images/cards/laudo-spda/whatsapp-image-2026-09-07-at-15-29-23.jpeg",
+        alt: "Técnico realizando inspeção de continuidade em sistema SPDA instalado",
+      },
+      {
+        src: "/images/cards/laudo-spda/whatsapp-image-2026-09-07-at-16-52-09.jpeg",
+        alt: "Estrutura metálica com captor tipo Franklin e cabo de descida do para-raios",
+      },
+      {
+        src: "/images/cards/laudo-spda/whatsapp-image-2026-09-07-at-16-52-10.jpeg",
+        alt: "Cordoalha de cobre de aterramento e descida do SPDA em área externa",
+      },
+      {
+        src: "/images/cards/laudo-spda/whatsapp-image-2026-09-07-at-16-52-13-1.jpeg",
+        alt: "Registro fotográfico de laudo técnico SPDA em telhado metálico industrial",
+      },
+      {
+        src: "/images/cards/laudo-spda/whatsapp-image-2026-09-07-at-16-52-13.jpeg",
+        alt: "Descida de SPDA com cabo isolado e suportes de fixação em parede",
+      },
+      {
+        src: "/images/cards/laudo-spda/whatsapp-image-2026-09-07-at-16-52-15.jpeg",
+        alt: "Vistoria de sistema de proteção contra descargas atmosféricas em instalação fotovoltaica",
+      },
+      {
+        src: "/images/cards/laudo-spda/whatsapp-image-2026-09-07-at-16-52-16.jpeg",
+        alt: "Conectores e garras de cabo do SPDA em inspeção de laudo técnico",
+      },
+      {
+        src: "/images/cards/laudo-spda/whatsapp-image-2026-09-07-at-16-52-18.jpeg",
+        alt: "Medição de resistência de aterramento em sistema SPDA durante vistoria",
+      },
+    ],
   },
   {
     id: "combate-incendio",
