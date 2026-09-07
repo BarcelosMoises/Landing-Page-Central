@@ -158,13 +158,6 @@ export default function HomePage() {
                   Tudo que sua empresa precisa em um só lugar.
                 </p>
 
-                <p
-                  className="mt-5 max-w-xl text-base leading-relaxed text-white/80 sm:mt-3 sm:text-sm"
-                  style={{ textShadow: "0 1px 8px rgba(0,0,0,0.6)" }}
-                >
-                  Atendimento em <strong className="text-white">RJ, SP, MG e ES</strong> — Corpo de Bombeiros, Vigilância Sanitária, Licenciamento Ambiental, Laudos com ART.
-                </p>
-
                 {/* Mobile: três pilares em linha, ícone + label. Desktop: links em linha com descrições em aria-label. */}
                 <div className="mt-10 grid max-w-sm grid-cols-3 divide-x divide-white/30 sm:mt-12 sm:flex sm:max-w-3xl sm:divide-x-0">
                   {PILARES_HERO.map((pilar, index) => (
