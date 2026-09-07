@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { AnimatePresence, motion } from "motion/react";
 import { getWhatsAppUrl } from "@/data/servicos";
 
 const NAV_ITENS = [
@@ -17,6 +18,8 @@ type NavItemId = (typeof NAV_ITENS)[number]["id"];
 const CTA_WHATSAPP = getWhatsAppUrl(
   "Olá! Vim pelo site da Central de Soluções e gostaria de solicitar um orçamento."
 );
+
+const menuTransition = { type: "spring", stiffness: 320, damping: 30 } as const;
 
 export function NavPrimaria() {
   const pathname = usePathname();
@@ -129,22 +132,34 @@ export function NavPrimaria() {
         </nav>
 
         <button type="button" aria-label={menuAberto ? "Fechar menu" : "Abrir menu"} aria-expanded={menuAberto} onClick={() => setMenuAberto((v) => !v)} className="flex h-11 w-11 items-center justify-center rounded-lg text-white transition-colors duration-200 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-transparent md:hidden">
-          <span aria-hidden="true" className="flex w-6 flex-col gap-1.5">
-            <span className="h-0.5 w-full bg-current" />
-            <span className="h-0.5 w-full bg-current" />
-            <span className="h-0.5 w-full bg-current" />
+          <span aria-hidden="true" className="relative flex h-6 w-6 items-center justify-center">
+            <motion.span animate={{ rotate: menuAberto ? 45 : 0, y: menuAberto ? 0 : -7 }} transition={menuTransition} className="absolute h-0.5 w-6 bg-current" />
+            <motion.span animate={{ opacity: menuAberto ? 0 : 1, scaleX: menuAberto ? 0 : 1 }} transition={menuTransition} className="absolute h-0.5 w-6 bg-current" />
+            <motion.span animate={{ rotate: menuAberto ? -45 : 0, y: menuAberto ? 0 : 7 }} transition={menuTransition} className="absolute h-0.5 w-6 bg-current" />
           </span>
         </button>
       </div>
 
-      {menuAberto && (
-        <div className="border-t border-white/10 bg-[#1a0000]/98 px-4 pb-5 pt-3 backdrop-blur-sm md:hidden">
-          <nav aria-label="Menu mobile" className="mx-auto flex max-w-7xl flex-col gap-1">
-            {NAV_ITENS.map((item) => <NavItemMobile key={item.id} {...item} />)}
-            <a href={CTA_WHATSAPP} target="_blank" rel="noopener noreferrer" onClick={() => setMenuAberto(false)} className="mt-3 inline-flex items-center justify-center rounded-lg px-4 py-3 text-sm font-semibold text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#1a0000]" style={{ backgroundColor: "var(--color-service-accent, #800000)" }}>Solicitar Orçamento</a>
-          </nav>
-        </div>
-      )}
+      <AnimatePresence initial={false}>
+        {menuAberto && (
+          <motion.div
+            initial={{ opacity: 0, height: 0, y: -8 }}
+            animate={{ opacity: 1, height: "auto", y: 0 }}
+            exit={{ opacity: 0, height: 0, y: -8 }}
+            transition={menuTransition}
+            className="overflow-hidden border-t border-white/10 bg-[#1a0000]/98 backdrop-blur-sm md:hidden"
+          >
+            <nav aria-label="Menu mobile" className="mx-auto flex max-w-7xl flex-col gap-1 px-4 pb-5 pt-3">
+              {NAV_ITENS.map((item, index) => (
+                <motion.div key={item.id} initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -8 }} transition={{ delay: 0.04 * index, duration: 0.2 }}>
+                  <NavItemMobile {...item} />
+                </motion.div>
+              ))}
+              <motion.a href={CTA_WHATSAPP} target="_blank" rel="noopener noreferrer" onClick={() => setMenuAberto(false)} initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -8 }} transition={{ delay: 0.16, duration: 0.2 }} className="mt-3 inline-flex items-center justify-center rounded-lg px-4 py-3 text-sm font-semibold text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#1a0000]" style={{ backgroundColor: "var(--color-service-accent, #800000)" }}>Solicitar Orçamento</motion.a>
+            </nav>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }
