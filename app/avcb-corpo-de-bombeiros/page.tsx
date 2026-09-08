@@ -12,7 +12,6 @@ import { CtaFinal } from "@/components/CtaFinal";
 import { CarrosselAuto } from "@/components/CarrosselAuto";
 import {
   servicos,
-  estadosAtuacao,
   getWhatsAppUrl,
 } from "@/data/servicos";
 
@@ -143,9 +142,6 @@ const faqJsonLd = {
 // ─── Dados locais ─────────────────────────────────────────────────────────────────
 
 const avcb = servicos.find((s) => s.id === "avcb")!;
-const estadosAVCB = estadosAtuacao.filter((e) =>
-  avcb.estados.includes(e.sigla)
-);
 const whatsappUrl = getWhatsAppUrl(
   "Olá! Tenho interesse no serviço de AVCB / CLCB. Pode me passar mais informações?"
 );
@@ -293,27 +289,6 @@ export default function PageAVCB() {
                   </Link>
                 </div>
               </div>
-
-              <aside
-                aria-label="Órgãos estaduais atendidos"
-                className="hidden lg:flex flex-col gap-3 min-w-[220px]"
-              >
-                <p className="text-xs font-semibold text-neutral-500 uppercase tracking-wider mb-1">Corpos de Bombeiros</p>
-                {estadosAVCB.map((e) => (
-                  <div
-                    key={e.sigla}
-                    className="flex items-center justify-between gap-4 px-4 py-3 rounded-lg border-l-4"
-                    style={{
-                      backgroundColor: "color-mix(in srgb, var(--color-service-accent, #800000) 8%, #1a0000)",
-                      borderLeftColor: "var(--color-service-accent, #800000)",
-                    }}
-                  >
-                    <span className="text-sm font-semibold text-white font-mono">{e.siglaCB}</span>
-                    <span className="text-xs" style={{ color: "#c4a8a8" }}>{e.nome}</span>
-                  </div>
-                ))}
-                <p className="text-xs text-neutral-500 italic mt-2">Demais estados sob consulta</p>
-              </aside>
             </div>
           </div>
         </section>
