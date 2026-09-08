@@ -520,6 +520,26 @@ export const servicos: readonly Servico[] = [
         src: "/images/cards/meio-ambiente/whatsapp-image-2026-09-07-at-16-52-06.jpeg",
         alt: "Vistoria técnica de licenciamento ambiental em área externa de instalação",
       },
+      {
+        src: "/images/cards/meio-ambiente/whatsapp-image-2026-09-08-at-09-57-35.jpeg",
+        alt: "Levantamento de campo em área de vegetação para licenciamento ambiental",
+      },
+      {
+        src: "/images/cards/meio-ambiente/whatsapp-image-2026-09-08-at-10-00-51.jpeg",
+        alt: "Vistoria técnica de licenciamento ambiental em empreendimento",
+      },
+      {
+        src: "/images/cards/meio-ambiente/whatsapp-image-2026-09-08-at-10-00-51n3.jpeg",
+        alt: "Registro de atividade de campo para licenciamento ambiental",
+      },
+      {
+        src: "/images/cards/meio-ambiente/whatsapp-image-2026-09-08-at-10-00-51n4.jpeg",
+        alt: "Inspeção ambiental em área de empreendimento em regularização",
+      },
+      {
+        src: "/images/cards/meio-ambiente/whatsapp-image-2026-09-08n2.jpeg",
+        alt: "Vistoria de licenciamento ambiental em campo",
+      },
     ],
   },
   {
