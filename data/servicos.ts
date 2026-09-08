@@ -196,37 +196,6 @@ export const servicos: readonly Servico[] = [
     ],
     iconeLucide: "ShieldAlert",
     pathRota: "/avcb-corpo-de-bombeiros",
-    imagens: [
-      {
-        src: "/images/cards/corpo-de-bombeiros/img1.jpeg",
-        alt: "Técnico com capacete branco e óculos de proteção inspecionando hidrante de incêndio em galpão industrial",
-        destaque: true,
-      },
-      {
-        src: "/images/cards/corpo-de-bombeiros/img2.jpeg",
-        alt: "Central de gás de combate a incêndio com cilindros vermelhos e tubulação em galpão logístico",
-      },
-      {
-        src: "/images/cards/corpo-de-bombeiros/img3.jpeg",
-        alt: "Galpão industrial com centenas de extintores de incêndio armazenados para manutenção e recarga",
-      },
-      {
-        src: "/images/cards/corpo-de-bombeiros/img4.jpeg",
-        alt: "Estoque de extintores de incêndio e cilindros de gás em galpão de manutenção",
-      },
-      {
-        src: "/images/cards/corpo-de-bombeiros/img5.jpeg",
-        alt: "Conjunto motor-bomba de incêndio Branco BD 815E XS com tubulação vermelha e registros",
-      },
-      {
-        src: "/images/cards/corpo-de-bombeiros/img6.jpeg",
-        alt: "Casa de bombas de incêndio com reservatórios pressurizados e tubulação vermelha",
-      },
-      {
-        src: "/images/cards/corpo-de-bombeiros/img7.jpeg",
-        alt: "Hidrante de incêndio com tubulação vermelha e abrigo de mangueiras em área industrial",
-      },
-    ],
   },
   {
     id: "vigilancia-sanitaria",
