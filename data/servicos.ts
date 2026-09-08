@@ -34,7 +34,7 @@ export interface SubServico {
 }
 
 export interface ImagemServico {
-  /** Caminho da imagem em /public, ex.: "/images/cards/corpo-de-bombeiros/img1.jpeg" */
+  /** Caminho da imagem em /public, ex.: "/images/cards/corpo-de-bombeiros/capa.jpg" */
   readonly src: string;
   /** Alt técnico descritivo (regra SEO #6) — descreve o conteúdo real da foto */
   readonly alt: string;
@@ -196,6 +196,33 @@ export const servicos: readonly Servico[] = [
     ],
     iconeLucide: "ShieldAlert",
     pathRota: "/avcb-corpo-de-bombeiros",
+    imagens: [
+      {
+        src: "/images/cards/corpo-de-bombeiros/capa.jpg",
+        alt: "Vistoria técnica de segurança contra incêndio e pânico para emissão do AVCB — Corpo de Bombeiros",
+        destaque: true,
+      },
+      {
+        src: "/images/cards/corpo-de-bombeiros/20240612-121513.jpg",
+        alt: "Levantamento de sistemas de combate a incêndio em edificação durante regularização junto ao Corpo de Bombeiros",
+      },
+      {
+        src: "/images/cards/corpo-de-bombeiros/20240805-150926.jpg",
+        alt: "Equipamentos de combate a incêndio e sinalização de emergência verificados em vistoria para AVCB",
+      },
+      {
+        src: "/images/cards/corpo-de-bombeiros/20250922-130717.jpg",
+        alt: "Inspeção de hidrantes e tubulação de combate a incêndio em galpão industrial",
+      },
+      {
+        src: "/images/cards/corpo-de-bombeiros/20260210-152949.jpg",
+        alt: "Registro fotográfico de vistoria de segurança contra incêndio e pânico para certificação do imóvel",
+      },
+      {
+        src: "/images/cards/corpo-de-bombeiros/20260519-111847.jpg",
+        alt: "Casa de bombas e reservatórios de combate a incêndio inspecionados durante regularização de AVCB",
+      },
+    ],
   },
   {
     id: "vigilancia-sanitaria",
