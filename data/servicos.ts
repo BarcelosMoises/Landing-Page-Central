@@ -34,7 +34,7 @@ export interface SubServico {
 }
 
 export interface ImagemServico {
-  /** Caminho da imagem em /public, ex.: "/images/cards/corpo-de-bombeiros/capa.jpg" */
+  /** Caminho da imagem em /public, ex.: "/images/cards/corpo-de-bombeiros/capa.webp" */
   readonly src: string;
   /** Alt técnico descritivo (regra SEO #6) — descreve o conteúdo real da foto */
   readonly alt: string;
@@ -198,176 +198,176 @@ export const servicos: readonly Servico[] = [
     pathRota: "/avcb-corpo-de-bombeiros",
     imagens: [
       {
-        src: "/images/cards/corpo-de-bombeiros/capa.jpg",
+        src: "/images/cards/corpo-de-bombeiros/capa.webp",
         alt: "Vistoria técnica de segurança contra incêndio e pânico para emissão do AVCB — Corpo de Bombeiros",
         destaque: true,
       },
       {
-        src: "/images/cards/corpo-de-bombeiros/20230629-080514.jpeg",
+        src: "/images/cards/corpo-de-bombeiros/20230629-080514.webp",
         alt: "Sistema de combate a incêndio em edificação vistoriado durante regularização junto ao Corpo de Bombeiros",
       },
       {
-        src: "/images/cards/corpo-de-bombeiros/20231120-092320.jpeg",
+        src: "/images/cards/corpo-de-bombeiros/20231120-092320.webp",
         alt: "Equipamentos de segurança contra incêndio e pânico inspecionados em vistoria para AVCB",
       },
       {
-        src: "/images/cards/corpo-de-bombeiros/20240612-121510.jpg",
+        src: "/images/cards/corpo-de-bombeiros/20240612-121510.webp",
         alt: "Levantamento técnico de instalações de combate a incêndio durante vistoria do Corpo de Bombeiros",
       },
       {
-        src: "/images/cards/corpo-de-bombeiros/20240612-121513.jpg",
+        src: "/images/cards/corpo-de-bombeiros/20240612-121513.webp",
         alt: "Levantamento de sistemas de combate a incêndio em edificação durante regularização junto ao Corpo de Bombeiros",
       },
       {
-        src: "/images/cards/corpo-de-bombeiros/20240612-121611.jpg",
+        src: "/images/cards/corpo-de-bombeiros/20240612-121611.webp",
         alt: "Hidrantes e tubulação de combate a incêndio verificados em vistoria de regularização de AVCB",
       },
       {
-        src: "/images/cards/corpo-de-bombeiros/20240612-121658.jpg",
+        src: "/images/cards/corpo-de-bombeiros/20240612-121658.webp",
         alt: "Equipamentos de proteção contra incêndio e sinalização de emergência inspecionados em edificação",
       },
       {
-        src: "/images/cards/corpo-de-bombeiros/20250922-130717.jpg",
+        src: "/images/cards/corpo-de-bombeiros/20250922-130717.webp",
         alt: "Inspeção de hidrantes e tubulação de combate a incêndio em galpão industrial",
       },
       {
-        src: "/images/cards/corpo-de-bombeiros/20250922-130821.jpg",
+        src: "/images/cards/corpo-de-bombeiros/20250922-130821.webp",
         alt: "Registro fotográfico de sistema hidráulico de combate a incêndio durante regularização de AVCB",
       },
       {
-        src: "/images/cards/corpo-de-bombeiros/20260210-152949.jpg",
+        src: "/images/cards/corpo-de-bombeiros/20260210-152949.webp",
         alt: "Registro fotográfico de vistoria de segurança contra incêndio e pânico para certificação do imóvel",
       },
       {
-        src: "/images/cards/corpo-de-bombeiros/20260519-111847.jpg",
+        src: "/images/cards/corpo-de-bombeiros/20260519-111847.webp",
         alt: "Casa de bombas e reservatórios de combate a incêndio inspecionados durante regularização de AVCB",
       },
       {
-        src: "/images/cards/corpo-de-bombeiros/img-20210310-152335.jpg",
+        src: "/images/cards/corpo-de-bombeiros/img-20210310-152335.webp",
         alt: "Vistoria de segurança contra incêndio e pânico em edificação para obtenção do AVCB",
       },
       {
-        src: "/images/cards/corpo-de-bombeiros/img-20210310-153115.jpg",
+        src: "/images/cards/corpo-de-bombeiros/img-20210310-153115.webp",
         alt: "Equipamentos de combate a incêndio inspecionados em vistoria do Corpo de Bombeiros",
       },
       {
-        src: "/images/cards/corpo-de-bombeiros/img-20210722-123403.jpg",
+        src: "/images/cards/corpo-de-bombeiros/img-20210722-123403.webp",
         alt: "Inspeção de instalações de segurança contra incêndio e pânico em imóvel em regularização",
       },
       {
-        src: "/images/cards/corpo-de-bombeiros/img-20210723-125304.jpg",
+        src: "/images/cards/corpo-de-bombeiros/img-20210723-125304.webp",
         alt: "Levantamento técnico de sistemas de combate a incêndio durante regularização de AVCB",
       },
       {
-        src: "/images/cards/corpo-de-bombeiros/img-20210723-125541.jpg",
+        src: "/images/cards/corpo-de-bombeiros/img-20210723-125541.webp",
         alt: "Registro de vistoria de segurança contra incêndio e pânico em edificação comercial",
       },
       {
-        src: "/images/cards/corpo-de-bombeiros/img-20210723-125845.jpg",
+        src: "/images/cards/corpo-de-bombeiros/img-20210723-125845.webp",
         alt: "Equipamentos de proteção contra incêndio verificados durante inspeção para AVCB",
       },
       {
-        src: "/images/cards/corpo-de-bombeiros/img-20210804-160200.jpg",
+        src: "/images/cards/corpo-de-bombeiros/img-20210804-160200.webp",
         alt: "Vistoria técnica de sistemas de combate a incêndio em edificação industrial",
       },
       {
-        src: "/images/cards/corpo-de-bombeiros/img-20210804-160313.jpg",
+        src: "/images/cards/corpo-de-bombeiros/img-20210804-160313.webp",
         alt: "Hidrantes e equipamentos de combate a incêndio inspecionados em regularização de AVCB",
       },
       {
-        src: "/images/cards/corpo-de-bombeiros/img-20210804-173208.jpg",
+        src: "/images/cards/corpo-de-bombeiros/img-20210804-173208.webp",
         alt: "Inspeção de segurança contra incêndio e pânico em imóvel durante vistoria do Corpo de Bombeiros",
       },
       {
-        src: "/images/cards/corpo-de-bombeiros/img-20210804-173619.jpg",
+        src: "/images/cards/corpo-de-bombeiros/img-20210804-173619.webp",
         alt: "Sistema de combate a incêndio e sinalização de emergência verificados em edificação",
       },
       {
-        src: "/images/cards/corpo-de-bombeiros/img-20210804-173716.jpg",
+        src: "/images/cards/corpo-de-bombeiros/img-20210804-173716.webp",
         alt: "Registro fotográfico de vistoria de regularização de AVCB em estabelecimento",
       },
       {
-        src: "/images/cards/corpo-de-bombeiros/img-20210804-191315.jpg",
+        src: "/images/cards/corpo-de-bombeiros/img-20210804-191315.webp",
         alt: "Equipamentos de segurança contra incêndio e pânico inspecionados em período noturno",
       },
       {
-        src: "/images/cards/corpo-de-bombeiros/img-20210805-114625.jpg",
+        src: "/images/cards/corpo-de-bombeiros/img-20210805-114625.webp",
         alt: "Levantamento técnico de combate a incêndio em edificação durante regularização junto ao Corpo de Bombeiros",
       },
       {
-        src: "/images/cards/corpo-de-bombeiros/img-20210805-115102.jpg",
+        src: "/images/cards/corpo-de-bombeiros/img-20210805-115102.webp",
         alt: "Hidrantes e tubulação de combate a incêndio verificados em vistoria de AVCB",
       },
       {
-        src: "/images/cards/corpo-de-bombeiros/img-20210805-115119.jpg",
+        src: "/images/cards/corpo-de-bombeiros/img-20210805-115119.webp",
         alt: "Vistoria de sistemas de segurança contra incêndio e pânico em imóvel",
       },
       {
-        src: "/images/cards/corpo-de-bombeiros/img-20220321-170621.jpg",
+        src: "/images/cards/corpo-de-bombeiros/img-20220321-170621.webp",
         alt: "Inspeção de equipamentos de combate a incêndio em edificação para regularização de AVCB",
       },
       {
-        src: "/images/cards/corpo-de-bombeiros/img-20220322-120558.jpg",
+        src: "/images/cards/corpo-de-bombeiros/img-20220322-120558.webp",
         alt: "Registro fotográfico de vistoria de segurança contra incêndio e pânico em estabelecimento",
       },
       {
-        src: "/images/cards/corpo-de-bombeiros/img-20220322-151857.jpg",
+        src: "/images/cards/corpo-de-bombeiros/img-20220322-151857.webp",
         alt: "Levantamento de instalações de combate a incêndio durante regularização junto ao Corpo de Bombeiros",
       },
       {
-        src: "/images/cards/corpo-de-bombeiros/img-20220808-150858.jpg",
+        src: "/images/cards/corpo-de-bombeiros/img-20220808-150858.webp",
         alt: "Equipamentos de proteção contra incêndio e sinalização de emergência verificados em edificação",
       },
       {
-        src: "/images/cards/corpo-de-bombeiros/img-20220908-144006.jpg",
+        src: "/images/cards/corpo-de-bombeiros/img-20220908-144006.webp",
         alt: "Vistoria técnica de sistemas de combate a incêndio em imóvel em regularização de AVCB",
       },
       {
-        src: "/images/cards/corpo-de-bombeiros/img-20220908-165832.jpg",
+        src: "/images/cards/corpo-de-bombeiros/img-20220908-165832.webp",
         alt: "Inspeção de hidrantes e equipamentos de combate a incêndio em vistoria do Corpo de Bombeiros",
       },
       {
-        src: "/images/cards/corpo-de-bombeiros/img-20220908-171622.jpg",
+        src: "/images/cards/corpo-de-bombeiros/img-20220908-171622.webp",
         alt: "Registro de vistoria de segurança contra incêndio e pânico em edificação",
       },
       {
-        src: "/images/cards/corpo-de-bombeiros/img-20240102-wa0022.jpeg",
+        src: "/images/cards/corpo-de-bombeiros/img-20240102-wa0022.webp",
         alt: "Sistema de combate a incêndio inspecionado durante regularização de AVCB",
       },
       {
-        src: "/images/cards/corpo-de-bombeiros/img-20240102-wa0037.jpeg",
+        src: "/images/cards/corpo-de-bombeiros/img-20240102-wa0037.webp",
         alt: "Equipamentos de segurança contra incêndio e pânico verificados em vistoria",
       },
       {
-        src: "/images/cards/corpo-de-bombeiros/pano-20210427-143336.jpg",
+        src: "/images/cards/corpo-de-bombeiros/pano-20210427-143336.webp",
         alt: "Vista panorâmica de edificação com sistemas de combate a incêndio durante regularização de AVCB",
       },
       {
-        src: "/images/cards/corpo-de-bombeiros/whatsapp-image-2026-09-07-at-16-51-33-1.jpeg",
+        src: "/images/cards/corpo-de-bombeiros/whatsapp-image-2026-09-07-at-16-51-33-1.webp",
         alt: "Vistoria de segurança contra incêndio e pânico em edificação para emissão do AVCB",
       },
       {
-        src: "/images/cards/corpo-de-bombeiros/whatsapp-image-2026-09-07-at-16-51-35.jpeg",
+        src: "/images/cards/corpo-de-bombeiros/whatsapp-image-2026-09-07-at-16-51-35.webp",
         alt: "Equipamentos de combate a incêndio inspecionados em vistoria do Corpo de Bombeiros",
       },
       {
-        src: "/images/cards/corpo-de-bombeiros/whatsapp-image-2026-09-07-at-16-51-36.jpeg",
+        src: "/images/cards/corpo-de-bombeiros/whatsapp-image-2026-09-07-at-16-51-36.webp",
         alt: "Levantamento técnico de instalações de combate a incêndio em imóvel",
       },
       {
-        src: "/images/cards/corpo-de-bombeiros/whatsapp-image-2026-09-07-at-16-51-57.jpeg",
+        src: "/images/cards/corpo-de-bombeiros/whatsapp-image-2026-09-07-at-16-51-57.webp",
         alt: "Hidrantes e tubulação de combate a incêndio verificados durante regularização de AVCB",
       },
       {
-        src: "/images/cards/corpo-de-bombeiros/whatsapp-image-2026-09-07-at-16-52-00.jpeg",
+        src: "/images/cards/corpo-de-bombeiros/whatsapp-image-2026-09-07-at-16-52-00.webp",
         alt: "Registro fotográfico de vistoria de segurança contra incêndio e pânico em estabelecimento",
       },
       {
-        src: "/images/cards/corpo-de-bombeiros/whatsapp-image-2026-09-07-at-16-52-02.jpeg",
+        src: "/images/cards/corpo-de-bombeiros/whatsapp-image-2026-09-07-at-16-52-02.webp",
         alt: "Sistema de combate a incêndio e sinalização de emergência inspecionados em edificação",
       },
       {
-        src: "/images/cards/corpo-de-bombeiros/whatsapp-image-2026-09-07-at-16-52-05.jpeg",
+        src: "/images/cards/corpo-de-bombeiros/whatsapp-image-2026-09-07-at-16-52-05.webp",
         alt: "Vistoria técnica de equipamentos de combate a incêndio para regularização de AVCB",
       },
     ],
@@ -405,44 +405,44 @@ export const servicos: readonly Servico[] = [
     pathRota: "/vigilancia-sanitaria",
     imagens: [
       {
-        src: "/images/cards/vigilancia-sanitaria/20241210-215311.jpg",
+        src: "/images/cards/vigilancia-sanitaria/20241210-215311.webp",
         alt: "Ambiente interno de estabelecimento inspecionado para alvará sanitário com bancadas e superfícies higienizáveis",
         destaque: true,
       },
       {
-        src: "/images/cards/vigilancia-sanitaria/20260129-152818.jpg",
+        src: "/images/cards/vigilancia-sanitaria/20260129-152818.webp",
         alt: "Área de manipulação de alimentos com equipamentos em aço inox durante vistoria da vigilância sanitária",
       },
       {
-        src: "/images/cards/vigilancia-sanitaria/20260129-155054.jpg",
+        src: "/images/cards/vigilancia-sanitaria/20260129-155054.webp",
         alt: "Registro fotográfico de inspeção sanitária em cozinha industrial com pias e chapas de aquecimento",
       },
       {
-        src: "/images/cards/vigilancia-sanitaria/20260427-120344.jpg",
+        src: "/images/cards/vigilancia-sanitaria/20260427-120344.webp",
         alt: "Sala técnica de estabelecimento de saúde pronta para avaliação de conformidade sanitária",
       },
       {
-        src: "/images/cards/vigilancia-sanitaria/img-0578.jpg",
+        src: "/images/cards/vigilancia-sanitaria/img-0578.webp",
         alt: "Interior de estabelecimento comercial com equipamentos de manipulação e armazenamento de alimentos",
       },
       {
-        src: "/images/cards/vigilancia-sanitaria/img-20220713-175228.jpg",
+        src: "/images/cards/vigilancia-sanitaria/img-20220713-175228.webp",
         alt: "Vistoria de regularização sanitária em área de processamento com utensílios e bancadas",
       },
       {
-        src: "/images/cards/vigilancia-sanitaria/whatsapp-image-2026-09-07-at-16-51-58.jpeg",
+        src: "/images/cards/vigilancia-sanitaria/whatsapp-image-2026-09-07-at-16-51-58.webp",
         alt: "Ambiente de atendimento de estabelecimento comercial em processo de alvará sanitário",
       },
       {
-        src: "/images/cards/vigilancia-sanitaria/whatsapp-image-2026-09-07-at-16-52-02-1.jpeg",
+        src: "/images/cards/vigilancia-sanitaria/whatsapp-image-2026-09-07-at-16-52-02-1.webp",
         alt: "Equipamentos de cozinha industrial durante levantamento para alvará sanitário",
       },
       {
-        src: "/images/cards/vigilancia-sanitaria/whatsapp-image-2026-09-07-at-16-52-03-1.jpeg",
+        src: "/images/cards/vigilancia-sanitaria/whatsapp-image-2026-09-07-at-16-52-03-1.webp",
         alt: "Detalhe de bancada em aço inox e utensílios em estabelecimento inspecionado",
       },
       {
-        src: "/images/cards/vigilancia-sanitaria/whatsapp-image-2026-09-07-at-16-52-03.jpeg",
+        src: "/images/cards/vigilancia-sanitaria/whatsapp-image-2026-09-07-at-16-52-03.webp",
         alt: "Área de armazenamento de insumos avaliada em vistoria sanitária",
       },
     ],
@@ -480,64 +480,64 @@ export const servicos: readonly Servico[] = [
     pathRota: "/licenciamento-ambiental",
     imagens: [
       {
-        src: "/images/cards/meio-ambiente/20230624-101553.jpeg",
+        src: "/images/cards/meio-ambiente/20230624-101553.webp",
         alt: "Área de vegetação em vistoria de licenciamento ambiental junto a usina ou empreendimento",
         destaque: true,
       },
       {
-        src: "/images/cards/meio-ambiente/20231024-150833.jpeg",
+        src: "/images/cards/meio-ambiente/20231024-150833.webp",
         alt: "Campo com usina solar fotovoltaica com painéis dispostos em fileiras durante licenciamento ambiental",
       },
       {
-        src: "/images/cards/meio-ambiente/20231024-151144.jpeg",
+        src: "/images/cards/meio-ambiente/20231024-151144.webp",
         alt: "Instalação de usina fotovoltaica com painéis solares e estrutura de fixação no solo",
       },
       {
-        src: "/images/cards/meio-ambiente/20231024-155709.jpeg",
+        src: "/images/cards/meio-ambiente/20231024-155709.webp",
         alt: "Vista aérea de empreendimento com painéis fotovoltaicos em área rural",
       },
       {
-        src: "/images/cards/meio-ambiente/20231024-161647.jpeg",
+        src: "/images/cards/meio-ambiente/20231024-161647.webp",
         alt: "Central fotovoltaica em operação com fileiras de módulos solares sob o sol",
       },
       {
-        src: "/images/cards/meio-ambiente/20231214-152634.jpg",
+        src: "/images/cards/meio-ambiente/20231214-152634.webp",
         alt: "Área externa de empreendimento licenciado com vegetação e estrutura industrial",
       },
       {
-        src: "/images/cards/meio-ambiente/20260826-101648.jpg",
+        src: "/images/cards/meio-ambiente/20260826-101648.webp",
         alt: "Técnico em campo realizando levantamento para licenciamento ambiental",
       },
       {
-        src: "/images/cards/meio-ambiente/whatsapp-image-2026-08-31-at-10-57-14-1.jpeg",
+        src: "/images/cards/meio-ambiente/whatsapp-image-2026-08-31-at-10-57-14-1.webp",
         alt: "Documentação e pranchetas de vistoria de campo em licenciamento ambiental",
       },
       {
-        src: "/images/cards/meio-ambiente/whatsapp-image-2026-09-07-at-16-52-05-1.jpeg",
+        src: "/images/cards/meio-ambiente/whatsapp-image-2026-09-07-at-16-52-05-1.webp",
         alt: "Registro de atividade de campo em área de empreendimento para licenciamento ambiental",
       },
       {
-        src: "/images/cards/meio-ambiente/whatsapp-image-2026-09-07-at-16-52-06.jpeg",
+        src: "/images/cards/meio-ambiente/whatsapp-image-2026-09-07-at-16-52-06.webp",
         alt: "Vistoria técnica de licenciamento ambiental em área externa de instalação",
       },
       {
-        src: "/images/cards/meio-ambiente/whatsapp-image-2026-09-08-at-09-57-35.jpeg",
+        src: "/images/cards/meio-ambiente/whatsapp-image-2026-09-08-at-09-57-35.webp",
         alt: "Levantamento de campo em área de vegetação para licenciamento ambiental",
       },
       {
-        src: "/images/cards/meio-ambiente/whatsapp-image-2026-09-08-at-10-00-51.jpeg",
+        src: "/images/cards/meio-ambiente/whatsapp-image-2026-09-08-at-10-00-51.webp",
         alt: "Vistoria técnica de licenciamento ambiental em empreendimento",
       },
       {
-        src: "/images/cards/meio-ambiente/whatsapp-image-2026-09-08-at-10-00-51n3.jpeg",
+        src: "/images/cards/meio-ambiente/whatsapp-image-2026-09-08-at-10-00-51n3.webp",
         alt: "Registro de atividade de campo para licenciamento ambiental",
       },
       {
-        src: "/images/cards/meio-ambiente/whatsapp-image-2026-09-08-at-10-00-51n4.jpeg",
+        src: "/images/cards/meio-ambiente/whatsapp-image-2026-09-08-at-10-00-51n4.webp",
         alt: "Inspeção ambiental em área de empreendimento em regularização",
       },
       {
-        src: "/images/cards/meio-ambiente/whatsapp-image-2026-09-08n2.jpeg",
+        src: "/images/cards/meio-ambiente/whatsapp-image-2026-09-08n2.webp",
         alt: "Vistoria de licenciamento ambiental em campo",
       },
     ],
@@ -563,7 +563,7 @@ export const servicos: readonly Servico[] = [
     pathRota: "/regularizacao-prefeitura",
     imagens: [
       {
-        src: "/images/cards/prefeitura/whatsapp-image-2026-09-07-at-16-52-07.jpeg",
+        src: "/images/cards/prefeitura/whatsapp-image-2026-09-07-at-16-52-07.webp",
         alt: "Documentação técnica para regularização de imóvel junto à prefeitura municipal",
         destaque: true,
       },
@@ -601,60 +601,60 @@ export const servicos: readonly Servico[] = [
     pathRota: "/spda-para-raios",
     imagens: [
       {
-        src: "/images/cards/laudo-spda/20220224-080825.jpeg",
+        src: "/images/cards/laudo-spda/20220224-080825.webp",
         alt: "Sistema de captação de SPDA com cabo de cobre e haste instalada em cobertura de edificação",
         destaque: true,
       },
       {
-        src: "/images/cards/laudo-spda/20240911-164026.jpeg",
+        src: "/images/cards/laudo-spda/20240911-164026.webp",
         alt: "Cordoalha de cobre e conectores de descida do SPDA instalados em fachada industrial",
       },
       {
-        src: "/images/cards/laudo-spda/d8d9.jpeg",
+        src: "/images/cards/laudo-spda/d8d9.webp",
         alt: "Detalhe de conector de descida e fixação de cabo em sistema de para-raios",
       },
       {
-        src: "/images/cards/laudo-spda/img-20220210-172321.jpg",
+        src: "/images/cards/laudo-spda/img-20220210-172321.webp",
         alt: "Torre de telecomunicações com sistema de proteção contra descargas atmosféricas instalado",
       },
       {
-        src: "/images/cards/laudo-spda/t1m1.jpeg",
+        src: "/images/cards/laudo-spda/t1m1.webp",
         alt: "Caixa de inspeção de aterramento elétrico do SPDA aberta para medição",
       },
       {
-        src: "/images/cards/laudo-spda/whatsapp-image-2022-03-03-at-15-04-39-1.jpeg",
+        src: "/images/cards/laudo-spda/whatsapp-image-2022-03-03-at-15-04-39-1.webp",
         alt: "Inspeção de sistema de para-raios em subestação elétrica com estruturas metálicas",
       },
       {
-        src: "/images/cards/laudo-spda/whatsapp-image-2026-09-07-at-15-29-23.jpeg",
+        src: "/images/cards/laudo-spda/whatsapp-image-2026-09-07-at-15-29-23.webp",
         alt: "Técnico realizando inspeção de continuidade em sistema SPDA instalado",
       },
       {
-        src: "/images/cards/laudo-spda/whatsapp-image-2026-09-07-at-16-52-09.jpeg",
+        src: "/images/cards/laudo-spda/whatsapp-image-2026-09-07-at-16-52-09.webp",
         alt: "Estrutura metálica com captor tipo Franklin e cabo de descida do para-raios",
       },
       {
-        src: "/images/cards/laudo-spda/whatsapp-image-2026-09-07-at-16-52-10.jpeg",
+        src: "/images/cards/laudo-spda/whatsapp-image-2026-09-07-at-16-52-10.webp",
         alt: "Cordoalha de cobre de aterramento e descida do SPDA em área externa",
       },
       {
-        src: "/images/cards/laudo-spda/whatsapp-image-2026-09-07-at-16-52-13-1.jpeg",
+        src: "/images/cards/laudo-spda/whatsapp-image-2026-09-07-at-16-52-13-1.webp",
         alt: "Registro fotográfico de laudo técnico SPDA em telhado metálico industrial",
       },
       {
-        src: "/images/cards/laudo-spda/whatsapp-image-2026-09-07-at-16-52-13.jpeg",
+        src: "/images/cards/laudo-spda/whatsapp-image-2026-09-07-at-16-52-13.webp",
         alt: "Descida de SPDA com cabo isolado e suportes de fixação em parede",
       },
       {
-        src: "/images/cards/laudo-spda/whatsapp-image-2026-09-07-at-16-52-15.jpeg",
+        src: "/images/cards/laudo-spda/whatsapp-image-2026-09-07-at-16-52-15.webp",
         alt: "Vistoria de sistema de proteção contra descargas atmosféricas em instalação fotovoltaica",
       },
       {
-        src: "/images/cards/laudo-spda/whatsapp-image-2026-09-07-at-16-52-16.jpeg",
+        src: "/images/cards/laudo-spda/whatsapp-image-2026-09-07-at-16-52-16.webp",
         alt: "Conectores e garras de cabo do SPDA em inspeção de laudo técnico",
       },
       {
-        src: "/images/cards/laudo-spda/whatsapp-image-2026-09-07-at-16-52-18.jpeg",
+        src: "/images/cards/laudo-spda/whatsapp-image-2026-09-07-at-16-52-18.webp",
         alt: "Medição de resistência de aterramento em sistema SPDA durante vistoria",
       },
     ],
@@ -755,24 +755,24 @@ export const servicos: readonly Servico[] = [
     pathRota: "/laudos-tecnicos",
     imagens: [
       {
-        src: "/images/cards/laudo-combate-ao-incendio/20240423-140501-1.jpg",
+        src: "/images/cards/laudo-combate-ao-incendio/20240423-140501-1.webp",
         alt: "Sistema de hidrantes e tubulação de combate a incêndio instalado em galpão industrial",
         destaque: true,
       },
       {
-        src: "/images/cards/laudo-combate-ao-incendio/whatsapp-image-2026-09-07-at-16-52-04.jpeg",
+        src: "/images/cards/laudo-combate-ao-incendio/whatsapp-image-2026-09-07-at-16-52-04.webp",
         alt: "Registro de laudo técnico de combate ao incêndio com extintores e sinalização",
       },
       {
-        src: "/images/cards/laudo-combate-ao-incendio/whatsapp-image-2026-09-07-at-16-59-53.jpeg",
+        src: "/images/cards/laudo-combate-ao-incendio/whatsapp-image-2026-09-07-at-16-59-53.webp",
         alt: "Inspeção de sistema de combate a incêndio e pânico em edificação comercial",
       },
       {
-        src: "/images/cards/laudo-combate-ao-incendio/whatsapp-image-2026-09-07-at-16-59-54-1.jpeg",
+        src: "/images/cards/laudo-combate-ao-incendio/whatsapp-image-2026-09-07-at-16-59-54-1.webp",
         alt: "Hidrante de parede com mangueira e esguicho em vistoria de laudo técnico",
       },
       {
-        src: "/images/cards/laudo-combate-ao-incendio/whatsapp-image-2026-09-07-at-17-01-35.jpeg",
+        src: "/images/cards/laudo-combate-ao-incendio/whatsapp-image-2026-09-07-at-17-01-35.webp",
         alt: "Sistema de detecção e alarme de incêndio inspecionado durante elaboração de laudo",
       },
     ],
@@ -811,60 +811,60 @@ export const servicos: readonly Servico[] = [
     pathRota: "/laudo-spda",
     imagens: [
       {
-        src: "/images/cards/laudo-spda/20220224-080825.jpeg",
+        src: "/images/cards/laudo-spda/20220224-080825.webp",
         alt: "Sistema de captação de SPDA com cabo de cobre e haste instalada em cobertura de edificação",
         destaque: true,
       },
       {
-        src: "/images/cards/laudo-spda/20240911-164026.jpeg",
+        src: "/images/cards/laudo-spda/20240911-164026.webp",
         alt: "Cordoalha de cobre e conectores de descida do SPDA instalados em fachada industrial",
       },
       {
-        src: "/images/cards/laudo-spda/d8d9.jpeg",
+        src: "/images/cards/laudo-spda/d8d9.webp",
         alt: "Detalhe de conector de descida e fixação de cabo em sistema de para-raios",
       },
       {
-        src: "/images/cards/laudo-spda/img-20220210-172321.jpg",
+        src: "/images/cards/laudo-spda/img-20220210-172321.webp",
         alt: "Torre de telecomunicações com sistema de proteção contra descargas atmosféricas instalado",
       },
       {
-        src: "/images/cards/laudo-spda/t1m1.jpeg",
+        src: "/images/cards/laudo-spda/t1m1.webp",
         alt: "Caixa de inspeção de aterramento elétrico do SPDA aberta para medição",
       },
       {
-        src: "/images/cards/laudo-spda/whatsapp-image-2022-03-03-at-15-04-39-1.jpeg",
+        src: "/images/cards/laudo-spda/whatsapp-image-2022-03-03-at-15-04-39-1.webp",
         alt: "Inspeção de sistema de para-raios em subestação elétrica com estruturas metálicas",
       },
       {
-        src: "/images/cards/laudo-spda/whatsapp-image-2026-09-07-at-15-29-23.jpeg",
+        src: "/images/cards/laudo-spda/whatsapp-image-2026-09-07-at-15-29-23.webp",
         alt: "Técnico realizando inspeção de continuidade em sistema SPDA instalado",
       },
       {
-        src: "/images/cards/laudo-spda/whatsapp-image-2026-09-07-at-16-52-09.jpeg",
+        src: "/images/cards/laudo-spda/whatsapp-image-2026-09-07-at-16-52-09.webp",
         alt: "Estrutura metálica com captor tipo Franklin e cabo de descida do para-raios",
       },
       {
-        src: "/images/cards/laudo-spda/whatsapp-image-2026-09-07-at-16-52-10.jpeg",
+        src: "/images/cards/laudo-spda/whatsapp-image-2026-09-07-at-16-52-10.webp",
         alt: "Cordoalha de cobre de aterramento e descida do SPDA em área externa",
       },
       {
-        src: "/images/cards/laudo-spda/whatsapp-image-2026-09-07-at-16-52-13-1.jpeg",
+        src: "/images/cards/laudo-spda/whatsapp-image-2026-09-07-at-16-52-13-1.webp",
         alt: "Registro fotográfico de laudo técnico SPDA em telhado metálico industrial",
       },
       {
-        src: "/images/cards/laudo-spda/whatsapp-image-2026-09-07-at-16-52-13.jpeg",
+        src: "/images/cards/laudo-spda/whatsapp-image-2026-09-07-at-16-52-13.webp",
         alt: "Descida de SPDA com cabo isolado e suportes de fixação em parede",
       },
       {
-        src: "/images/cards/laudo-spda/whatsapp-image-2026-09-07-at-16-52-15.jpeg",
+        src: "/images/cards/laudo-spda/whatsapp-image-2026-09-07-at-16-52-15.webp",
         alt: "Vistoria de sistema de proteção contra descargas atmosféricas em instalação fotovoltaica",
       },
       {
-        src: "/images/cards/laudo-spda/whatsapp-image-2026-09-07-at-16-52-16.jpeg",
+        src: "/images/cards/laudo-spda/whatsapp-image-2026-09-07-at-16-52-16.webp",
         alt: "Conectores e garras de cabo do SPDA em inspeção de laudo técnico",
       },
       {
-        src: "/images/cards/laudo-spda/whatsapp-image-2026-09-07-at-16-52-18.jpeg",
+        src: "/images/cards/laudo-spda/whatsapp-image-2026-09-07-at-16-52-18.webp",
         alt: "Medição de resistência de aterramento em sistema SPDA durante vistoria",
       },
     ],
@@ -901,32 +901,32 @@ export const servicos: readonly Servico[] = [
     pathRota: "/estanqueidade-glp-gn",
     imagens: [
       {
-        src: "/images/cards/gas/20260129-153857.jpg",
+        src: "/images/cards/gas/20260129-153857.webp",
         alt: "Central de GLP com cilindros e rede de distribuição de gás durante teste de estanqueidade",
         destaque: true,
       },
       {
-        src: "/images/cards/gas/20260427-120517.jpg",
+        src: "/images/cards/gas/20260427-120517.webp",
         alt: "Rede de tubulação de gás com registros e manômetros para ensaio de pressão",
       },
       {
-        src: "/images/cards/gas/20260701-151751.jpg",
+        src: "/images/cards/gas/20260701-151751.webp",
         alt: "Bateria de cilindros de GLP em central de gás inspecionada para laudo de estanqueidade",
       },
       {
-        src: "/images/cards/gas/whatsapp-image-2026-09-07-at-16-51-32-1.jpeg",
+        src: "/images/cards/gas/whatsapp-image-2026-09-07-at-16-51-32-1.webp",
         alt: "Manômetro e conjunto de ensaio de pressão em rede de gás GLP/GN",
       },
       {
-        src: "/images/cards/gas/whatsapp-image-2026-09-07-at-16-51-32-2.jpeg",
+        src: "/images/cards/gas/whatsapp-image-2026-09-07-at-16-51-32-2.webp",
         alt: "Registro fotográfico de teste de estanqueidade em instalação de gás",
       },
       {
-        src: "/images/cards/gas/whatsapp-image-2026-09-07-at-16-51-33.jpeg",
+        src: "/images/cards/gas/whatsapp-image-2026-09-07-at-16-51-33.webp",
         alt: "Conexões e tubulação de rede de gás GLP em vistoria técnica",
       },
       {
-        src: "/images/cards/gas/whatsapp-image-2026-09-07-at-16-52-06-1.jpeg",
+        src: "/images/cards/gas/whatsapp-image-2026-09-07-at-16-52-06-1.webp",
         alt: "Central de gás com reguladores de pressão e cilindros de GLP",
       },
     ],
@@ -1230,8 +1230,8 @@ export const setores: readonly Setor[] = [
 // destaque: true  → exibido em subpáginas (getClientesDestaque)
 // destaque: false → apenas no slider da homepage (getTodosClientesLogos)
 //
-// logoSize: "default" → 281×93px  (+50% vs base 187×62 — usar para 1.png)
-// logoSize: "medium"  → 243×81px  (+30% vs base 187×62 — usar para 6.png)
+// logoSize: "default" → 281×93px  (+50% vs base 187×62 — usar para 1.webp)
+// logoSize: "medium"  → 243×81px  (+30% vs base 187×62 — usar para 6.webp)
 // logoSize: "large"   → 374×124px (+100% vs base 187×62 — padrão para demais)
 // Omitir logoSize equivale a "large".
 //
