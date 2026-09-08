@@ -227,10 +227,6 @@ export const servicos: readonly Servico[] = [
         alt: "Equipamentos de proteção contra incêndio e sinalização de emergência inspecionados em edificação",
       },
       {
-        src: "/images/cards/corpo-de-bombeiros/20240805-150926.jpg",
-        alt: "Equipamentos de combate a incêndio e sinalização de emergência verificados em vistoria para AVCB",
-      },
-      {
         src: "/images/cards/corpo-de-bombeiros/20250922-130717.jpg",
         alt: "Inspeção de hidrantes e tubulação de combate a incêndio em galpão industrial",
       },
