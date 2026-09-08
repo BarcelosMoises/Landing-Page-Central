@@ -63,13 +63,15 @@ export default function HomePage() {
                   Soluções para <span className="block italic sm:inline" style={{ color: "#a30000" }}>legalizar</span>{" "}sua empresa.
                 </h1>
                 <p className="mt-6 max-w-md text-xl font-medium leading-relaxed text-white/90 sm:mt-4 sm:text-lg md:text-xl" style={{ textShadow: "0 1px 8px rgba(0,0,0,0.6)" }}>Tudo que sua empresa precisa em um só lugar.</p>
-                <div className="mt-10 grid max-w-sm grid-cols-3 divide-x divide-white/30 sm:mt-12 sm:flex sm:max-w-3xl sm:divide-x-0">
+                <div className="mt-10 grid max-w-sm grid-cols-3 divide-x divide-white/30 sm:mt-12 sm:flex sm:max-w-none sm:items-center sm:divide-x-0">
                   {PILARES_HERO.map((pilar, index) => (
-                    <div key={pilar.label} className="min-w-0 sm:flex sm:items-center sm:gap-3">
-                      {index > 0 ? <span aria-hidden="true" className="hidden h-10 w-px bg-white/25 sm:inline-block" /> : null}
-                      <a href={pilar.href} aria-label={`${pilar.label}: ${pilar.descricao}`} className="group flex min-w-0 flex-col items-center px-2 text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#4f0101] sm:flex-row sm:px-0 sm:text-left">
+                    <div key={pilar.label} className="min-w-0 sm:flex sm:items-center">
+                      {index > 0 ? <span aria-hidden="true" className="hidden h-10 w-px shrink-0 bg-white/25 sm:mx-5 sm:inline-block" /> : null}
+                      <a href={pilar.href} aria-label={`${pilar.label}: ${pilar.descricao}`} className="group flex min-w-0 flex-col items-center px-3 text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#4f0101] sm:flex-row sm:gap-3 sm:px-0 sm:text-left">
                         <pilar.Icone className="h-8 w-8 shrink-0 text-white transition-opacity duration-200 group-hover:opacity-80 sm:h-6 sm:w-6" aria-hidden="true" />
-                        <span className="mt-2 text-[10px] font-semibold uppercase leading-snug tracking-wide text-white sm:mt-0 sm:text-sm">{pilar.label}</span>
+                        <span className="mt-2 max-w-[90px] text-[10px] font-semibold uppercase leading-snug tracking-wide text-white sm:mt-0 sm:max-w-none sm:whitespace-nowrap sm:text-sm">
+                          {pilar.label}
+                        </span>
                       </a>
                     </div>
                   ))}
