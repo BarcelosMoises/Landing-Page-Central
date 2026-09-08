@@ -203,8 +203,28 @@ export const servicos: readonly Servico[] = [
         destaque: true,
       },
       {
+        src: "/images/cards/corpo-de-bombeiros/20230629-080514.jpeg",
+        alt: "Sistema de combate a incêndio em edificação vistoriado durante regularização junto ao Corpo de Bombeiros",
+      },
+      {
+        src: "/images/cards/corpo-de-bombeiros/20231120-092320.jpeg",
+        alt: "Equipamentos de segurança contra incêndio e pânico inspecionados em vistoria para AVCB",
+      },
+      {
+        src: "/images/cards/corpo-de-bombeiros/20240612-121510.jpg",
+        alt: "Levantamento técnico de instalações de combate a incêndio durante vistoria do Corpo de Bombeiros",
+      },
+      {
         src: "/images/cards/corpo-de-bombeiros/20240612-121513.jpg",
         alt: "Levantamento de sistemas de combate a incêndio em edificação durante regularização junto ao Corpo de Bombeiros",
+      },
+      {
+        src: "/images/cards/corpo-de-bombeiros/20240612-121611.jpg",
+        alt: "Hidrantes e tubulação de combate a incêndio verificados em vistoria de regularização de AVCB",
+      },
+      {
+        src: "/images/cards/corpo-de-bombeiros/20240612-121658.jpg",
+        alt: "Equipamentos de proteção contra incêndio e sinalização de emergência inspecionados em edificação",
       },
       {
         src: "/images/cards/corpo-de-bombeiros/20240805-150926.jpg",
@@ -215,12 +235,144 @@ export const servicos: readonly Servico[] = [
         alt: "Inspeção de hidrantes e tubulação de combate a incêndio em galpão industrial",
       },
       {
+        src: "/images/cards/corpo-de-bombeiros/20250922-130821.jpg",
+        alt: "Registro fotográfico de sistema hidráulico de combate a incêndio durante regularização de AVCB",
+      },
+      {
         src: "/images/cards/corpo-de-bombeiros/20260210-152949.jpg",
         alt: "Registro fotográfico de vistoria de segurança contra incêndio e pânico para certificação do imóvel",
       },
       {
         src: "/images/cards/corpo-de-bombeiros/20260519-111847.jpg",
         alt: "Casa de bombas e reservatórios de combate a incêndio inspecionados durante regularização de AVCB",
+      },
+      {
+        src: "/images/cards/corpo-de-bombeiros/img-20210310-152335.jpg",
+        alt: "Vistoria de segurança contra incêndio e pânico em edificação para obtenção do AVCB",
+      },
+      {
+        src: "/images/cards/corpo-de-bombeiros/img-20210310-153115.jpg",
+        alt: "Equipamentos de combate a incêndio inspecionados em vistoria do Corpo de Bombeiros",
+      },
+      {
+        src: "/images/cards/corpo-de-bombeiros/img-20210722-123403.jpg",
+        alt: "Inspeção de instalações de segurança contra incêndio e pânico em imóvel em regularização",
+      },
+      {
+        src: "/images/cards/corpo-de-bombeiros/img-20210723-125304.jpg",
+        alt: "Levantamento técnico de sistemas de combate a incêndio durante regularização de AVCB",
+      },
+      {
+        src: "/images/cards/corpo-de-bombeiros/img-20210723-125541.jpg",
+        alt: "Registro de vistoria de segurança contra incêndio e pânico em edificação comercial",
+      },
+      {
+        src: "/images/cards/corpo-de-bombeiros/img-20210723-125845.jpg",
+        alt: "Equipamentos de proteção contra incêndio verificados durante inspeção para AVCB",
+      },
+      {
+        src: "/images/cards/corpo-de-bombeiros/img-20210804-160200.jpg",
+        alt: "Vistoria técnica de sistemas de combate a incêndio em edificação industrial",
+      },
+      {
+        src: "/images/cards/corpo-de-bombeiros/img-20210804-160313.jpg",
+        alt: "Hidrantes e equipamentos de combate a incêndio inspecionados em regularização de AVCB",
+      },
+      {
+        src: "/images/cards/corpo-de-bombeiros/img-20210804-173208.jpg",
+        alt: "Inspeção de segurança contra incêndio e pânico em imóvel durante vistoria do Corpo de Bombeiros",
+      },
+      {
+        src: "/images/cards/corpo-de-bombeiros/img-20210804-173619.jpg",
+        alt: "Sistema de combate a incêndio e sinalização de emergência verificados em edificação",
+      },
+      {
+        src: "/images/cards/corpo-de-bombeiros/img-20210804-173716.jpg",
+        alt: "Registro fotográfico de vistoria de regularização de AVCB em estabelecimento",
+      },
+      {
+        src: "/images/cards/corpo-de-bombeiros/img-20210804-191315.jpg",
+        alt: "Equipamentos de segurança contra incêndio e pânico inspecionados em período noturno",
+      },
+      {
+        src: "/images/cards/corpo-de-bombeiros/img-20210805-114625.jpg",
+        alt: "Levantamento técnico de combate a incêndio em edificação durante regularização junto ao Corpo de Bombeiros",
+      },
+      {
+        src: "/images/cards/corpo-de-bombeiros/img-20210805-115102.jpg",
+        alt: "Hidrantes e tubulação de combate a incêndio verificados em vistoria de AVCB",
+      },
+      {
+        src: "/images/cards/corpo-de-bombeiros/img-20210805-115119.jpg",
+        alt: "Vistoria de sistemas de segurança contra incêndio e pânico em imóvel",
+      },
+      {
+        src: "/images/cards/corpo-de-bombeiros/img-20220321-170621.jpg",
+        alt: "Inspeção de equipamentos de combate a incêndio em edificação para regularização de AVCB",
+      },
+      {
+        src: "/images/cards/corpo-de-bombeiros/img-20220322-120558.jpg",
+        alt: "Registro fotográfico de vistoria de segurança contra incêndio e pânico em estabelecimento",
+      },
+      {
+        src: "/images/cards/corpo-de-bombeiros/img-20220322-151857.jpg",
+        alt: "Levantamento de instalações de combate a incêndio durante regularização junto ao Corpo de Bombeiros",
+      },
+      {
+        src: "/images/cards/corpo-de-bombeiros/img-20220808-150858.jpg",
+        alt: "Equipamentos de proteção contra incêndio e sinalização de emergência verificados em edificação",
+      },
+      {
+        src: "/images/cards/corpo-de-bombeiros/img-20220908-144006.jpg",
+        alt: "Vistoria técnica de sistemas de combate a incêndio em imóvel em regularização de AVCB",
+      },
+      {
+        src: "/images/cards/corpo-de-bombeiros/img-20220908-165832.jpg",
+        alt: "Inspeção de hidrantes e equipamentos de combate a incêndio em vistoria do Corpo de Bombeiros",
+      },
+      {
+        src: "/images/cards/corpo-de-bombeiros/img-20220908-171622.jpg",
+        alt: "Registro de vistoria de segurança contra incêndio e pânico em edificação",
+      },
+      {
+        src: "/images/cards/corpo-de-bombeiros/img-20240102-wa0022.jpeg",
+        alt: "Sistema de combate a incêndio inspecionado durante regularização de AVCB",
+      },
+      {
+        src: "/images/cards/corpo-de-bombeiros/img-20240102-wa0037.jpeg",
+        alt: "Equipamentos de segurança contra incêndio e pânico verificados em vistoria",
+      },
+      {
+        src: "/images/cards/corpo-de-bombeiros/pano-20210427-143336.jpg",
+        alt: "Vista panorâmica de edificação com sistemas de combate a incêndio durante regularização de AVCB",
+      },
+      {
+        src: "/images/cards/corpo-de-bombeiros/whatsapp-image-2026-09-07-at-16-51-33-1.jpeg",
+        alt: "Vistoria de segurança contra incêndio e pânico em edificação para emissão do AVCB",
+      },
+      {
+        src: "/images/cards/corpo-de-bombeiros/whatsapp-image-2026-09-07-at-16-51-35.jpeg",
+        alt: "Equipamentos de combate a incêndio inspecionados em vistoria do Corpo de Bombeiros",
+      },
+      {
+        src: "/images/cards/corpo-de-bombeiros/whatsapp-image-2026-09-07-at-16-51-36.jpeg",
+        alt: "Levantamento técnico de instalações de combate a incêndio em imóvel",
+      },
+      {
+        src: "/images/cards/corpo-de-bombeiros/whatsapp-image-2026-09-07-at-16-51-57.jpeg",
+        alt: "Hidrantes e tubulação de combate a incêndio verificados durante regularização de AVCB",
+      },
+      {
+        src: "/images/cards/corpo-de-bombeiros/whatsapp-image-2026-09-07-at-16-52-00.jpeg",
+        alt: "Registro fotográfico de vistoria de segurança contra incêndio e pânico em estabelecimento",
+      },
+      {
+        src: "/images/cards/corpo-de-bombeiros/whatsapp-image-2026-09-07-at-16-52-02.jpeg",
+        alt: "Sistema de combate a incêndio e sinalização de emergência inspecionados em edificação",
+      },
+      {
+        src: "/images/cards/corpo-de-bombeiros/whatsapp-image-2026-09-07-at-16-52-05.jpeg",
+        alt: "Vistoria técnica de equipamentos de combate a incêndio para regularização de AVCB",
       },
     ],
   },
