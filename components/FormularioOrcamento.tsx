@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { CheckCircle2, MessageCircle } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
 import { getWhatsAppUrl } from "@/data/servicos";
 
 const TIPOS_SERVICO = [
@@ -141,7 +141,6 @@ export function FormularioOrcamento() {
             </p>
 
             <button type="submit" className="mt-7 inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-lg px-6 text-base font-semibold text-white transition-all duration-200 hover:opacity-90 active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#1a0000]" style={{ backgroundColor: "var(--color-service-accent, #800000)" }}>
-              <MessageCircle className="h-5 w-5" aria-hidden="true" />
               Solicitar orçamento
             </button>
           </form>
