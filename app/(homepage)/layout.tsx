@@ -14,9 +14,17 @@ import { Footer } from "@/components/Footer";
  */
 export default function LayoutHomepage({ children }: { children: React.ReactNode }) {
   return (
-    <>
+    <div
+      style={
+        {
+          // Preserva o vinho (#1a0000) do formulário na homepage,
+          // já que aqui não há CtaFinal acima para compartilhar a cor.
+          "--color-service-cta-bg": "color-mix(in srgb, #800000 12%, #1a0000)",
+        } as React.CSSProperties
+      }
+    >
       {children}
       <Footer />
-    </>
+    </div>
   );
 }

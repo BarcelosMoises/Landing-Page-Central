@@ -89,7 +89,7 @@ export function FormularioOrcamento() {
       className="py-24 sm:py-28"
       style={{
         backgroundColor:
-          "color-mix(in srgb, var(--color-service-accent, #800000) 12%, #1a0000)",
+          "var(--color-service-cta-bg, color-mix(in srgb, var(--color-service-accent, #800000) 12%, #0a0a0a))",
       }}
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
