@@ -454,7 +454,7 @@ export const servicos: readonly Servico[] = [
     nomeAbreviado: "Meio Ambiente",
     categoria: "legalizacao",
     descricao:
-      "Licenciamento ambiental para regularização de atividades com impacto ambiental junto ao INEA e secretarias de meio ambiente",
+      "Licenciamento ambiental para regularização de atividades com impacto ambiental junto ao INEA e secretarias de meio ambiente.",
     orgaos: ["INEA", "CETESB", "SUPRAM", "SEMAD", "IEMA"],
     estados: ["RJ", "SP", "MG", "ES"],
     coberturaNacional: false,
