@@ -454,7 +454,7 @@ export const servicos: readonly Servico[] = [
     nomeAbreviado: "Meio Ambiente",
     categoria: "legalizacao",
     descricao:
-      "Licenciamento ambiental para regularização de atividades com impacto ambiental junto ao INEA (RJ), CETESB (SP), SUPRAM/SEMAD (MG) e IEMA (ES).",
+      "Licenciamento ambiental para regularização de atividades com impacto ambiental junto ao INEA e secretarias de meio ambiente",
     orgaos: ["INEA", "CETESB", "SUPRAM", "SEMAD", "IEMA"],
     estados: ["RJ", "SP", "MG", "ES"],
     coberturaNacional: false,
@@ -563,9 +563,21 @@ export const servicos: readonly Servico[] = [
     pathRota: "/regularizacao-prefeitura",
     imagens: [
       {
-        src: "/images/cards/prefeitura/whatsapp-image-2026-09-07-at-16-52-07.webp",
-        alt: "Documentação técnica para regularização de imóvel junto à prefeitura municipal",
+        src: "/images/cards/prefeitura/prefeitura1.webp",
+        alt: "Regularização de imóvel junto à prefeitura municipal",
         destaque: true,
+      },
+      {
+        src: "/images/cards/prefeitura/prefeitura2.webp",
+        alt: "Levantamento para aprovação de projeto e Habite-se junto à prefeitura",
+      },
+      {
+        src: "/images/cards/prefeitura/prefeitura3.webp",
+        alt: "Documentação técnica de regularização municipal de imóvel",
+      },
+      {
+        src: "/images/cards/prefeitura/prefeitura4.webp",
+        alt: "Vistoria de regularização de imóvel junto à prefeitura municipal",
       },
     ],
   },

@@ -9,6 +9,7 @@ import { NavPrimaria } from "@/components/NavPrimaria";
 import { FaqItem } from "@/components/FaqItem";
 import { CarrosselAuto } from "@/components/CarrosselAuto";
 import { FormularioOrcamento } from "@/components/FormularioOrcamento";
+import { HeroCarrossel } from "@/components/HeroCarrossel";
 import {
   servicos,
   getWhatsAppUrl,
@@ -256,6 +257,16 @@ export default function PageRegularizacaoPrefeitura() {
           aria-labelledby="hero-titulo"
           className="relative bg-[#0a0a0a] overflow-hidden"
         >
+          {/* Carrossel de fundo com as fotos do serviço */}
+          <HeroCarrossel imagens={prefeitura.imagens ?? []} />
+
+          {/* Overlay escuro para garantir contraste do texto sobre as fotos */}
+          <div
+            className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a]/85 via-[#0a0a0a]/75 to-[#0a0a0a]/95"
+            aria-hidden="true"
+          />
+
+          {/* Gradiente de accent (roxo) preservando a identidade visual da rota */}
           <div
             className="absolute inset-0 pointer-events-none"
             style={{
@@ -264,18 +275,6 @@ export default function PageRegularizacaoPrefeitura() {
             }}
             aria-hidden="true"
           />
-
-          {/* Vídeo de fundo */}
-          <video
-            autoPlay
-            muted
-            loop
-            playsInline
-            aria-hidden="true"
-            className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none"
-          >
-            <source src="/videos/hero.mp4" type="video/mp4" />
-          </video>
 
           <div className="container-site relative z-10 pt-24 pb-20 md:pt-32 md:pb-28">
             <nav aria-label="Localização na página" className="mb-8">
