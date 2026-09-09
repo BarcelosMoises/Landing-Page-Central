@@ -32,8 +32,6 @@ const NAV_DESKTOP: readonly NavDesktopItem[] = [
   { label: "Corpo de Bombeiros", href: "/avcb-corpo-de-bombeiros" },
   { label: "Meio Ambiente", href: "/licenciamento-ambiental" },
   { label: "Prefeitura", href: "/regularizacao-prefeitura" },
-  { label: "Laudos Técnicos", href: "/laudos-tecnicos" },
-  { label: "Projetos Técnicos", href: "/projetos" },
   { label: "Área de Atuação", href: "/#setores", id: "setores" },
   { label: "Contato", href: "/#contato", id: "contato" },
 ];
@@ -164,7 +162,7 @@ export function NavPrimaria() {
         </Link>
 
         {/* Navegação desktop — horizontal, sem hamburguer */}
-        <nav aria-label="Navegação principal" className="hidden items-center gap-0.5 lg:flex xl:gap-1.5">
+        <nav aria-label="Menu principal" className="hidden items-center gap-0.5 lg:flex xl:gap-1.5">
           {NAV_DESKTOP.map((item) => {
             const id = item.id;
             const isAtiva = id ? isHomepage && ativa === id : false;
@@ -203,7 +201,7 @@ export function NavPrimaria() {
           </a>
         </nav>
 
-        <nav ref={menuRef} aria-label="Menu principal" className="relative lg:hidden">
+        <nav ref={menuRef} aria-label="Menu mobile" className="relative lg:hidden">
           <button
             type="button"
             aria-label={menuAberto ? "Fechar menu" : "Abrir menu"}

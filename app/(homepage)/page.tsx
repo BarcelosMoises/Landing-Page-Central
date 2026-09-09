@@ -9,11 +9,12 @@ import { SetoresAtendidos } from "@/components/SetoresAtendidos";
 import { MapaAtuacao } from "@/components/MapaAtuacao";
 import { Glossario } from "@/components/Glossario";
 import { FormularioOrcamento } from "@/components/FormularioOrcamento";
+import { HeroCarrossel } from "@/components/HeroCarrossel";
 import { getServicosPorCategoria, getWhatsAppUrl, contato } from "@/data/servicos";
 
 export const metadata: Metadata = {
   title: "Central de Soluções | AVCB, SPDA, Laudos e Licenciamento RJ, SP, MG e ES",
-  description: "Empresa de engenharia civil especializada em regularização AVCB, SPDA, Vigilância Sanitária e Licenciamento Ambiental em RJ, SP, MG e ES. Engenheiros com ART. Clientes Claro, Ambev, Mercado Livre.",
+  description: "Empresa de engenharia civil especializada em regularização AVCB, SPDA, Vigilância Sanitária e Licenciamento Ambiental em RJ, SP, MG e ES. Engenheiros com ART/RRT. Clientes Claro, Ambev, Mercado Livre.",
   keywords: ["regularização engenharia civil", "empresa de engenharia civil RJ SP MG ES", "AVCB SPDA laudo técnico licenciamento ambiental"],
   alternates: { canonical: "/" },
   openGraph: {
@@ -41,6 +42,28 @@ const PILARES_HERO = [
 
 const whatsappHero = getWhatsAppUrl("Olá! Vim pelo site da Central de Soluções e gostaria de um orçamento.");
 
+const HERO_IMAGENS = [
+  "1.webp",
+  "2.webp",
+  "3.webp",
+  "3-1.webp",
+  "3-2.webp",
+  "4.webp",
+  "5.webp",
+  "6.webp",
+  "7.webp",
+  "8.webp",
+  "9.webp",
+  "10.webp",
+  "11.webp",
+  "14.webp",
+  "15.webp",
+  "16.webp",
+].map((arquivo) => ({
+  src: `/images/hero-section/${arquivo}`,
+  alt: "",
+}));
+
 export default function HomePage() {
   return (
     <>
@@ -48,9 +71,7 @@ export default function HomePage() {
       <NavPrimaria />
       <main id="conteudo-principal" aria-label="Página inicial da Central de Soluções">
         <section id="hero" aria-labelledby="hero-heading" className="relative min-h-[100dvh] overflow-hidden sm:min-h-[90vh]">
-          <video autoPlay muted loop playsInline aria-hidden="true" poster="/images/portfolio/hero-industrial.jpg" className="absolute inset-0 h-full w-full object-cover object-center">
-            <source src="/videos/hero.mp4" type="video/mp4" />
-          </video>
+          <HeroCarrossel imagens={HERO_IMAGENS} />
           <div aria-hidden="true" className="absolute inset-0 bg-black/35" />
           <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-b from-[#4f0101]/75 via-[#4f0101]/55 to-[#0a0000]/75" />
           <div className="relative z-10 flex min-h-[100dvh] items-start sm:min-h-[90vh] sm:items-center">
