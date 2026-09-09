@@ -47,12 +47,12 @@
 
 | keyword_title (≤ 60 chars) | keyword_heading (H1/H2) | Intenção | Concorrência | Rota sugerida |
 |---|---|---|---|---|
-| Laudo SPDA com ART [estado] | Laudo de SPDA com ART em [estado] — NBR 5419 | Transacional | Média | `/spda-para-raios` |
+| Laudo SPDA com ART/RRT [estado] | Laudo de SPDA com ART/RRT em [estado] — NBR 5419 | Transacional | Média | `/spda-para-raios` |
 | Projeto SPDA [estado] — Engenharia | Projeto SPDA em [estado]: Proteção contra Descargas | Comercial/Transacional | Média | `/spda-para-raios` |
 | Laudo SPDA para AVCB [estado] | Laudo de SPDA para Obtenção do AVCB em [estado] | Transacional | Baixa/Média | `/spda-para-raios` |
 
 **Long-tails prioritárias:**
-- `laudo spda rj para indústria com art`
+- `laudo spda rj para indústria com art/rrt`
 - `projeto spda sp torre de telecomunicações`
 - `laudo spda mg usina fotovoltaica`
 - `adequação spda espírito santo nbr 5419`
@@ -115,7 +115,7 @@
 
 | # | Empresa | URL | Diferencial deles | Nossa vantagem |
 |---|---|---|---|---|
-| 1 | Fiore Engenharia | https://www.fioreconsultoria.com.br | Amplitude de serviços (AVCB + ambiental + sanitário), atuação nacional | Central tem clientes âncora (Ambev, Claro, Mercado Livre) e equipe com engenheiros assinando ARTs |
+| 1 | Fiore Engenharia | https://www.fioreconsultoria.com.br | Amplitude de serviços (AVCB + ambiental + sanitário), atuação nacional | Central tem clientes âncora (Ambev, Claro, Mercado Livre) e equipe com engenheiros assinando ART/RRT |
 | 2 | Irmãos Romi Engenharia | https://www.irmaosromiengenharia.com.br | Conteúdo técnico detalhado sobre CBMERJ, foco em RJ | Central atua em 4 estados; Romi é muito focado em RJ |
 | 3 | AVCB-SP | https://www.avcb-sp.com.br | Domínio exato para keyword "avcb sp", estrutura clara | Central oferece pacote integrado (AVCB + SPDA + sanitário + ambiental); AVCB-SP é monotemático |
 
@@ -165,7 +165,7 @@
 | AVCB | Auto de Vistoria do Corpo de Bombeiros | CBMERJ / CBPMESP / CBMMG / CBMES |
 | CLCB | Certificado de Licença do Corpo de Bombeiros (baixo risco, SP) | CBPMESP |
 | SPDA | Sistema de Proteção contra Descargas Atmosféricas (para-raios) | ABNT NBR 5419 |
-| ART | Anotação de Responsabilidade Técnica | CREA |
+| ART/RRT | Anotação de Responsabilidade Técnica / Registro de Responsabilidade Técnica | CREA / CAU |
 | PPCI/PSCI | Projeto de Prevenção e Combate a Incêndios | CB estadual |
 | NR-10 | Norma Regulamentadora de Segurança em Instalações Elétricas | MTE |
 | NR-23 | Norma Regulamentadora de Proteção Contra Incêndios | MTE |
@@ -186,7 +186,8 @@
 | CBPMESP | https://www.corpodebombeiros.sp.gov.br | AVCB SP |
 | CBMMG | https://www.bombeiros.mg.gov.br | AVCB MG |
 | CBMES | https://www.cbmes.es.gov.br | AVCB ES |
-| CREA | https://www.crea-rj.org.br | ARTs, habilitação de engenheiros |
+| CREA | https://www.crea-rj.org.br | ART, habilitação de engenheiros |
+| CAU | https://www.caubr.gov.br | RRT, habilitação de arquitetos |
 | INEA | https://inea.rj.gov.br | Licenciamento ambiental RJ |
 | IEMA | https://iema.es.gov.br | Licenciamento ambiental ES |
 | CETESB | https://cetesb.sp.gov.br | Licenciamento ambiental SP |

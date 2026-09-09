@@ -591,13 +591,13 @@ export const servicos: readonly Servico[] = [
     nomeAbreviado: "SPDA / Para-raios",
     categoria: "instalacao",
     descricao:
-      "Projeto, instalação e laudo técnico de SPDA (para-raios) conforme ABNT NBR 5419, com ART assinada e cobertura em todo o Brasil.",
+      "Projeto, instalação e laudo técnico de SPDA (para-raios) conforme ABNT NBR 5419, com ART/RRT assinada e cobertura em todo o Brasil.",
     orgaos: ["CREA"],
     estados: ["RJ", "SP", "MG", "ES", "BR"],
     coberturaNacional: true,
     itens: [
       "Projeto SPDA conforme ABNT NBR 5419",
-      "Laudo técnico com ART",
+      "Laudo técnico com ART/RRT",
       "Inspeção anual e teste de continuidade",
       "Atendimento em todo o Brasil",
     ],
@@ -705,7 +705,7 @@ export const servicos: readonly Servico[] = [
     nomeAbreviado: "Aterramento",
     categoria: "instalacao",
     descricao:
-      "Projeto e execução de sistemas de aterramento elétrico com laudo técnico, teste de resistividade do solo e ART, conforme NR-10.",
+      "Projeto e execução de sistemas de aterramento elétrico com laudo técnico, teste de resistividade do solo e ART/RRT, conforme NR-10.",
     orgaos: ["CREA"],
     estados: ["RJ", "SP", "MG", "ES", "BR"],
     coberturaNacional: true,
@@ -730,7 +730,7 @@ export const servicos: readonly Servico[] = [
     nomeAbreviado: "Teste de Continuidade",
     categoria: "laudo",
     descricao:
-      "Ensaios técnicos de continuidade e condutividade elétrica do solo com relatório técnico e ART, conforme NBR 5419 e NR-10. Cobertura em todo o Brasil.",
+      "Ensaios técnicos de continuidade e condutividade elétrica do solo com relatório técnico e ART/RRT, conforme NBR 5419 e NR-10. Cobertura em todo o Brasil.",
     orgaos: ["CREA"],
     estados: ["RJ", "SP", "MG", "ES", "BR"],
     coberturaNacional: true,
@@ -738,7 +738,7 @@ export const servicos: readonly Servico[] = [
       "Ensaio de continuidade conforme NBR 5419",
       "Ensaio de condutividade do solo conforme NR-10",
       "Relatório técnico detalhado",
-      "ART assinada por responsável técnico",
+      "ART/RRT assinada por responsável técnico",
     ],
     normaBase: ["ABNT NBR 5419", "NR-10"],
     iconeLucide: "Radio",
@@ -752,7 +752,7 @@ export const servicos: readonly Servico[] = [
     nomeAbreviado: "Laudo de Combate a Incêndio",
     categoria: "laudo",
     descricao:
-      "Elaboração de laudo técnico dos sistemas de combate ao incêndio e pânico com ART: diagnóstico de inconformidades, plano de adequações e acompanhamento até a emissão do AVCB.",
+      "Elaboração de laudo técnico dos sistemas de combate ao incêndio e pânico com ART/RRT: diagnóstico de inconformidades, plano de adequações e acompanhamento até a emissão do AVCB.",
     orgaos: ["CREA", "CBMERJ", "CBPMESP", "CBMMG", "CBMES"],
     estados: ["RJ", "SP", "MG", "ES"],
     coberturaNacional: false,
@@ -761,7 +761,7 @@ export const servicos: readonly Servico[] = [
       "Laudo de Exigências do Corpo de Bombeiros",
       "Diagnóstico de inconformidades com plano de adequações",
       "Acompanhamento completo até emissão do AVCB",
-      "ART assinada por responsável técnico",
+      "ART/RRT assinada por responsável técnico",
     ],
     iconeLucide: "FileText",
     pathRota: "/laudos-tecnicos",
@@ -796,7 +796,7 @@ export const servicos: readonly Servico[] = [
     nomeAbreviado: "Laudo SPDA",
     categoria: "laudo",
     descricao:
-      "Elaboração de laudo técnico do Sistema de Proteção contra Descargas Atmosféricas (SPDA) com inspeção visual, teste de continuidade, teste de condutividade elétrica do solo e ART. Cobertura em todo o Brasil.",
+      "Elaboração de laudo técnico do Sistema de Proteção contra Descargas Atmosféricas (SPDA) com inspeção visual, teste de continuidade, teste de condutividade elétrica do solo e ART/RRT. Cobertura em todo o Brasil.",
     orgaos: ["CREA"],
     estados: ["RJ", "SP", "MG", "ES", "BR"],
     coberturaNacional: true,
@@ -805,7 +805,7 @@ export const servicos: readonly Servico[] = [
       "Teste de continuidade conforme ABNT NBR 5419",
       "Teste de condutividade elétrica do solo",
       "Relatório técnico com registro fotográfico",
-      "ART assinada por engenheiro eletricista",
+      "ART/RRT assinada por engenheiro eletricista",
     ],
     setoresPrioritarios: [
       "Usinas fotovoltaicas",
@@ -888,7 +888,7 @@ export const servicos: readonly Servico[] = [
     nomeAbreviado: "Estanqueidade GLP/GN",
     categoria: "laudo",
     descricao:
-      "Realização de teste de estanqueidade em redes de gás GLP e GN com emissão de laudo técnico e ART, conforme ABNT NBR 15526. Exigido para obtenção do habite-se e licenças sanitárias.",
+      "Realização de teste de estanqueidade em redes de gás GLP e GN com emissão de laudo técnico e ART/RRT, conforme ABNT NBR 15526. Exigido para obtenção do habite-se e licenças sanitárias.",
     orgaos: ["CREA", "VISA Municipal", "Secretarias Municipais"],
     estados: ["RJ", "SP", "MG", "ES"],
     coberturaNacional: false,
@@ -896,7 +896,7 @@ export const servicos: readonly Servico[] = [
       "Teste de pressão e estanqueidade da rede GLP/GN",
       "Verificação de conformidade das instalações",
       "Laudo técnico com resultado e memorial de ensaio",
-      "ART assinada por responsável técnico",
+      "ART/RRT assinada por responsável técnico",
     ],
     setoresPrioritarios: [
       "Restaurantes e lanchonetes",
@@ -960,7 +960,7 @@ export const servicos: readonly Servico[] = [
     itens: [
       "Planta baixa, cortes e fachadas",
       "Entrega em AutoCAD e PDF",
-      "ART ou RRT assinada",
+      "ART/RRT assinada",
       "Base para aprovação em órgãos públicos",
     ],
     setoresPrioritarios: [
@@ -992,7 +992,7 @@ export const servicos: readonly Servico[] = [
       "Diagnóstico de barreiras arquitetônicas",
       "Projeto de adequações conforme NBR 9050",
       "Memorial descritivo e especificações técnicas",
-      "ART ou RRT assinada",
+      "ART/RRT assinada",
     ],
     setoresPrioritarios: [
       "Comércio",
@@ -1015,7 +1015,7 @@ export const servicos: readonly Servico[] = [
     nomeAbreviado: "Projeto de Incêndio",
     categoria: "projeto",
     descricao:
-      "Elaboração de projeto técnico completo dos sistemas de combate ao incêndio e pânico conforme as Instruções Técnicas do Corpo de Bombeiros estadual, com ART e acompanhamento até a aprovação.",
+      "Elaboração de projeto técnico completo dos sistemas de combate ao incêndio e pânico conforme as Instruções Técnicas do Corpo de Bombeiros estadual, com ART/RRT e acompanhamento até a aprovação.",
     orgaos: ["CREA", "CBMERJ", "CBPMESP", "CBMMG", "CBMES"],
     estados: ["RJ", "SP", "MG", "ES"],
     coberturaNacional: false,
@@ -1024,7 +1024,7 @@ export const servicos: readonly Servico[] = [
       "Projeto de sprinklers (NBR 10897)",
       "Projeto de detecção e alarme de incêndio",
       "Projeto de iluminação de emergência e sinalização",
-      "ART assinada e acompanhamento até aprovação no CB",
+      "ART/RRT assinada e acompanhamento até aprovação no CB",
     ],
     setoresPrioritarios: [
       "Galpões logísticos",
@@ -1048,7 +1048,7 @@ export const servicos: readonly Servico[] = [
     nomeAbreviado: "Projeto SPDA",
     categoria: "projeto",
     descricao:
-      "Elaboração de projeto técnico de SPDA (para-raios) conforme ABNT NBR 5419, com memorial de cálculo, ART assinada e cobertura em todo o Brasil.",
+      "Elaboração de projeto técnico de SPDA (para-raios) conforme ABNT NBR 5419, com memorial de cálculo, ART/RRT assinada e cobertura em todo o Brasil.",
     orgaos: ["CREA"],
     estados: ["RJ", "SP", "MG", "ES", "BR"],
     coberturaNacional: true,
@@ -1056,7 +1056,7 @@ export const servicos: readonly Servico[] = [
       "Memorial de cálculo de nível de proteção",
       "Projeto de captação, descida e aterramento",
       "Memorial descritivo e especificações de materiais",
-      "ART assinada por engenheiro eletricista",
+      "ART/RRT assinada por engenheiro eletricista",
     ],
     setoresPrioritarios: [
       "Usinas fotovoltaicas",
@@ -1079,7 +1079,7 @@ export const servicos: readonly Servico[] = [
     nomeAbreviado: "Estruturas Metálicas",
     categoria: "projeto",
     descricao:
-      "Elaboração de projeto estrutural metálico para galpões, mezaninos, passarelas e coberturas, conforme ABNT NBR 8681 e NBR 6118, com ART assinada.",
+      "Elaboração de projeto estrutural metálico para galpões, mezaninos, passarelas e coberturas, conforme ABNT NBR 8681 e NBR 6118, com ART/RRT assinada.",
     orgaos: ["CREA"],
     estados: ["RJ", "SP", "MG", "ES"],
     coberturaNacional: false,
@@ -1087,7 +1087,7 @@ export const servicos: readonly Servico[] = [
       "Cálculo estrutural e memorial de cálculo",
       "Plantas, cortes e detalhamentos em AutoCAD",
       "Lista de materiais e perfis metálicos",
-      "ART assinada por engenheiro civil ou estrutural",
+      "ART/RRT assinada por engenheiro civil ou estrutural",
     ],
     setoresPrioritarios: [
       "Galpões logísticos",
@@ -1123,7 +1123,7 @@ export const servicos: readonly Servico[] = [
     coberturaNacional: false,
     itens: [
       "Levantamento Arquitetônico (AutoCAD / PDF)",
-      "Projeto de Combate ao Incêndio e Pânico com ART",
+      "Projeto de Combate ao Incêndio e Pânico com ART/RRT",
       "Projeto Arquitetônico para Vigilância Sanitária",
       "Projeto Hidráulico / Sanitário",
       "Projeto de Acessibilidade (NBR 9050)",
@@ -1284,9 +1284,9 @@ export const diferenciais: readonly Diferencial[] = [
   },
   {
     ordem: 2,
-    titulo: "Engenheiros que assinam ARTs",
+    titulo: "Engenheiros que assinam ART/RRT",
     descricao:
-      "Responsabilidade técnica real: Durval e Theyllor assinam as ARTs diretamente, sem intermediários.",
+      "Responsabilidade técnica real: Durval e Theyllor assinam as ART/RRT diretamente, sem intermediários.",
   },
   {
     ordem: 3,

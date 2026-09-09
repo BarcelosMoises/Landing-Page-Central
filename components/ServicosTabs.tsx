@@ -275,7 +275,7 @@ export function ServicosTabs({
         <p className="mt-4 text-base text-neutral-600">
           Regularização completa de engenharia civil — AVCB, SPDA,
           Licenciamento Ambiental, Vigilância Sanitária e Projetos Técnicos
-          com responsáveis técnicos que assinam as ARTs diretamente.
+          com responsáveis técnicos que assinam as ART/RRT diretamente.
         </p>
       </div>
 

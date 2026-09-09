@@ -16,13 +16,13 @@ import {
 // ─── Metadata ────────────────────────────────────────────────────────────────
 
 export const metadata: Metadata = {
-  title: "Laudos Técnicos de Engenharia — ART, AVCB e Inconformidades | Central de Soluções",
+  title: "Laudos Técnicos de Engenharia — ART/RRT, AVCB e Inconformidades | Central de Soluções",
   description:
-    "Elaboração de laudos técnicos de engenharia com ART: laudo de exigências do Corpo de Bombeiros, diagnóstico de inconformidades e acompanhamento até emissão do AVCB. Atendemos RJ, SP, MG e ES.",
+    "Elaboração de laudos técnicos de engenharia com ART/RRT: laudo de exigências do Corpo de Bombeiros, diagnóstico de inconformidades e acompanhamento até emissão do AVCB. Atendemos RJ, SP, MG e ES.",
   keywords: [
     "laudo técnico engenharia RJ SP MG ES",
     "laudo exigências corpo de bombeiros",
-    "laudo técnico ART CREA",
+    "laudo técnico ART/RRT CREA",
     "diagnóstico inconformidades AVCB",
     "acompanhamento AVCB engenheiro",
     "laudo técnico consultoria",
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Laudos Técnicos de Engenharia — Central de Soluções",
     description:
-      "Laudos técnicos com ART: exigências do Corpo de Bombeiros, diagnóstico de inconformidades e acompanhamento do AVCB em RJ, SP, MG e ES.",
+      "Laudos técnicos com ART/RRT: exigências do Corpo de Bombeiros, diagnóstico de inconformidades e acompanhamento do AVCB em RJ, SP, MG e ES.",
     url: "https://www.centraldesolucoes.eng.br/laudos-tecnicos",
     images: [{ url: "/og-laudos.jpg", width: 1200, height: 630, alt: "Laudos Técnicos — Central de Soluções" }],
   },
@@ -47,7 +47,7 @@ const serviceJsonLd = {
   "@type": "Service",
   name: "Laudos Técnicos de Engenharia",
   description:
-    "Elaboração de laudos técnicos de engenharia com ART: laudo de exigências do Corpo de Bombeiros, diagnósticos de inconformidades e planos de adequação. Atendemos RJ, SP, MG e ES.",
+    "Elaboração de laudos técnicos de engenharia com ART/RRT: laudo de exigências do Corpo de Bombeiros, diagnósticos de inconformidades e planos de adequação. Atendemos RJ, SP, MG e ES.",
   url: "https://www.centraldesolucoes.eng.br/laudos-tecnicos",
   provider: {
     "@type": "ProfessionalService",
@@ -69,7 +69,7 @@ const serviceJsonLd = {
       { "@type": "Offer", itemOffered: { "@type": "Service", name: "Laudo de Exigências do Corpo de Bombeiros" } },
       { "@type": "Offer", itemOffered: { "@type": "Service", name: "Diagnóstico de inconformidades com plano de adequações" } },
       { "@type": "Offer", itemOffered: { "@type": "Service", name: "Acompanhamento completo até emissão do AVCB" } },
-      { "@type": "Offer", itemOffered: { "@type": "Service", name: "ART assinada por responsável técnico" } },
+      { "@type": "Offer", itemOffered: { "@type": "Service", name: "ART/RRT assinada por responsável técnico" } },
     ],
   },
 };
@@ -83,7 +83,7 @@ const faqJsonLd = {
       name: "O que é um laudo técnico de engenharia?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Um laudo técnico de engenharia é um documento elaborado por engenheiro habilitado, acompanhado de ART (Anotação de Responsabilidade Técnica) junto ao CREA, que descreve o estado técnico de uma edificação, sistema ou instalação. No contexto da segurança contra incêndio, o laudo identifica as inconformidades apontadas pelo Corpo de Bombeiros e apresenta um plano de adequações com prazos e soluções.",
+        text: "Um laudo técnico de engenharia é um documento elaborado por engenheiro habilitado, acompanhado de ART/RRT (Anotação de Responsabilidade Técnica / Registro de Responsabilidade Técnica) junto ao CREA/CAU, que descreve o estado técnico de uma edificação, sistema ou instalação. No contexto da segurança contra incêndio, o laudo identifica as inconformidades apontadas pelo Corpo de Bombeiros e apresenta um plano de adequações com prazos e soluções.",
       },
     },
     {
@@ -96,10 +96,10 @@ const faqJsonLd = {
     },
     {
       "@type": "Question",
-      name: "Todo laudo técnico precisa de ART?",
+      name: "Todo laudo técnico precisa de ART/RRT?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Sim. A ART (Anotação de Responsabilidade Técnica) é obrigatória para laudos técnicos de engenharia que amparam processos junto a órgãos públicos como o Corpo de Bombeiros e o CREA. Ela vincula o documento a um engenheiro legalmente habilitado, conferindo validade jurídica e técnica ao laudo. A Central de Soluções possui engenheiros registrados no CREA que assinam as ARTs diretamente.",
+        text: "Sim. A ART/RRT (Anotação de Responsabilidade Técnica / Registro de Responsabilidade Técnica) é obrigatória para laudos técnicos de engenharia que amparam processos junto a órgãos públicos como o Corpo de Bombeiros e o CREA. Ela vincula o documento a um engenheiro legalmente habilitado, conferindo validade jurídica e técnica ao laudo. A Central de Soluções possui engenheiros registrados no CREA que assinam as ART/RRT diretamente.",
       },
     },
     {
@@ -237,7 +237,7 @@ export default function PageLaudosTecnicos() {
                 }}
               >
                 <IconeFileText />
-                <span>Laudo · Engenharia com ART</span>
+                <span>Laudo · Engenharia com ART/RRT</span>
               </span>
             </div>
 
@@ -248,7 +248,7 @@ export default function PageLaudosTecnicos() {
                   className="font-heading font-extrabold text-white text-4xl md:text-5xl lg:text-6xl leading-tight tracking-tight mb-6"
                 >
                   Laudos Técnicos —{" "}
-                  <span style={{ color: "var(--color-service-accent-light)" }}>diagnóstico e ART</span>{" "}
+                  <span style={{ color: "var(--color-service-accent-light)" }}>diagnóstico e ART/RRT</span>{" "}
                   para regularização junto ao Corpo de Bombeiros
                 </h1>
                 <p className="text-neutral-300 text-lg leading-relaxed mb-8 max-w-xl">
@@ -298,7 +298,7 @@ export default function PageLaudosTecnicos() {
                   O que está incluído nos Laudos Técnicos
                 </h2>
                 <p className="text-neutral-600 text-base leading-relaxed mb-8">
-                  A Central de Soluções elabora laudos técnicos com ART, realiza o diagnóstico completo de inconformidades e acompanha o processo até a emissão do AVCB — sem que o cliente precise gerenciar nenhuma etapa.
+                  A Central de Soluções elabora laudos técnicos com ART/RRT, realiza o diagnóstico completo de inconformidades e acompanha o processo até a emissão do AVCB — sem que o cliente precise gerenciar nenhuma etapa.
                 </p>
                 <ul className="flex flex-col gap-4" aria-label="Etapas incluídas">
                   {laudos.itens.map((item) => (

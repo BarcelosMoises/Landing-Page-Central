@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   keywords: [
     "regularização engenharia civil",
     "avcb corpo de bombeiros",
-    "spda para-raios laudo art",
+    "spda para-raios laudo art/rrt",
     "laudo técnico engenharia",
     "licenciamento ambiental",
     "alvará sanitário consultoria",
@@ -131,7 +131,7 @@ const organizationJsonLd = {
   knowsAbout: [
     "AVCB", "SPDA", "Laudos Técnicos", "Licenciamento Ambiental",
     "Vigilância Sanitária", "Projetos de Combate a Incêndio",
-    "Regularização junto ao Corpo de Bombeiros", "CLCB", "ART", "NBR 5419", "NR-10",
+    "Regularização junto ao Corpo de Bombeiros", "CLCB", "ART/RRT", "NBR 5419", "NR-10",
   ],
   sameAs: ["https://www.instagram.com/centraldesolucoes"],
 };

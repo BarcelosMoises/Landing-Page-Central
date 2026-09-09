@@ -21,7 +21,7 @@ import {
 export const metadata: Metadata = {
   title: "Regularização junto à Prefeitura — Habite-se, Projeto Legal e Loteamento",
   description:
-    "Regularização de imóveis junto às prefeituras municipais nos estados RJ, SP, MG e ES. Aprovação de projetos, Habite-se, desmembramento e remembramento de lotes, com ART e acompanhamento completo até a emissão do documento.",
+    "Regularização de imóveis junto às prefeituras municipais nos estados RJ, SP, MG e ES. Aprovação de projetos, Habite-se, desmembramento e remembramento de lotes, com ART/RRT e acompanhamento completo até a emissão do documento.",
   keywords: [
     "regularização prefeitura engenharia civil",
     "habite-se RJ regularização",
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Regularização junto à Prefeitura — Central de Soluções",
     description:
-      "Regularização de imóveis junto às prefeituras municipais em RJ, SP, MG e ES. Habite-se, aprovação de projetos e loteamento com ART.",
+      "Regularização de imóveis junto às prefeituras municipais em RJ, SP, MG e ES. Habite-se, aprovação de projetos e loteamento com ART/RRT.",
     url: "https://www.centraldesolucoes.eng.br/regularizacao-prefeitura",
     images: [
       {
@@ -81,7 +81,7 @@ const serviceJsonLd = {
       { "@type": "Offer", itemOffered: { "@type": "Service", name: "Obtenção do Habite-se" } },
       { "@type": "Offer", itemOffered: { "@type": "Service", name: "Desmembramento de lotes" } },
       { "@type": "Offer", itemOffered: { "@type": "Service", name: "Remembramento de lotes" } },
-      { "@type": "Offer", itemOffered: { "@type": "Service", name: "ART assinada por engenheiro responsável" } },
+      { "@type": "Offer", itemOffered: { "@type": "Service", name: "ART/RRT assinada por engenheiro responsável" } },
     ],
   },
 };
@@ -103,7 +103,7 @@ const faqJsonLd = {
       name: "Qual a diferença entre Projeto Legal e Projeto Executivo?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "O Projeto Legal é o conjunto de documentos (plantas, memoriais e ART) elaborado para aprovação junto à Prefeitura, atendendo ao Código de Obras, Plano Diretor e legislação municipal de uso e ocupação do solo. Já o Projeto Executivo é o detalhamento técnico completo destinado à execução da obra em campo. A Central de Soluções elabora o Projeto Legal e acompanha o processo de aprovação até a emissão do alvará de construção ou do Habite-se.",
+        text: "O Projeto Legal é o conjunto de documentos (plantas, memoriais e ART/RRT) elaborado para aprovação junto à Prefeitura, atendendo ao Código de Obras, Plano Diretor e legislação municipal de uso e ocupação do solo. Já o Projeto Executivo é o detalhamento técnico completo destinado à execução da obra em campo. A Central de Soluções elabora o Projeto Legal e acompanha o processo de aprovação até a emissão do alvará de construção ou do Habite-se.",
       },
     },
     {
@@ -111,7 +111,7 @@ const faqJsonLd = {
       name: "O que é desmembramento e remembramento de lotes?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "O desmembramento é o processo de divisão de um lote em dois ou mais lotes menores, mantendo o acesso à via pública. O remembramento é o processo inverso: a união de dois ou mais lotes contíguos em um único lote maior. Ambos os processos exigem aprovação da Prefeitura Municipal, com elaboração de projeto técnico, ART e registro em cartório.",
+        text: "O desmembramento é o processo de divisão de um lote em dois ou mais lotes menores, mantendo o acesso à via pública. O remembramento é o processo inverso: a união de dois ou mais lotes contíguos em um único lote maior. Ambos os processos exigem aprovação da Prefeitura Municipal, com elaboração de projeto técnico, ART/RRT e registro em cartório.",
       },
     },
     {
@@ -195,7 +195,7 @@ const diferencialPrefeitura = [
     id: "documentacao",
     titulo: "Documentação completa para processos municipais",
     descricao:
-      "Elaboramos projetos legais, memoriais descritivos, ARTs e toda a documentação exigida pela Secretaria Municipal, reduzindo exigências e re-protocolos.",
+      "Elaboramos projetos legais, memoriais descritivos, ART/RRT e toda a documentação exigida pela Secretaria Municipal, reduzindo exigências e re-protocolos.",
     icone: (
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
         <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
@@ -378,7 +378,7 @@ export default function PageRegularizacaoPrefeitura() {
                   O que está incluído na regularização junto à Prefeitura
                 </h2>
                 <p className="text-neutral-600 text-base leading-relaxed mb-8">
-                  A Central de Soluções conduz todo o processo de regularização: do diagnóstico inicial à entrega do documento final pela Prefeitura. Elaboramos o projeto legal, obtemos a ART e acompanhamos a análise na Secretaria Municipal.
+                  A Central de Soluções conduz todo o processo de regularização: do diagnóstico inicial à entrega do documento final pela Prefeitura. Elaboramos o projeto legal, obtemos a ART/RRT e acompanhamos a análise na Secretaria Municipal.
                 </p>
                 <ul className="flex flex-col gap-4" aria-label="Itens incluídos">
                   {prefeitura.itens.map((item) => (

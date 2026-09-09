@@ -18,7 +18,7 @@ import {
 export const metadata: Metadata = {
   title: "Licenciamento Ambiental RJ SP MG ES — Consultoria completa LP LI LO",
   description:
-    "Consultoria em licenciamento ambiental nos estados RJ, SP, MG e ES: LP, LI, LO e LAS junto ao INEA, CETESB, SUPRAM/SEMAD e IEMA. Engenheiros com ART. Postos de combustível, indústrias e agronegócio.",
+    "Consultoria em licenciamento ambiental nos estados RJ, SP, MG e ES: LP, LI, LO e LAS junto ao INEA, CETESB, SUPRAM/SEMAD e IEMA. Engenheiros com ART/RRT. Postos de combustível, indústrias e agronegócio.",
   keywords: [
     "licenciamento ambiental RJ consultoria",
     "licenciamento ambiental SP consultoria",

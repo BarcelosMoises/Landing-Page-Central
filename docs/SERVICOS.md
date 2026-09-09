@@ -93,7 +93,7 @@
 #### 5.2 Projeto de Combate ao Incêndio e Pânico
 - Projeto completo conforme Instrução Técnica do CB estadual
 - Inclui: hidrantes, sprinklers, extintores, saídas de emergência, sinalização
-- Com ART assinada por responsável técnico
+- Com ART/RRT assinada por responsável técnico
 
 #### 5.3 Projeto Arquitetônico (Vigilância Sanitária)
 - Projeto adequado às normas da VISA para aprovação do Alvará Sanitário
@@ -118,7 +118,7 @@
 #### 6.1 Laudo de Exigências (Corpo de Bombeiros)
 - Diagnóstico das inconformidades identificadas pelo CB
 - Relatório técnico com plano de adequações e prazos
-- Com ART do responsável técnico
+- Com ART/RRT do responsável técnico
 
 #### 6.2 Certificado de Aprovação / AVCB
 - Acompanhamento completo do processo até emissão
@@ -134,7 +134,7 @@
 
 #### 7.2 SPDA — Sistema de Proteção contra Descargas Atmosféricas
 - Projeto conforme ABNT NBR 5419
-- Laudo técnico com ART
+- Laudo técnico com ART/RRT
 - Inspeção anual e teste de continuidade
 - Cobertura: todo Brasil
 - Setores prioritários: usinas fotovoltaicas, torres de telecomunicações, subestações elétricas, agronegócio, indústria
@@ -146,7 +146,7 @@
 
 #### 7.4 Teste de Continuidade e Condutividade Elétrica do Solo
 - Ensaios conforme NBR 5419 e NR-10
-- Relatório técnico com ART
+- Relatório técnico com ART/RRT
 - Cobertura: todo Brasil
 
 ---
@@ -194,7 +194,7 @@
 ## Diferenciais Competitivos
 
 1. **Solução completa em um só lugar** — AVCB + SPDA + Vigilância Sanitária + Licenciamento Ambiental + Projetos
-2. **Engenheiros e arquiteto que assinam ARTs** — responsabilidade técnica real, não intermediário
+2. **Engenheiros e arquiteto que assinam ART/RRT** — responsabilidade técnica real, não intermediário
 3. **Carteira de grandes clientes** — Claro, Embratel, Ambev, Mercado Livre como prova social B2B
 4. **Cobertura em 4 estados do Sudeste** — RJ, SP, MG, ES; sistemas SPDA/aterramento: todo Brasil
 5. **Atendimento em todos os segmentos** — indústria, telecom, energia solar, agronegócio, saúde e mais

@@ -20,7 +20,7 @@ import {
 export const metadata: Metadata = {
   title: "AVCB e CLCB — Regularização junto ao Corpo de Bombeiros",
   description:
-    "Serviço especializado em obtenção do AVCB (Auto de Vistoria do Corpo de Bombeiros) e CLCB nos estados RJ, SP, MG e ES. Engenheiros com ART. Atendemos galpões, indústrias, comércio e telecom.",
+    "Serviço especializado em obtenção do AVCB (Auto de Vistoria do Corpo de Bombeiros) e CLCB nos estados RJ, SP, MG e ES. Engenheiros com ART/RRT. Atendemos galpões, indústrias, comércio e telecom.",
   keywords: [
     "AVCB corpo de bombeiros",
     "CLCB certificado licença",
@@ -125,7 +125,7 @@ const faqJsonLd = {
       name: "O que é o PPCI / PSCI?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "O PPCI (Projeto de Prevenção e Combate a Incêndios) — chamado de PSCI em São Paulo — é o projeto técnico exigido pelo Corpo de Bombeiros estadual para emissão do AVCB. Ele define todos os sistemas de segurança contra incêndio e pânico da edificação: hidrantes, extintores, sprinklers, iluminação de emergência, saídas de emergência e sinalização. O projeto deve ser elaborado por engenheiro habilitado com ART e aprovado pelo CB antes da vistoria. O nome varia por estado: PPCI é utilizado no RJ, MG e ES; PSCI é o termo adotado em SP (CBPMESP).",
+        text: "O PPCI (Projeto de Prevenção e Combate a Incêndios) — chamado de PSCI em São Paulo — é o projeto técnico exigido pelo Corpo de Bombeiros estadual para emissão do AVCB. Ele define todos os sistemas de segurança contra incêndio e pânico da edificação: hidrantes, extintores, sprinklers, iluminação de emergência, saídas de emergência e sinalização. O projeto deve ser elaborado por engenheiro habilitado com ART/RRT e aprovado pelo CB antes da vistoria. O nome varia por estado: PPCI é utilizado no RJ, MG e ES; PSCI é o termo adotado em SP (CBPMESP).",
       },
     },
     {

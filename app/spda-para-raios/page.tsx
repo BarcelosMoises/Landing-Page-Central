@@ -18,11 +18,11 @@ import {
 export const metadata: Metadata = {
   title: "SPDA Para-raios — Projeto, Instalação e Laudo Técnico | Central de Soluções",
   description:
-    "Projeto, instalação e laudo técnico de SPDA (para-raios) conforme ABNT NBR 5419, com ART assinada. Atendemos usinas fotovoltaicas, torres de telecomunicações, subestações e indústrias em todo o Brasil.",
+    "Projeto, instalação e laudo técnico de SPDA (para-raios) conforme ABNT NBR 5419, com ART/RRT assinada. Atendemos usinas fotovoltaicas, torres de telecomunicações, subestações e indústrias em todo o Brasil.",
   keywords: [
     "SPDA para-raios projeto",
     "laudo técnico SPDA NBR 5419",
-    "instalação para-raios ART",
+    "instalação para-raios ART/RRT",
     "SPDA usina fotovoltaica",
     "SPDA torre telecomunicações",
     "proteção descargas atmosféricas RJ SP MG ES",
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "SPDA Para-raios — Central de Soluções",
     description:
-      "Projeto, instalação e laudo técnico de SPDA conforme ABNT NBR 5419, com ART. Cobertura em todo o Brasil.",
+      "Projeto, instalação e laudo técnico de SPDA conforme ABNT NBR 5419, com ART/RRT. Cobertura em todo o Brasil.",
     url: "https://www.centraldesolucoes.eng.br/spda-para-raios",
     images: [{ url: "/og-spda.jpg", width: 1200, height: 630, alt: "SPDA Para-raios — Central de Soluções" }],
   },
@@ -48,7 +48,7 @@ const serviceJsonLd = {
   name: "SPDA — Sistema de Proteção contra Descargas Atmosféricas",
   alternateName: "Para-raios",
   description:
-    "Projeto, instalação e laudo técnico de SPDA (para-raios) conforme ABNT NBR 5419, com ART assinada e cobertura em todo o Brasil.",
+    "Projeto, instalação e laudo técnico de SPDA (para-raios) conforme ABNT NBR 5419, com ART/RRT assinada e cobertura em todo o Brasil.",
   url: "https://www.centraldesolucoes.eng.br/spda-para-raios",
   provider: {
     "@type": "ProfessionalService",
@@ -63,7 +63,7 @@ const serviceJsonLd = {
     name: "Etapas do serviço SPDA",
     itemListElement: [
       { "@type": "Offer", itemOffered: { "@type": "Service", name: "Projeto SPDA conforme ABNT NBR 5419" } },
-      { "@type": "Offer", itemOffered: { "@type": "Service", name: "Laudo técnico com ART" } },
+      { "@type": "Offer", itemOffered: { "@type": "Service", name: "Laudo técnico com ART/RRT" } },
       { "@type": "Offer", itemOffered: { "@type": "Service", name: "Inspeção anual e teste de continuidade" } },
       { "@type": "Offer", itemOffered: { "@type": "Service", name: "Atendimento em todo o Brasil" } },
     ],
@@ -79,7 +79,7 @@ const faqJsonLd = {
       name: "O que é o SPDA e para que serve?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "O SPDA (Sistema de Proteção contra Descargas Atmosféricas), popularmente conhecido como para-raios, é um conjunto de dispositivos e instalações projetados para interceptar raios e conduzir a corrente elétrica de forma segura até o solo, protegendo edificações, equipamentos e pessoas. É dimensionado conforme a norma ABNT NBR 5419 e exige ART de engenheiro responsável.",
+        text: "O SPDA (Sistema de Proteção contra Descargas Atmosféricas), popularmente conhecido como para-raios, é um conjunto de dispositivos e instalações projetados para interceptar raios e conduzir a corrente elétrica de forma segura até o solo, protegendo edificações, equipamentos e pessoas. É dimensionado conforme a norma ABNT NBR 5419 e exige ART/RRT de engenheiro responsável.",
       },
     },
     {
@@ -92,10 +92,10 @@ const faqJsonLd = {
     },
     {
       "@type": "Question",
-      name: "O SPDA exige ART? Quem pode assinar?",
+      name: "O SPDA exige ART/RRT? Quem pode assinar?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Sim. Todo projeto e laudo técnico de SPDA deve ser elaborado por engenheiro habilitado junto ao CREA e acompanhado de ART (Anotação de Responsabilidade Técnica). A Central de Soluções conta com engenheiros registrados no CREA que assinam as ARTs diretamente, sem intermediários, garantindo validade jurídica e técnica ao documento.",
+        text: "Sim. Todo projeto e laudo técnico de SPDA deve ser elaborado por engenheiro habilitado junto ao CREA e acompanhado de ART/RRT (Anotação de Responsabilidade Técnica / Registro de Responsabilidade Técnica). A Central de Soluções conta com engenheiros registrados no CREA que assinam as ART/RRT diretamente, sem intermediários, garantindo validade jurídica e técnica ao documento.",
       },
     },
     {
@@ -103,7 +103,7 @@ const faqJsonLd = {
       name: "Com que frequência o SPDA precisa ser inspecionado?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "A ABNT NBR 5419 recomenda inspeção periódica anual do sistema instalado, incluindo teste de continuidade e verificação da resistência de aterramento. Em estruturas de alto risco — como torres de telecomunicações e subestações — a inspeção semestral é recomendada. A Central de Soluções oferece o serviço de inspeção anual com emissão de relatório técnico e ART.",
+        text: "A ABNT NBR 5419 recomenda inspeção periódica anual do sistema instalado, incluindo teste de continuidade e verificação da resistência de aterramento. Em estruturas de alto risco — como torres de telecomunicações e subestações — a inspeção semestral é recomendada. A Central de Soluções oferece o serviço de inspeção anual com emissão de relatório técnico e ART/RRT.",
       },
     },
     {
@@ -238,7 +238,7 @@ export default function PageSPDA() {
                 >
                   SPDA Para-raios —{" "}
                   <span style={{ color: "var(--color-service-accent-light)" }}>projeto, instalação</span>{" "}
-                  e laudo técnico com ART
+                  e laudo técnico com ART/RRT
                 </h1>
                 <p className="text-neutral-300 text-lg leading-relaxed mb-8 max-w-xl">
                   {spda.descricao}
@@ -287,7 +287,7 @@ export default function PageSPDA() {
                   O que está incluído no serviço de SPDA
                 </h2>
                 <p className="text-neutral-600 text-base leading-relaxed mb-8">
-                  A Central de Soluções entrega o projeto completo, executa a instalação e emite o laudo técnico com ART — tudo em conformidade com a ABNT NBR 5419 e com cobertura em todo o território nacional.
+                  A Central de Soluções entrega o projeto completo, executa a instalação e emite o laudo técnico com ART/RRT — tudo em conformidade com a ABNT NBR 5419 e com cobertura em todo o território nacional.
                 </p>
                 <ul className="flex flex-col gap-4" aria-label="Etapas incluídas">
                   {spda.itens.map((item) => (

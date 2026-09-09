@@ -13,7 +13,7 @@ interface DocumentCardProps {
   titulo: string
   /** Descrição curta do documento, ex.: "Auto de Vistoria do Corpo de Bombeiros" */
   descricao?: string
-  /** Selo técnico do rodapé — reforça E-E-A-T (ART / CREA) */
+  /** Selo técnico do rodapé — reforça E-E-A-T (ART/RRT / CREA) */
   selo?: string
   className?: string
 }
@@ -21,7 +21,7 @@ interface DocumentCardProps {
 export function DocumentCard({
   titulo,
   descricao,
-  selo = "ART — Responsável Técnico",
+  selo = "ART/RRT — Responsável Técnico",
   className = "",
 }: DocumentCardProps) {
   return (
@@ -75,7 +75,7 @@ export function DocumentCard({
         ) : null}
       </div>
 
-      {/* Rodapé: selo ART + CREA */}
+      {/* Rodapé: selo ART/RRT + CREA */}
       <div
         className="relative z-10 flex items-center justify-between gap-4 pt-4 border-t"
         style={{

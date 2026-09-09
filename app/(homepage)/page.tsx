@@ -14,7 +14,7 @@ import { getServicosPorCategoria, getWhatsAppUrl, contato } from "@/data/servico
 
 export const metadata: Metadata = {
   title: "Central de Soluções | AVCB, SPDA, Laudos e Licenciamento RJ, SP, MG e ES",
-  description: "Empresa de engenharia civil especializada em regularização AVCB, SPDA, Vigilância Sanitária e Licenciamento Ambiental em RJ, SP, MG e ES. Engenheiros com ART. Clientes Claro, Ambev, Mercado Livre.",
+  description: "Empresa de engenharia civil especializada em regularização AVCB, SPDA, Vigilância Sanitária e Licenciamento Ambiental em RJ, SP, MG e ES. Engenheiros com ART/RRT. Clientes Claro, Ambev, Mercado Livre.",
   keywords: ["regularização engenharia civil", "empresa de engenharia civil RJ SP MG ES", "AVCB SPDA laudo técnico licenciamento ambiental"],
   alternates: { canonical: "/" },
   openGraph: {

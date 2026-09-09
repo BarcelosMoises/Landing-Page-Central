@@ -19,12 +19,12 @@ const FAQ_ITEMS: readonly FaqItemData[] = [
   {
     pergunta: "O que é SPDA e quando é obrigatório?",
     resposta:
-      "O SPDA (Sistema de Proteção contra Descargas Atmosféricas), popularmente chamado de para-raios, é um conjunto de dispositivos que captura e dissipa com segurança a energia de descargas elétricas atmosféricas. É regulamentado pela ABNT NBR 5419 e obrigatório em estruturas como usinas fotovoltaicas, torres de telecomunicações, subestações elétricas, galpões industriais e qualquer edificação sujeita a risco elevado de raios. O laudo técnico de SPDA com ART é exigência do Corpo de Bombeiros para emissão do AVCB em diversas ocupações.",
+      "O SPDA (Sistema de Proteção contra Descargas Atmosféricas), popularmente chamado de para-raios, é um conjunto de dispositivos que captura e dissipa com segurança a energia de descargas elétricas atmosféricas. É regulamentado pela ABNT NBR 5419 e obrigatório em estruturas como usinas fotovoltaicas, torres de telecomunicações, subestações elétricas, galpões industriais e qualquer edificação sujeita a risco elevado de raios. O laudo técnico de SPDA com ART/RRT é exigência do Corpo de Bombeiros para emissão do AVCB em diversas ocupações.",
   },
   {
-    pergunta: "O que é ART e por que ela é exigida nos laudos?",
+    pergunta: "O que é ART/RRT e por que ela é exigida nos laudos?",
     resposta:
-      "A ART (Anotação de Responsabilidade Técnica) é o documento emitido pelo CREA (Conselho Regional de Engenharia e Agronomia) que vincula legalmente um engenheiro ou arquiteto habilitado a um serviço técnico específico. Ela é exigida em laudos, projetos e relatórios porque garante que o documento foi elaborado por um profissional legalmente habilitado, que assume responsabilidade civil e criminal pela qualidade e veracidade das informações. Órgãos como o Corpo de Bombeiros, INEA, CETESB e IEMA não aceitam documentos técnicos sem ART.",
+      "A ART (Anotação de Responsabilidade Técnica) é o documento emitido pelo CREA (Conselho Regional de Engenharia e Agronomia) que vincula legalmente um engenheiro habilitado a um serviço técnico. A RRT (Registro de Responsabilidade Técnica) é o equivalente emitido pelo CAU (Conselho de Arquitetura e Urbanismo) para arquitetos e urbanistas. Juntas, ART/RRT garantem que o documento foi elaborado por um profissional legalmente habilitado, que assume responsabilidade civil e criminal pela qualidade e veracidade das informações. Órgãos como o Corpo de Bombeiros, INEA, CETESB e IEMA não aceitam documentos técnicos sem ART/RRT.",
   },
   {
     pergunta: "Qual a diferença entre AVCB e CLCB?",

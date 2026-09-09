@@ -52,7 +52,7 @@ app/
 │   └── page.tsx                # keyword: "alvará sanitário [estado] consultoria"
 ├── spda-para-raios/
 │   ├── layout.tsx              # Define --color-service-accent: #b7791f
-│   └── page.tsx                # keyword: "laudo spda com art [estado]"
+│   └── page.tsx                # keyword: "laudo spda com art/rrt [estado]"
 ├── laudos-tecnicos/
 │   ├── layout.tsx              # Define --color-service-accent: #92610a
 │   └── page.tsx                # keyword: "laudo técnico engenharia [estado]"
@@ -269,7 +269,7 @@ export default function LayoutAmbiental({ children }: { children: React.ReactNod
 - Mencionar registro no CREA com número (quando disponível) — campo `registro` em `MembroEquipe`
 - Exibir logos de clientes âncora: Claro, Embratel, Ambev, Mercado Livre, Brasol
 - Linkar para órgãos reguladores oficiais (CBMERJ, INEA, ANVISA, CREA) — `target="_blank" rel="noopener noreferrer"`
-- Seção de glossário de siglas (AVCB, SPDA, ART, CLCB etc.) para relevância semântica
+- Seção de glossário de siglas (AVCB, SPDA, ART/RRT, CLCB etc.) para relevância semântica
 
 ---
 

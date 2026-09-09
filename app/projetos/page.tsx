@@ -17,7 +17,7 @@ import {
 export const metadata: Metadata = {
   title: "Projetos Técnicos de Engenharia — Arquitetônico, Incêndio, PGRS",
   description:
-    "Elaboração de projetos técnicos completos: projeto arquitetônico, combate ao incêndio e pânico, acessibilidade (NBR 9050), hidráulico/sanitário, PGRS e PGRSS. Atendemos RJ, SP, MG e ES com ART.",
+    "Elaboração de projetos técnicos completos: projeto arquitetônico, combate ao incêndio e pânico, acessibilidade (NBR 9050), hidráulico/sanitário, PGRS e PGRSS. Atendemos RJ, SP, MG e ES com ART/RRT.",
   keywords: [
     "projeto técnico de engenharia RJ SP",
     "projeto combate incêndio corpo de bombeiros",
@@ -53,7 +53,7 @@ const serviceJsonLd = {
   "@type": "Service",
   name: "Projetos Técnicos de Engenharia",
   description:
-    "Elaboração de projetos técnicos completos — arquitetônico, combate ao incêndio, hidráulico/sanitário, acessibilidade, PGRS e PGRSS — com ART e acompanhamento até a aprovação nos órgãos competentes.",
+    "Elaboração de projetos técnicos completos — arquitetônico, combate ao incêndio, hidráulico/sanitário, acessibilidade, PGRS e PGRSS — com ART/RRT e acompanhamento até a aprovação nos órgãos competentes.",
   url: "https://www.centraldesolucoes.eng.br/projetos",
   provider: {
     "@type": "ProfessionalService",
@@ -73,7 +73,7 @@ const serviceJsonLd = {
     name: "Tipos de projetos técnicos",
     itemListElement: [
       { "@type": "Offer", itemOffered: { "@type": "Service", name: "Levantamento Arquitetônico (AutoCAD / PDF)" } },
-      { "@type": "Offer", itemOffered: { "@type": "Service", name: "Projeto de Combate ao Incêndio e Pânico com ART" } },
+      { "@type": "Offer", itemOffered: { "@type": "Service", name: "Projeto de Combate ao Incêndio e Pânico com ART/RRT" } },
       { "@type": "Offer", itemOffered: { "@type": "Service", name: "Projeto Arquitetônico para Vigilância Sanitária" } },
       { "@type": "Offer", itemOffered: { "@type": "Service", name: "Projeto Hidráulico / Sanitário" } },
       { "@type": "Offer", itemOffered: { "@type": "Service", name: "Projeto de Acessibilidade (NBR 9050)" } },
@@ -120,10 +120,10 @@ const faqJsonLd = {
     },
     {
       "@type": "Question",
-      name: "A Central de Soluções emite ART para os projetos?",
+      name: "A Central de Soluções emite ART/RRT para os projetos?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Sim. Todos os projetos elaborados pela Central de Soluções são assinados com ART (Anotação de Responsabilidade Técnica) pelo engenheiro ou arquiteto responsável, garantindo validade legal e responsabilidade técnica perante o CREA e os órgãos reguladores. Não trabalhamos com projetos sem ART.",
+        text: "Sim. Todos os projetos elaborados pela Central de Soluções são assinados com ART/RRT (Anotação de Responsabilidade Técnica / Registro de Responsabilidade Técnica) pelo engenheiro ou arquiteto responsável, garantindo validade legal e responsabilidade técnica perante o CREA e os órgãos reguladores. Não trabalhamos com projetos sem ART/RRT.",
       },
     },
     {
@@ -259,7 +259,7 @@ export default function PageProjetosTecnicos() {
                   className="font-heading font-extrabold text-white text-4xl md:text-5xl lg:text-6xl leading-tight tracking-tight mb-6"
                 >
                   Projetos Técnicos —{" "}
-                  <span style={{ color: "var(--color-service-accent-light)" }}>completos, com ART</span>
+                  <span style={{ color: "var(--color-service-accent-light)" }}>completos, com ART/RRT</span>
                 </h1>
                 <p className="text-neutral-300 text-lg leading-relaxed mb-8 max-w-xl">
                   {projetos.descricao}
@@ -310,7 +310,7 @@ export default function PageProjetosTecnicos() {
                 Tipos de projetos que elaboramos
               </h2>
               <p className="text-neutral-600 text-base leading-relaxed max-w-2xl">
-                Cada projeto é entregue com pranchas técnicas, memorial descritivo e ART assinada pelo responsável técnico. Acompanhamos a aprovação junto ao órgão competente.
+                Cada projeto é entregue com pranchas técnicas, memorial descritivo e ART/RRT assinada pelo responsável técnico. Acompanhamos a aprovação junto ao órgão competente.
               </p>
             </div>
 

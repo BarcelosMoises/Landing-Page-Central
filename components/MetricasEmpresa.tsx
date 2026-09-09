@@ -29,7 +29,7 @@ const METRICAS: readonly Metrica[] = [
     valor: 500,
     sufixo: "+",
     rotulo: "Projetos entregues",
-    descricao: "mais de 500 serviços concluídos com ART",
+    descricao: "mais de 500 serviços concluídos com ART/RRT",
   },
   {
     valor: 14,
