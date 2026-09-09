@@ -188,51 +188,6 @@ function IconeCheck() {
   );
 }
 
-// ─── Diferenciais do setor pública municipal ────────────────────────
-
-const diferencialPrefeitura = [
-  {
-    id: "documentacao",
-    titulo: "Documentação completa para processos municipais",
-    descricao:
-      "Elaboramos projetos legais, memoriais descritivos, ART/RRT e toda a documentação exigida pela Secretaria Municipal, reduzindo exigências e re-protocolos.",
-    icone: (
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
-        <polyline points="14 2 14 8 20 8" />
-        <path d="m9 15 2 2 4-4" />
-      </svg>
-    ),
-  },
-  {
-    id: "cobertura",
-    titulo: "Atuação nos 4 estados do Sudeste",
-    descricao:
-      "Uma única empresa para regularizar imóveis em qualquer município de RJ, SP, MG e ES — sem precisar contratar escritórios locais diferentes.",
-    icone: (
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
-        <circle cx="12" cy="10" r="3" />
-      </svg>
-    ),
-  },
-  {
-    id: "prazos",
-    titulo: "Experiência com o rito municipal",
-    descricao:
-      "Conhecemos o fluxo de análise das secretarias, os documentos solicitados nas vistoriais e como minimizar exigências, agilizando a aprovação do seu projeto.",
-    icone: (
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-        <line x1="16" y1="2" x2="16" y2="6" />
-        <line x1="8" y1="2" x2="8" y2="6" />
-        <line x1="3" y1="10" x2="21" y2="10" />
-        <path d="m9 16 2 2 4-4" />
-      </svg>
-    ),
-  },
-];
-
 // ─── Page ────────────────────────────────────────────────────────────
 
 export default function PageRegularizacaoPrefeitura() {
@@ -425,56 +380,6 @@ export default function PageRegularizacaoPrefeitura() {
                 </div>
               </div>
             </div>
-          </div>
-        </section>
-
-        {/* ── DIFERENCIAIS ─────────────────────────────────────── */}
-        <section
-          aria-labelledby="diferenciais-titulo"
-          className="py-20 md:py-28 border-t border-[#1a3a6b]/15"
-          style={{ backgroundColor: "#e8edf5" }}
-        >
-          <div className="container-site">
-            <p
-              className="text-xs font-semibold uppercase tracking-wider mb-3 font-mono"
-              style={{ color: "var(--color-service-accent)" }}
-            >
-              Por que a Central de Soluções
-            </p>
-            <h2
-              id="diferenciais-titulo"
-              className="font-heading font-bold text-neutral-900 text-3xl md:text-4xl leading-tight mb-12"
-            >
-              Experiência em regularização municipal em 4 estados
-            </h2>
-            <ul
-              className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"
-              aria-label="Diferenciais do serviço de Regularização junto à Prefeitura"
-            >
-              {diferencialPrefeitura.map((item) => (
-                <li
-                  key={item.id}
-                  className="flex flex-col gap-4 p-6 rounded-xl bg-white border"
-                  style={{ borderColor: "rgba(26,58,107,0.15)" }}
-                >
-                  <div
-                    className="w-10 h-10 flex items-center justify-center"
-                    style={{ color: "var(--color-service-accent)" }}
-                    aria-hidden="true"
-                  >
-                    {item.icone}
-                  </div>
-                  <div>
-                    <p className="font-heading font-semibold text-neutral-900 text-base mb-2">
-                      {item.titulo}
-                    </p>
-                    <p className="text-neutral-600 text-sm leading-relaxed">
-                      {item.descricao}
-                    </p>
-                  </div>
-                </li>
-              ))}
-            </ul>
           </div>
         </section>
 
