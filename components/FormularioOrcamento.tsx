@@ -112,35 +112,35 @@ export function FormularioOrcamento() {
                 <label htmlFor="orcamento-nome" className="text-sm font-medium text-white">
                   Nome ou razão social <span aria-hidden="true">*</span>
                 </label>
-                <input id="orcamento-nome" name="nome" type="text" autoComplete="organization" value={nome} onChange={(event) => { setNome(event.target.value); limparErro("nome"); }} aria-required="true" aria-invalid={Boolean(erros.nome)} aria-describedby={erros.nome ? "orcamento-erro-nome" : undefined} className={`${campoBase} ${erros.nome ? "border-red-300" : "border-transparent"}`} placeholder="Informe seu nome ou empresa" />
-                {erros.nome ? <p id="orcamento-erro-nome" role="alert" className="mt-1.5 text-xs text-red-200">{erros.nome}</p> : null}
+                <input id="orcamento-nome" name="nome" type="text" autoComplete="organization" value={nome} onChange={(event) => { setNome(event.target.value); limparErro("nome"); }} aria-required="true" aria-invalid={Boolean(erros.nome)} aria-describedby={erros.nome ? "orcamento-erro-nome" : undefined} className={`${campoBase} ${erros.nome ? "border-white/60" : "border-transparent"}`} placeholder="Informe seu nome ou empresa" />
+                {erros.nome ? <p id="orcamento-erro-nome" role="alert" className="mt-1.5 text-xs text-white">{erros.nome}</p> : null}
               </div>
 
               <div>
                 <label htmlFor="orcamento-documento" className="text-sm font-medium text-white">
                   CPF ou CNPJ <span aria-hidden="true">*</span>
                 </label>
-                <input id="orcamento-documento" name="documento" type="text" inputMode="numeric" autoComplete="off" value={documento} onChange={(event) => { setDocumento(event.target.value); limparErro("documento"); }} aria-required="true" aria-invalid={Boolean(erros.documento)} aria-describedby={erros.documento ? "orcamento-erro-documento" : undefined} className={`${campoBase} ${erros.documento ? "border-red-300" : "border-transparent"}`} placeholder="000.000.000-00" />
-                {erros.documento ? <p id="orcamento-erro-documento" role="alert" className="mt-1.5 text-xs text-red-200">{erros.documento}</p> : null}
+                <input id="orcamento-documento" name="documento" type="text" inputMode="numeric" autoComplete="off" value={documento} onChange={(event) => { setDocumento(event.target.value); limparErro("documento"); }} aria-required="true" aria-invalid={Boolean(erros.documento)} aria-describedby={erros.documento ? "orcamento-erro-documento" : undefined} className={`${campoBase} ${erros.documento ? "border-white/60" : "border-transparent"}`} placeholder="000.000.000-00" />
+                {erros.documento ? <p id="orcamento-erro-documento" role="alert" className="mt-1.5 text-xs text-white">{erros.documento}</p> : null}
               </div>
 
               <div>
                 <label htmlFor="orcamento-servico" className="text-sm font-medium text-white">
                   Tipo de serviço <span aria-hidden="true">*</span>
                 </label>
-                <select id="orcamento-servico" name="servico" value={servico} onChange={(event) => { setServico(event.target.value); limparErro("servico"); }} aria-required="true" aria-invalid={Boolean(erros.servico)} aria-describedby={erros.servico ? "orcamento-erro-servico" : undefined} className={`${campoBase} ${erros.servico ? "border-red-300" : "border-transparent"}`}>
+                <select id="orcamento-servico" name="servico" value={servico} onChange={(event) => { setServico(event.target.value); limparErro("servico"); }} aria-required="true" aria-invalid={Boolean(erros.servico)} aria-describedby={erros.servico ? "orcamento-erro-servico" : undefined} className={`${campoBase} ${erros.servico ? "border-white/60" : "border-transparent"}`}>
                   <option value="">Selecione um serviço</option>
                   {TIPOS_SERVICO.map((tipo) => <option key={tipo} value={tipo}>{tipo}</option>)}
                 </select>
-                {erros.servico ? <p id="orcamento-erro-servico" role="alert" className="mt-1.5 text-xs text-red-200">{erros.servico}</p> : null}
+                {erros.servico ? <p id="orcamento-erro-servico" role="alert" className="mt-1.5 text-xs text-white">{erros.servico}</p> : null}
               </div>
 
               <div className="sm:col-span-2">
                 <label htmlFor="orcamento-solicitacao" className="text-sm font-medium text-white">
                   Descreva sua solicitação <span aria-hidden="true">*</span>
                 </label>
-                <textarea id="orcamento-solicitacao" name="solicitacao" rows={7} maxLength={1000} value={solicitacao} onChange={(event) => { setSolicitacao(event.target.value); limparErro("solicitacao"); }} aria-required="true" aria-invalid={Boolean(erros.solicitacao)} aria-describedby={erros.solicitacao ? "orcamento-erro-solicitacao" : undefined} className={`${campoBase} resize-y ${erros.solicitacao ? "border-red-300" : "border-transparent"}`} placeholder="Ex.: preciso regularizar o AVCB de um galpão industrial." />
-                {erros.solicitacao ? <p id="orcamento-erro-solicitacao" role="alert" className="mt-1.5 text-xs text-red-200">{erros.solicitacao}</p> : null}
+                <textarea id="orcamento-solicitacao" name="solicitacao" rows={7} maxLength={1000} value={solicitacao} onChange={(event) => { setSolicitacao(event.target.value); limparErro("solicitacao"); }} aria-required="true" aria-invalid={Boolean(erros.solicitacao)} aria-describedby={erros.solicitacao ? "orcamento-erro-solicitacao" : undefined} className={`${campoBase} resize-y ${erros.solicitacao ? "border-white/60" : "border-transparent"}`} placeholder="Ex.: preciso regularizar o AVCB de um galpão industrial." />
+                {erros.solicitacao ? <p id="orcamento-erro-solicitacao" role="alert" className="mt-1.5 text-xs text-white">{erros.solicitacao}</p> : null}
               </div>
             </div>
 

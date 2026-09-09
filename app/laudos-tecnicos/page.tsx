@@ -6,7 +6,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { NavPrimaria } from "@/components/NavPrimaria";
 import { FaqItem } from "@/components/FaqItem";
-import { CtaFinal } from "@/components/CtaFinal";
 import { FormularioOrcamento } from "@/components/FormularioOrcamento";
 import {
   servicos,
@@ -375,14 +374,6 @@ export default function PageLaudosTecnicos() {
             </div>
           </div>
         </section>
-
-        {/* ── CTA FINAL ──────────────────────────────────────────────────────── */}
-        <CtaFinal
-          titulo="Precisa de um laudo técnico de engenharia?"
-          subtitulo="Fale com nossos engenheiros e receba um diagnóstico gratuito sobre as exigências do Corpo de Bombeiros para o seu imóvel em RJ, SP, MG ou ES."
-          whatsappUrl={whatsappUrl}
-          email="centralsolu@outlook.com"
-        />
 
         <FormularioOrcamento />
 

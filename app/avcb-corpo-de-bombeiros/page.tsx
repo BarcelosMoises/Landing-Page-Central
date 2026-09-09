@@ -8,7 +8,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { NavPrimaria } from "@/components/NavPrimaria";
 import { FaqItem } from "@/components/FaqItem";
-import { CtaFinal } from "@/components/CtaFinal";
 import { CarrosselAuto } from "@/components/CarrosselAuto";
 import { FormularioOrcamento } from "@/components/FormularioOrcamento";
 import {
@@ -391,14 +390,6 @@ export default function PageAVCB() {
             </div>
           </div>
         </section>
-
-        {/* ── CTA FINAL ──────────────────────────────────────────────────────── */}
-        <CtaFinal
-          titulo="Precisa do AVCB ou CLCB?"
-          subtitulo="Fale com nossos engenheiros e receba um diagnóstico gratuito sobre as exigências do Corpo de Bombeiros para o seu imóvel."
-          whatsappUrl={whatsappUrl}
-          email="centralsolu@outlook.com"
-        />
 
         <FormularioOrcamento />
 

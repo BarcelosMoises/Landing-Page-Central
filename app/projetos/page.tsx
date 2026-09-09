@@ -6,7 +6,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { NavPrimaria } from "@/components/NavPrimaria";
 import { FaqItem } from "@/components/FaqItem";
-import { CtaFinal } from "@/components/CtaFinal";
 import { FormularioOrcamento } from "@/components/FormularioOrcamento";
 import {
   servicos,
@@ -410,14 +409,6 @@ export default function PageProjetosTecnicos() {
             </div>
           </div>
         </section>
-
-        {/* ── CTA FINAL ──────────────────────────────────────────────────────── */}
-        <CtaFinal
-          titulo="Precisa de um projeto técnico?"
-          subtitulo="Fale com nossos engenheiros e receba um orçamento para o projeto que seu imóvel precisa — arquitetônico, incêndio, acessibilidade, PGRS ou hidráulico."
-          whatsappUrl={whatsappUrl}
-          email="centralsolu@outlook.com"
-        />
 
         <FormularioOrcamento />
 

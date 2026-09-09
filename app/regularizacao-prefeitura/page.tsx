@@ -7,7 +7,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { NavPrimaria } from "@/components/NavPrimaria";
 import { FaqItem } from "@/components/FaqItem";
-import { CtaFinal } from "@/components/CtaFinal";
 import { CarrosselAuto } from "@/components/CarrosselAuto";
 import { FormularioOrcamento } from "@/components/FormularioOrcamento";
 import {
@@ -510,14 +509,6 @@ export default function PageRegularizacaoPrefeitura() {
             </div>
           </div>
         </section>
-
-        {/* ── CTA FINAL ─────────────────────────────────────────── */}
-        <CtaFinal
-          titulo="Precisa regularizar um imóvel junto à Prefeitura?"
-          subtitulo="Fale com nossa equipe e receba um diagnóstico gratuito sobre as exigências municipais para o seu imóvel em RJ, SP, MG ou ES."
-          whatsappUrl={whatsappUrl}
-          email="centralsolu@outlook.com"
-        />
 
         <FormularioOrcamento />
 
