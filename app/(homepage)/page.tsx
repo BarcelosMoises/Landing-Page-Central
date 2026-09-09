@@ -56,9 +56,6 @@ export default function HomePage() {
           <div className="relative z-10 flex min-h-[100dvh] items-start sm:min-h-[90vh] sm:items-center">
             <div className="mx-auto w-full max-w-7xl px-6 pb-12 pt-32 sm:px-6 sm:py-24 lg:px-8">
               <div className="max-w-3xl">
-                <p className="mx-auto mb-8 max-w-[calc(100%-1rem)] rounded-full border px-4 py-2.5 text-center text-[11px] font-semibold uppercase leading-tight tracking-[0.12em] text-white sm:mx-0 sm:mb-6 sm:max-w-xl sm:text-left sm:text-xs" style={{ backgroundColor: "color-mix(in srgb, #800000 18%, transparent)", borderColor: "rgba(255, 255, 255, 0.25)" }}>
-                  Corpo de Bombeiros · Vigilância Sanitária · Prefeituras · Órgãos Ambientais
-                </p>
                 <h1 id="hero-heading" className="max-w-[350px] text-5xl font-extrabold leading-[0.98] tracking-[-0.04em] text-white sm:max-w-3xl sm:text-5xl md:text-6xl" style={{ textShadow: "0 2px 16px rgba(0,0,0,0.7)" }}>
                   Soluções para <span className="block italic sm:inline" style={{ color: "#a30000" }}>legalizar</span>{" "}sua empresa.
                 </h1>

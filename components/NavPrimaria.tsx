@@ -25,6 +25,19 @@ const SERVICOS_MENU = [
 
 type NavItemId = (typeof NAV_ITENS)[number]["id"];
 
+// Navegação desktop — horizontal, sem dropdown de "Serviços".
+// Itens com `id` apontam para âncoras da homepage (scroll suave).
+type NavDesktopItem = { label: string; href: string; id?: NavItemId };
+const NAV_DESKTOP: readonly NavDesktopItem[] = [
+  { label: "Corpo de Bombeiros", href: "/avcb-corpo-de-bombeiros" },
+  { label: "Meio Ambiente", href: "/licenciamento-ambiental" },
+  { label: "Prefeitura", href: "/regularizacao-prefeitura" },
+  { label: "Laudos Técnicos", href: "/laudos-tecnicos" },
+  { label: "Projetos Técnicos", href: "/projetos" },
+  { label: "Área de Atuação", href: "/#setores", id: "setores" },
+  { label: "Contato", href: "/#contato", id: "contato" },
+];
+
 const CTA_WHATSAPP = getWhatsAppUrl(
   "Olá! Vim pelo site da Central de Soluções e gostaria de solicitar um orçamento."
 );
@@ -75,9 +88,12 @@ export function NavPrimaria() {
 
   useEffect(() => {
     const handler = () => {
-      if (window.innerWidth < 768) return;
-      if (window.innerWidth >= 768) setMenuAberto(false);
+      if (window.innerWidth >= 1024) {
+        setMenuAberto(false);
+        setServicosAberto(false);
+      }
     };
+    handler();
     window.addEventListener("resize", handler);
     return () => window.removeEventListener("resize", handler);
   }, []);
@@ -147,7 +163,47 @@ export function NavPrimaria() {
           </span>
         </Link>
 
-        <nav ref={menuRef} aria-label="Menu principal" className="relative">
+        {/* Navegação desktop — horizontal, sem hamburguer */}
+        <nav aria-label="Navegação principal" className="hidden items-center gap-0.5 lg:flex xl:gap-1.5">
+          {NAV_DESKTOP.map((item) => {
+            const id = item.id;
+            const isAtiva = id ? isHomepage && ativa === id : false;
+            const classes = [
+              "whitespace-nowrap rounded-md px-1.5 py-2 text-sm font-medium transition-colors duration-200 xl:px-2.5",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white",
+              isAtiva ? "text-white" : "text-white/75 hover:text-white",
+            ].join(" ");
+            if (id && isHomepage) {
+              return (
+                <button
+                  key={item.label}
+                  type="button"
+                  onClick={() => scrollParaSecao(id)}
+                  aria-current={isAtiva ? "true" : undefined}
+                  className={classes}
+                >
+                  {item.label}
+                </button>
+              );
+            }
+            return (
+              <Link key={item.label} href={item.href} onClick={id ? fecharMenu : undefined} className={classes}>
+                {item.label}
+              </Link>
+            );
+          })}
+          <a
+            href={CTA_WHATSAPP}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="ml-2 inline-flex items-center whitespace-nowrap rounded-lg px-4 py-2.5 text-sm font-semibold text-white transition-opacity duration-200 hover:opacity-90 active:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
+            style={{ backgroundColor: "var(--color-service-accent, #800000)" }}
+          >
+            Solicitar Orçamento
+          </a>
+        </nav>
+
+        <nav ref={menuRef} aria-label="Menu principal" className="relative lg:hidden">
           <button
             type="button"
             aria-label={menuAberto ? "Fechar menu" : "Abrir menu"}
