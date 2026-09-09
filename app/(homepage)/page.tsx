@@ -10,7 +10,7 @@ import { MapaAtuacao } from "@/components/MapaAtuacao";
 import { Glossario } from "@/components/Glossario";
 import { FormularioOrcamento } from "@/components/FormularioOrcamento";
 import { HeroCarrossel } from "@/components/HeroCarrossel";
-import { getServicosPorCategoria, getWhatsAppUrl, contato } from "@/data/servicos";
+import { getServicosPorCategoria, getWhatsAppUrl } from "@/data/servicos";
 
 export const metadata: Metadata = {
   title: "Central de Soluções | AVCB, SPDA, Laudos e Licenciamento RJ, SP, MG e ES",
@@ -103,9 +103,6 @@ export default function HomePage() {
                 </div>
               </div>
             </div>
-          </div>
-          <div aria-label="Telefone de contato" className="absolute bottom-6 left-6 z-10 hidden items-center gap-2 lg:flex">
-            <a href={`tel:${contato.telefone.replace(/\D/g, "")}`} className="text-xs text-white/60 transition-colors duration-200 hover:text-white/90">{contato.telefone}</a><span className="text-xs text-white/20">•</span><a href={contato.instagramUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-white/60 transition-colors duration-200 hover:text-white/90">{contato.instagram}</a>
           </div>
         </section>
         <MetricasEmpresa />
