@@ -480,9 +480,21 @@ export const servicos: readonly Servico[] = [
     pathRota: "/licenciamento-ambiental",
     imagens: [
       {
-        src: "/images/cards/meio-ambiente/20230624-101553.webp",
-        alt: "Área de vegetação em vistoria de licenciamento ambiental junto a usina ou empreendimento",
+        src: "/images/cards/meio-ambiente/0.webp",
+        alt: "Vistoria técnica de campo para licenciamento ambiental",
         destaque: true,
+      },
+      {
+        src: "/images/cards/meio-ambiente/1.webp",
+        alt: "Área externa de empreendimento licenciado com vegetação e estrutura industrial",
+      },
+      {
+        src: "/images/cards/meio-ambiente/3.webp",
+        alt: "Vistoria de licenciamento ambiental em campo",
+      },
+      {
+        src: "/images/cards/meio-ambiente/4.webp",
+        alt: "Técnico em campo realizando levantamento para licenciamento ambiental",
       },
       {
         src: "/images/cards/meio-ambiente/20231024-150833.webp",
@@ -499,14 +511,6 @@ export const servicos: readonly Servico[] = [
       {
         src: "/images/cards/meio-ambiente/20231024-161647.webp",
         alt: "Central fotovoltaica em operação com fileiras de módulos solares sob o sol",
-      },
-      {
-        src: "/images/cards/meio-ambiente/20231214-152634.webp",
-        alt: "Área externa de empreendimento licenciado com vegetação e estrutura industrial",
-      },
-      {
-        src: "/images/cards/meio-ambiente/20260826-101648.webp",
-        alt: "Técnico em campo realizando levantamento para licenciamento ambiental",
       },
       {
         src: "/images/cards/meio-ambiente/whatsapp-image-2026-08-31-at-10-57-14-1.webp",
@@ -535,10 +539,6 @@ export const servicos: readonly Servico[] = [
       {
         src: "/images/cards/meio-ambiente/whatsapp-image-2026-09-08-at-10-00-51n4.webp",
         alt: "Inspeção ambiental em área de empreendimento em regularização",
-      },
-      {
-        src: "/images/cards/meio-ambiente/whatsapp-image-2026-09-08n2.webp",
-        alt: "Vistoria de licenciamento ambiental em campo",
       },
     ],
   },
