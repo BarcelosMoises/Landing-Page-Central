@@ -83,7 +83,15 @@ export function FormularioOrcamento() {
     "mt-2 min-h-12 w-full rounded-lg border bg-white px-4 py-3 text-base text-neutral-900 outline-none transition-colors duration-200 placeholder:text-neutral-400 focus:border-transparent focus:ring-2 focus:ring-white";
 
   return (
-    <section id="contato" aria-labelledby="orcamento-heading" className="bg-[#1a0000] py-24 sm:py-28">
+    <section
+      id="contato"
+      aria-labelledby="orcamento-heading"
+      className="py-24 sm:py-28"
+      style={{
+        backgroundColor:
+          "color-mix(in srgb, var(--color-service-accent, #800000) 12%, #1a0000)",
+      }}
+    >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-3xl text-center">
           <p className="text-xs font-semibold uppercase tracking-[0.16em] text-white/70">

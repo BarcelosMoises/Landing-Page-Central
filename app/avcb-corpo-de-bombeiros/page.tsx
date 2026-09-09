@@ -10,6 +10,7 @@ import { NavPrimaria } from "@/components/NavPrimaria";
 import { FaqItem } from "@/components/FaqItem";
 import { CtaFinal } from "@/components/CtaFinal";
 import { CarrosselAuto } from "@/components/CarrosselAuto";
+import { FormularioOrcamento } from "@/components/FormularioOrcamento";
 import {
   servicos,
   getWhatsAppUrl,
@@ -398,6 +399,8 @@ export default function PageAVCB() {
           whatsappUrl={whatsappUrl}
           email="centralsolu@outlook.com"
         />
+
+        <FormularioOrcamento />
 
       </main>
     </>

@@ -7,6 +7,7 @@ import Link from "next/link";
 import { NavPrimaria } from "@/components/NavPrimaria";
 import { FaqItem } from "@/components/FaqItem";
 import { CtaFinal } from "@/components/CtaFinal";
+import { FormularioOrcamento } from "@/components/FormularioOrcamento";
 import {
   servicos,
   estadosAtuacao,
@@ -382,6 +383,8 @@ export default function PageLaudosTecnicos() {
           whatsappUrl={whatsappUrl}
           email="centralsolu@outlook.com"
         />
+
+        <FormularioOrcamento />
 
       </main>
     </>

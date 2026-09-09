@@ -7,6 +7,7 @@ import Link from "next/link";
 import { NavPrimaria } from "@/components/NavPrimaria";
 import { FaqItem } from "@/components/FaqItem";
 import { CtaFinal } from "@/components/CtaFinal";
+import { FormularioOrcamento } from "@/components/FormularioOrcamento";
 import {
   servicos,
   getWhatsAppUrl,
@@ -417,6 +418,8 @@ export default function PageProjetosTecnicos() {
           whatsappUrl={whatsappUrl}
           email="centralsolu@outlook.com"
         />
+
+        <FormularioOrcamento />
 
       </main>
     </>
