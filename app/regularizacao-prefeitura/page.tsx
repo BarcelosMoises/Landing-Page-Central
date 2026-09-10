@@ -215,18 +215,27 @@ export default function PageRegularizacaoPrefeitura() {
           {/* Carrossel de fundo com as fotos do serviço */}
           <HeroCarrossel imagens={prefeitura.imagens ?? []} />
 
-          {/* Overlay escuro para garantir contraste do texto sobre as fotos */}
+          {/* Overlay de contraste sobre as fotos — escuro TINGIDO pelo accent da rota.
+              A base é 88% #0a0a0a + 12% accent, então o contraste do texto branco é
+              preservado (≈19:1); só a temperatura de cor acompanha a paleta. */}
           <div
-            className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a]/85 via-[#0a0a0a]/75 to-[#0a0a0a]/95"
+            className="absolute inset-0"
+            style={{
+              ["--color-hero-overlay-base" as string]:
+                "color-mix(in srgb, var(--color-service-accent, #800000) 12%, #0a0a0a)",
+              background:
+                "linear-gradient(to bottom, color-mix(in srgb, var(--color-hero-overlay-base) 85%, transparent) 0%, color-mix(in srgb, var(--color-hero-overlay-base) 75%, transparent) 50%, color-mix(in srgb, var(--color-hero-overlay-base) 95%, transparent) 100%)",
+            }}
             aria-hidden="true"
           />
 
-          {/* Gradiente de accent (roxo) preservando a identidade visual da rota */}
+          {/* Gradiente de accent — derivado de --color-service-accent (azul #1e40af).
+              Nunca hardcodar o hex aqui: a rota já mudou de paleta uma vez. */}
           <div
             className="absolute inset-0 pointer-events-none"
             style={{
               background:
-                "radial-gradient(ellipse 70% 60% at 60% 40%, rgba(107,33,168,0.22) 0%, transparent 70%)",
+                "radial-gradient(ellipse 70% 60% at 60% 40%, color-mix(in srgb, var(--color-service-accent, #800000) 22%, transparent) 0%, transparent 70%)",
             }}
             aria-hidden="true"
           />

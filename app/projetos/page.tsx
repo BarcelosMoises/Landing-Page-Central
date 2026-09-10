@@ -210,9 +210,14 @@ export default function PageProjetosTecnicos() {
 
         {/* ── HERO ──────────────────────────────────────────────────────── */}
         <section aria-labelledby="hero-titulo" className="relative bg-[#0a0a0a] overflow-hidden">
+          {/* Gradiente de accent — derivado de --color-service-accent (roxo #6b21a8).
+              Nunca hardcodar o hex aqui: a rota já mudou de paleta uma vez. */}
           <div
             className="absolute inset-0 pointer-events-none"
-            style={{ background: "radial-gradient(ellipse 70% 60% at 60% 40%, rgba(128,0,0,0.20) 0%, transparent 70%)" }}
+            style={{
+              background:
+                "radial-gradient(ellipse 70% 60% at 60% 40%, color-mix(in srgb, var(--color-service-accent, #800000) 22%, transparent) 0%, transparent 70%)",
+            }}
             aria-hidden="true"
           />
 

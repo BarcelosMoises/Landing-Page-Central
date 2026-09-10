@@ -210,25 +210,63 @@ Usando nos componentes:
 
 ### Gradientes de Hero por Serviço
 
-```css
-/* AVCB — vinho (igual ao hero global) */
---gradient-hero-avcb: linear-gradient(to bottom, rgba(79,1,1,0.85) 0%, rgba(10,0,0,0.6) 100%);
+> **Como funciona hoje (padrão canônico):** o hero de cada subpágina é uma `<section>` com fundo
+> `#0a0a0a` (exclusivo do hero) mais **duas camadas** — nenhuma delas com hex hardcoded:
+>
+> 1. **Gradiente de accent** — `radial-gradient` derivado de `--color-service-accent`, presente
+>    nas 7 rotas. É a camada de identidade visual da categoria.
+> 2. **Overlay de contraste** (apenas rotas com foto/vídeo de fundo) — `linear-gradient` escuro
+>    **tingido** pelo accent, garantindo legibilidade do texto branco sobre as fotos.
+>
+> **Nunca hardcodar o hex do accent nessas camadas.** A rota `/projetos` tinha `rgba(128,0,0,…)`
+> (vinho da marca) e `/regularizacao-prefeitura` tinha `rgba(107,33,168,…)` (roxo obsoleto) —
+> ambos ficaram desatualizados quando as paletas foram trocadas em Set 2026.
 
-/* Vigilância Sanitária — teal escuro */
---gradient-hero-sanitaria: linear-gradient(to bottom, rgba(13,115,119,0.88) 0%, rgba(0,20,20,0.65) 100%);
+#### 1. Gradiente de accent (todas as rotas)
 
-/* Licenciamento Ambiental — verde escuro */
---gradient-hero-ambiental: linear-gradient(to bottom, rgba(45,106,45,0.88) 0%, rgba(0,15,0,0.65) 100%);
-
-/* Laudos / SPDA — dourado escuro */
---gradient-hero-laudos: linear-gradient(to bottom, rgba(146,97,10,0.88) 0%, rgba(20,10,0,0.65) 100%);
-
-/* Projetos Técnicos — roxo escuro */
---gradient-hero-projetos: linear-gradient(to bottom, rgba(107,33,168,0.88) 0%, rgba(20,5,30,0.65) 100%);
-
-/* Prefeitura / Legalização municipal — azul escuro */
---gradient-hero-prefeitura: linear-gradient(to bottom, rgba(30,64,175,0.88) 0%, rgba(0,5,30,0.65) 100%);
+```tsx
+// Acompanha automaticamente o accent da rota — funciona em qualquer subpágina
+<div
+  className="absolute inset-0 pointer-events-none"
+  style={{
+    background:
+      "radial-gradient(ellipse 70% 60% at 60% 40%, color-mix(in srgb, var(--color-service-accent, #800000) 22%, transparent) 0%, transparent 70%)",
+  }}
+  aria-hidden="true"
+/>
 ```
+
+> **Pendência:** as rotas `/avcb-corpo-de-bombeiros`, `/vigilancia-sanitaria`,
+> `/licenciamento-ambiental`, `/laudos-tecnicos` e `/spda-para-raios` ainda usam o valor
+> equivalente em rgba hardcoded (`0.22` de opacidade). Migrar para `color-mix` na mesma
+> passagem em que a paleta de cada uma for revisada.
+
+#### 2. Overlay de contraste sobre fotos (rotas com HeroCarrossel)
+
+```tsx
+// Escuro TINGIDO pelo accent: base = 12% accent + 88% #0a0a0a.
+// A luminância permanece praticamente idêntica ao #0a0a0a, então o contraste
+// do texto branco é preservado (≈19:1 ✓ WCAG AAA) — só a temperatura muda.
+<div
+  className="absolute inset-0"
+  style={{
+    ["--color-hero-overlay-base" as string]:
+      "color-mix(in srgb, var(--color-service-accent, #800000) 12%, #0a0a0a)",
+    background:
+      "linear-gradient(to bottom, color-mix(in srgb, var(--color-hero-overlay-base) 85%, transparent) 0%, color-mix(in srgb, var(--color-hero-overlay-base) 75%, transparent) 50%, color-mix(in srgb, var(--color-hero-overlay-base) 95%, transparent) 100%)",
+  }}
+  aria-hidden="true"
+/>
+```
+
+> **Por que não tingir com mais accent:** acima de ~15% o fundo deixa de ser escuro o bastante
+> e o contraste do `text-white` sobre as fotos começa a cair abaixo de WCAG AA em áreas claras
+> da imagem. O tingimento é intencionalmente sutil — quem carrega a cor da categoria é o
+> `radial-gradient` da camada 1.
+
+> **Fundo base:** a `<section>` do hero permanece `bg-[#0a0a0a]` — regra do AGENTS.md (é a única
+> seção do site autorizada a usar o preto puro). O tingimento acontece **nas camadas sobrepostas**,
+> não no fundo base.
 
 ---
 
