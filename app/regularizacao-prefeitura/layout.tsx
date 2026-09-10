@@ -1,12 +1,13 @@
 // app/regularizacao-prefeitura/layout.tsx
 // Layout da subpágina: Regularização junto à Prefeitura
 // Server Component puro — sem "use client".
-// Define --color-service-accent (roxo #6b21a8) no <div> wrapper,
+// Define --color-service-accent (azul #1e40af) no <div> wrapper,
 // garantindo que NavPrimaria e Footer também herdem a cor do serviço.
 //
-// COR: roxo #6b21a8 — paleta própria da rota (tabela TASKS.md / checklist
-// da task #61). Decisão registrada na tarefa de pills; atualizar AGENTS.md e
-// docs/DESIGN.md se a paleta mudar.
+// COR: azul #1e40af — paleta própria da rota. Até Set 2026 esta rota usava o roxo
+// #6b21a8/#561a86, trocado com a rota /projetos. Ao alterar aqui, sincronizar o
+// seletor [data-service="prefeitura"] em globals.css, AGENTS.md, docs/DESIGN.md
+// e docs/TASKS.md.
 
 import type React from "react"
 import { Footer } from "@/components/Footer"
@@ -19,8 +20,8 @@ export default function LayoutRegularizacaoPrefeitura({
   return (
     <div
       style={{
-        "--color-service-accent": "#6b21a8",
-        "--color-service-accent-hover": "#561a86",
+        "--color-service-accent": "#1e40af",
+        "--color-service-accent-hover": "#1e3a8a",
       } as React.CSSProperties}
     >
       {children}

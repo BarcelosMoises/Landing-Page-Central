@@ -60,10 +60,10 @@ app/
 │   ├── layout.tsx              # Define --color-service-accent: #2d6a2d
 │   └── page.tsx                # keyword: "licenciamento ambiental [estado]"
 ├── regularizacao-prefeitura/
-│   ├── layout.tsx              # Define --color-service-accent: #6b21a8
+│   ├── layout.tsx              # Define --color-service-accent: #1e40af
 │   └── page.tsx                # keyword: "regularização prefeitura alvará [estado]"
 └── projetos/
-    ├── layout.tsx              # Define --color-service-accent: #1e40af
+    ├── layout.tsx              # Define --color-service-accent: #6b21a8
     └── page.tsx                # keyword: "projeto combate incêndio pânico"
 ```
 
@@ -93,12 +93,18 @@ app/
 | Licenciamento Ambiental | `/licenciamento-ambiental` | `#2d6a2d` | `#1e4d1e` |
 | Laudos Técnicos | `/laudos-tecnicos` | `#92610a` | `#6e4908` |
 | SPDA | `/spda-para-raios` | `#b7791f` | `#8a5a12` |
-| Projetos Técnicos | `/projetos` | `#1e40af` | `#1e3a8a` |
-| Prefeitura / Legalização municipal | `/regularizacao-prefeitura` | `#6b21a8` | `#561a86` |
+| Projetos Técnicos | `/projetos` | `#6b21a8` | `#561a86` |
+| Prefeitura / Legalização municipal | `/regularizacao-prefeitura` | `#1e40af` | `#1e3a8a` |
 
-> **Prefeitura (Ago 2026):** accent próprio roxo `#6b21a8` — não reutiliza o vinho da marca.
-> Decisão pendente de confirmação com o cliente — ver TASKS.md #56. Se mudar, atualizar `layout.tsx`,
-> `globals.css` (seletor `data-service`), esta tabela e `docs/DESIGN.md`.
+> **Troca de accents (Set 2026):** as rotas `/projetos` e `/regularizacao-prefeitura` tiveram suas
+> paletas **trocadas entre si** — Projetos passou a roxo `#6b21a8`, Prefeitura a azul `#1e40af`.
+> Os dois accents têm luminância equivalente (contraste ≈ 8.8:1 sobre branco), então nenhum
+> ajuste de `color-mix` nos pills/CTA/Footer foi necessário.
+>
+> **Sincronização obrigatória:** ao alterar o accent de qualquer rota, mudar **sempre em par**
+> `layout.tsx` + seletor `[data-service]` em `globals.css` — o seletor está no `<main>` e
+> sobrescreve o valor herdado do `<div>` wrapper, então mexer só num dos dois faz a nav/Footer
+> divergirem do corpo da página. Depois, atualizar esta tabela, `docs/DESIGN.md` e `docs/TASKS.md`.
 
 ### Regra de Layout por Subpágina
 

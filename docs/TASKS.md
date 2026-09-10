@@ -35,8 +35,15 @@ Cada rota deve definir um trio próprio. Nenhuma rota pode reutilizar o trio de 
 | `/licenciamento-ambiental` | `#2d6a2d` | `#0b1b12` | `#07120c` |
 | `/laudos-tecnicos` | `#92610a` | `#1f1606` | `#140e03` |
 | `/spda-para-raios` | `#b7791f` | `#211807` | `#160f03` |
-| `/regularizacao-prefeitura` | `#6b21a8` | `#1a0c26` | `#110719` |
-| `/projetos` | `#1e40af` | `#080f24` | `#050a19` |
+| `/regularizacao-prefeitura` | `#1e40af` | `#080f24` | `#050a19` |
+| `/projetos` | `#6b21a8` | `#1a0c26` | `#110719` |
+
+> **Troca de accents (Set 2026):** `/projetos` e `/regularizacao-prefeitura` trocaram o trio
+> entre si — Projetos agora é roxo `#6b21a8`, Prefeitura é azul `#1e40af`.
+> As colunas Surface CTA e Footer são *tints derivados* via `color-mix` a partir do accent
+> (ver `components/CtaFinal.tsx` e `components/Footer.tsx`), não valores hardcoded — a troca
+> acompanha o accent automaticamente. Alteração sincronizada em `layout.tsx` + `globals.css`
+> de cada rota, `AGENTS.md` e `docs/DESIGN.md`.
 
 ## Fase 2. Imagens reais
 

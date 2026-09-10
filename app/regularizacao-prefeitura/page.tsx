@@ -1,7 +1,7 @@
 // app/regularizacao-prefeitura/page.tsx
 // Página de serviço: Regularização junto à Prefeitura
 // Server Component puro — sem "use client".
-// Accent: #1a3a6b (azul marinho) — cor primária do serviço.
+// Accent: azul #1e40af (ver layout.tsx desta rota — fonte de verdade da paleta).
 
 import type { Metadata } from "next";
 import Link from "next/link";

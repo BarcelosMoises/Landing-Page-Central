@@ -85,8 +85,8 @@
   --color-service-accent-hover: #4f0101;
 }
 [data-service="projetos"] {
-  --color-service-accent: #1e40af;
-  --color-service-accent-hover: #1e3a8a;
+  --color-service-accent: #6b21a8;
+  --color-service-accent-hover: #561a86;
 }
 [data-service="vigilancia"] {
   --color-service-accent: #0d7377;
@@ -105,8 +105,8 @@
   --color-service-accent-hover: #8a5a12;
 }
 [data-service="prefeitura"] {
-  --color-service-accent: #6b21a8;
-  --color-service-accent-hover: #561a86;
+  --color-service-accent: #1e40af;
+  --color-service-accent-hover: #1e3a8a;
 }
 
 @layer utilities {

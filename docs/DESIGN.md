@@ -123,11 +123,23 @@ background: linear-gradient(to bottom, rgba(79,1,1,0.85) 0%, rgba(10,0,0,0.6) 10
 | Categoria | Rota | Accent principal | Hover | Highlight (10% opacidade) |
 |---|---|---|---|---|
 | Corpo de Bombeiros / AVCB | `/avcb-corpo-de-bombeiros` | `#800000` | `#4f0101` | `#800000/10` |
-| Projetos de Engenharia | `/projetos` | `#1e40af` | `#1e3a8a` | `#1e40af/10` |
+| Projetos de Engenharia | `/projetos` | `#6b21a8` | `#561a86` | `#6b21a8/10` |
 | Vigilância Sanitária | `/vigilancia-sanitaria` | `#0d7377` | `#095e62` | `#0d7377/10` |
 | Licenciamento Ambiental | `/licenciamento-ambiental` | `#2d6a2d` | `#1e4d1e` | `#2d6a2d/10` |
 | Laudos Técnicos | `/laudos-tecnicos` | `#92610a` | `#6e4908` | `#92610a/10` |
-| SPDA / Para-raios | `/spda-para-raios` | `#92610a` | `#6e4908` | `#92610a/10` |
+| SPDA / Para-raios | `/spda-para-raios` | `#b7791f` | `#8a5a12` | `#b7791f/10` |
+| Prefeitura / Legalização municipal | `/regularizacao-prefeitura` | `#1e40af` | `#1e3a8a` | `#1e40af/10` |
+
+> **Troca de accents (Set 2026):** `/projetos` e `/regularizacao-prefeitura` trocaram de paleta
+> entre si — Projetos usa roxo `#6b21a8`, Prefeitura usa azul `#1e40af`.
+> Ambos têm luminância equivalente (contraste ≈ 8.8:1 sobre branco), portanto nenhum
+> `color-mix` de pills, CTA ou Footer precisou de ajuste.
+>
+> **Atenção — sincronização obrigatória:** o accent de uma rota vive em **dois** lugares que
+> devem mudar juntos: o `<div>` wrapper do `layout.tsx` e o seletor `[data-service="…"]` em
+> `globals.css`. Como o seletor está no `<main>`, ele **sobrescreve** o valor herdado do layout
+> para toda a subárvore de conteúdo; alterar apenas um dos dois faz a nav/Footer mostrarem uma
+> cor e o corpo da página outra.
 
 ### Como Aplicar nas Subpáginas
 
@@ -166,7 +178,9 @@ O `<main>` da subpágina mantém o `data-service` attribute para os seletores do
 [data-service="ambiental"]  { --color-service-accent: #2d6a2d; --color-service-accent-hover: #1e4d1e; }
 [data-service="laudos"]     { --color-service-accent: #92610a; --color-service-accent-hover: #6e4908; }
 [data-service="avcb"]       { --color-service-accent: #800000; --color-service-accent-hover: #4f0101; }
-[data-service="projetos"]   { --color-service-accent: #1e40af; --color-service-accent-hover: #1e3a8a; }
+[data-service="spda"]       { --color-service-accent: #b7791f; --color-service-accent-hover: #8a5a12; }
+[data-service="projetos"]   { --color-service-accent: #6b21a8; --color-service-accent-hover: #561a86; }
+[data-service="prefeitura"] { --color-service-accent: #1e40af; --color-service-accent-hover: #1e3a8a; }
 ```
 
 Usando nos componentes:
@@ -209,8 +223,11 @@ Usando nos componentes:
 /* Laudos / SPDA — dourado escuro */
 --gradient-hero-laudos: linear-gradient(to bottom, rgba(146,97,10,0.88) 0%, rgba(20,10,0,0.65) 100%);
 
-/* Projetos Técnicos — azul escuro */
---gradient-hero-projetos: linear-gradient(to bottom, rgba(30,64,175,0.88) 0%, rgba(0,5,30,0.65) 100%);
+/* Projetos Técnicos — roxo escuro */
+--gradient-hero-projetos: linear-gradient(to bottom, rgba(107,33,168,0.88) 0%, rgba(20,5,30,0.65) 100%);
+
+/* Prefeitura / Legalização municipal — azul escuro */
+--gradient-hero-prefeitura: linear-gradient(to bottom, rgba(30,64,175,0.88) 0%, rgba(0,5,30,0.65) 100%);
 ```
 
 ---
