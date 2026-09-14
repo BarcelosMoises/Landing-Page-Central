@@ -77,8 +77,13 @@ Cada rota deve definir um trio próprio. Nenhuma rota pode reutilizar o trio de 
 | 57 | ⬜ | `docs/SEO.md` | Validar keyword da Prefeitura | 🟡 |
 | 60 | ✅ | Site inteiro | Retícula decorativa removida de todas as páginas e componentes | 🟡 |
 | 61 | ✅ | Heroes das subpáginas | Pill badges corrigidos para contraste AA, fundo sólido derivado do accent e comportamento responsivo | 🔴 |
+| 62 | ✅ | `components/` | Código morto removido: `CtaFinal`, `FormularioContato`, `HeroFullscreen`, `DocumentCard`, `PlaceholderImage`, `GaleriaBento`, `GaleriaCarrossel` (nenhum era importado) | 🟡 |
 
 > A retícula decorativa foi removida globalmente para simplificar a linguagem visual e eliminar elementos ornamentais que não organizam conteúdo real.
+
+> **Task #62 (Set 2026):** os 7 componentes acima nunca eram importados por nenhuma página ou componente.
+> As tasks #35–#40 e #42 referenciam `CtaFinal`/`PlaceholderImage` como registro histórico — esses
+> arquivos não existem mais. O bloco único de CTA/formulário das subpáginas é `components/FormularioOrcamento.tsx`.
 
 ## Verificação rápida
 

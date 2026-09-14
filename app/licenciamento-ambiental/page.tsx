@@ -16,7 +16,7 @@ import {
 // ─── Metadata ────────────────────────────────────────────────────────────────
 
 export const metadata: Metadata = {
-  title: "Licenciamento Ambiental RJ SP MG ES — Consultoria completa LP LI LO",
+  title: "Licenciamento Ambiental — Consultoria completa LP LI LO",
   description:
     "Consultoria em licenciamento ambiental nos estados RJ, SP, MG e ES: LP, LI, LO e LAS junto ao INEA, CETESB, SUPRAM/SEMAD e IEMA. Engenheiros com ART/RRT. Postos de combustível, indústrias e agronegócio.",
   keywords: [

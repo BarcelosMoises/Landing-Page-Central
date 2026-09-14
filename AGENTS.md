@@ -159,16 +159,13 @@ export default function LayoutAmbiental({ children }: { children: React.ReactNod
 - **Nunca usar stock photos** enquanto houver fotos reais disponíveis
 - Mapeamento completo de foto por seção/rota: ver `docs/DESIGN.md`
 
-### Placeholders temporários (dev-only)
+### Imagens de seção
 
-> O placeholder vermelho atual das subpáginas é **temporário** — o design foi aprovado pelo cliente
-> e os slots de imagem devem receber fotos reais do portfólio (ver TASKS.md Fase 2).
+> Os slots de imagem das subpáginas usam fotos reais do portfólio (ver TASKS.md Fase 2).
 
-- Todo placeholder de imagem usa o componente `components/PlaceholderImage.tsx` com `data-todo="placeholder"`
 - **Proibido mergear para produção com placeholder** — verificação obrigatória antes de deploy:
   `grep -rn 'data-todo="placeholder"' app components` deve retornar vazio
-- Substituição: foto real de `/public/images/portfolio/` conforme mapeamento do `docs/DESIGN.md`;
-  se não houver foto real adequada ao serviço, usar card visual de documento/norma — **nunca stock photo**
+- Se não houver foto real adequada ao serviço, usar card visual de documento/norma — **nunca stock photo**
 - Imagens abaixo da dobra: `next/image` com `aspect-video`, `rounded-lg`, `sizes` responsivo, **sem** `priority`,
   `alt` técnico descritivo (regra de SEO #6)
 
@@ -217,8 +214,8 @@ export default function LayoutAmbiental({ children }: { children: React.ReactNod
 - **Cor primária global:** `#800000` (vinho) — homepage, nav, footer
 - **Fundo da nav ao scroll:** `#1a0000` (vinho escuro cinemático) — `bg-[#1a0000]/95`
 - **Fundo do menu mobile:** `#1a0000` (vinho escuro cinemático) — `bg-[#1a0000]/98`
-- **Fundo de seções escuras de conteúdo:** `#1a0000` — SetoresAtendidos, FormularioContato, Glossário/Normas
-- **Footer e CtaFinal são tingidos pelo accent da categoria:** `color-mix(in srgb, var(--color-service-accent, #800000) 12%, #1a0000)` — verde em ambiental, teal em VISA, dourado em laudos/SPDA, azul em projetos; na homepage (fallback vinho) o resultado ≈ `#1a0000`
+- **Fundo de seções escuras de conteúdo:** `#1a0000` — SetoresAtendidos, FormularioOrcamento, Glossário/Normas
+- **Footer e superfícies de CTA são tingidos pelo accent da categoria:** `color-mix(in srgb, var(--color-service-accent, #800000) 12%, #1a0000)` — verde em ambiental, teal em VISA, dourado em laudos/SPDA, azul em projetos; na homepage (fallback vinho) o resultado ≈ `#1a0000`
 - **Token de texto sobre `#1a0000` (secundário):** `#c4a8a8` — cinza rosado quente, contraste ≈ 6.5:1 ✓ WCAG AA
 - **Token de texto sobre `#1a0000` (primário suave):** `#e0c8c8` — bege rosado, contraste ≈ 11:1 ✓ WCAG AAA
 - **Accent por serviço:** ver tabela acima — sempre via CSS variable
@@ -236,8 +233,8 @@ export default function LayoutAmbiental({ children }: { children: React.ReactNod
 | Papel | Valor | Componentes |
 |---|---|---|
 | Fundo hero / mais escuro | `#0a0a0a` | Hero section, seções cinemáticas de impacto máximo |
-| Fundo padrão de seções escuras | `#1a0000` | SetoresAtendidos, FormularioContato, Glossário/Normas |
-| Fundo escuro tingido pela categoria | `color-mix(in srgb, var(--color-service-accent, #800000) 12%, #1a0000)` | Footer, CtaFinal |
+| Fundo padrão de seções escuras | `#1a0000` | SetoresAtendidos, FormularioOrcamento, Glossário/Normas |
+| Fundo escuro tingido pela categoria | `color-mix(in srgb, var(--color-service-accent, #800000) 12%, #1a0000)` | Footer, superfícies de CTA |
 | Nav ao scroll (95% opacidade) | `bg-[#1a0000]/95` + `backdrop-blur` | NavPrimaria (estado scrolled) |
 | Nav menu mobile (98% opacidade) | `bg-[#1a0000]/98` | NavPrimaria (dropdown mobile) |
 | Overlay de hero sobre foto | `from-[#4f0101]/85 to-[#0a0000]/60` | Hero section gradient |
@@ -310,8 +307,8 @@ export default function LayoutAmbiental({ children }: { children: React.ReactNod
 | Usar `formacao` ou `Formação` como campo da equipe | `membro.tituloPrincipal` — campo canônico em `data/equipe.ts` |
 | Acessar membro da equipe sem `slug` | Usar `membro.slug` para links e IDs (ex.: `durval-ribeiro`, `theyllor-estulano`) |
 | Criar componente duplicado de grid de serviços | `ServicosTabs` é o único componente de serviços da homepage — `ServicosGrid` foi removido |
-| Seção CTA final duplicada/copiada entre subpáginas | `components/CtaFinal.tsx` — único componente de CTA das subpáginas |
-| Placeholder de imagem em commit destinado a produção | `PlaceholderImage` com `data-todo="placeholder"` — removido antes do deploy (TASKS.md Fase 2) |
+| Seção CTA final duplicada/copiada entre subpáginas | `components/FormularioOrcamento.tsx` — único bloco de CTA/formulário das subpáginas |
+| Placeholder de imagem em commit destinado a produção | `data-todo="placeholder"` — removido antes do deploy (TASKS.md Fase 2) |
 | Stock photo em slot de imagem de subpágina | Foto real de `/public/images/portfolio/` ou card visual de documento/norma |
 | Fundo neutro (navy/cinza) no card "Base Normativa" | `color-mix(in srgb, var(--color-service-accent) 8%, #1a0000)` + `border-l-4` no accent |
 | Retícula/crosshair decorativa | Não usar SVG ornamental de retícula no site |
@@ -353,17 +350,15 @@ export default function LayoutAmbiental({ children }: { children: React.ReactNod
 
 ## Componentes Compartilhados das Subpáginas
 
-### CtaFinal
-- **Arquivo:** `components/CtaFinal.tsx`
-- **Tipo:** Server Component (sem `"use client"`) — sem interatividade client-side
-- **O quê:** seção CTA escura imediatamente acima do footer em **todas** as subpáginas de serviço ("Precisa de X?")
-- **Props:** `titulo` · `subtitulo` · `whatsappUrl` · `email`
+### FormularioOrcamento
+- **Arquivo:** `components/FormularioOrcamento.tsx`
+- **Tipo:** Client Component (`"use client"`) — React Hook Form + Zod
+- **O quê:** bloco único de CTA + formulário de orçamento, renderizado em **todas** as subpáginas de serviço e na homepage
 - **Regras de cor (não violar — drift identificado em Ago 2026):**
-  - Fundo **tingido pelo accent da categoria**: `color-mix(in srgb, var(--color-service-accent, #800000) 12%, #1a0000)` — mesmo padrão do Footer. Verde em ambiental, teal em VISA, dourado em laudos/SPDA, azul em projetos; `#1a0000` puro só na prática da homepage (fallback vinho). Nunca `#0a0a0a`, `bg-black` ou neutro
+  - Fundo **tingido pelo accent da categoria** via `--color-service-cta-bg`: `color-mix(in srgb, var(--color-service-accent, #800000) 12%, #1a0000)` — mesmo padrão do Footer. Verde em ambiental, teal em VISA, dourado em laudos/SPDA, azul em projetos; `#1a0000` puro só na prática da homepage (fallback vinho). Nunca `#0a0a0a`, `bg-black` ou neutro
   - Heading `text-white`; subtítulo `style={{ color: "#c4a8a8" }}`
   - Botão primário: `backgroundColor: "var(--color-service-accent, #800000)"`
   - Botão ghost de e-mail: `mailto:` com borda `white/20` e texto `#e0c8c8`
-  - `border-t-4` no accent do serviço como transição vinda da seção clara anterior (FAQ)
 
 ### Pill badges de hero
 
@@ -372,13 +367,6 @@ export default function LayoutAmbiental({ children }: { children: React.ReactNod
 - Fundo sempre visível sobre imagens: `color-mix(in srgb, var(--color-service-accent, #800000) 32%, #0a0a0a)` + borda `color-mix(in srgb, var(--color-service-accent, #800000) 60%, #ffffff 40%)`.
 - Não usar `text-neutral-400`, `text-white/30`, `bg-transparent` ou `border-white/10` como estilo principal do pill.
 - O pill deve permanecer legível em desktop e mobile: `max-w-full flex-wrap`, tracking reduzido no mobile, sem quebra de texto nem overflow.
-
-### PlaceholderImage
-- **Arquivo:** `components/PlaceholderImage.tsx`
-- **O quê:** placeholder temporário de imagem para slots ainda sem foto real — **dev-only**
-- **Marcação:** `data-todo="placeholder"` obrigatório + label descritivo do slot (ex.: "Escopo VISA — imagem 16:9")
-- **Formato:** `aspect-video`, `rounded-lg`, fundo `#4f0101` (vinho escuro da marca — nunca vermelho puro)
-- **Ciclo de vida:** criado em desenvolvimento → substituído por foto real → removido antes do deploy
 
 ---
 

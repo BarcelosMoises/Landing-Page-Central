@@ -25,7 +25,7 @@
 | `neutral-700` | `#374151` | Textos de corpo |
 | `neutral-900` | `#111827` | Headings, textos de alta ênfase |
 | `brand-dark` | `#1a0000` | Nav ao scroll, menus mobile — vinho escuro cinemático |
-| `brand-dark-deep` | `#1a0000` | Seções escuras (SetoresAtendidos, FormularioContato, Footer, Glossário) |
+| `brand-dark-deep` | `#1a0000` | Seções escuras (SetoresAtendidos, FormularioOrcamento, Footer, Glossário) |
 
 > **Atenção:** `neutral-400` (#9ca3af) não deve ser usado como texto sobre `#1a0000`.
 > O tom azul-acinzentado cria disssonância de temperatura sobre o vinho escuro.
@@ -49,7 +49,7 @@
 | Nav ao scroll | `NavPrimaria` | `#1a0000/95` + backdrop-blur | Sem texto secundário |
 | Menu mobile | `NavPrimaria` (dropdown) | `#1a0000/98` | |
 | Seção de setores | `SetoresAtendidos` | `#1a0000` | Texto: #c4a8a8 |
-| Formulário/contato | `FormularioContato` | `#1a0000` | Texto: #c4a8a8 |
+| Formulário/contato | `FormularioOrcamento` | `#1a0000` | Texto: #c4a8a8 |
 | Rodapé | `Footer` | `#1a0000` | Texto: #c4a8a8 / #e0c8c8 |
 | Glossário/Normas | `GlossarioSecao` (futuro) | `#1a0000` | Texto: #c4a8a8 |
 | Hero cinemtico | `HeroSection` | `#0a0a0a` + overlay vinho | Fundo mais escuro que o vinho |
@@ -661,7 +661,7 @@ Border radius padrão: rounded-lg (8px) | rounded-xl (12px) para cards
 
 - **Card (`ServicoCard`)** — `motion.article` com `layout`, botão "Ver galeria" com `aria-expanded`/`aria-controls`.
 - **Painel expansível** — `AnimatePresence` + `motion.div` com `height: 0 → auto` (spring), conteúdo **sempre no DOM** (SEO #5).
-- **Galeria (`GaleriaBento`)** — Client Component que recebe `imagens` via props (nunca importa dados).
+- **Galeria (`GaleriaBentoPreview` + `GaleriaModal`)** — Client Components que recebem `imagens` via props (nunca importam dados).
 
 #### Dados — campo `imagens` em `Servico`
 
@@ -679,7 +679,7 @@ interface Servico {
 ```
 
 > **Regra:** componentes nunca hardcodam imagens — sempre via `servico.imagens`.
-> Quando `imagens` está ausente, o card usa `PlaceholderImage` (dev-only, `data-todo="placeholder"`).
+> Quando `imagens` está ausente, o card usa um card visual de documento/norma — **nunca stock photo**.
 
 #### Bento grid (assimétrico — evita as "3 colunas iguais" do padrão genérico de IA)
 
@@ -720,7 +720,7 @@ interface Servico {
   - `focus-visible:ring-[#800000]` em todos os controles.
 - **SEO:** conteúdo do painel sempre no DOM; `alt` técnico descritivo em cada foto.
 - **Ícones:** `lucide-react` (padrão do projeto) — `ChevronDown` no botão, `ChevronLeft`/`ChevronRight` no carrossel.
-- **Placeholder:** `PlaceholderImage` com `data-todo="placeholder"` — removido antes do deploy (gate: `grep -rn 'data-todo="placeholder"' app components` deve retornar vazio).
+- **Placeholder:** slots sem foto real usam card visual de documento/norma — **nunca stock photo** (gate: `grep -rn 'data-todo="placeholder"' app components` deve retornar vazio).
 
 ### Barra de Confiança (Trust Bar)
 
@@ -869,7 +869,7 @@ const animation = prefersReduced ? {} : { opacity: [0, 1], transform: ["translat
 - [ ] Nenhum `<a>` exibe azul do navegador — coberto por `a { color: inherit }` no `globals.css`
 - [ ] Nenhum `ring-*` ou `outline` azul visível — coberto por `ringColor.DEFAULT` e `:focus-visible` globais
 - [ ] NavPrimaria ao scroll usa `bg-[#1a0000]/95` (vinho escuro) — nunca `bg-[#111827]/95` ou `bg-neutral-900`
-- [ ] Seções escuras (`SetoresAtendidos`, `FormularioContato`, `Footer`, Glossário) usam `bg-[#1a0000]` — nunca `bg-neutral-900` ou `bg-[#111827]`
+- [ ] Seções escuras (`SetoresAtendidos`, `FormularioOrcamento`, `Footer`, Glossário) usam `bg-[#1a0000]` — nunca `bg-neutral-900` ou `bg-[#111827]`
 - [ ] Texto secundário sobre `#1a0000` usa `style={{ color: "#c4a8a8" }}` — nunca `text-neutral-400`
 - [ ] Links de contato sobre `#1a0000` usam `style={{ color: "#e0c8c8" }}` — nunca `text-neutral-300`
 - [ ] Logo na nav usa `next/image` com `priority`, `alt` descritivo e dimensões explícitas (`width={32} height={32}`)
