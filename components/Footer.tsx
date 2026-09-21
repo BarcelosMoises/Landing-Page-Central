@@ -70,7 +70,7 @@ export function Footer() {
         </div>
         <div className="mt-12 pt-6 text-xs flex flex-col md:flex-row justify-between gap-3" style={{ color: "#c4a8a8" }}>
           <p>© 2026 Central de Soluções Engenharia. Todos os direitos reservados.</p>
-          <p>CRECI/CREA. Responsabilidade técnica assegurada em cada serviço.</p>
+          <p>CAU/CREA. Responsabilidade técnica assegurada em cada serviço.</p>
         </div>
       </div>
     </footer>
