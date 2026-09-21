@@ -10,6 +10,7 @@ import { MapaAtuacao } from "@/components/MapaAtuacao";
 import { Glossario } from "@/components/Glossario";
 import { FormularioOrcamento } from "@/components/FormularioOrcamento";
 import { HeroCarrossel } from "@/components/HeroCarrossel";
+import { OrgaosReguladores } from "@/components/OrgaosReguladores";
 import { getServicosPorCategoria, getWhatsAppUrl } from "@/data/servicos";
 
 export const metadata: Metadata = {
@@ -70,11 +71,11 @@ export default function HomePage() {
       <JsonLd data={websiteJsonLd} />
       <NavPrimaria />
       <main id="conteudo-principal" aria-label="Página inicial da Central de Soluções">
-        <section id="hero" aria-labelledby="hero-heading" className="relative min-h-[100dvh] overflow-hidden sm:min-h-[90vh]">
+        <section id="hero" aria-labelledby="hero-heading" className="relative min-h-[92dvh] overflow-hidden sm:min-h-[58vh] lg:min-h-[64vh]">
           <HeroCarrossel imagens={HERO_IMAGENS} />
           <div aria-hidden="true" className="absolute inset-0 bg-black/35" />
           <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-b from-[#4f0101]/75 via-[#4f0101]/55 to-[#0a0000]/75" />
-          <div className="relative z-10 flex min-h-[100dvh] items-start sm:min-h-[90vh] sm:items-center">
+          <div className="relative z-10 flex min-h-[92dvh] items-start sm:min-h-[58vh] sm:items-center lg:min-h-[64vh]">
             <div className="mx-auto w-full max-w-7xl px-6 pb-12 pt-32 sm:px-6 sm:py-24 lg:px-8">
               <div className="max-w-3xl">
                 <h1 id="hero-heading" className="max-w-[350px] text-5xl font-extrabold leading-[0.98] tracking-[-0.04em] text-white sm:max-w-3xl sm:text-5xl md:text-6xl" style={{ textShadow: "0 2px 16px rgba(0,0,0,0.7)" }}>
@@ -105,6 +106,7 @@ export default function HomePage() {
             </div>
           </div>
         </section>
+        <OrgaosReguladores />
         <MetricasEmpresa />
         <TrustBar />
         <section id="servicos" aria-label="Serviços da Central de Soluções"><ServicosTabs legalizacao={servicosLegalizacao} projetos={servicosProjetos} laudos={servicosLaudos} /></section>
