@@ -1,16 +1,5 @@
 "use client";
 
-/**
- * OrgaosReguladores — duas variantes visuais dos 4 orgaos reguladores
- * atendidos pela Central de Solucoes, compartilhando os mesmos dados.
- *
- * OrgaosReguladoresClaro: faixa branca abaixo da hero, visivel apenas
- * a partir de lg (desktop/tablet grande).
- *
- * OrgaosReguladoresHero: cards escuros integrados a propria hero,
- * visiveis apenas abaixo de lg (mobile/tablet).
- */
-
 import Link from "next/link";
 import { Flame, ClipboardCheck, Building2, Leaf, type LucideProps } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
@@ -34,9 +23,9 @@ export function OrgaosReguladoresClaro() {
   return (
     <section
       aria-label="Órgãos reguladores atendidos pela Central de Soluções"
-      className="hidden bg-white py-4 lg:block"
+      className="hidden bg-white py-6 lg:block"
     >
-      <div className="mx-auto grid max-w-7xl grid-cols-4 gap-3 px-6 lg:px-8">
+      <div className="mx-auto grid max-w-7xl grid-cols-4 gap-4 px-6 lg:px-8">
         {ORGAOS.map((orgao, index) => (
           <motion.div
             key={orgao.label}
@@ -47,15 +36,15 @@ export function OrgaosReguladoresClaro() {
             <Link
               href={orgao.href}
               aria-label={`Ver serviços de ${orgao.label}`}
-              className="flex items-center justify-center gap-2.5 rounded-lg border border-neutral-200/70 bg-white px-4 py-3.5 transition-shadow duration-200 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#800000] focus-visible:ring-offset-2"
+              className="flex flex-col items-center justify-center gap-3 rounded-xl border border-neutral-200/70 bg-white px-4 py-8 text-center transition-shadow duration-200 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#800000] focus-visible:ring-offset-2"
             >
               <orgao.Icone
                 style={{ color: "#800000" }}
-                className="h-7 w-7 shrink-0"
-                strokeWidth={1.75}
+                className="h-14 w-14 shrink-0"
+                strokeWidth={1.5}
                 aria-hidden="true"
               />
-              <span className="text-sm font-bold uppercase tracking-wide text-neutral-900">
+              <span className="text-base font-bold uppercase tracking-wide text-neutral-900">
                 {orgao.label}
               </span>
             </Link>
