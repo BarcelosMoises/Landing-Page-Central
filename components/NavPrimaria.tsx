@@ -26,12 +26,10 @@ const SERVICOS_MENU = [
 type NavItemId = (typeof NAV_ITENS)[number]["id"];
 
 // Navegação desktop — horizontal, sem dropdown de "Serviços".
-// Itens com `id` apontam para âncoras da homepage (scroll suave).
+// Os serviços de legalização (Corpo de Bombeiros, Meio Ambiente, Prefeitura)
+// já aparecem como cards logo abaixo da hero, por isso não são repetidos aqui.
 type NavDesktopItem = { label: string; href: string; id?: NavItemId };
 const NAV_DESKTOP: readonly NavDesktopItem[] = [
-  { label: "Corpo de Bombeiros", href: "/avcb-corpo-de-bombeiros" },
-  { label: "Meio Ambiente", href: "/licenciamento-ambiental" },
-  { label: "Prefeitura", href: "/regularizacao-prefeitura" },
   { label: "Área de Atuação", href: "/#setores", id: "setores" },
   { label: "Contato", href: "/#contato", id: "contato" },
 ];
