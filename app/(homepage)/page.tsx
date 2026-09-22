@@ -44,6 +44,8 @@ const PILARES_HERO = [
 const whatsappHero = getWhatsAppUrl("Olá! Vim pelo site da Central de Soluções e gostaria de um orçamento.");
 
 const HERO_IMAGENS = [
+  "0.webp",
+  "0-2.webp",
   "1.webp",
   "2.webp",
   "3.webp",
