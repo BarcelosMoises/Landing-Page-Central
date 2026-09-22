@@ -46,7 +46,6 @@ const whatsappHero = getWhatsAppUrl("Olá! Vim pelo site da Central de Soluçõe
 const HERO_IMAGENS = [
   "1.webp",
   "2.webp",
-  "3.webp",
   "3-1.webp",
   "3-2.webp",
   "4.webp",
