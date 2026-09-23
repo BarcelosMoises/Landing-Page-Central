@@ -1,11 +1,11 @@
-// ─────────────────────────────────────────────────────────────────────────────
+// ────────────────────────────────────────────────────────────────────────────────────
 // /data/servicos.ts
 // Fonte única de verdade dos dados da Central de Soluções.
 // Gerado a partir de docs/SERVICOS.md — não editar textos aqui diretamente.
 // Atualizar sempre que docs/SERVICOS.md for alterado.
-// ─────────────────────────────────────────────────────────────────────────────
+// ────────────────────────────────────────────────────────────────────────────────────
 
-// ─── Equipe técnica (re-exportada de data/equipe.ts) ───────────────────────────────
+// ─── Equipe técnica (re-exportada de data/equipe.ts) ────────────────────────────────────────
 //
 // As páginas de serviço importam `equipe` deste arquivo.
 // A fonte única de verdade é data/equipe.ts — nunca duplicar dados aqui.
@@ -15,7 +15,7 @@
 export type { MembroEquipeServico as MembroEquipe } from "@/data/equipe";
 export { equipeServicos as equipe } from "@/data/equipe";
 
-// ─── Tipos base ───────────────────────────────────────────────────────────────────────────
+// ─── Tipos base ────────────────────────────────────────────────────────────────────────────────────────────────────
 
 export type EstadoSigla = "RJ" | "SP" | "MG" | "ES" | "BR";
 
@@ -123,7 +123,7 @@ export interface ContatoEmpresa {
   readonly instagramUrl: string;
 }
 
-// ─── Estados de atuação ───────────────────────────────────────────────────────────────────
+// ─── Estados de atuação ─────────────────────────────────────────────────────────────────────────────
 
 export const estadosAtuacao: readonly EstadoAtuacao[] = [
   {
@@ -156,11 +156,11 @@ export const estadosAtuacao: readonly EstadoAtuacao[] = [
   },
 ] as const;
 
-// ─── Catálogo de serviços ─────────────────────────────────────────────────────────────────
+// ─── Catálogo de serviços ───────────────────────────────────────────────────────────────────────────────
 
 export const servicos: readonly Servico[] = [
 
-  // ── LEGALIZAÇÃO (4 cards) ─────────────────────────────────────────────────
+  // ── LEGALIZAÇÃO (4 cards) ─────────────────────────────────────────────────────
 
   {
     id: "avcb",
@@ -386,6 +386,11 @@ export const servicos: readonly Servico[] = [
     itens: [
       "Alvará sanitário",
       "Laudo técnico de Atividades",
+      "Programa de Gerenciamento de Resíduos Sólidos e de Saúde",
+      "Memorial descritivo",
+      "Memorial de atividades",
+      "Projeto sanitário",
+      "Fluxograma de funcionamento",
     ],
     setoresPrioritarios: [
       "Clínicas médicas e odontológicas",
@@ -582,7 +587,7 @@ export const servicos: readonly Servico[] = [
     ],
   },
 
-  // ── INSTALAÇÃO ────────────────────────────────────────────────────────────
+  // ── INSTALAÇÃO ────────────────────────────────────────────────────────────────────
 
   {
     id: "spda",
@@ -721,7 +726,7 @@ export const servicos: readonly Servico[] = [
     pathRota: "/aterramento",
   },
 
-  // ── LAUDOS (4 cards — catálogo completo conforme PDF) ─────────────────────
+  // ── LAUDOS (4 cards — catálogo completo conforme PDF) ────────────────────
 
   {
     id: "teste-continuidade",
@@ -944,7 +949,7 @@ export const servicos: readonly Servico[] = [
     ],
   },
 
-  // ── PROJETOS (5 serviços independentes) ───────────────────────────────────
+  // ── PROJETOS (5 serviços independentes) ────────────────────────────
 
   {
     id: "levantamento-arquitetonico",
@@ -1136,7 +1141,7 @@ export const servicos: readonly Servico[] = [
 
 ] as const;
 
-// ─── Setores atendidos ─────────────────────────────────────────────────────────────────
+// ─── Setores atendidos ───────────────────────────────────────────────────────────────────────────────────
 
 export const setores: readonly Setor[] = [
   {
@@ -1237,7 +1242,7 @@ export const setores: readonly Setor[] = [
   },
 ] as const;
 
-// ─── Clientes (prova social) ───────────────────────────────────────────────────────────────
+// ─── Clientes (prova social) ──────────────────────────────────────────────────────────
 //
 // destaque: true  → exibido em subpáginas (getClientesDestaque)
 // destaque: false → apenas no slider da homepage (getTodosClientesLogos)
@@ -1314,7 +1319,7 @@ export const diferenciais: readonly Diferencial[] = [
   },
 ] as const;
 
-// ─── Contato ──────────────────────────────────────────────────────────────────────────────
+// ─── Contato ─────────────────────────────────────────────────────────────────────────────────
 
 export const contato: ContatoEmpresa = {
   whatsapp: "5522981121315",
@@ -1324,7 +1329,7 @@ export const contato: ContatoEmpresa = {
   instagramUrl: "https://www.instagram.com/centraldesolucoes",
 } as const;
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────────────────
+// ─── Helpers ───────────────────────────────────────────────────────────────────────────────────
 
 /** Retorna um serviço pelo seu id */
 export function getServicoPorId(id: string): Servico | undefined {
