@@ -10,6 +10,7 @@ import { CarrosselAuto } from "@/components/CarrosselAuto";
 import { FormularioOrcamento } from "@/components/FormularioOrcamento";
 import {
   servicos,
+  contato,
   getWhatsAppUrl,
 } from "@/data/servicos";
 
@@ -61,7 +62,7 @@ const serviceJsonLd = {
     "@type": "ProfessionalService",
     name: "Central de Soluções",
     url: "https://www.centraldesolucoes.eng.br",
-    telephone: "+552298112-1315",
+    telephone: contato.telefoneE164,
   },
   areaServed: [
     { "@type": "State", name: "Rio de Janeiro" },

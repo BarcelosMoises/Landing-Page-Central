@@ -118,6 +118,8 @@ export interface EstadoAtuacao {
 export interface ContatoEmpresa {
   readonly whatsapp: string;
   readonly telefone: string;
+  /** Telefone em formato E.164 — uso exclusivo em JSON-LD / schema.org */
+  readonly telefoneE164: string;
   readonly email: string;
   readonly instagram: string;
   readonly instagramUrl: string;
@@ -1324,6 +1326,7 @@ export const diferenciais: readonly Diferencial[] = [
 export const contato: ContatoEmpresa = {
   whatsapp: "5522981121315",
   telefone: "(22) 98112-1315",
+  telefoneE164: "+5522981121315",
   email: "contato.centralsolu@gmail.com",
   instagram: "@centraldesolucoes",
   instagramUrl: "https://www.instagram.com/centraldesolucoes",

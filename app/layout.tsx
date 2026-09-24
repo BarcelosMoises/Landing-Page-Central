@@ -90,7 +90,7 @@ const organizationJsonLd = {
   url: "https://www.centraldesolucoes.eng.br",
   logo: "https://www.centraldesolucoes.eng.br/logo.png",
   image: "https://www.centraldesolucoes.eng.br/og-image.jpg",
-  telephone: "+552298112-1315",
+  telephone: contato.telefoneE164,
   email: contato.email,
   priceRange: "$$",
   address: {

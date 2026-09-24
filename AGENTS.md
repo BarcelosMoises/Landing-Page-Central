@@ -266,13 +266,13 @@ export default function LayoutAmbiental({ children }: { children: React.ReactNod
 
 ### Contatos da empresa
 
-> **Fonte única de verdade:** `contato` em `data/servicos.ts` — campos `whatsapp` · `telefone` · `email` · `instagram` · `instagramUrl`.
+> **Fonte única de verdade:** `contato` em `data/servicos.ts` — campos `whatsapp` · `telefone` · `telefoneE164` · `email` · `instagram` · `instagramUrl`.
 
 - Componentes **nunca hardcodam** telefone, e-mail ou Instagram — importar `contato` de `data/servicos.ts`.
 - `components/Footer.tsx` e `app/layout.tsx` (JSON-LD `Organization`) importam `contato` — não duplicar valores.
 - Telefone, e-mail e Instagram do Footer são links clicáveis (`tel:` · `mailto:` · `instagramUrl`) com `aria-label` descritivo.
 - Links externos (Instagram) usam `target="_blank" rel="noopener noreferrer"`.
-- **Exceção conhecida:** o `telephone` do JSON-LD `Service` das 7 subpáginas ainda é hardcoded (`+552298112-1315`) — pendente de centralização.
+- **JSON-LD:** o `telephone` de todos os schemas (`Organization` na raiz e `Service` nas 7 subpáginas) usa `contato.telefoneE164` — formato E.164 exigido pelo schema.org. `contato.telefone` é apenas para exibição humana.
 
 ---
 
