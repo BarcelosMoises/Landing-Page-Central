@@ -66,6 +66,21 @@ export interface Servico {
   readonly iconeLucide: string;
   readonly pathRota: string;
   /**
+   * Rota usada exclusivamente pelo link "Saiba mais" do card das ServicosTabs
+   * da homepage. Quando presente, substitui pathRota apenas no card.
+   *
+   * Motivo: nem todo serviço possui subpágina própria. Serviços que ainda não
+   * têm rota implementada (ou que são sub-itens de uma página agregadora) devem
+   * apontar para a página agregadora — ex.: os cards de "Projetos Técnicos"
+   * apontam para `/projetos` e os de "Laudos Técnicos" para `/laudos-tecnicos`.
+   * Sem este campo, o card linkaria para uma rota inexistente (404).
+   *
+   * pathRota permanece inalterado como rota canônica do serviço — quando a
+   * subpágina for criada, basta remover pathRotaCard para o card passar a
+   * apontar para ela.
+   */
+  readonly pathRotaCard?: string;
+  /**
    * Galeria de imagens do serviço exibida no card expansível da homepage.
    * Quando ausente, o card usa um placeholder (dev-only) até haver fotos reais.
    */
@@ -618,6 +633,7 @@ export const servicos: readonly Servico[] = [
     normaBase: ["ABNT NBR 5419"],
     iconeLucide: "Zap",
     pathRota: "/spda-para-raios",
+    pathRotaCard: "/laudos-tecnicos",
     imagens: [
       {
         src: "/images/cards/laudo-spda/20220224-080825.webp",
@@ -918,6 +934,7 @@ export const servicos: readonly Servico[] = [
     ],
     iconeLucide: "Gauge",
     pathRota: "/estanqueidade-glp-gn",
+    pathRotaCard: "/laudos-tecnicos",
     imagens: [
       {
         src: "/images/cards/gas/20260129-153857.webp",
@@ -983,6 +1000,7 @@ export const servicos: readonly Servico[] = [
     ],
     iconeLucide: "Scan",
     pathRota: "/levantamento-arquitetonico",
+    pathRotaCard: "/projetos",
   },
   {
     id: "projeto-acessibilidade",
@@ -1014,6 +1032,7 @@ export const servicos: readonly Servico[] = [
     ],
     iconeLucide: "Accessibility",
     pathRota: "/projeto-acessibilidade",
+    pathRotaCard: "/projetos",
   },
   {
     id: "projeto-combate-incendio",
@@ -1047,6 +1066,7 @@ export const servicos: readonly Servico[] = [
     ],
     iconeLucide: "Flame",
     pathRota: "/projeto-combate-incendio",
+    pathRotaCard: "/projetos",
   },
   {
     id: "projeto-spda",

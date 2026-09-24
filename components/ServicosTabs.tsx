@@ -134,6 +134,9 @@ function ServicoCard({ servico }: { servico: Servico }) {
   // nomeCurto é usado exclusivamente no título do card da tab.
   // nomeAbreviado permanece inalterado para todos os outros usos do site.
   const tituloCard = servico.nomeCurto ?? servico.nomeAbreviado;
+  // pathRotaCard é o override do destino do "Saiba mais" — usado quando o
+  // serviço ainda não tem subpágina própria. Fallback: pathRota canônico.
+  const rotaCard = servico.pathRotaCard ?? servico.pathRota;
   const temGaleria = Boolean(servico.imagens && servico.imagens.length > 0);
   const abrirGaleria = () => setGaleriaAberta(true);
   const fecharGaleria = () => setGaleriaAberta(false);
@@ -175,7 +178,7 @@ function ServicoCard({ servico }: { servico: Servico }) {
 
         <div className="mt-1 flex items-center justify-between gap-3">
           <Link
-            href={servico.pathRota}
+            href={rotaCard}
             style={{ color: "var(--color-service-accent, #800000)" }}
             className="inline-flex items-center gap-1.5 text-sm font-semibold hover:underline underline-offset-2 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#800000] focus-visible:ring-offset-2"
           >

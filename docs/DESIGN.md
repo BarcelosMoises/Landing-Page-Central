@@ -600,7 +600,10 @@ Border radius padrão: rounded-lg (8px) | rounded-xl (12px) para cards
 - Transição: `transition-colors duration-200` em todos os itens de tab
 - **Nunca** usar `display: none` via JavaScript inline — usar `className="hidden"` do Tailwind
 - Cards dos serviços usam `var(--color-service-accent, #800000)` para accent
-- Cada card linka para `servico.pathRota` — nunca hardcodar URLs
+- Cada card linka para `servico.pathRotaCard ?? servico.pathRota` — nunca hardcodar URLs.
+  `pathRotaCard` é o override para serviços sem subpágina própria (ex.: os cards das abas
+  "Projetos Técnicos" e "Laudos Técnicos" apontam para as páginas agregadoras `/projetos`
+  e `/laudos-tecnicos`). Nunca apontar um card para uma rota inexistente (404).
 
 ### Botões
 

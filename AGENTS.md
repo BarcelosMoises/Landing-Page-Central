@@ -338,6 +338,12 @@ export default function LayoutAmbiental({ children }: { children: React.ReactNod
 - **SEO:** todos os painéis renderizados no DOM; inativos ocultos com `hidden` (indexável)
 - **`ServicosGrid.tsx` foi removido** (Jul 2026) — era código morto duplicado, nunca importado
 - **Placeholders "Em breve" foram removidos** (Jul 2026) — `padServicos` e `ServicoOuPlaceholder` eliminados
+- **Destino do "Saiba mais":** `servico.pathRotaCard ?? servico.pathRota` — nunca apontar para rota inexistente (404)
+  - `pathRotaCard` é override usado quando o serviço não tem subpágina própria
+  - Aba **Projetos Técnicos**: os 3 cards → `/projetos` (página agregadora)
+  - Aba **Laudos Técnicos**: os 3 cards → `/laudos-tecnicos` (página agregadora)
+  - Aba **Legalização**: cada card → sua subpágina real (AVCB, VISA, Ambiental, Prefeitura)
+  - Ao criar a subpágina de um serviço, basta remover `pathRotaCard` — `pathRota` já contém a rota canônica
 
 ### NavPrimaria
 - **Arquivo:** `components/NavPrimaria.tsx`
