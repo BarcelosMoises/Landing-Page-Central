@@ -206,5 +206,5 @@
 ## Contato
 
 - **Telefone/WhatsApp:** (22) 98112-1315
-- **E-mail:** centralsolu@outlook.com
+- **E-mail:** contato.centralsolu@gmail.com
 - **Instagram:** @centraldesolucoes

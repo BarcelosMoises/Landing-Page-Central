@@ -5,6 +5,7 @@
 
 import Image from "next/image"
 import Link from "next/link"
+import { contato } from "@/data/servicos"
 
 export function Footer() {
   return (
@@ -28,9 +29,35 @@ export function Footer() {
               Engenharia de regularização para indústrias, galpões e telecom. Atendemos RJ, SP, MG e ES, além de outros estados sob consulta, com responsabilidade técnica real.
             </p>
             <div className="mt-5 space-y-2 text-sm" style={{ color: "#e0c8c8" }}>
-              <p>(22) 98112-1315</p>
-              <p>centralsolu@outlook.com</p>
-              <p>@centraldesolucoes</p>
+              <p>
+                <a
+                  href={`tel:+${contato.whatsapp}`}
+                  className="transition-colors hover:text-white"
+                  aria-label={`Ligar para a Central de Soluções no telefone ${contato.telefone}`}
+                >
+                  {contato.telefone}
+                </a>
+              </p>
+              <p>
+                <a
+                  href={`mailto:${contato.email}`}
+                  className="transition-colors hover:text-white"
+                  aria-label={`Enviar e-mail para a Central de Soluções em ${contato.email}`}
+                >
+                  {contato.email}
+                </a>
+              </p>
+              <p>
+                <a
+                  href={contato.instagramUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="transition-colors hover:text-white"
+                  aria-label={`Abrir o Instagram da Central de Soluções: ${contato.instagram}`}
+                >
+                  {contato.instagram}
+                </a>
+              </p>
             </div>
           </div>
           <div>

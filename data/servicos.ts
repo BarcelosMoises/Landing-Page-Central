@@ -1324,7 +1324,7 @@ export const diferenciais: readonly Diferencial[] = [
 export const contato: ContatoEmpresa = {
   whatsapp: "5522981121315",
   telefone: "(22) 98112-1315",
-  email: "centralsolu@outlook.com",
+  email: "contato.centralsolu@gmail.com",
   instagram: "@centraldesolucoes",
   instagramUrl: "https://www.instagram.com/centraldesolucoes",
 } as const;

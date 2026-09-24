@@ -264,6 +264,16 @@ export default function LayoutAmbiental({ children }: { children: React.ReactNod
 > Componentes **nunca hardcodam** nomes, especialidades ou descrições — importar sempre dos arquivos acima.
 > Campos canônicos de `data/equipe.ts`: `slug` · `nome` · `tituloPrincipal` · `especializacoes` · `foto` · `fotoAlt`
 
+### Contatos da empresa
+
+> **Fonte única de verdade:** `contato` em `data/servicos.ts` — campos `whatsapp` · `telefone` · `email` · `instagram` · `instagramUrl`.
+
+- Componentes **nunca hardcodam** telefone, e-mail ou Instagram — importar `contato` de `data/servicos.ts`.
+- `components/Footer.tsx` e `app/layout.tsx` (JSON-LD `Organization`) importam `contato` — não duplicar valores.
+- Telefone, e-mail e Instagram do Footer são links clicáveis (`tel:` · `mailto:` · `instagramUrl`) com `aria-label` descritivo.
+- Links externos (Instagram) usam `target="_blank" rel="noopener noreferrer"`.
+- **Exceção conhecida:** o `telephone` do JSON-LD `Service` das 7 subpáginas ainda é hardcoded (`+552298112-1315`) — pendente de centralização.
+
 ---
 
 ## E-E-A-T (Autoridade e Confiança)
@@ -287,6 +297,7 @@ export default function LayoutAmbiental({ children }: { children: React.ReactNod
 | Importar fontes via `<link>` | `next/font` |
 | Hardcodar textos de serviços | Importar de `data/servicos.ts` |
 | Hardcodar nomes/especialidades da equipe | Importar de `data/equipe.ts` |
+| Hardcodar telefone, e-mail ou Instagram | Importar `contato` de `data/servicos.ts` |
 | Hardcodar `#800000` em componentes reutilizados | `var(--color-service-accent, #800000)` |
 | Importar `equipe` de `data/servicos` | Importar de `data/equipe.ts` |
 | Glassmorphism em texto indexável | Fundo sólido ou semi-transparente com texto no DOM |

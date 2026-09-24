@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Montserrat } from "next/font/google";
+import { contato } from "@/data/servicos";
 import "./globals.css";
 
 // NOTA: <Footer /> foi removido daqui.
@@ -90,7 +91,7 @@ const organizationJsonLd = {
   logo: "https://www.centraldesolucoes.eng.br/logo.png",
   image: "https://www.centraldesolucoes.eng.br/og-image.jpg",
   telephone: "+552298112-1315",
-  email: "centralsolu@outlook.com",
+  email: contato.email,
   priceRange: "$$",
   address: {
     "@type": "PostalAddress",
